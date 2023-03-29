@@ -1,10 +1,10 @@
 source "https://rubygems.org"
 
-# Declare your gem's dependencies in geoblacklight_sidecar_images.gemspec.
+# Declare your gem's dependencies in geoblacklight_admin.gemspec.
 # Bundler will treat runtime dependencies like base dependencies, and
 # development dependencies will be added by default to the :development group.
 
-# Please see geoblacklight_sidecar_images.gemspec for dependency information.
+# Please see geoblacklight_admin.gemspec for dependency information.
 gemspec
 
 # Declare any dependencies that are still in development here instead of in
