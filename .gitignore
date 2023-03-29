@@ -1,3 +1,11 @@
+*.gem
+.bundle/
+Gemfile.lock
+coverage
+.internal_test_app
+.ruby-version
+.byebug_history
+
 *.rbc
 capybara-*.html
 .rspec
