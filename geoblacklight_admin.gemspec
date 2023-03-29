@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
   s.add_dependency "paper_trail", "~> 14.0"
   s.add_dependency "pg", "~> 1.4"
   s.add_dependency "rails", ">= 6.1", "< 7.1"
+  s.add_dependency "sprockets", "< 4"
   s.add_dependency "statesman", "~> 7.1.0"
 
   s.add_development_dependency "byebug", "~> 11.1"
