@@ -35,10 +35,6 @@ module GeoblacklightAdmin
       generate "geoblacklight_admin:helpers"
     end
 
-    def generate_action_storage
-      rake "active_storage:install"
-    end
-
     def generate_gbl_admin_config
       generate "geoblacklight_admin:config"
     end

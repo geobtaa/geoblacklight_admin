@@ -1,0 +1,18 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  host:     <%= ENV['GBL_ADMIN_DB_HOST'] || '127.0.0.1' %>
+  port:     <%= ENV['GBL_ADMIN_DB_PORT'] || '5432' %>
+  database: <%= ENV['GBL_ADMIN_DB_DATABASE'] || 'geoblacklight_development' %>
+  username: <%= ENV['GBL_ADMIN_DB_USER'] %>
+  password: <%= ENV['GBL_ADMIN_DB_PASSWORD'] %>
+  pool: 5
+
+test:
+  <<: *default
+
+development:
+  <<: *default
+
+production:
+  <<: *default
