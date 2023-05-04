@@ -13,6 +13,7 @@ module GeoblacklightAdmin
        3. Copies Statesman initializer file to host config
        4. Copies PG database.yml connection to host config
        5. Copies .env.development to host
+       6. Copies solr/* to host
        6. Sets Routes
        7. Sets Gems
     DESCRIPTION
@@ -39,6 +40,10 @@ module GeoblacklightAdmin
 
     def copy_json_schema
       copy_file "config/geomg_aardvark_schema.json", "config/geomg_aardvark_schema.json"
+    end
+
+    def copy_solr
+      directory 'solr', 'solr'
     end
 
     def set_routes
