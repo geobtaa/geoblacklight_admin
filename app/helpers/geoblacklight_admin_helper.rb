@@ -2,7 +2,8 @@
 
 # GeoblacklightAdminHelper
 module GeoblacklightAdminHelper
-  include Pagy::Frontend
+  # @TODO
+  # include ::Pagy::Frontend
 
   # jbuilder helper
   def no_json_blanks(value)

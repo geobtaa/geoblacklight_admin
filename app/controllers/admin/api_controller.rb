@@ -3,13 +3,15 @@ require 'blacklight/catalog'
 
 module Admin
   class ApiController < ApplicationController
-    include BlacklightAdvancedSearch::Controller
-    include BlacklightRangeLimit::ControllerOverride
     include Blacklight::Catalog
+    include BlacklightAdvancedSearch::Controller
+
+    # @TODO
+    # include ::BlacklightRangeLimit::ControllerOverride
 
     configure_blacklight do |config|
       # special search builder
-      config.search_builder_class = ApiSearchBuilder
+      config.search_builder_class = ::ApiSearchBuilder
 
       # default advanced config values
       config.advanced_search ||= Blacklight::OpenStructWithHashAccess.new
@@ -112,20 +114,20 @@ module Admin
       ## FACETS
       #
       # Date Range Filter
-      config.add_facet_field 'date_created_drsim', :label => 'Date Created', :show => false
+      # config.add_facet_field 'date_created_drsim', :label => 'Date Created', :show => false
 
       # Date Created
-      config.add_facet_field 'time_period', label: 'Date Created', query: {
-        'today' => { label: 'Today', fq: "date_created_drsim:[#{Date.today.beginning_of_day.to_time.strftime('%Y-%m-%dT%H:%M:%S')} TO #{Date.today.end_of_day.to_time.strftime('%Y-%m-%dT%H:%M:%S')}]"},
-        'this_week' => { label: 'This week', fq: "date_created_drsim:[#{(Date.today.end_of_day - 1.week).to_time.strftime('%Y-%m-%dT%H:%M:%S')} TO  #{Date.today.end_of_day.to_time.strftime('%Y-%m-%dT%H:%M:%S')}]"},
-        'this_month' => { label: 'This month', fq: "date_created_drsim:[#{(Date.today.end_of_day - 1.month).to_time.strftime('%Y-%m-%dT%H:%M:%S')} TO  #{Date.today.end_of_day.to_time.strftime('%Y-%m-%dT%H:%M:%S')}]"},
-        'last_month' => { label: 'Last month', fq: "date_created_drsim:[#{(Date.today.end_of_day - 2.months).to_time.strftime('%Y-%m-%dT%H:%M:%S')} TO  #{(Date.today.end_of_day - 1.month).to_time.strftime('%Y-%m-%dT%H:%M:%S')}]"},
-        'this_quarter' => { label: 'This quarter', fq: "date_created_drsim:[#{(Date.today.end_of_day - 3.months).to_time.strftime('%Y-%m-%dT%H:%M:%S')} TO  #{(Date.today.end_of_day).to_time.strftime('%Y-%m-%dT%H:%M:%S')}]"},
-        'this_year' => { label: 'This year', fq: "date_created_drsim:[#{(Date.today.end_of_day - 1.year).to_time.strftime('%Y-%m-%dT%H:%M:%S')} TO  #{(Date.today.end_of_day).to_time.strftime('%Y-%m-%dT%H:%M:%S')}]"}
-      }
+      # config.add_facet_field 'time_period', label: 'Date Created', query: {
+      #  'today' => { label: 'Today', fq: "date_created_drsim:[#{Date.today.beginning_of_day.to_time.strftime('%Y-%m-%dT%H:%M:%S')} TO #{Date.today.end_of_day.to_time.strftime('%Y-%m-%dT%H:%M:%S')}]"},
+      #  'this_week' => { label: 'This week', fq: "date_created_drsim:[#{(Date.today.end_of_day - 1.week).to_time.strftime('%Y-%m-%dT%H:%M:%S')} TO  #{Date.today.end_of_day.to_time.strftime('%Y-%m-%dT%H:%M:%S')}]"},
+      #  'this_month' => { label: 'This month', fq: "date_created_drsim:[#{(Date.today.end_of_day - 1.month).to_time.strftime('%Y-%m-%dT%H:%M:%S')} TO  #{Date.today.end_of_day.to_time.strftime('%Y-%m-%dT%H:%M:%S')}]"},
+      #  'last_month' => { label: 'Last month', fq: "date_created_drsim:[#{(Date.today.end_of_day - 2.months).to_time.strftime('%Y-%m-%dT%H:%M:%S')} TO  #{(Date.today.end_of_day - 1.month).to_time.strftime('%Y-%m-%dT%H:%M:%S')}]"},
+      #  'this_quarter' => { label: 'This quarter', fq: "date_created_drsim:[#{(Date.today.end_of_day - 3.months).to_time.strftime('%Y-%m-%dT%H:%M:%S')} TO  #{(Date.today.end_of_day).to_time.strftime('%Y-%m-%dT%H:%M:%S')}]"},
+      #  'this_year' => { label: 'This year', fq: "date_created_drsim:[#{(Date.today.end_of_day - 1.year).to_time.strftime('%Y-%m-%dT%H:%M:%S')} TO  #{(Date.today.end_of_day).to_time.strftime('%Y-%m-%dT%H:%M:%S')}]"}
+      # }
 
       # Publication State
-      config.add_facet_field Settings.FIELDS.B1G_PUBLICATION_STATE, :label => 'Publication State', :limit => 8, collapse: false
+      # config.add_facet_field Settings.FIELDS.B1G_PUBLICATION_STATE, :label => 'Publication State', :limit => 8, collapse: false
 
       # Resouce Class
       config.add_facet_field Settings.FIELDS.RESOURCE_CLASS, label: 'Resource Class', limit: 8
@@ -134,7 +136,7 @@ module Admin
       config.add_facet_field Settings.FIELDS.PROVIDER, label: 'Provider', limit: 15
 
       # Accrual Method
-      config.add_facet_field Settings.FIELDS.B1G_ACCRUAL_METHOD, :label => 'Accrual Method'
+      # config.add_facet_field Settings.FIELDS.B1G_ACCRUAL_METHOD, :label => 'Accrual Method'
 
       # Public/Restricted
       config.add_facet_field Settings.FIELDS.ACCESS_RIGHTS, :label => 'Public/Restricted'
@@ -142,7 +144,7 @@ module Admin
       # ADVANCED SEARCH
       #
       # Code
-      config.add_facet_field Settings.FIELDS.B1G_CODE, label: 'Code', show: false
+      # config.add_facet_field Settings.FIELDS.B1G_CODE, label: 'Code', show: false
 
       # Is Part Of
       config.add_facet_field Settings.FIELDS.IS_PART_OF, label: 'Is Part Of', show: false
@@ -166,7 +168,7 @@ module Admin
       config.add_facet_field Settings.FIELDS.SUPPRESSED, label: 'Suppressed', show: false
 
       # Child Record
-      config.add_facet_field Settings.FIELDS.B1G_CHILD_RECORD, label: 'Child Record', show: false
+      # config.add_facet_field Settings.FIELDS.B1G_CHILD_RECORD, label: 'Child Record', show: false
 
       # Georeferenced
       config.add_facet_field Settings.FIELDS.GEOREFERENCED, label: 'Georeferenced', show: false
@@ -189,7 +191,7 @@ module Admin
       # config.add_index_field 'lc_callnum_display', :label => 'Call number:'
 
       config.add_index_field Settings.FIELDS.TITLE, :label => 'Title:'
-      config.add_index_field Settings.FIELDS.B1G_GEOMG_ID, :label => 'Identifier:'
+      # config.add_index_field Settings.FIELDS.B1G_GEOMG_ID, :label => 'Identifier:'
       config.add_index_field Settings.FIELDS.PROVIDER, :label => 'Institution:'
       config.add_index_field Settings.FIELDS.ACCESS_RIGHTS, :label => 'Access:'
       config.add_index_field Settings.FIELDS.SUBJECT, :label => 'Keywords:'

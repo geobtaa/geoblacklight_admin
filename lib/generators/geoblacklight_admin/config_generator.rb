@@ -161,6 +161,7 @@ module GeoblacklightAdmin
       append_to_file "Gemfile" do
         "
 # GBL‡ADMIN
+gem 'blacklight_advanced_search'
 gem 'dotenv-rails'
 gem 'httparty'
 gem 'inline_svg'

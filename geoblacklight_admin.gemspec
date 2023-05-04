@@ -19,6 +19,8 @@ Gem::Specification.new do |s|
 
   s.add_dependency "config", "~> 4.0"
   s.add_dependency "chosen-rails", "1.0"
+  s.add_dependency "blacklight", "~> 7.33"
+  s.add_dependency "blacklight_advanced_search"
   s.add_dependency "geoblacklight", "~> 4.0"
   s.add_dependency "httparty", "~> 0.21"
   s.add_dependency "inline_svg", "~> 1.9"

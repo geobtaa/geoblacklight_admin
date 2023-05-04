@@ -32,6 +32,8 @@ if File.exist?(file)
   end
 else
   Bundler.ui.warn "[EngineCart] Unable to find test application dependencies in #{file}, using placeholder dependencies"
+  gem "blacklight", "~> 7.33"
+  gem "blacklight_advanced_search"
   gem "geoblacklight", ">= 4.0"
   gem "statesman", ">= 3.4"
 

@@ -9,6 +9,12 @@ module GeoblacklightAdmin
     def add_settings_vars
     end
 
+    def bundle_install
+      Bundler.with_unbundled_env do
+        run "bundle install"
+      end
+    end
+
     def generate_gbl_admin_assets
       inject_into_file "app/assets/stylesheets/application.scss", after: "@import 'geoblacklight';\n" do
         "@import 'geoblacklight_admin/core';"
@@ -37,12 +43,6 @@ module GeoblacklightAdmin
 
     def generate_gbl_admin_config
       generate "geoblacklight_admin:config"
-    end
-
-    def bundle_install
-      Bundler.with_unbundled_env do
-        run "bundle install"
-      end
     end
   end
 end
