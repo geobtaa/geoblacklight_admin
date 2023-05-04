@@ -168,6 +168,7 @@ gem 'inline_svg'
 gem 'pagy'
 gem 'paper_trail'
 gem 'kithe'
+gem 'simple_form'
         "
       end
     end
@@ -184,6 +185,12 @@ Mime::Type.register "application/json", :json
 Mime::Type.register "text/csv", :csv_document_downloads
 Mime::Type.register "text/csv", :csv_document_access_links
         '
+      end
+    end
+
+    def set_seeds
+      append_to_file "db/seeds.rb" do
+        'GeoblacklightAdmin::Engine.load_seed'
       end
     end
   end

@@ -44,5 +44,9 @@ module GeoblacklightAdmin
     def generate_gbl_admin_config
       generate "geoblacklight_admin:config"
     end
+
+    def kithe_install
+      run "bundle exec rails generate simple_form:install --bootstrap"
+    end
   end
 end
