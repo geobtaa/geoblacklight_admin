@@ -2,7 +2,7 @@
 
 # @TODO
 # - GeoNames
-module Geomg
+module GeoblacklightAdmin
   class FieldMappingsBtaaAardvark
     def self.call
       {

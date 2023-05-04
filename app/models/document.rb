@@ -69,7 +69,7 @@ class Document < Kithe::Work
   # Index Transformations - *_json functions
   def references_json
     references = ActiveSupport::HashWithIndifferentAccess.new
-    send(Geomg::Schema.instance.solr_fields[:reference]).each { |ref| references[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] = ref.value }
+    send(GeoblacklightAdmin::Schema.instance.solr_fields[:reference]).each { |ref| references[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] = ref.value }
     references = apply_downloads(references)
     references.to_json
   end
@@ -79,7 +79,7 @@ class Document < Kithe::Work
     # Make sure downloads exist!
     if document_downloads.present?
       multiple_downloads = multiple_downloads_array
-      multiple_downloads << {label: download_text(send(Geomg::Schema.instance.solr_fields[:format])), url: dct_downloads} if dct_downloads.present?
+      multiple_downloads << {label: download_text(send(GeoblacklightAdmin::Schema.instance.solr_fields[:format])), url: dct_downloads} if dct_downloads.present?
       references[:"http://schema.org/downloadUrl"] = multiple_downloads
     end
     references
@@ -138,8 +138,8 @@ class Document < Kithe::Work
 
   def date_range_json
     date_ranges = []
-    unless send(Geomg::Schema.instance.solr_fields[:date_range]).all?(&:blank?)
-      send(Geomg::Schema.instance.solr_fields[:date_range]).each do |date_range|
+    unless send(GeoblacklightAdmin::Schema.instance.solr_fields[:date_range]).all?(&:blank?)
+      send(GeoblacklightAdmin::Schema.instance.solr_fields[:date_range]).each do |date_range|
         start_d, end_d = date_range.split("-")
         start_d = "*" if start_d == "YYYY" || start_d.nil?
         end_d = "*" if end_d == "YYYY" || end_d.nil?
@@ -150,16 +150,16 @@ class Document < Kithe::Work
   end
 
   def solr_year_json
-    return [] if send(Geomg::Schema.instance.solr_fields[:date_range]).blank?
+    return [] if send(GeoblacklightAdmin::Schema.instance.solr_fields[:date_range]).blank?
 
-    start_d, _end_d = send(Geomg::Schema.instance.solr_fields[:date_range]).first.split("-")
+    start_d, _end_d = send(GeoblacklightAdmin::Schema.instance.solr_fields[:date_range]).first.split("-")
     [start_d] if start_d.presence
   end
   alias_method :gbl_indexYear_im, :solr_year_json
 
   # Export Transformations - to_*
   def to_csv
-    attributes = Geomg::Schema.instance.exportable_fields
+    attributes = GeoblacklightAdmin::Schema.instance.exportable_fields
     attributes.map do |key, value|
       if value[:delimited]
         send(value[:destination])&.join("|")
@@ -178,7 +178,7 @@ class Document < Kithe::Work
   end
 
   def dct_references_s_to_csv(key, destination)
-    send(destination).detect { |ref| ref.category == Geomg::Schema.instance.dct_references_mappings[key] }.value
+    send(destination).detect { |ref| ref.category == GeoblacklightAdmin::Schema.instance.dct_references_mappings[key] }.value
   rescue NoMethodError
     nil
   end
@@ -193,9 +193,9 @@ class Document < Kithe::Work
   end
 
   def derive_locn_geometry
-    if send(Geomg::Schema.instance.solr_fields[:geometry]).present?
-      send(Geomg::Schema.instance.solr_fields[:geometry])
-    elsif send(Geomg::Schema.instance.solr_fields[:bounding_box]).present?
+    if send(GeoblacklightAdmin::Schema.instance.solr_fields[:geometry]).present?
+      send(GeoblacklightAdmin::Schema.instance.solr_fields[:geometry])
+    elsif send(GeoblacklightAdmin::Schema.instance.solr_fields[:bounding_box]).present?
       derive_polygon
     else
       ""
@@ -204,13 +204,13 @@ class Document < Kithe::Work
 
   # Convert BBOX to GEOM Polygon
   def derive_polygon
-    if send(Geomg::Schema.instance.solr_fields[:bounding_box]).present?
+    if send(GeoblacklightAdmin::Schema.instance.solr_fields[:bounding_box]).present?
       # Guard against a whole world polygons
-      if send(Geomg::Schema.instance.solr_fields[:bounding_box]) == "-180,-90,180,90"
+      if send(GeoblacklightAdmin::Schema.instance.solr_fields[:bounding_box]) == "-180,-90,180,90"
         "ENVELOPE(-180,180,90,-90)"
       else
         # "W,S,E,N" convert to "POLYGON((W N, E N, E S, W S, W N))"
-        w, s, e, n = send(Geomg::Schema.instance.solr_fields[:bounding_box]).split(",")
+        w, s, e, n = send(GeoblacklightAdmin::Schema.instance.solr_fields[:bounding_box]).split(",")
         "POLYGON((#{w} #{n}, #{e} #{n}, #{e} #{s}, #{w} #{s}, #{w} #{n}))"
       end
     else
@@ -226,9 +226,9 @@ class Document < Kithe::Work
 
   # Convert GEOM for Solr Indexing
   def derive_dcat_bbox
-    if send(Geomg::Schema.instance.solr_fields[:bounding_box]).present?
+    if send(GeoblacklightAdmin::Schema.instance.solr_fields[:bounding_box]).present?
       # "W,S,E,N" convert to "ENVELOPE(W,E,N,S)"
-      w, s, e, n = send(Geomg::Schema.instance.solr_fields[:bounding_box]).split(",")
+      w, s, e, n = send(GeoblacklightAdmin::Schema.instance.solr_fields[:bounding_box]).split(",")
       "ENVELOPE(#{w},#{e},#{n},#{s})"
     else
       ""
@@ -236,8 +236,8 @@ class Document < Kithe::Work
   end
 
   def derive_dcat_centroid
-    if send(Geomg::Schema.instance.solr_fields[:bounding_box]).present?
-      w, s, e, n = send(Geomg::Schema.instance.solr_fields[:bounding_box]).split(",")
+    if send(GeoblacklightAdmin::Schema.instance.solr_fields[:bounding_box]).present?
+      w, s, e, n = send(GeoblacklightAdmin::Schema.instance.solr_fields[:bounding_box]).split(",")
       "#{(n.to_f + s.to_f) / 2},#{(e.to_f + w.to_f) / 2}"
     else
       ""
@@ -248,9 +248,9 @@ class Document < Kithe::Work
   def iso_language_mapping
     mapping = []
 
-    if send(Geomg::Schema.instance.solr_fields[:language]).present?
-      send(Geomg::Schema.instance.solr_fields[:language]).each do |lang|
-        mapping << Geomg::IsoLanguageCodes.call[lang]
+    if send(GeoblacklightAdmin::Schema.instance.solr_fields[:language]).present?
+      send(GeoblacklightAdmin::Schema.instance.solr_fields[:language]).each do |lang|
+        mapping << GeoblacklightAdmin::IsoLanguageCodes.call[lang]
       end
     end
     mapping

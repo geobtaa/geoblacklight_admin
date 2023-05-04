@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Geomg
+module GeoblacklightAdmin
   class IsoLanguageCodes
     def self.call
       {

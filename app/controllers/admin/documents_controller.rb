@@ -126,7 +126,7 @@ class Admin::DocumentsController < ApplicationController
   # POST /documents.json
   def create
     @document = Document.new(document_params)
-    @document.friendlier_id = @document.send(Geomg::Schema.instance.solr_fields[:id])
+    @document.friendlier_id = @document.send(GeoblacklightAdmin::Schema.instance.solr_fields[:id])
     respond_to do |format|
       if @document.save
         format.html { redirect_to documents_path, notice: "Document was successfully created." }
@@ -164,7 +164,7 @@ class Admin::DocumentsController < ApplicationController
 
   def show
     respond_to do |format|
-      format.html { redirect_to edit_document_url(@document) }
+      format.html { redirect_to edit_admin_document_url(@document) }
       format.json { render json: @document.to_json } # App-style JSON
       format.json_aardvark
       format.json_btaa_aardvark

@@ -1,6 +1,6 @@
 require "singleton"
 
-module Geomg
+module GeoblacklightAdmin
   class Schema
     def self.instance
       @instance ||= new

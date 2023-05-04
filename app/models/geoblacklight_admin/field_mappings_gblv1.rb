@@ -3,7 +3,7 @@
 # @TODO
 # - Centroids
 # - GeoNames
-module Geomg
+module GeoblacklightAdmin
   class FieldMappingsGblv1
     def self.call
       {
