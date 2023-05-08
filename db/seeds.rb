@@ -21,3 +21,6 @@ end
 CSV.foreach(File.expand_path("seeds_form_elements.csv", File.dirname(__FILE__)), headers: true) do |row|
   FormElement.create!(row.to_hash)
 end
+
+# Users
+User.create(email: "admin@geoblacklight.org", password: "123456", password_confirmation: "123456", admin: true)

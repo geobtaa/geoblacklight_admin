@@ -167,6 +167,9 @@ module GeoblacklightAdmin
         "
 # GBL‡ADMIN
 gem 'blacklight_advanced_search'
+# gem 'devise', '~> 4.7'
+gem 'devise-bootstrap-views', '~> 1.0'
+gem 'devise_invitable', '~> 2.0'
 gem 'dotenv-rails'
 gem 'httparty'
 gem 'inline_svg'

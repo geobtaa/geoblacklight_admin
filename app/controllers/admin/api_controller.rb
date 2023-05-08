@@ -51,9 +51,12 @@ module Admin
       config.default_solr_params = {
         :start => 0,
         'q.alt' => '*:*',
-        'bf' => ["if(exists(#{Settings.FIELDS.B1G_CHILD_RECORD}),0,100)^0.5"],
         'admin.api' => true
       }
+
+      # @TODO
+      # Merge B1G field into default_solr_params
+      # 'bf' => ["if(exists(#{Settings.FIELDS.B1G_CHILD_RECORD}),0,100)^0.5"],
 
       config.default_per_page = 20 # Works!
 

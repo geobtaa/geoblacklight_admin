@@ -19,6 +19,9 @@ Gem::Specification.new do |s|
 
   s.add_dependency "config", "~> 4.0"
   s.add_dependency "chosen-rails", "1.0"
+  s.add_dependency "devise", "~> 4.7"
+  s.add_dependency "devise-bootstrap-views", "~> 1.0"
+  s.add_dependency "devise_invitable", "~> 2.0"
   s.add_dependency "blacklight", "~> 7.33"
   s.add_dependency "blacklight_advanced_search"
   s.add_dependency "geoblacklight", "~> 4.0"

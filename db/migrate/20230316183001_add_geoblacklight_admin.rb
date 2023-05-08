@@ -371,6 +371,7 @@ class AddGeoblacklightAdmin < ActiveRecord::Migration[6.1]
       t.string "invited_by_type"
       t.bigint "invited_by_id"
       t.integer "invitations_count", default: 0
+      t.boolean "admin", default: false, null: false
       t.index ["email"], name: "index_users_on_email", unique: true
       t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
       t.index ["invitations_count"], name: "index_users_on_invitations_count"

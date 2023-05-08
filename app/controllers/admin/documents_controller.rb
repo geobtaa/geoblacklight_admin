@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# DocumentsController
-class Admin::DocumentsController < ApplicationController
+# Admin::DocumentsController
+class Admin::DocumentsController < Admin::AdminController
   ActionController::Parameters.permit_all_parameters = true
   before_action :set_document,
     only: %i[show edit update destroy versions]
@@ -129,7 +129,7 @@ class Admin::DocumentsController < ApplicationController
     @document.friendlier_id = @document.send(GeoblacklightAdmin::Schema.instance.solr_fields[:id])
     respond_to do |format|
       if @document.save
-        format.html { redirect_to documents_path, notice: "Document was successfully created." }
+        format.html { redirect_to admin_documents_path, notice: "Document was successfully created." }
         format.json { render :show, status: :created, location: @document }
       else
         format.html { render :edit }

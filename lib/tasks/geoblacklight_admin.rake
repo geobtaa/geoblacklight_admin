@@ -4,6 +4,28 @@ task stats: :environment do
   Rake::Task["geomg:stats"].invoke
 end
 
+namespace :gbl_admin do
+  desc "Run Solr and GeoBlacklight for interactive development"
+  task :server, [:rails_server_args] do |_t, args|
+    require "solr_wrapper"
+    SolrWrapper.wrap(port: "8983") do |solr|
+      solr.with_collection(name: "blacklight-core", dir: File.join(File.expand_path(Rails.root, File.dirname(__FILE__)), "solr", "conf")) do
+        puts "\nSolr server running: http://localhost:#{solr.port}/solr/#/blacklight-core"
+        puts "\n^C to stop"
+        puts " "
+        begin
+          Rake::Task["geoblacklight:solr:seed"].invoke
+          system "bundle exec rails s #{args[:rails_server_args]}"
+        rescue Interrupt
+          puts "Shutting down..."
+        end
+      end
+    end
+  end
+end
+
+
+
 desc "Run test suite"
 task ci: :environment do
   Rails.env = "test"
