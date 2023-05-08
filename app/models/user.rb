@@ -2,6 +2,8 @@
 
 # User
 class User < ApplicationRecord
+  include Blacklight::User
+  
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :invitable, :database_authenticatable,
