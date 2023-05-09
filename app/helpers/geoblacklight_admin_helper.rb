@@ -2,8 +2,10 @@
 
 # GeoblacklightAdminHelper
 module GeoblacklightAdminHelper
-  # @TODO
-  # include ::Pagy::Frontend
+  # @TODO:
+  # Cannot generate app if uncommented...
+  # Uncommented after app is generated to fix view errors
+  include ::Pagy::Frontend
 
   # jbuilder helper
   def no_json_blanks(value)

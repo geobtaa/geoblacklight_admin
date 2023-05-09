@@ -2,7 +2,7 @@
 
 # Admin::ImportDocumentsController
 module Admin
-  class ImportDocumentsController < ApplicationController
+  class ImportDocumentsController < Admin::AdminController
     before_action :set_import_document, only: %i[show]
 
     def show

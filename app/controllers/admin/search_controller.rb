@@ -2,7 +2,7 @@
 
 # Admin::SearchController
 module Admin
-  class SearchController < ApplicationController
+  class SearchController < Admin::AdminController
     def index
       @facet_options = BlacklightApiFacets.new.facets
     end

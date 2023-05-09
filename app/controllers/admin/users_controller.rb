@@ -2,7 +2,7 @@
 
 # Admin::UsersController
 module Admin
-  class UsersController < ApplicationController
+  class UsersController < Admin::AdminController
     def index
       @users = User.all
     end

@@ -2,7 +2,7 @@
 
 # Admin::DocumentAssetsController
 module Admin
-  class DocumentAssetsController < ApplicationController
+  class DocumentAssetsController < Admin::AdminController
     before_action :set_document
 
     def index

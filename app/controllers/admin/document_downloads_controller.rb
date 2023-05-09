@@ -2,7 +2,7 @@
 
 # Admin::DocumentDownloadsController
 module Admin
-  class DocumentDownloadsController < ApplicationController
+  class DocumentDownloadsController < Admin::AdminController
     before_action :set_document
     before_action :set_document_download, only: %i[show edit update destroy]
 

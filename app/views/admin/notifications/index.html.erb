@@ -3,7 +3,7 @@
 <h1 style="width:100%;">
   <%= t('dictionary.notifications') %>
 
-  <%= link_to('+ Mark All Read', batch_notifications_path(params: {read: 'all'}), {method: 'put', class: "btn btn-primary float-right mr-2"}) %>
+  <%= link_to('+ Mark All Read', batch_admin_notifications_path(params: {read: 'all'}), {method: 'put', class: "btn btn-primary float-right mr-2"}) %>
 </h1>
 
 <% if @pagy %>

@@ -10,12 +10,17 @@ module GeoblacklightAdmin
       This generator makes the following changes to your application:
        1. Copies GBL Admin initializer file to host config 
        2. Copies Kithe initializer file to host config
-       3. Copies Statesman initializer file to host config
-       4. Copies PG database.yml connection to host config
-       5. Copies .env.development to host
-       6. Copies solr/* to host
-       6. Sets Routes
-       7. Sets Gems
+       3. Copies Pagy initializer file to host config
+       4. Copies Statesman initializer file to host config
+       5. Copies PG database.yml connection to host config
+       6. Copies .env.development to host
+       7. Copies solr/* to host
+       8. Sets Routes
+       9. Sets Gems
+       10.Sets MimeTypes
+       11.Sets DB Seeds
+       12.Sets Pagy Backend
+
     DESCRIPTION
 
     def create_gbl_admin_initializer
@@ -26,12 +31,16 @@ module GeoblacklightAdmin
       copy_file "config/initializers/kithe.rb", "config/initializers/kithe.rb"
     end
 
+    def create_pagy_initializer
+      copy_file "config/initializers/pagy.rb", "config/initializers/pagy.rb"
+    end
+
     def create_statesman_initializer
       copy_file "config/initializers/statesman.rb", "config/initializers/statesman.rb"
     end
 
     def create_database_yml
-      copy_file "config/database.yml", "config/database.yml"
+      copy_file "config/database.yml", "config/database.yml", force: true
     end
 
     def create_dotenv
@@ -43,19 +52,71 @@ module GeoblacklightAdmin
     end
 
     def copy_solr
-      directory 'solr', 'solr'
+      directory 'solr', 'solr', force: true
     end
 
     def set_routes
       gbl_admin_routes = <<-"ROUTES"
+        ####################
         # GBL‡ADMIN
+
+        # Bulk Actions
         resources :bulk_actions do
           patch :run, on: :member
           patch :revert, on: :member
         end
 
+        # Users
+        devise_for :users, controllers: {invitations: "devise/invitations"}, skip: [:registrations]
+        as :user do
+          get "/sign_in" => "devise/sessions#new" # custom path to login/sign_in
+          get "/sign_up" => "devise/registrations#new", :as => "new_user_registration" # custom path to sign_up/registration
+          get "users/edit" => "devise/registrations#edit", :as => "edit_user_registration"
+          put "users" => "devise/registrations#update", :as => "user_registration"
+        end
+
         namespace :admin do
+          # Root
           root to: "documents#index"
+
+          # Bulk Actions
+          resources :bulk_actions do
+            patch :run, on: :member
+            patch :revert, on: :member
+          end
+        
+          # Imports
+          resources :imports do
+            resources :mappings
+            resources :import_documents, only: [:show]
+            patch :run, on: :member
+          end
+        
+          # Elements
+          resources :elements do
+            post :sort, on: :collection
+          end
+
+          # Form Elements
+          resources :form_elements do
+            post :sort, on: :collection
+          end
+          resources :form_header, path: :form_elements, controller: :form_elements
+          resources :form_group, path: :form_elements, controller: :form_elements
+          resources :form_control, path: :form_elements, controller: :form_elements
+          resources :form_feature, path: :form_elements, controller: :form_elements
+        
+          # Notifications
+          resources :notifications do
+            put "batch", on: :collection
+          end
+
+          # Users
+          get "users/index"
+
+          # Bookmarks
+          resources :bookmarks
+          delete "/bookmarks", to: "bookmarks#destroy", as: :bookmarks_destroy_by_fkeys
           
           # AdvancedSearch controller
           get '/advanced_search' => 'advanced_search#index', constraints: lambda { |req| req.format == :json }
@@ -68,9 +129,11 @@ module GeoblacklightAdmin
           get '/api/fetch' => 'api#fetch', constraints: lambda { |req| req.format == :json }
           get '/api/facet/:id' => 'api#facet', constraints: lambda { |req| req.format == :json }
 
+          # Documents
           resources :documents do
             get "versions"
-        
+            
+            # DocumentAccesses
             resources :document_accesses, path: "access" do
               collection do
                 get "import"
@@ -80,7 +143,8 @@ module GeoblacklightAdmin
                 post "destroy_all"
               end
             end
-        
+            
+            # DocumentDownloads
             resources :document_downloads, path: "downloads" do
               collection do
                 get "import"
@@ -90,7 +154,8 @@ module GeoblacklightAdmin
                 post "destroy_all"
               end
             end
-        
+            
+            # Document Assets
             resources :document_assets, path: "assets" do
               collection do
                 get "display_attach_form"
@@ -105,7 +170,8 @@ module GeoblacklightAdmin
               get "fetch"
             end
           end
-        
+          
+          # Document Accesses
           resources :document_accesses, path: "access" do
             collection do
               get "import"
@@ -116,6 +182,7 @@ module GeoblacklightAdmin
             end
           end
         
+          # Document Downloads
           resources :document_downloads, path: "downloads" do
             collection do
               get "import"
@@ -126,6 +193,7 @@ module GeoblacklightAdmin
             end
           end
         
+          # Document Assets
           resources :document_assets, path: "assets" do
             collection do
               get "display_attach_form"
@@ -150,12 +218,14 @@ module GeoblacklightAdmin
             end
           end
         
+          # @TODO
           # mount Qa::Engine => "/authorities"
           mount ActionCable.server => "/cable"
         
-          authenticate :user, ->(user) { user } do
+          # @TODO
+          # authenticate :user, ->(user) { user } do
             # mount Blazer::Engine, at: "blazer"
-          end
+          # end
         end
       ROUTES
 
@@ -201,6 +271,12 @@ Mime::Type.register "text/csv", :csv_document_access_links
     def set_seeds
       append_to_file "db/seeds.rb" do
         'GeoblacklightAdmin::Engine.load_seed'
+      end
+    end
+
+    def add_pagy
+      inject_into_class "app/controllers/application_controller.rb", "ApplicationController" do
+        "  include Pagy::Backend\n" \
       end
     end
   end

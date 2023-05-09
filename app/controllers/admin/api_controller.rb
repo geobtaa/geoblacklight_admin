@@ -2,7 +2,7 @@
 require 'blacklight/catalog'
 
 module Admin
-  class ApiController < ApplicationController
+  class ApiController < Admin::AdminController
     include Blacklight::Catalog
     include BlacklightAdvancedSearch::Controller
 

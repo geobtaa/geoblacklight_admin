@@ -2,7 +2,7 @@
 
 # Admin::ElementsController
 module Admin
-  class ElementsController < ApplicationController
+  class ElementsController < Admin::AdminController
     before_action :set_element, only: %i[show edit update destroy]
 
     # GET /elements or /elements.json

@@ -5,7 +5,7 @@ require 'blacklight/catalog'
 
 # Admin::IdsController
 module Admin
-  class IdsController < ApplicationController
+  class IdsController < Admin::AdminController
     include BlacklightAdvancedSearch::Controller
     include BlacklightRangeLimit::ControllerOverride
     include Blacklight::Catalog

@@ -2,7 +2,7 @@
 
 # Admin::DocumentAccessesController
 module Admin
-  class DocumentAccessesController < ApplicationController
+  class DocumentAccessesController < Admin::AdminController
     before_action :set_document
     before_action :set_document_access, only: %i[show edit update destroy]
 

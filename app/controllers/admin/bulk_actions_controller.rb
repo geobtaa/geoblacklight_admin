@@ -2,7 +2,7 @@
 
 # Admin::BulkActionsController
 module Admin
-  class BulkActionsController < ApplicationController
+  class BulkActionsController < Admin::AdminController
     before_action :set_bulk_action, only: %i[show edit update destroy run revert]
 
     # GET /bulk_actions

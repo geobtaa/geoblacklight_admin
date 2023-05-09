@@ -2,7 +2,7 @@
 
 # Admin::MappingsController
 module Admin
-  class MappingsController < ApplicationController
+  class MappingsController < Admin::AdminController
     before_action :set_import
     before_action :set_mapping, only: %i[show edit update destroy]
 

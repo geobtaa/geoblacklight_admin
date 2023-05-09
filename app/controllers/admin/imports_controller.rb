@@ -2,7 +2,7 @@
 
 # Admin::ImportsController
 module Admin
-  class ImportsController < ApplicationController
+  class ImportsController < Admin::AdminController
     before_action :set_import, only: %i[show edit update destroy run]
 
     # GET /imports

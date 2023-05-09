@@ -2,7 +2,7 @@
 
 # Admin::BookmarksController
 module Admin
-  class BookmarksController < ApplicationController
+  class BookmarksController < Admin::AdminController
     before_action :set_document,
       only: %i[create destroy]
 

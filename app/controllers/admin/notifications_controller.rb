@@ -2,7 +2,7 @@
 
 # Admin::NotificationsController
 module Admin
-  class NotificationsController < ApplicationController
+  class NotificationsController < Admin::AdminController
     before_action :set_notification, only: %i[update destroy]
 
     def index
