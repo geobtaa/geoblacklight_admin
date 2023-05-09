@@ -18,3 +18,5 @@ import "bootstrap"
 // const imagePath = (name) => images(name, true)
 
 import "controllers"
+
+import '../src/js/admin/qa_autocomplete.js';

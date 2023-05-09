@@ -173,9 +173,10 @@ gem 'devise_invitable', '~> 2.0'
 gem 'dotenv-rails'
 gem 'httparty'
 gem 'inline_svg'
+gem 'kithe'
+gem 'noticed'
 gem 'pagy'
 gem 'paper_trail'
-gem 'kithe'
 gem 'simple_form'
         "
       end

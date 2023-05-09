@@ -17,6 +17,10 @@ GeoblacklightAdmin::Engine.routes.draw do
   namespace :admin do
     # Root
     root to: "documents#index"
+
+    # Bookmarks
+    resources :bookmarks
+    delete "/bookmarks", to: "bookmarks#destroy", as: :bookmarks_destroy_by_fkeys
     
     # AdvancedSearch controller
     get '/advanced_search' => 'advanced_search#index', constraints: lambda { |req| req.format == :json }

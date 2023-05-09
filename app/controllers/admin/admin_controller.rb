@@ -1,6 +1,7 @@
 module Admin
   class AdminController < ApplicationController
     include Devise::Controllers::Helpers
+    layout 'admin/layouts/application'
 
     before_action :authenticate_admin!
 

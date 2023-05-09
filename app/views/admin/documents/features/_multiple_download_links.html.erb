@@ -1,5 +1,5 @@
 <%- if @document.persisted? %>
-<h3 id="multiple-download-links"><%= link_to "Multiple Download Links", document_document_downloads_url(@document) %></h3>
+<h3 id="multiple-download-links"><%= link_to "Multiple Download Links", admin_document_document_downloads_url(@document) %></h3>
 <div class="table-responsive">
   <table class="table table-striped table-bordered">
     <thead>
@@ -14,7 +14,7 @@
     <tbody>
       <% @document.document_downloads.each do |document_download| %>
         <tr>
-          <td><%= link_to 'Edit', edit_document_document_download_path(document_download.document, document_download) %></td>
+          <td><%= link_to 'Edit', edit_admin_document_document_download_path(document_download.document, document_download) %></td>
           <td><%= link_to 'Destroy', document_document_download_path(document_download.document, document_download), method: :delete, data: { confirm: 'Are you sure?' } %></td>
           <td><%= link_to document_download.friendlier_id, document_path(document_download.document) %></td>
           <td><%= document_download.label %></td>
