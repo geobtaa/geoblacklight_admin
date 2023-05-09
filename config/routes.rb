@@ -18,6 +18,41 @@ GeoblacklightAdmin::Engine.routes.draw do
     # Root
     root to: "documents#index"
 
+    # Bulk Actions
+    resources :bulk_actions do
+      patch :run, on: :member
+      patch :revert, on: :member
+    end
+  
+    # Imports
+    resources :imports do
+      resources :mappings
+      resources :import_documents, only: [:show]
+      patch :run, on: :member
+    end
+  
+    # Elements
+    resources :elements do
+      post :sort, on: :collection
+    end
+
+    # Form Elements
+    resources :form_elements do
+      post :sort, on: :collection
+    end
+    resources :form_header, path: :form_elements, controller: :form_elements
+    resources :form_group, path: :form_elements, controller: :form_elements
+    resources :form_control, path: :form_elements, controller: :form_elements
+    resources :form_feature, path: :form_elements, controller: :form_elements
+  
+    # Notifications
+    resources :notifications do
+      put "batch", on: :collection
+    end
+
+    # Users
+    get "users/index"
+
     # Bookmarks
     resources :bookmarks
     delete "/bookmarks", to: "bookmarks#destroy", as: :bookmarks_destroy_by_fkeys

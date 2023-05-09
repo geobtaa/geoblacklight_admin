@@ -1,6 +1,6 @@
 <div class="make-me-sticky mt-4 ml-4">
   <nav class="nav flex-column ml-4 mt-6">
-    <strong class="mt-4"><%= link_to "View in Geoportal", blacklight_path(@document), { class: 'mt-6', target: :_blank } %></strong>
+    <strong class="mt-4"><%= link_to "View in Geoportal", blacklight_link(@document), { class: 'mt-6', target: :_blank } %></strong>
 
     <%- form_elements = FormElement.all.order(position: :asc) %>
     <%- form_elements.each do |form_element| %>

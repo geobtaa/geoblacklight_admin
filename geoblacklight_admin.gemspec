@@ -17,6 +17,8 @@ Gem::Specification.new do |s|
   s.executables = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
   s.require_paths = ["lib"]
 
+  # ActiveStorage
+  s.add_dependency "active_storage_validations", "~> 1.0"
   s.add_dependency "config", "~> 4.0"
   s.add_dependency "chosen-rails", "1.0"
   s.add_dependency "devise", "~> 4.7"

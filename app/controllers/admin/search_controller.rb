@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
-# SearchController
-class SearchController < ApplicationController
-  def index
-    @facet_options = BlacklightApiFacets.new.facets
+# Admin::SearchController
+module Admin
+  class SearchController < ApplicationController
+    def index
+      @facet_options = BlacklightApiFacets.new.facets
+    end
   end
 end

@@ -5,7 +5,7 @@
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <%= form_tag(documents_path, { method: :get, class: "form-inline my-2 my-lg-0" }) do %>
+  <%= form_tag(admin_documents_path, { method: :get, class: "form-inline my-2 my-lg-0" }) do %>
 
     <div class="input-group">
       <input name="q" class="form-control" type="search" placeholder="Search documents" aria-label="Search" value="<%= params[:q] ? params[:q] : ''%>">
@@ -24,7 +24,7 @@
           <span class="sr-only">Toggle Dropdown</span>
         </button>
         <div class="dropdown-menu">
-          <%= link_to "Advanced", search_path, { class: 'dropdown-item' } %>
+          <%= link_to "Advanced", admin_advanced_search_path, { class: 'dropdown-item' } %>
         </div>
       </div>
     </div>
@@ -34,7 +34,7 @@
     <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
       <% if user_signed_in? %>
         <li class="nav-item">
-          <%= link_to notifications_url, { class: 'nav-link' } do %>
+          <%= link_to admin_notifications_url, { class: 'nav-link' } do %>
             <%= "Notifications #{notifications_badge}".html_safe %>
           <% end %>
         </li>
@@ -44,22 +44,22 @@
           Admin Tools
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <%= link_to "Documents", documents_path, {class: 'dropdown-item'} %>
-          <%= link_to "Imports", imports_path, {class: 'dropdown-item'} %>
-          <%= link_to "Bulk Actions", bulk_actions_path, {class: 'dropdown-item'} %>
+          <%= link_to "Documents", admin_documents_path, {class: 'dropdown-item'} %>
+          <%= link_to "Imports", admin_imports_path, {class: 'dropdown-item'} %>
+          <%= link_to "Bulk Actions", admin_bulk_actions_path, {class: 'dropdown-item'} %>
           <div class="dropdown-divider"></div>
-          <%= link_to "Access Links", document_accesses_path, {class: 'dropdown-item'} %>
-          <%= link_to "Download Links", document_downloads_path, {class: 'dropdown-item'} %>
+          <%= link_to "Access Links", admin_document_accesses_path, {class: 'dropdown-item'} %>
+          <%= link_to "Download Links", admin_document_downloads_path, {class: 'dropdown-item'} %>
           <div class="dropdown-divider"></div>
           <%= link_to "Blazer", '/blazer', {class: 'dropdown-item', data: { turbolinks: false }} %>
           <div class="dropdown-divider"></div>
-          <%= link_to "Elements", elements_path, {class: 'dropdown-item', data: { turbolinks: false }} %>
-          <%= link_to "Form Elements", form_elements_path, {class: 'dropdown-item', data: { turbolinks: false }} %>
+          <%= link_to "Elements", admin_elements_path, {class: 'dropdown-item', data: { turbolinks: false }} %>
+          <%= link_to "Form Elements", admin_form_elements_path, {class: 'dropdown-item', data: { turbolinks: false }} %>
           <div class="dropdown-divider"></div>
-          <%= link_to "Users", users_index_path, {class: 'dropdown-item'} %>
+          <%= link_to "Users", admin_users_index_path, {class: 'dropdown-item'} %>
         </div>
       <li class="nav-item">
-        <%= link_to "Bookmarks", bookmarks_path, {class: 'nav-link'} if current_user %>
+        <%= link_to "Bookmarks", admin_bookmarks_path, {class: 'nav-link'} if current_user %>
       </li>
       <% if user_signed_in? %>
         <li class="nav-item">

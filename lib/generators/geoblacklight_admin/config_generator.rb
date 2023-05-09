@@ -166,6 +166,7 @@ module GeoblacklightAdmin
       append_to_file "Gemfile" do
         "
 # GBL‡ADMIN
+gem 'active_storage_validations', '~> 1.0'
 gem 'blacklight_advanced_search'
 # gem 'devise', '~> 4.7'
 gem 'devise-bootstrap-views', '~> 1.0'

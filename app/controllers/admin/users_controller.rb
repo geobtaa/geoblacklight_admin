@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
-# UsersController
-class UsersController < ApplicationController
-  def index
-    @users = User.all
+# Admin::UsersController
+module Admin
+  class UsersController < ApplicationController
+    def index
+      @users = User.all
+    end
   end
 end
