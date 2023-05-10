@@ -10,8 +10,10 @@ module GeoblacklightAdmin
     initializer "geoblacklight_admin.helpers" do
       config.after_initialize do
         ActionView::Base.send :include, GeoblacklightAdminHelper
+        ActionView::Base.send :include, BulkActionsHelper
         ActionView::Base.send :include, DocumentHelper
         ActionView::Base.send :include, FormInputHelper
+        ActionView::Base.send :include, MappingsHelper
       end
     end
   end

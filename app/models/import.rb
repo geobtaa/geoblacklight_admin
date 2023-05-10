@@ -103,7 +103,7 @@ class Import < ApplicationRecord
         transformed_data[mapping.destination_field] ||= []
         if extract_hash[mapping.source_header].present?
           transformed_data[mapping.destination_field] << {
-            category: Geomg::Schema.instance.dct_references_mappings[mapping.source_header.to_sym],
+            category: GeoblacklightAdmin::Schema.instance.dct_references_mappings[mapping.source_header.to_sym],
             value: extract_hash[mapping.source_header]
           }
         end

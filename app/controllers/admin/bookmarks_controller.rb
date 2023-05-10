@@ -58,7 +58,7 @@ module Admin
 
     def collect_csv(bookmarks)
       CSV.generate(headers: true) do |csv|
-        csv << Geomg::Schema.instance.importable_fields.map { |k, _v| k.to_s }
+        csv << GeoblacklightAdmin::Schema.instance.importable_fields.map { |k, _v| k.to_s }
         bookmarks.map do |bookmark|
           csv << bookmark.document.to_csv
         end

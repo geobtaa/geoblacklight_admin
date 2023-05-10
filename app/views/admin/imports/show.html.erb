@@ -1,5 +1,5 @@
-<%= link_to 'Edit Import', edit_import_path(@import) %> |
-<%= link_to 'Back', imports_path %>
+<%= link_to 'Edit Import', edit_admin_import_path(@import) %> |
+<%= link_to 'Back', admin_imports_path %>
 
 <div class="row">
   <div class="col-md-6">
@@ -52,7 +52,7 @@
       <ul class="list-group list-group-flush">
         <li class="list-group-item text-center">
           <% if @import.state_machine.current_state == 'mapped' %>
-            <%= form_tag run_import_path(@import), method: :patch do -%>
+            <%= form_tag run_admin_import_path(@import), method: :patch do -%>
               <%= hidden_field_tag :run, true -%>
               <%= submit_tag 'Run Import' -%>
             <%- end -%>

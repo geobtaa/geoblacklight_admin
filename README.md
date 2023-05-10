@@ -43,8 +43,9 @@ View App in Browser: http://localhost:3000/admin
 * ~~BlacklightApi returns not auth'd message (not requiring auth for now (not sensitive data))~~
 * ~~Facet links need /admin nesting~~
 * ~~Imports#new -- undefined method `imports_path'~~
-* 
-* Elements#index -- undefined method `element_path'
+* ~~Elements#index -- undefined method `element_path'~~
+* ~~Imports#new -- cannot upload files~~
+* ~~Import#run -- doesn't fire~~
 
 * Add Admin link to nav
 * Routes - Get devise user

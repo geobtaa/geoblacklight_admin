@@ -34,7 +34,7 @@ module Admin
 
       respond_to do |format|
         if @import.save
-          format.html { redirect_to import_mappings_path(@import), notice: "Import was successful. Please set your import mapping rules." }
+          format.html { redirect_to admin_import_mappings_path(@import), notice: "Import was successful. Please set your import mapping rules." }
           format.json { render :show, status: :created, location: @import }
         else
           format.html { render :new }
@@ -48,7 +48,7 @@ module Admin
     def update
       respond_to do |format|
         if @import.update(import_params)
-          format.html { redirect_to import_path(@import), notice: "Import was successfully updated." }
+          format.html { redirect_to admin_import_path(@import), notice: "Import was successfully updated." }
           format.json { render :show, status: :ok, location: @import }
         else
           format.html { render :edit }
@@ -62,14 +62,14 @@ module Admin
     def destroy
       @import.destroy
       respond_to do |format|
-        format.html { redirect_to imports_url, notice: "Import was successfully destroyed." }
+        format.html { redirect_to admin_imports_url, notice: "Import was successfully destroyed." }
         format.json { head :no_content }
       end
     end
 
     def run
       @import.run!
-      redirect_to import_url(@import), notice: "Import is running. Check back soon for results."
+      redirect_to admin_import_url(@import), notice: "Import is running. Check back soon for results."
     end
 
     private

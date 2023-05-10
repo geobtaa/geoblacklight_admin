@@ -15,7 +15,7 @@
         <% end %>
       <% end %>
     <%- else %>
-      <%= simple_form_for(@import, :url => import_path(@import), :action => 'put') do |form| %>
+      <%= simple_form_for(@import, :url => admin_import_path(@import), :action => 'put') do |form| %>
         <%- @import.headers.each do |header| %>
           <tr>
             <%= form.simple_fields_for :mappings do |f| %>

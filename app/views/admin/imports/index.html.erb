@@ -36,9 +36,9 @@
         <td><%= import.description %></td>
         <td><%= import.row_count %></td>
         <td><%= import.created_at %></td>
-        <td><%= link_to 'Show', import_path(import) %></td>
-        <td><%= link_to 'Edit', edit_import_path(import) %></td>
-        <td><%= link_to 'Destroy', import_path(import), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Show', admin_import_path(import) %></td>
+        <td><%= link_to 'Edit', edit_admin_import_path(import) %></td>
+        <td><%= link_to 'Destroy', admin_import_path(import), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
