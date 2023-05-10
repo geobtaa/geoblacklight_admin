@@ -1,5 +1,5 @@
 <!-- @TODO: result helpers -->
-<% if @documents.meta['pages'].present? %>
+<% if @documents.meta.present? && @documents.meta['pages'].present? %>
   <% result_start = @documents.meta['pages']['offset_value'] + 1 %>
   <% result_end = @documents.results.size + result_start - 1 %>
 

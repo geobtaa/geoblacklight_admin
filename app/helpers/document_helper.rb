@@ -21,7 +21,7 @@ module DocumentHelper
 
   def localize_link(link)
     uri = URI.parse(link)
-    "/documents?#{uri.query}"
+    "/admin/documents?#{uri.query}"
   end
 
   def sort_link(link)
@@ -31,11 +31,11 @@ module DocumentHelper
   def link_from_api(link)
     # Append facet - Full URI returned
     uri = URI.parse(link["links"]["self"])
-    {action: "add", link: "/documents?#{uri.query}"}
+    {action: "add", link: "/admin/documents?#{uri.query}"}
   rescue
     # Remove facet - Only path and query returned
     uri = URI.parse(link["links"]["remove"])
-    {action: "remove", link: "/documents?#{uri.query}"}
+    {action: "remove", link: "/admin/documents?#{uri.query}"}
   end
 
   def previous_link(links)

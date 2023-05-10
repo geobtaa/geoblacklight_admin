@@ -20,7 +20,7 @@ module Admin
       end
 
       respond_to do |format|
-        format.html { redirect_to notifications_url }
+        format.html { redirect_to admin_notifications_url }
         format.js
       end
     end
@@ -29,7 +29,7 @@ module Admin
       @notification.file.purge
       @notification.destroy
       respond_to do |format|
-        format.html { redirect_to notifications_url, notice: "Notification was successfully destroyed." }
+        format.html { redirect_to admin_notifications_url, notice: "Notification was successfully destroyed." }
         format.json { head :no_content }
       end
     end
@@ -39,7 +39,7 @@ module Admin
 
       current_user.notifications.mark_as_read!
       flash[:success] = "All notifications marked as read."
-      redirect_to notifications_url
+      redirect_to admin_notifications_url
     end
 
     private

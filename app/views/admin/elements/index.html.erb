@@ -33,16 +33,16 @@
   <tbody>
     <% @elements.each do |element| %>
       <tr data-id="<%=element.id%>">
-        <td><%= link_to element.label, element %></td>
+        <td><%= link_to element.label, admin_element_path(element) %></td>
         <td><%= element.solr_field %></td>
         <td><%= element.field_definition.present? ? link_to( element.field_definition, element.field_definition) : '' %></td>
         <td><%= element.field_type %></td>
         <td><%= element.required %></td>
         <td><%= element.repeatable %></td>
         <td class="handle" style="text-align:center">&varr;</td>
-        <td><%= link_to 'Show', element %></td>
-        <td><%= link_to 'Edit', edit_element_path(element) %></td>
-        <td><%= link_to 'Destroy', element, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Show', admin_element_path(element) %></td>
+        <td><%= link_to 'Edit', edit_admin_element_path(element) %></td>
+        <td><%= link_to 'Destroy', admin_element_path(element), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -63,6 +63,6 @@
 <script>
   GEOMG.SortElements(
     $("tbody"),
-    "<%= sort_elements_path %>"
+    "<%= sort_admin_elements_path %>"
   );
 </script>

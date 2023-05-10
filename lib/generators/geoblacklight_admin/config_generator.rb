@@ -55,6 +55,10 @@ module GeoblacklightAdmin
       directory 'solr', 'solr', force: true
     end
 
+    def create_solr_yml
+      copy_file ".solr_wrapper.yml", ".solr_wrapper.yml", force: true
+    end
+
     def set_routes
       gbl_admin_routes = <<-"ROUTES"
         ####################

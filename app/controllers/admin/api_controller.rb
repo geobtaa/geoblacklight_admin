@@ -1,8 +1,9 @@
 # -*- encoding : utf-8 -*-
 require 'blacklight/catalog'
 
+# Admin::ApiController
 module Admin
-  class ApiController < Admin::AdminController
+  class ApiController < ApplicationController
     include Blacklight::Catalog
     include BlacklightAdvancedSearch::Controller
 

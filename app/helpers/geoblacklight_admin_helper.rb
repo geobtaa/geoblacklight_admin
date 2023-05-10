@@ -4,7 +4,7 @@
 module GeoblacklightAdminHelper
   # @TODO:
   # Cannot generate app if uncommented...
-  # Uncommented after app is generated to fix view errors
+  # Uncomment after app is generated to fix view errors
   include ::Pagy::Frontend
 
   # jbuilder helper
