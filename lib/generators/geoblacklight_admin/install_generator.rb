@@ -48,5 +48,9 @@ module GeoblacklightAdmin
     def kithe_install
       run "bundle exec rails generate simple_form:install --bootstrap"
     end
+
+    def install_active_storage
+      run "bin/rails active_storage:install"
+    end
   end
 end

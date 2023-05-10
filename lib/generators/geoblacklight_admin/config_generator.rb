@@ -283,5 +283,13 @@ Mime::Type.register "text/csv", :csv_document_access_links
         "  include Pagy::Backend\n" \
       end
     end
+
+    def add_activestorage
+      append_to_file "app/assets/javascripts/application.js" do
+        "
+        // Required by GBL Admin
+        //= require activestorage"
+      end
+    end
   end
 end

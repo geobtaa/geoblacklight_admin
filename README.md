@@ -15,6 +15,18 @@ Terminal 2
 ```bash
 bundle install
 bundle exec rake engine_cart:generate
+```
+
+Edit geoblacklight_admin_helper.rb, uncomment Pagy
+```bash
+  # @TODO:
+  # Cannot generate app if uncommented...
+  # Uncomment after app is generated to fix view errors
+  # include ::Pagy::Frontend
+```
+
+Seed and spin up server
+```bash
 cd .internal_test_app; bundle exec rake db:seed
 bundle exec rake gbl_admin:server
 ```
@@ -30,7 +42,10 @@ View App in Browser: http://localhost:3000/admin
 * ~~SolrWrapper - Add persist option~~
 * ~~BlacklightApi returns not auth'd message (not requiring auth for now (not sensitive data))~~
 * ~~Facet links need /admin nesting~~
-* Imports#new -- undefined method `imports_path'
+* ~~Imports#new -- undefined method `imports_path'~~
+* 
+* Elements#index -- undefined method `element_path'
+
 * Add Admin link to nav
 * Routes - Get devise user
 * Documents - JS actions not working
