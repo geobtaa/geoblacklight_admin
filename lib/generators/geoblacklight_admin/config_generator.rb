@@ -300,5 +300,26 @@ Mime::Type.register "text/csv", :csv_document_access_links
     def add_user_util_links
       copy_file "_user_util_links.html.erb", "app/views/shared/_user_util_links.html.erb"
     end
+
+    # @TODO
+    # I'm certain this is not the best way to inject our JS behaviors into the root app
+    # But for now, this will do...
+    # Long term I hope to avoid webpack here altogether.
+    def copy_app_javascript
+      directory 'javascript', 'app/javascript', force: true
+    end
+
+    def add_package_json
+      copy_file "package.json", "package.json", force: true
+    end
+
+    def add_assets_initialier
+      append_to_file "config/initializers/assets.rb" do
+        "
+        # GBL ADMIN
+        Rails.application.config.assets.paths << Rails.root.join('node_modules')
+        Rails.application.config.assets.precompile += %w[application.js]"
+      end
+    end
   end
 end

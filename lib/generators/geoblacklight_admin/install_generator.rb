@@ -52,5 +52,9 @@ module GeoblacklightAdmin
     def install_active_storage
       run "bin/rails active_storage:install"
     end
+
+    def yarn_install
+      run "yarn install"
+    end
   end
 end
