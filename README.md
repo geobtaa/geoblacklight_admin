@@ -46,11 +46,14 @@ View App in Browser: http://localhost:3000/admin
 * ~~Elements#index -- undefined method `element_path'~~
 * ~~Imports#new -- cannot upload files~~
 * ~~Import#run -- doesn't fire~~
+* ~~Documents - JS actions not working~~
 
+* GBL needs to honor publication state
+* Bookmarks need to be Admin::Bookmarks
 * Add Admin link to nav
 * Routes - Get devise user
-* Documents - JS actions not working
 * Remove GEOMG everywhere...
+
 
 Devise routes fail... have to add after generator to .internal-test-app
 
