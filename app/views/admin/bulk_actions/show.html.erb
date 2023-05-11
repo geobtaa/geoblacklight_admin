@@ -1,5 +1,5 @@
-<%= link_to 'Edit', edit_bulk_action_path(@bulk_action) %> |
-<%= link_to 'Back', bulk_actions_path %>
+<%= link_to 'Edit', edit_admin_bulk_action_path(@bulk_action) %> |
+<%= link_to 'Back', admin_bulk_actions_path %>
 
 <div class="row">
   <div class="col-md-6">
@@ -41,14 +41,14 @@
       <ul class="list-group list-group-flush">
         <li class="list-group-item text-center">
           <% if @bulk_action.state_machine.current_state == 'created' %>
-            <%= form_tag run_bulk_action_path(@bulk_action), method: :patch do -%>
+            <%= form_tag run_admin_bulk_action_path(@bulk_action), method: :patch do -%>
               <%= hidden_field_tag :run, true -%>
               <%= submit_tag 'Run Bulk Action' -%>
             <%- end -%>
           <% else %>
             <%= @bulk_action.state_machine.current_state %>
             <% if @bulk_action.state_machine.current_state == 'complete' %>
-              <%= form_tag revert_bulk_action_path(@bulk_action), method: :patch do -%>
+              <%= form_tag revert_admin_bulk_action_path(@bulk_action), method: :patch do -%>
                 <%= hidden_field_tag :run, true -%>
                 <%= submit_tag 'Revert Bulk Action' -%>
               <%- end -%>
@@ -87,8 +87,8 @@
               <%= doc.friendlier_id %>
             </td>
             <td>
-              <%= link_to "GEOMG", document_url(doc.friendlier_id), { class: 'btn btn-primary' } %>
-              <%= link_to "BTAA Geoportal", blacklight_link(doc), { class: 'btn btn-primary', target: :_blank } %>
+              <%= link_to "GBL Admin", admin_document_url(doc.friendlier_id), { class: 'btn btn-primary' } %>
+              <%= link_to "Geoblacklight", blacklight_link(doc), { class: 'btn btn-primary', target: :_blank } %>
             </td>
             <td><%= doc.version %></td>
             <td><%= doc.state_machine.current_state %></td>

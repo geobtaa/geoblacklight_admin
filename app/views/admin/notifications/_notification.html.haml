@@ -5,7 +5,7 @@
   %td
     = check_box_tag 'read', notification.read?, notification.read?,
   onchange: "this.setAttribute('data-params', this.name + '=' + this.checked*this.checked)",
-  data: { remote: true, url: notification_path(notification), method: :patch }
+  data: { remote: true, url: admin_notification_path(notification), method: :patch }
   %td
     %strong
       = message.length > 1 ? message[0] : "CSV"
@@ -28,4 +28,4 @@
     %span.reldate{:data => {:asked_at => notification.created_at.to_json.gsub('"', '')}}
       = notification.created_at
 
-  %td= link_to 'Destroy', notification_path(notification), method: :delete
+  %td= link_to 'Destroy', admin_notification_path(notification), method: :delete

@@ -260,6 +260,7 @@ gem 'paper_trail'
 gem 'qa', '~> 5.0'
 gem 'ruby-progressbar'
 gem 'simple_form', '~> 5.0'
+gem 'statesman', '~> 7.1.0'
         "
       end
     end
