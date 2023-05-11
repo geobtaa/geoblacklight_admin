@@ -19,6 +19,8 @@ Gem::Specification.new do |s|
 
   # ActiveStorage
   s.add_dependency "active_storage_validations", "~> 1.0"
+  s.add_dependency "bootstrap", "~> 4.0"
+  s.add_dependency "cocoon", "~> 1.2"
   s.add_dependency "config", "~> 4.0"
   s.add_dependency "chosen-rails", "1.0"
   s.add_dependency "devise", "~> 4.7"
@@ -29,12 +31,16 @@ Gem::Specification.new do |s|
   s.add_dependency "geoblacklight", "~> 4.0"
   s.add_dependency "httparty", "~> 0.21"
   s.add_dependency "inline_svg", "~> 1.9"
+  s.add_dependency "jquery-rails", "~> 4.4"
   s.add_dependency "kithe", "~> 2.0"
   s.add_dependency "noticed", "~> 1.6"
   s.add_dependency "pagy", "~> 3.8"
   s.add_dependency "paper_trail", "~> 14.0"
   s.add_dependency "pg", "~> 1.4"
+  s.add_dependency "qa", "~> 5.0"
   s.add_dependency "rails", ">= 6.1", "< 7.1"
+  s.add_dependency "ruby-progressbar"
+  s.add_dependency "simple_form", "~> 5.0"
   s.add_dependency "sprockets", "< 4"
   s.add_dependency "statesman", "~> 7.1.0"
 

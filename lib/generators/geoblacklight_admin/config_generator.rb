@@ -239,20 +239,25 @@ module GeoblacklightAdmin
     def set_gems
       append_to_file "Gemfile" do
         "
-# GBL‡ADMIN
+# GBL‡ADMIN // @TODO: Why is this necessary? Shouldn't the engine dependencies get installed on their own?
 gem 'active_storage_validations', '~> 1.0'
 gem 'blacklight_advanced_search'
+gem 'bootstrap', '~> 4.0'
+gem 'cocoon', '~> 1.2'
 # gem 'devise', '~> 4.7'
 gem 'devise-bootstrap-views', '~> 1.0'
 gem 'devise_invitable', '~> 2.0'
 gem 'dotenv-rails'
 gem 'httparty'
 gem 'inline_svg'
-gem 'kithe'
+# gem 'jquery-rails', '~> 4.4'
+gem 'kithe', '~> 2.0'
 gem 'noticed'
 gem 'pagy'
 gem 'paper_trail'
-gem 'simple_form'
+gem 'qa', '~> 5.0'
+gem 'ruby-progressbar'
+gem 'simple_form', '~> 5.0'
         "
       end
     end
@@ -290,6 +295,10 @@ Mime::Type.register "text/csv", :csv_document_access_links
         // Required by GBL Admin
         //= require activestorage"
       end
+    end
+
+    def add_user_util_links
+      copy_file "_user_util_links.html.erb", "app/views/shared/_user_util_links.html.erb"
     end
   end
 end
