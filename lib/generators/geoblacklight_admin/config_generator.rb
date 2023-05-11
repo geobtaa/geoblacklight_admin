@@ -241,6 +241,7 @@ module GeoblacklightAdmin
         "
 # GBL‡ADMIN // @TODO: Why is this necessary? Shouldn't the engine dependencies get installed on their own?
 gem 'active_storage_validations', '~> 1.0'
+gem 'amazing_print'
 gem 'blacklight_advanced_search'
 gem 'bootstrap', '~> 4.0'
 gem 'cocoon', '~> 1.2'
@@ -248,6 +249,7 @@ gem 'cocoon', '~> 1.2'
 gem 'devise-bootstrap-views', '~> 1.0'
 gem 'devise_invitable', '~> 2.0'
 gem 'dotenv-rails'
+gem 'haml', '~> 5.2'
 gem 'httparty'
 gem 'inline_svg'
 # gem 'jquery-rails', '~> 4.4'
