@@ -291,9 +291,10 @@ Mime::Type.register "text/csv", :csv_document_access_links
 
     def add_activestorage
       append_to_file "app/assets/javascripts/application.js" do
-        "
-        // Required by GBL Admin
-        //= require activestorage"
+"
+
+// Required by GBL Admin
+//= require activestorage"
       end
     end
 
@@ -318,6 +319,7 @@ Mime::Type.register "text/csv", :csv_document_access_links
         "
         # GBL ADMIN
         Rails.application.config.assets.paths << Rails.root.join('node_modules')
+        Rails.application.config.assets.precompile += %w( geoblacklight_admin.js )
         Rails.application.config.assets.precompile += %w[application.js]"
       end
     end

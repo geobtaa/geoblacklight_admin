@@ -7,23 +7,23 @@
 
   // Date Range picker
   $('#date-range').on('change', function(event){
-    GEOMG.DateRangeSelect();
+    GBLADMIN.DateRangeSelect();
 
     if ($('#compare').length > 0) {
-      GEOMG.CompareRangeSelect();
+      GBLADMIN.CompareRangeSelect();
     }
   });
 
   // Compare Range checkbox toggle
   $("input#compare").on('change', function(event){
-    GEOMG.DisplayCompareDateRange();
-    GEOMG.CompareRangeSelect();
-    GEOMG.ToggleCompare();
+    GBLADMIN.DisplayCompareDateRange();
+    GBLADMIN.CompareRangeSelect();
+    GBLADMIN.ToggleCompare();
   });
 
   // Compare Range picker
   $('#compare-options').on('change', function(event){
-    GEOMG.CompareRangeSelect();
+    GBLADMIN.CompareRangeSelect();
   });
 
   // Bootstrap DateRangePicker
@@ -42,7 +42,7 @@
   });
 
   $(document).on('ready turbolinks:load', function() {
-    GEOMG.DisableIfPersisted();
+    GBLADMIN.DisableIfPersisted();
   });
 </script>
 

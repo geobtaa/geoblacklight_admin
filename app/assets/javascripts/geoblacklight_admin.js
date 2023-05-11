@@ -13,14 +13,16 @@
 
 //= require jquery3
 //= require cocoon
-//= require chosen-jquery
+//= require chosen-jquery/lib/chosen.jquery.js
 
 // VENDOR
 //= require bootstrap-datepicker/js/bootstrap-datepicker.js
 //= require inputmask/dist/jquery.inputmask
 //= require shave/dist/jquery.shave.js
-//= require moment
-//= require i18n
+//= require moment/moment.js
+
+// @TODO: not loading correctly
+// require i18n/i18n.js
 
 // GBLADMIN
 //= require geoblacklight_admin/geoblacklight_admin

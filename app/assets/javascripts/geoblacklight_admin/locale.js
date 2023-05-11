@@ -1,4 +1,5 @@
 $(document).ready(function(){
-  I18n.locale = $('body').data('locale');
-  I18n.fallbacks = true;
+  // @TODO - I18n not loading correctly
+  // I18n.locale = $('body').data('locale');
+  // I18n.fallbacks = true;
 });

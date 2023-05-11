@@ -50,6 +50,7 @@ View App in Browser: http://localhost:3000/admin
 * Add Admin link to nav
 * Routes - Get devise user
 * Documents - JS actions not working
+* Remove GEOMG everywhere...
 
 Devise routes fail... have to add after generator to .internal-test-app
 
