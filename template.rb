@@ -9,7 +9,6 @@ run "bundle install"
 
 generate "blacklight:install", "--devise"
 generate "geoblacklight:install", "--force"
-generate "blacklight_advanced_search:install", "--force"
 generate "geoblacklight_admin:install", "--force"
 
 rake "db:migrate"
