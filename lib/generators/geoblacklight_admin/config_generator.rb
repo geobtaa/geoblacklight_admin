@@ -243,16 +243,16 @@ module GeoblacklightAdmin
 gem 'active_storage_validations', '~> 1.0'
 gem 'amazing_print'
 gem 'blacklight_advanced_search'
-gem 'bootstrap', '~> 4.0'
+# gem 'bootstrap', '~> 4.0' (upstream)
 gem 'cocoon', '~> 1.2'
-# gem 'devise', '~> 4.7'
+# gem 'devise', '~> 4.7' (upstream)
 gem 'devise-bootstrap-views', '~> 1.0'
 gem 'devise_invitable', '~> 2.0'
 gem 'dotenv-rails'
 gem 'haml', '~> 5.2'
 gem 'httparty'
 gem 'inline_svg'
-# gem 'jquery-rails', '~> 4.4'
+# gem 'jquery-rails', '~> 4.4' (upstream)
 gem 'kithe', '~> 2.0'
 gem 'noticed'
 gem 'pagy'
