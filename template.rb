@@ -2,6 +2,7 @@
 
 gem "blacklight", ">= 7.0", "< 8.0"
 gem "geoblacklight", ">= 4.0"
+gem "statesman", ">= 3.4"
 gem "geoblacklight_admin"
 
 run "bundle install"
