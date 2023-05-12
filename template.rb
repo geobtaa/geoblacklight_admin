@@ -4,7 +4,7 @@ gem "blacklight", ">= 7.0", "< 8.0"
 gem "blacklight_advanced_search", "~> 7.0"
 gem "geoblacklight", ">= 4.0"
 gem "statesman", ">= 3.4"
-gem "geoblacklight_admin", git: "https://github.com/geobtaa/geoblacklight_admin.git", branch: "main"
+gem "geoblacklight_admin"
 
 run "bundle install"
 
