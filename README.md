@@ -1,23 +1,37 @@
 # geoblacklight_admin
 
-### Install
+GeoBlacklight Admin is a [GeoBlacklight](https://github.com/geoblacklight/geoblacklight) plugin, built on [Kithe](https://github.com/sciencehistory/kithe), that provides a complex web-form for editing documents and an CSV-based import/export workflow for OpenGeoMetadata's [Aardvark schema](https://opengeometadata.org/ogm-aardvark/). It's a Rubygem port of the Big Ten Academic Alliance's production workflow tool [GEOMG](https://github.com/geobtaa/geomg).
 
-* Install notes
+## Warning: Pre-Alpha
 
-Terminal 1
+> :warning: This gem is not ready for public adoption yet, but hopefully someday soon (Late Summer 2023?). Feel free to kick the tires if you are curious and know GeoBlacklight's codebase/stack well.
+
+## Requirements
+
+* Blacklight v7 (not v8)
+* GeoBlacklight v4 (not v3)
+* Solr v8.4+
+* PostgreSQL (not MySQL-based DBs)
+* Redis (for Sidekiq)
+* OpenGeoMetadata's Aardvark Schema
+
+## Install Notes
+
+### Terminal 1 - Drop/Create application PG database
 ```bash
 psql postgres
 DROP DATABASE geoblacklight_development;
 CREATE DATABASE geoblacklight_development;
 ```
 
-Terminal 2
+### Terminal 2 - Bundle and run generator
 ```bash
 bundle install
 bundle exec rake engine_cart:generate
 ```
 
-Edit geoblacklight_admin_helper.rb, uncomment Pagy
+When the .internal_test_app is built, edit `geoblacklight_admin_helper.rb`, and uncomment this Pagy include. Why including Pagy here breaks the entire generator build is beyond me...
+
 ```bash
   # @TODO:
   # Cannot generate app if uncommented...
@@ -25,19 +39,26 @@ Edit geoblacklight_admin_helper.rb, uncomment Pagy
   # include ::Pagy::Frontend
 ```
 
-Seed and spin up server
+### Terminal 2 - Seed and spin up server
 ```bash
-cd .internal_test_app; bundle exec rake db:seed
+cd .internal_test_app
+bundle exec rake db:seed
 bundle exec rake gbl_admin:server
 ```
 
-Done generating test app and populating Elements/FormElements
+You're now done generating the test app and populating the Elements / FormElements tables with the basic Aardvark controls.
 
-View App in Browser: http://localhost:3000/admin
+### View App in Browser
+
+1. Visit http://localhost:3000/admin
+2. Click on the "Sign in" link
+3. Enter email: admin@geoblacklight.org and password: 123456
+4. Click on the "GBL Admin" link
+5. Import some CSV
 
 -----
 
-### TODOs
+### TODOs - Running list of things to accomplish
 
 * ~~SolrWrapper - Add persist option~~
 * ~~BlacklightApi returns not auth'd message (not requiring auth for now (not sensitive data))~~
@@ -47,15 +68,17 @@ View App in Browser: http://localhost:3000/admin
 * ~~Imports#new -- cannot upload files~~
 * ~~Import#run -- doesn't fire~~
 * ~~Documents - JS actions not working~~
-
-* GBL needs to honor publication state
+* ~~GBL needs to honor publication state~~
+* ~~Add GBL Admin link to nav~~
+* ~~Routes - Get devise user~~
+* ~~No route matches [GET] "/users/sign_out"~~
 * Bookmarks need to be Admin::Bookmarks
-* Add Admin link to nav
-* Routes - Get devise user
-* Remove GEOMG everywhere...
+* Remove legacy GEOMG / B1G everywhere...
+* Send GBLADMIN JavaScript pack to NPM like Blacklight
+* Port the GEOMG test suite
+* GitHub Actions / CI integration
+* Project gem dependency injection redundancy...
+* Likely a lot more polish to be uncovered...
 
 
-Devise routes fail... have to add after generator to .internal-test-app
-
-* No route matches [GET] "/users/sign_out"
 
