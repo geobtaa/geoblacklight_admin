@@ -16,6 +16,6 @@
 
 <ol id='results' class='list-unstyled' data-controller='results'>
   <% @bookmarks.each_with_index do |bookmark, index| %>
-    <%= render 'admin/documents/document', document: bookmark.document, index: index %>
+    <%= render 'admin/documents/document', document: Kithe::Model.find(bookmark.document_id), index: index %>
   <% end %>
 </ol>

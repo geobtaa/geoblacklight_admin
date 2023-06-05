@@ -21,7 +21,7 @@ module Admin
     # POST /bookmarks
     # POST /bookmarks.json
     def create
-      @bookmark = Bookmark.find_or_create_by(user: current_user, document: @document)
+      @bookmark = Admin::Bookmark.find_or_create_by(user: current_user, document: @document)
 
       respond_to do |format|
         if @bookmark.save
@@ -37,7 +37,7 @@ module Admin
     # DELETE /bookmarks/1
     # DELETE /bookmarks/1.json
     def destroy
-      Bookmark.destroy_by(user: current_user, document: @document)
+      Admin::Bookmark.destroy_by(user: current_user, document: @document)
 
       respond_to do |format|
         format.html { redirect_to bookmarks_url, notice: "Bookmark was successfully destroyed." }
