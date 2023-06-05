@@ -8,7 +8,7 @@ module GeoblacklightAdmin
 
     desc <<-DESCRIPTION
       This generator makes the following changes to your application:
-       1. Copies GBL Admin initializer file to host config 
+       1. Copies GBL Admin initializer file to host config#{" "}
        2. Copies Kithe initializer file to host config
        3. Copies Pagy initializer file to host config
        4. Copies Statesman initializer file to host config
@@ -52,7 +52,7 @@ module GeoblacklightAdmin
     end
 
     def copy_solr
-      directory 'solr', 'solr', force: true
+      directory "solr", "solr", force: true
     end
 
     def create_solr_yml
@@ -88,14 +88,14 @@ module GeoblacklightAdmin
             patch :run, on: :member
             patch :revert, on: :member
           end
-        
+
           # Imports
           resources :imports do
             resources :mappings
             resources :import_documents, only: [:show]
             patch :run, on: :member
           end
-        
+
           # Elements
           resources :elements do
             post :sort, on: :collection
@@ -109,7 +109,7 @@ module GeoblacklightAdmin
           resources :form_group, path: :form_elements, controller: :form_elements
           resources :form_control, path: :form_elements, controller: :form_elements
           resources :form_feature, path: :form_elements, controller: :form_elements
-        
+
           # Notifications
           resources :notifications do
             put "batch", on: :collection
@@ -121,7 +121,7 @@ module GeoblacklightAdmin
           # Bookmarks
           resources :bookmarks
           delete "/bookmarks", to: "bookmarks#destroy", as: :bookmarks_destroy_by_fkeys
-          
+        #{"  "}
           # AdvancedSearch controller
           get '/advanced_search' => 'advanced_search#index', constraints: lambda { |req| req.format == :json }
           get '/advanced_search/facets' => 'advanced_search#facets', constraints: lambda { |req| req.format == :json }
@@ -136,84 +136,84 @@ module GeoblacklightAdmin
           # Documents
           resources :documents do
             get "versions"
-            
+        #{"    "}
             # DocumentAccesses
             resources :document_accesses, path: "access" do
               collection do
                 get "import"
                 post "import"
-        
+
                 get "destroy_all"
                 post "destroy_all"
               end
             end
-            
+        #{"    "}
             # DocumentDownloads
             resources :document_downloads, path: "downloads" do
               collection do
                 get "import"
                 post "import"
-        
+
                 get "destroy_all"
                 post "destroy_all"
               end
             end
-            
+        #{"    "}
             # Document Assets
             resources :document_assets, path: "assets" do
               collection do
                 get "display_attach_form"
                 post "attach_files"
-        
+
                 get "destroy_all"
                 post "destroy_all"
               end
             end
-        
+
             collection do
               get "fetch"
             end
           end
-          
+        #{"  "}
           # Document Accesses
           resources :document_accesses, path: "access" do
             collection do
               get "import"
               post "import"
-        
+
               get "destroy_all"
               post "destroy_all"
             end
           end
-        
+
           # Document Downloads
           resources :document_downloads, path: "downloads" do
             collection do
               get "import"
               post "import"
-        
+
               get "destroy_all"
               post "destroy_all"
             end
           end
-        
+
           # Document Assets
           resources :document_assets, path: "assets" do
             collection do
               get "display_attach_form"
               post "attach_files"
-        
+
               get "destroy_all"
               post "destroy_all"
             end
           end
-        
+
           get "/documents/:id/ingest", to: "document_assets#display_attach_form", as: "asset_ingest"
           post "/documents/:id/ingest", to: "document_assets#attach_files"
           #mount Kithe::AssetUploader.upload_endpoint(:cache) => "/direct_upload", :as => :direct_app_upload
-        
+
           resources :collections, except: [:show]
-        
+
           # Note "assets" is Rails reserved word for routing, oops. So we use
           # asset_files.
           resources :assets, path: "asset_files", except: [:new, :create] do
@@ -221,11 +221,11 @@ module GeoblacklightAdmin
               put "convert_to_child_work"
             end
           end
-        
+
           # @TODO
           # mount Qa::Engine => "/authorities"
           mount ActionCable.server => "/cable"
-        
+
           # @TODO
           # authenticate :user, ->(user) { user } do
             # mount Blazer::Engine, at: "blazer"
@@ -242,7 +242,7 @@ module GeoblacklightAdmin
 # GBL‡ADMIN // @TODO: Why is this necessary? Shouldn't the engine dependencies get installed on their own?
 gem 'active_storage_validations', '~> 1.0'
 gem 'amazing_print'
-# gem 'blacklight_advanced_search' (upstream)
+gem 'blacklight_advanced_search'
 # gem 'bootstrap', '~> 4.0' (upstream)
 gem 'cocoon', '~> 1.2'
 # gem 'devise', '~> 4.7' (upstream)
@@ -282,7 +282,7 @@ Mime::Type.register "text/csv", :csv_document_access_links
 
     def set_seeds
       append_to_file "db/seeds.rb" do
-        'GeoblacklightAdmin::Engine.load_seed'
+        "GeoblacklightAdmin::Engine.load_seed"
       end
     end
 
@@ -294,7 +294,7 @@ Mime::Type.register "text/csv", :csv_document_access_links
 
     def add_activestorage
       append_to_file "app/assets/javascripts/application.js" do
-"
+        "
 
 // Required by GBL Admin
 //= require activestorage"
@@ -310,7 +310,7 @@ Mime::Type.register "text/csv", :csv_document_access_links
     # But for now, this will do...
     # Long term I hope to avoid webpack here altogether.
     def copy_app_javascript
-      directory 'javascript', 'app/javascript', force: true
+      directory "javascript", "app/javascript", force: true
     end
 
     def add_package_json

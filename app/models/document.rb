@@ -11,7 +11,8 @@ class Document < Kithe::Work
   belongs_to :import, optional: true
 
   # Statesman
-  has_many :document_transitions, foreign_key: "kithe_model_id", autosave: false, dependent: :destroy, inverse_of: :document
+  has_many :document_transitions, foreign_key: "kithe_model_id", autosave: false, dependent: :destroy,
+    inverse_of: :document
 
   # DocumentAccesses
   has_many :document_accesses, primary_key: "friendlier_id", foreign_key: "friendlier_id", autosave: false, dependent: :destroy,
@@ -69,7 +70,9 @@ class Document < Kithe::Work
   # Index Transformations - *_json functions
   def references_json
     references = ActiveSupport::HashWithIndifferentAccess.new
-    send(GeoblacklightAdmin::Schema.instance.solr_fields[:reference]).each { |ref| references[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] = ref.value }
+    send(GeoblacklightAdmin::Schema.instance.solr_fields[:reference]).each do |ref|
+      references[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] = ref.value
+    end
     references = apply_downloads(references)
     references.to_json
   end
@@ -79,7 +82,10 @@ class Document < Kithe::Work
     # Make sure downloads exist!
     if document_downloads.present?
       multiple_downloads = multiple_downloads_array
-      multiple_downloads << {label: download_text(send(GeoblacklightAdmin::Schema.instance.solr_fields[:format])), url: dct_downloads} if dct_downloads.present?
+      if dct_downloads.present?
+        multiple_downloads << {label: download_text(send(GeoblacklightAdmin::Schema.instance.solr_fields[:format])),
+                                url: dct_downloads}
+      end
       references[:"http://schema.org/downloadUrl"] = multiple_downloads
     end
     references
@@ -178,7 +184,9 @@ class Document < Kithe::Work
   end
 
   def dct_references_s_to_csv(key, destination)
-    send(destination).detect { |ref| ref.category == GeoblacklightAdmin::Schema.instance.dct_references_mappings[key] }.value
+    send(destination).detect do |ref|
+      ref.category == GeoblacklightAdmin::Schema.instance.dct_references_mappings[key]
+    end.value
   rescue NoMethodError
     nil
   end
@@ -219,9 +227,9 @@ class Document < Kithe::Work
   end
 
   def set_geometry
-    if locn_geometry.blank? && self&.dcat_bbox&.present?
-      self.locn_geometry = derive_polygon
-    end
+    return unless locn_geometry.blank? && self&.dcat_bbox&.present?
+
+    self.locn_geometry = derive_polygon
   end
 
   # Convert GEOM for Solr Indexing

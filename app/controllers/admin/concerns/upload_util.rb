@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UploadUtil
   def self.kithe_upload_data_config(toggle_value: "kithe-upload")
     {

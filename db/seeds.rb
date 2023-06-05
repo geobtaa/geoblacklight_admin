@@ -1,4 +1,6 @@
-require "csv"
+# frozen_string_literal: true
+
+require 'csv'
 
 # frozen_string_literal: true
 # This file should contain all the record creation needed to seed the database with its default values.
@@ -10,17 +12,17 @@ require "csv"
 #   Character.create(name: 'Luke', movie: movies.first)
 
 # Elements
-CSV.foreach(File.expand_path("seeds_elements.csv", File.dirname(__FILE__)), headers: true) do |row|
+CSV.foreach(File.expand_path('seeds_elements.csv', File.dirname(__FILE__)), headers: true) do |row|
   hash = row.to_hash
   # YES, I'm calling eval - It's hard to seed a serialized field via a CSV file
-  hash["html_attributes"] = eval(hash["html_attributes"]) if hash["html_attributes"].present?
+  hash['html_attributes'] = eval(hash['html_attributes']) if hash['html_attributes'].present?
   Element.create!(hash)
 end
 
 # FormElements
-CSV.foreach(File.expand_path("seeds_form_elements.csv", File.dirname(__FILE__)), headers: true) do |row|
+CSV.foreach(File.expand_path('seeds_form_elements.csv', File.dirname(__FILE__)), headers: true) do |row|
   FormElement.create!(row.to_hash)
 end
 
 # Users
-User.create(email: "admin@geoblacklight.org", password: "123456", password_confirmation: "123456", admin: true)
+User.create(email: 'admin@geoblacklight.org', password: '123456', password_confirmation: '123456', admin: true)

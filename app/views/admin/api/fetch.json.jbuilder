@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 json.links do
   json.self url_for(search_state.to_h.merge(only_path: false))
   json.prev url_for(search_state.to_h.merge(only_path: false, page: @response.prev_page.to_s)) if @response.prev_page
@@ -19,10 +20,10 @@ json.data do
       doc_presenter = index_presenter(document)
 
       doc_presenter.fields_to_render.each do |field_name, field|
-        json.partial! 'field', field: field,
-                               field_name: field_name,
-                               document_url: document_url,
-                               doc_presenter: doc_presenter
+        json.partial! "field", field: field,
+          field_name: field_name,
+          document_url: document_url,
+          doc_presenter: doc_presenter
       end
     end
 
@@ -34,7 +35,7 @@ end
 
 json.included do
   json.array! @presenter.search_facets do |facet|
-    json.type 'facet'
+    json.type "facet"
     json.id facet.name
     json.attributes do
       facet_config = facet_configuration_for_field(facet.name)
@@ -63,7 +64,7 @@ json.included do
   end
 
   json.array! search_fields do |(label, key)|
-    json.type 'search_field'
+    json.type "search_field"
     json.id key
     json.attributes do
       json.label label
@@ -74,7 +75,7 @@ json.included do
   end
 
   json.array! active_sort_fields do |key, field|
-    json.type 'sort'
+    json.type "sort"
     json.id key
     json.attributes do
       json.label field.label

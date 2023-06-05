@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FormElement < ApplicationRecord
   belongs_to :element, optional: true
 

@@ -9,8 +9,6 @@ Element.exportable.each do |elm|
       json.set! elm.solr_field.to_s.to_sym, document.send(elm.export_value)
     end
   else
-    unless document.send(elm.export_value).blank?
-      json.set! elm.solr_field.to_s.to_sym, document.send(elm.export_value)
-    end
+    json.set! elm.solr_field.to_s.to_sym, document.send(elm.export_value) unless document.send(elm.export_value).blank?
   end
 end

@@ -14,7 +14,10 @@ class Document
       valid_geom = true
 
       # Sane for W,S,E,N?
-      proper_bounding_box(record, valid_geom) unless record.send(GeoblacklightAdmin::Schema.instance.solr_fields[:bounding_box]).nil?
+      unless record.send(GeoblacklightAdmin::Schema.instance.solr_fields[:bounding_box]).nil?
+        proper_bounding_box(record,
+          valid_geom)
+      end
 
       valid_geom
     end
@@ -57,10 +60,11 @@ class Document
         # Reject ENVELOPE(-118.00.0000,-88.00.0000,51.00.0000,42.00.0000
         # - Double period float-ish things?
         geom.each do |val|
-          if val.count(".") >= 2
-            valid_geom = false
-            record.errors.add(GeoblacklightAdmin::Schema.instance.solr_fields[:bounding_box], "invalid ENVELOPE(W,E,N,S) syntax - found multiple periods in a coordinate value.")
-          end
+          next unless val.count(".") >= 2
+
+          valid_geom = false
+          record.errors.add(GeoblacklightAdmin::Schema.instance.solr_fields[:bounding_box],
+            "invalid ENVELOPE(W,E,N,S) syntax - found multiple periods in a coordinate value.")
         end
       end
 

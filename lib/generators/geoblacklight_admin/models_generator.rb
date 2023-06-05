@@ -18,6 +18,5 @@ module GeoblacklightAdmin
     def copy_migrations
       rake "geoblacklight_admin:install:migrations"
     end
-
   end
 end

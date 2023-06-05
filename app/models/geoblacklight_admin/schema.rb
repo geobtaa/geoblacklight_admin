@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "singleton"
 
 module GeoblacklightAdmin
@@ -11,12 +13,12 @@ module GeoblacklightAdmin
     end
 
     def solr_fields
-      elements.map { |elm|
+      elements.map do |elm|
         [
           elm.label.parameterize(separator: "_").to_sym,
           elm.solr_field
         ]
-      }.to_h
+      end.to_h
     end
 
     def importable_fields
@@ -40,6 +42,7 @@ module GeoblacklightAdmin
       Element.exportable.order(:position).each do |elm|
         # Skip References
         next if elm.solr_field == "dct_references_s"
+
         @fields[elm.label.to_sym] = {
           destination: elm.solr_field,
           delimited: elm.repeatable,

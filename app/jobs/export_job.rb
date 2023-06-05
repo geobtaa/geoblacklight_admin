@@ -41,7 +41,8 @@ class ExportJob < ApplicationJob
     notification.deliver(current_user)
 
     # Attach CSV file (can only attach after persisted)
-    notification.record.file.attach(io: @tempfile, filename: "geomg-export-#{Time.zone.today}.csv", content_type: "text/csv")
+    notification.record.file.attach(io: @tempfile, filename: "geomg-export-#{Time.zone.today}.csv",
+      content_type: "text/csv")
 
     # Update UI
     ActionCable.server.broadcast("export_channel", {

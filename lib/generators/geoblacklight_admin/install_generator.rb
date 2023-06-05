@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "rails/generators"
 
 module GeoblacklightAdmin
@@ -5,9 +7,6 @@ module GeoblacklightAdmin
     source_root File.expand_path("templates", __dir__)
 
     desc "Install GeoblacklightAdmin"
-
-    def add_settings_vars
-    end
 
     def bundle_install
       Bundler.with_unbundled_env do

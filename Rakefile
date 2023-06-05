@@ -51,7 +51,9 @@ namespace :geoblacklight do
     end
 
     SolrWrapper.wrap(port: "8983") do |solr|
-      solr.with_collection(name: "blacklight-core", dir: File.join(File.expand_path(".", File.dirname(__FILE__)), "solr", "conf")) do
+      solr.with_collection(name: "blacklight-core",
+        dir: File.join(File.expand_path(".", File.dirname(__FILE__)),
+          "solr", "conf")) do
         Rake::Task["geoblacklight:internal:seed"].invoke
 
         within_test_app do

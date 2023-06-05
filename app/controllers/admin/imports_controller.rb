@@ -34,7 +34,10 @@ module Admin
 
       respond_to do |format|
         if @import.save
-          format.html { redirect_to admin_import_mappings_path(@import), notice: "Import was successful. Please set your import mapping rules." }
+          format.html do
+            redirect_to admin_import_mappings_path(@import),
+              notice: "Import was successful. Please set your import mapping rules."
+          end
           format.json { render :show, status: :created, location: @import }
         else
           format.html { render :new }
@@ -82,7 +85,8 @@ module Admin
     # Never trust parameters from the scary internet, only allow the white list through.
 
     def permittable_params
-      %i[type name filename source description row_count encoding content_type extension validity validation_result csv_file run]
+      %i[type name filename source description row_count encoding content_type extension validity validation_result
+        csv_file run]
     end
 
     def import_params

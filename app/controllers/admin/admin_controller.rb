@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Admin
   class AdminController < ApplicationController
     include Devise::Controllers::Helpers
     include Pagy::Backend
-    layout 'admin/layouts/application'
+    layout "admin/layouts/application"
 
     before_action :authenticate_admin!
 

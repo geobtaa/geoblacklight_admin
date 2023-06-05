@@ -1,4 +1,6 @@
-$LOAD_PATH.push File.expand_path("../lib", __FILE__)
+# frozen_string_literal: true
+
+$LOAD_PATH.push File.expand_path("lib", __dir__)
 
 # Maintain your gem's version:
 require "geoblacklight_admin/version"
@@ -19,15 +21,15 @@ Gem::Specification.new do |s|
 
   s.add_dependency "active_storage_validations", "~> 1.0"
   s.add_dependency "amazing_print"
+  s.add_dependency "blacklight", "~> 7.33"
+  s.add_dependency "blacklight_advanced_search"
   s.add_dependency "bootstrap", "~> 4.0"
+  s.add_dependency "chosen-rails", "1.0"
   s.add_dependency "cocoon", "~> 1.2"
   s.add_dependency "config", "~> 4.0"
-  s.add_dependency "chosen-rails", "1.0"
   s.add_dependency "devise", "~> 4.7"
   s.add_dependency "devise-bootstrap-views", "~> 1.0"
   s.add_dependency "devise_invitable", "~> 2.0"
-  s.add_dependency "blacklight", "~> 7.33"
-  s.add_dependency "blacklight_advanced_search"
   s.add_dependency "geoblacklight", "~> 4.0"
   s.add_dependency "haml", "~> 5.2.0"
   s.add_dependency "httparty", "~> 0.21"

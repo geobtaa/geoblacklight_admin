@@ -39,7 +39,8 @@ module Admin
       respond_to do |format|
         if @document_download.save
           format.html do
-            redirect_to document_document_downloads_path(@document_download.document), notice: "Document download was successfully created."
+            redirect_to document_document_downloads_path(@document_download.document),
+              notice: "Document download was successfully created."
           end
           format.json { render :show, status: :created, location: @document_download }
         else
@@ -54,7 +55,8 @@ module Admin
       respond_to do |format|
         if @document_download.update(document_download_params)
           format.html do
-            redirect_to document_document_downloads_path(@document_download.document), notice: "Document download was successfully updated."
+            redirect_to document_document_downloads_path(@document_download.document),
+              notice: "Document download was successfully updated."
           end
           format.json { render :show, status: :ok, location: @document_download }
         else

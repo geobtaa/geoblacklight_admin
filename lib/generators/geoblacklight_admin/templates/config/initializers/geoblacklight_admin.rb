@@ -13,8 +13,7 @@ GEOMG_SCHEMA = HashWithIndifferentAccess.new(
 # GEOMG_SCHEMA_TIMESTAMP
 # This constant hold the Time of the last changes to the Element table.
 # If the timestamp changes, the rails server and sidekiq will need to be restarted.
-if File.exist?(Rails.root.join("tmp/schema_timestamp.txt").to_s)
-else
+unless File.exist?(Rails.root.join("tmp/schema_timestamp.txt").to_s)
   File.write(Rails.root.join("tmp/schema_timestamp.txt").to_s, Time.now.to_s)
 end
 GEOMG_SCHEMA_TIMESTAMP = File.read(Rails.root.join("tmp/schema_timestamp.txt").to_s)

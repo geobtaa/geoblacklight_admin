@@ -43,6 +43,11 @@ When the .internal_test_app is built, edit `geoblacklight_admin_helper.rb`, and 
 ```bash
 cd .internal_test_app
 bundle exec rake db:seed
+
+# JS was breaking in dev mode, had to add the yarn package below - EWL 6/5/23
+yarn add @babel/plugin-proposal-private-methods --dev
+
+# Run the app server
 bundle exec rake gbl_admin:server
 ```
 
@@ -72,13 +77,10 @@ You're now done generating the test app and populating the Elements / FormElemen
 * ~~Add GBL Admin link to nav~~
 * ~~Routes - Get devise user~~
 * ~~No route matches [GET] "/users/sign_out"~~
-* Bookmarks need to be Admin::Bookmarks
+* ~~Bookmarks need to be Admin::Bookmarks~~
+* GitHub Actions / CI integration
+* Port the GEOMG test suite
 * Remove legacy GEOMG / B1G everywhere...
 * Send GBLADMIN JavaScript pack to NPM like Blacklight
-* Port the GEOMG test suite
-* GitHub Actions / CI integration
 * Project gem dependency injection redundancy...
 * Likely a lot more polish to be uncovered...
-
-
-

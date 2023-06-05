@@ -37,7 +37,9 @@ module Admin
 
       respond_to do |format|
         if @mapping.save
-          format.html { redirect_to import_mapping_path(@import, @mapping), notice: "Mapping was successfully created." }
+          format.html do
+            redirect_to import_mapping_path(@import, @mapping), notice: "Mapping was successfully created."
+          end
           format.json { render :show, status: :created, location: @mapping }
         else
           format.html { render :new }
