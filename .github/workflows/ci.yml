@@ -42,13 +42,6 @@ jobs:
           curl -H "Content-type:application/octet-stream" --data-binary @solr_config.zip "http://solr:SolrRocks@127.0.0.1:8983/solr/admin/configs?action=UPLOAD&name=blacklight"
           curl -H 'Content-type: application/json' http://solr:SolrRocks@127.0.0.1:8983/api/collections/  -d '{create: {name: blacklight-core, config: blacklight, numShards: 1}}'
 
-    - name: Rails - Database setup
-      env:
-        RAILS_ENV: test
-      run: |
-        bundle exec rails db:schema:load
-        bin/rails db:migrate RAILS_ENV=test
-
     - name: Run linter
       run: bundle exec standardrb
 
@@ -58,7 +51,6 @@ jobs:
         rails_version: 7.0.5
         ENGINE_CART_RAILS_OPTIONS: '--skip-git --skip-listen --skip-spring --skip-keeps --skip-action-cable --skip-coffee --skip-test'
         SOLR_URL: http://solr:SolrRocks@localhost:8983/solr/blacklight-core
-        FARADAY_VERSION: ${{ matrix.faraday_version }}
 
     - name: Artifacts - Upload coverage
       uses: actions/upload-artifact@v2
