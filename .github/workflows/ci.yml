@@ -49,7 +49,7 @@ jobs:
       run: bundle exec rake ci
       env:
         rails_version: 7.0.5
-        ENGINE_CART_RAILS_OPTIONS: '--skip-git --skip-listen --skip-spring --skip-keeps --skip-action-cable --skip-coffee --skip-test'
+        ENGINE_CART_RAILS_OPTIONS: '--skip-git --skip-listen --skip-spring --skip-keeps --skip-coffee'
         SOLR_URL: http://solr:SolrRocks@localhost:8983/solr/blacklight-core
 
     - name: Artifacts - Upload coverage
