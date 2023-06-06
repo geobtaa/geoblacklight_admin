@@ -34,7 +34,6 @@ Rails.application.load_seed
 
 module ActiveSupport
   class TestCase
-
     ## @TODO
     ## extend ActiveStorageValidations::Matchers
     ## fixtures :all

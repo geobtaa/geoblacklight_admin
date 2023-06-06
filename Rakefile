@@ -25,7 +25,7 @@ require "geoblacklight_admin/version"
 desc "Run test suite"
 task ci: ["engine_cart:generate"] do
   ENV["RAILS_ENV"] = "test"
-  system('RAILS_ENV=test bundle exec rake test') || success = false
+  system("RAILS_ENV=test bundle exec rake test") || false
 end
 
 require "rake/testtask"
