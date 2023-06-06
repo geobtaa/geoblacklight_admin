@@ -24,10 +24,23 @@ require "geoblacklight_admin/version"
 
 desc "Run test suite"
 task ci: ["engine_cart:generate"] do
-  ENV["environment"] = "test"
-  # run the tests
-  Rake::Task["test"].invoke
+  ENV["RAILS_ENV"] = "test"
+  system('RAILS_ENV=test bundle exec rake test') || success = false
 end
+
+require "rake/testtask"
+
+# Will automatically prepare test database if there are new migrations
+# Searches for files ending in _test.rb in the test directory
+Rake::TestTask.new do |t|
+  t.libs << "lib"
+  t.libs << "test"
+  t.pattern = "test/**/*_test.rb"
+  t.verbose = true
+end
+
+# Will use test as defaut task if rake is run by itself
+task default: :test
 
 namespace :geoblacklight do
   namespace :internal do

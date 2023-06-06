@@ -38,7 +38,7 @@ Gem::Specification.new do |s|
   s.add_dependency "jquery-rails", "~> 4.4"
   s.add_dependency "kithe", "~> 2.0"
   s.add_dependency "noticed", "~> 1.6"
-  s.add_dependency "pagy", "~> 3.8"
+  s.add_dependency "pagy", "~> 6.0"
   s.add_dependency "paper_trail", "~> 14.0"
   s.add_dependency "pg", "~> 1.4"
   s.add_dependency "qa", "~> 5.0"
