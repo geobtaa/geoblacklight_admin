@@ -3,7 +3,7 @@
 <h1 style="width:100%; border-bottom:dotted;" class="mb-4">
   Document &middot; Destroy Document Access Links
   <% if params[:document_id] %>
-    <%= link_to '+ New Access URL', new_document_document_access_path(@document), { class: 'btn btn-primary float-right' } %>
+    <%= link_to '+ New Access URL', new_admin_document_document_access_path(@document), { class: 'btn btn-primary float-right' } %>
   <% end %>
 </h1>
 
@@ -20,7 +20,7 @@
     </p>
     <h3 class='h4'>Upload a CSV File</h3>
 
-    <%= simple_form_for DocumentAccess.new, url: destroy_all_document_accesses_path, method: :post, multipart: true do |f| %>
+    <%= simple_form_for DocumentAccess.new, url: destroy_all_admin_document_accesses_path, method: :post, multipart: true do |f| %>
       <div class="form-group">
         <div class="form-inputs">
           <%= f.simple_fields_for :assets do |asset_fields| %>

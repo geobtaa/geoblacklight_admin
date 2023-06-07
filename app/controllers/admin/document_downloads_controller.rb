@@ -39,7 +39,7 @@ module Admin
       respond_to do |format|
         if @document_download.save
           format.html do
-            redirect_to document_document_downloads_path(@document_download.document),
+            redirect_to admin_document_document_downloads_path(@document_download.document),
               notice: "Document download was successfully created."
           end
           format.json { render :show, status: :created, location: @document_download }
@@ -55,7 +55,7 @@ module Admin
       respond_to do |format|
         if @document_download.update(document_download_params)
           format.html do
-            redirect_to document_document_downloads_path(@document_download.document),
+            redirect_to admin_document_document_downloads_path(@document_download.document),
               notice: "Document download was successfully updated."
           end
           format.json { render :show, status: :ok, location: @document_download }
@@ -71,7 +71,7 @@ module Admin
       @document_download.destroy
 
       respond_to do |format|
-        format.html { redirect_to document_downloads_url, notice: "Document download was successfully destroyed." }
+        format.html { redirect_to admin_document_downloads_url, notice: "Document download was successfully destroyed." }
         format.json { head :no_content }
       end
     end
@@ -82,12 +82,12 @@ module Admin
 
       respond_to do |format|
         if DocumentDownload.destroy_all(params.dig(:document_download, :downloads, :file))
-          format.html { redirect_to document_downloads_path, notice: "Download Links were created destroyed." }
+          format.html { redirect_to admin_document_downloads_path, notice: "Download Links were created destroyed." }
         else
-          format.html { redirect_to document_downloads_path, notice: "Download Links could not be destroyed." }
+          format.html { redirect_to admin_document_downloads_path, notice: "Download Links could not be destroyed." }
         end
       rescue => e
-        format.html { redirect_to document_downloads_path, notice: "Download Links could not be destroyed. #{e}" }
+        format.html { redirect_to admin_document_downloads_path, notice: "Download Links could not be destroyed. #{e}" }
       end
     end
 
@@ -99,12 +99,12 @@ module Admin
 
       respond_to do |format|
         if DocumentDownload.import(params.dig(:document_download, :downloads, :file))
-          format.html { redirect_to document_downloads_path, notice: "Download Links were created successfully." }
+          format.html { redirect_to admin_document_downloads_path, notice: "Download Links were created successfully." }
         else
-          format.html { redirect_to document_downloads_path, notice: "Download Links could not be created." }
+          format.html { redirect_to admin_document_downloads_path, notice: "Download Links could not be created." }
         end
       rescue => e
-        format.html { redirect_to document_downloads_path, notice: "Download Links could not be created. #{e}" }
+        format.html { redirect_to admin_document_downloads_path, notice: "Download Links could not be created. #{e}" }
       end
     end
 
