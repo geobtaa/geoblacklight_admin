@@ -5,7 +5,7 @@
     </h1>
     <% if params[:document_id] %>
       <h2 class='h3'>
-        <%= link_to(@document.title, document_path(@document)) %>
+        <%= link_to(@document.title, admin_document_path(@document)) %>
         &middot;
         <%= @document.versions.count %> versions
       </h2>
