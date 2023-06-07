@@ -2,6 +2,10 @@
 
 ENV["RAILS_ENV"] ||= "test"
 
+# require "rails"
+# require "rails/test_help"
+# require "active_support/test_case"
+
 require "simplecov"
 SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
 
@@ -36,7 +40,7 @@ module ActiveSupport
   class TestCase
     ## @TODO
     ## extend ActiveStorageValidations::Matchers
-    ## fixtures :all
+    # fixtures :all
 
     include Devise::Test::IntegrationHelpers
     include Warden::Test::Helpers
