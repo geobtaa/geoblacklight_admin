@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require 'rubygems'
-require 'rails'
+require "rubygems"
+require "rails"
 
 require "bundler/setup"
 
 # Can this be avoided?
-# APP_RAKEFILE = File.expand_path(".internal_test_app/Rakefile", __dir__) if 
+# APP_RAKEFILE = File.expand_path(".internal_test_app/Rakefile", __dir__) if
 # load "rails/tasks/engine.rake"
 
 load "rails/tasks/statistics.rake"
