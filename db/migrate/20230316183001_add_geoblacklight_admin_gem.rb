@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AddGeoblacklightAdmin < ActiveRecord::Migration[6.1]
+class AddGeoblacklightAdminGem < ActiveRecord::Migration[6.1]
   def change
     # These are extensions that must be enabled in order to support this database
     enable_extension 'pgcrypto'

@@ -1,11 +1,7 @@
 # frozen_string_literal: true
 
-$LOAD_PATH.push File.expand_path("lib", __dir__)
+require_relative "lib/geoblacklight_admin/version"
 
-# Maintain your gem's version:
-require "geoblacklight_admin/version"
-
-# Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
   s.name = "geoblacklight_admin"
   s.version = GeoblacklightAdmin::VERSION
@@ -15,9 +11,11 @@ Gem::Specification.new do |s|
   s.summary = "Administrative UI for GeoBlacklight. Built on Kithe."
   s.license = "MIT"
 
-  s.files = `git ls-files -z`.split(%(\x0))
+  s.files = Dir.chdir(File.expand_path(__dir__)) do
+    Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
+  end
+
   s.executables = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
-  s.require_paths = ["lib"]
 
   s.add_dependency "active_storage_validations", "~> 1.0"
   s.add_dependency "amazing_print"

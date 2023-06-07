@@ -1,36 +1,24 @@
-# frozen_string_literal: true
+# Configure Rails Environment
+ENV["RAILS_ENV"] = "test"
 
-ENV["RAILS_ENV"] ||= "test"
+require_relative "../.internal_test_app/config/environment"
+ActiveRecord::Migrator.migrations_paths = [File.expand_path("../.internal_test_app/db/migrate", __dir__)]
+# ActiveRecord::Migrator.migrations_paths << File.expand_path("../db/migrate", __dir__)
+require "rails/test_help"
 
-# require "rails"
-# require "rails/test_help"
-# require "active_support/test_case"
-
-require "simplecov"
-SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
-
-SimpleCov.start "rails" do
-  add_filter "lib/generators/geoblacklight_admin/install_generator.rb"
-  add_filter "lib/geoblacklight_admin/version.rb"
-  add_filter "lib/generators"
-  add_filter "lib/tasks/geoblacklight_admin.rake"
-  add_filter "/test"
-  add_filter ".internal_test_app/"
-  minimum_coverage 100
+# Load fixtures from the engine
+if ActiveSupport::TestCase.respond_to?(:fixture_path=)
+  ActiveSupport::TestCase.fixture_path = File.expand_path("fixtures", __dir__)
+  ActionDispatch::IntegrationTest.fixture_path = ActiveSupport::TestCase.fixture_path
+  ActiveSupport::TestCase.file_fixture_path = ActiveSupport::TestCase.fixture_path + "/files"
+  ActiveSupport::TestCase.fixtures :all
 end
-
-require "minitest/autorun"
-require "minitest/spec"
-require "minitest/reporters"
-require "geoblacklight_admin"
 
 require "database_cleaner/active_record"
 DatabaseCleaner.strategy = :truncation
 
-require "engine_cart"
-EngineCart.load_application!
-
-Minitest::Reporters.use!
+require "minitest/rails"
+require "minitest/reporters"
 
 # DB needs to be clean and seeded
 DatabaseCleaner.clean
@@ -38,9 +26,8 @@ Rails.application.load_seed
 
 module ActiveSupport
   class TestCase
-    ## @TODO
-    ## extend ActiveStorageValidations::Matchers
-    # fixtures :all
+    # extend ActiveStorageValidations::Matchers
+    fixtures :all
 
     include Devise::Test::IntegrationHelpers
     include Warden::Test::Helpers
@@ -58,11 +45,11 @@ module ActiveSupport
     end
 
     def setup
-      DatabaseCleaner.start
+      # DatabaseCleaner.start
     end
 
     def teardown
-      DatabaseCleaner.clean
+      # DatabaseCleaner.clean
     end
   end
 end

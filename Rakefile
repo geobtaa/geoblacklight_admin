@@ -1,14 +1,17 @@
 # frozen_string_literal: true
 
-require "rails"
-begin
-  require "bundler/setup"
-  require "bundler/gem_tasks"
-rescue LoadError
-  puts "You must `gem install bundler` and `bundle install` to run rake tasks"
-end
+require 'rubygems'
+require 'rails'
 
-Bundler::GemHelper.install_tasks
+require "bundler/setup"
+
+# Can this be avoided?
+# APP_RAKEFILE = File.expand_path(".internal_test_app/Rakefile", __dir__) if 
+# load "rails/tasks/engine.rake"
+
+load "rails/tasks/statistics.rake"
+
+require "bundler/gem_tasks"
 
 require "solr_wrapper"
 
@@ -23,7 +26,7 @@ require "engine_cart/rake_task"
 require "geoblacklight_admin/version"
 
 desc "Run test suite"
-task ci: ["engine_cart:generate"] do
+task "ci" do
   ENV["RAILS_ENV"] = "test"
   system("RAILS_ENV=test bundle exec rake test") || false
 end
