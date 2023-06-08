@@ -9,6 +9,9 @@ module Admin
     include ::BlacklightRangeLimit::ControllerOverride
     include ::Blacklight::Catalog
 
+    # No need to auth, only queries Solr
+    skip_before_action :authenticate_admin!
+
     configure_blacklight do |config|
       # special search builder
       config.search_builder_class = ApiSearchBuilder

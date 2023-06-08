@@ -104,11 +104,5 @@ cd .internal_test_app
 rake db:seed
 rake geomg:solr:reindex
 
-cp env.development env.test - @TODO
-
-# @TODO: Fix JS/Babel error
-cd .internal_test_app
-yarn add @babel/plugin-proposal-private-methods
-
+# @TODO: Add chosen.js css
 # @TODO: Fix missing select form-control class
-# @TODO: Fix missing settings.yml GEOMG fields

@@ -1,14 +1,17 @@
 # frozen_string_literal: true
 
 require "blacklight/catalog"
+require "blacklight_range_limit/controller_override"
 
 # Admin::IdsController
 module Admin
   class IdsController < Admin::AdminController
     include BlacklightAdvancedSearch::Controller
-    # @TODO
-    # include BlacklightRangeLimit::ControllerOverride
+    include BlacklightRangeLimit::ControllerOverride
     include Blacklight::Catalog
+
+    # No need to auth, only queries Solr
+    skip_before_action :authenticate_admin!
 
     configure_blacklight do |config|
       # special search builder / fails
