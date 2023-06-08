@@ -103,7 +103,7 @@ namespace :geomg do
           puts "Solr running at http://localhost:8983/solr/#/blacklight-core/, ^C to exit"
           begin
             Rake::Task["db:fixtures:load"].invoke
-            Rake::Task["geomg:solr:reindex"].invoke
+            # Rake::Task["geomg:solr:reindex"].invoke
             sleep
           rescue Interrupt
             puts "\nShutting down..."
