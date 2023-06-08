@@ -313,6 +313,10 @@ Mime::Type.register "text/csv", :csv_document_access_links
       copy_file "_user_util_links.html.erb", "app/views/shared/_user_util_links.html.erb"
     end
 
+    def add_show_sidebar
+      copy_file "_show_sidebar.html.erb", "app/views/catalog/_show_sidebar.html.erb"
+    end
+
     # @TODO
     # I'm certain this is not the best way to inject our JS behaviors into the root app
     # But for now, this will do...
