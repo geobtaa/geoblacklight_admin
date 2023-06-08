@@ -9,7 +9,7 @@ module Admin
     # GET /bookmarks
     # GET /bookmarks.json
     def index
-      @pagy, @bookmarks = pagy(current_user.bookmarks)
+      @pagy, @bookmarks = pagy(current_user.bookmarks.where(document_type: 'Kithe::Model'))
 
       respond_to do |format|
         format.html { render :index }
