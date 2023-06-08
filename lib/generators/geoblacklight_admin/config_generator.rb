@@ -13,12 +13,15 @@ module GeoblacklightAdmin
        3. Copies Pagy initializer file to host config
        4. Copies Statesman initializer file to host config
        5. Copies PG database.yml connection to host config
-       6. Copies .env.development to host
+       5. Copies settings.yml to host config
+       6. Copies .env.development and .env.test to host
+       6. Copies JSON Schema to host
        7. Copies solr/* to host
        8. Sets Routes
        9. Sets Gems
        10.Sets MimeTypes
        11.Sets DB Seeds
+       11.Sets ActiveStorage
        12.Sets Pagy Backend
 
     DESCRIPTION
@@ -43,7 +46,7 @@ module GeoblacklightAdmin
       copy_file "config/database.yml", "config/database.yml", force: true
     end
 
-    def create_settings.yml
+    def create_settings_yml
       copy_file "config/settings.yml", "config/settings.yml", force: true
     end
 

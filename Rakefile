@@ -45,8 +45,6 @@ end
 # Will use test as defaut task if rake is run by itself
 task default: :test
 
-
-
 namespace :geoblacklight do
   namespace :internal do
     task seed: ["engine_cart:generate"] do

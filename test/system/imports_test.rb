@@ -14,7 +14,7 @@ class ImportsTest < ApplicationSystemTestCase
   end
 
   test "creating a Import" do
-    skip('@TODO: attach_file not working')
+    skip("@TODO: attach_file not working")
 
     visit admin_imports_url
     click_on "New Import"
@@ -33,7 +33,7 @@ class ImportsTest < ApplicationSystemTestCase
   end
 
   test "updating a Import" do
-    skip('@TODO: attach_file not working')
+    skip("@TODO: attach_file not working")
 
     visit admin_imports_url
     click_on "Edit", match: :prefer_exact

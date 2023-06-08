@@ -124,17 +124,17 @@ module Admin
       # config.add_facet_field 'date_created_drsim', :label => 'Date Created', :show => false
 
       # Date Created
-      config.add_facet_field 'time_period', label: 'Date Created', query: {
-        'today' => { label: 'Today', fq: "date_created_drsim:[#{Date.today.beginning_of_day.to_time.strftime('%Y-%m-%dT%H:%M:%S')} TO #{Date.today.end_of_day.to_time.strftime('%Y-%m-%dT%H:%M:%S')}]"},
-        'this_week' => { label: 'This week', fq: "date_created_drsim:[#{(Date.today.end_of_day - 1.week).to_time.strftime('%Y-%m-%dT%H:%M:%S')} TO  #{Date.today.end_of_day.to_time.strftime('%Y-%m-%dT%H:%M:%S')}]"},
-        'this_month' => { label: 'This month', fq: "date_created_drsim:[#{(Date.today.end_of_day - 1.month).to_time.strftime('%Y-%m-%dT%H:%M:%S')} TO  #{Date.today.end_of_day.to_time.strftime('%Y-%m-%dT%H:%M:%S')}]"},
-        'last_month' => { label: 'Last month', fq: "date_created_drsim:[#{(Date.today.end_of_day - 2.months).to_time.strftime('%Y-%m-%dT%H:%M:%S')} TO  #{(Date.today.end_of_day - 1.month).to_time.strftime('%Y-%m-%dT%H:%M:%S')}]"},
-        'this_quarter' => { label: 'This quarter', fq: "date_created_drsim:[#{(Date.today.end_of_day - 3.months).to_time.strftime('%Y-%m-%dT%H:%M:%S')} TO  #{(Date.today.end_of_day).to_time.strftime('%Y-%m-%dT%H:%M:%S')}]"},
-        'this_year' => { label: 'This year', fq: "date_created_drsim:[#{(Date.today.end_of_day - 1.year).to_time.strftime('%Y-%m-%dT%H:%M:%S')} TO  #{(Date.today.end_of_day).to_time.strftime('%Y-%m-%dT%H:%M:%S')}]"}
+      config.add_facet_field "time_period", label: "Date Created", query: {
+        "today" => {label: "Today", fq: "date_created_drsim:[#{Date.today.beginning_of_day.to_time.strftime("%Y-%m-%dT%H:%M:%S")} TO #{Date.today.end_of_day.to_time.strftime("%Y-%m-%dT%H:%M:%S")}]"},
+        "this_week" => {label: "This week", fq: "date_created_drsim:[#{(Date.today.end_of_day - 1.week).to_time.strftime("%Y-%m-%dT%H:%M:%S")} TO  #{Date.today.end_of_day.to_time.strftime("%Y-%m-%dT%H:%M:%S")}]"},
+        "this_month" => {label: "This month", fq: "date_created_drsim:[#{(Date.today.end_of_day - 1.month).to_time.strftime("%Y-%m-%dT%H:%M:%S")} TO  #{Date.today.end_of_day.to_time.strftime("%Y-%m-%dT%H:%M:%S")}]"},
+        "last_month" => {label: "Last month", fq: "date_created_drsim:[#{(Date.today.end_of_day - 2.months).to_time.strftime("%Y-%m-%dT%H:%M:%S")} TO  #{(Date.today.end_of_day - 1.month).to_time.strftime("%Y-%m-%dT%H:%M:%S")}]"},
+        "this_quarter" => {label: "This quarter", fq: "date_created_drsim:[#{(Date.today.end_of_day - 3.months).to_time.strftime("%Y-%m-%dT%H:%M:%S")} TO  #{Date.today.end_of_day.to_time.strftime("%Y-%m-%dT%H:%M:%S")}]"},
+        "this_year" => {label: "This year", fq: "date_created_drsim:[#{(Date.today.end_of_day - 1.year).to_time.strftime("%Y-%m-%dT%H:%M:%S")} TO  #{Date.today.end_of_day.to_time.strftime("%Y-%m-%dT%H:%M:%S")}]"}
       }
 
       # Publication State
-      config.add_facet_field Settings.FIELDS.B1G_PUBLICATION_STATE, :label => 'Publication State', :limit => 8, collapse: false
+      config.add_facet_field Settings.FIELDS.B1G_PUBLICATION_STATE, label: "Publication State", limit: 8, collapse: false
 
       # Resouce Class
       config.add_facet_field Settings.FIELDS.RESOURCE_CLASS, label: "Resource Class", limit: 8
