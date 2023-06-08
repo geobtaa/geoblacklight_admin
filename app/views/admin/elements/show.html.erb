@@ -112,7 +112,7 @@
     <%- @elements = Element.all %>
     <ul>
       <%- @elements.each do |elm| %>
-        <li><%= link_to_unless_current([:admin, elm], elm.label) %></li>
+        <li><%= link_to_unless_current(elm.label, admin_element_url(elm)) %></li>
       <%- end %>
     </ul>
   </div>
