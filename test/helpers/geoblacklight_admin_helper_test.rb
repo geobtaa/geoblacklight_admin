@@ -49,7 +49,7 @@ class GeoblacklightAdminHelperTest < ActionView::TestCase
       "11" => "The Ohio State University",
       "12" => "University of Chicago",
       "13" => "University of Nebraska-Lincoln",
-      "14"=>"Rutgers University-New Brunswick"
+      "14" => "Rutgers University-New Brunswick"
     }
 
     assert_equal bic, b1g_institution_codes
