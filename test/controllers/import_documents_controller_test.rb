@@ -14,7 +14,7 @@ class ImportDocumentsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get show" do
-    get import_import_document_url(@import, @import_document)
+    get admin_import_import_document_url(@import, @import_document)
     assert_response :success
   end
 end
