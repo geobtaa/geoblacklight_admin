@@ -29,7 +29,7 @@ desc "Run test suite"
 task "ci" do
   ENV["RAILS_ENV"] = "test"
   system("RAILS_ENV=test bundle exec rake test") || false
-  system("RAILS_ENV=test bundle exec rake geomg:solr:reindex") || false
+  # system("RAILS_ENV=test bundle exec rake geomg:solr:reindex") || false
 end
 
 require "rake/testtask"
