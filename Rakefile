@@ -5,7 +5,7 @@ require "rails"
 
 require "bundler/setup"
 
-# Can this be avoided?
+# Not using test/dummy app; using engine_cart
 # APP_RAKEFILE = File.expand_path(".internal_test_app/Rakefile", __dir__) if
 # load "rails/tasks/engine.rake"
 
@@ -34,7 +34,6 @@ end
 
 require "rake/testtask"
 
-# Will automatically prepare test database if there are new migrations
 # Searches for files ending in _test.rb in the test directory
 Rake::TestTask.new do |t|
   t.libs << "lib"
@@ -45,6 +44,8 @@ end
 
 # Will use test as defaut task if rake is run by itself
 task default: :test
+
+
 
 namespace :geoblacklight do
   namespace :internal do

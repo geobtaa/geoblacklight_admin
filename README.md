@@ -84,3 +84,20 @@ You're now done generating the test app and populating the Elements / FormElemen
 * Send GBLADMIN JavaScript pack to NPM like Blacklight
 * Project gem dependency injection redundancy...
 * Likely a lot more polish to be uncovered...
+
+
+
+cd project root
+bundle exec rake
+cd .internal_test_app
+rake db:seed
+rake geomg:solr:reindex
+
+cp env.development env.test - @TODO
+
+# @TODO: Fix JS/Babel error
+cd .internal_test_app
+yarn add @babel/plugin-proposal-private-methods
+
+# @TODO: Fix missing select form-control class
+# @TODO: Fix missing settings.yml GEOMG fields

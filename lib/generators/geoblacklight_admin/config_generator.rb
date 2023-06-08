@@ -43,6 +43,10 @@ module GeoblacklightAdmin
       copy_file "config/database.yml", "config/database.yml", force: true
     end
 
+    def create_settings.yml
+      copy_file "config/settings.yml", "config/settings.yml", force: true
+    end
+
     def create_dotenv
       copy_file ".env.development.example", ".env.development"
       copy_file ".env.development.example", ".env.test"

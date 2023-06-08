@@ -6,7 +6,8 @@ require "blacklight/catalog"
 module Admin
   class IdsController < Admin::AdminController
     include BlacklightAdvancedSearch::Controller
-    include BlacklightRangeLimit::ControllerOverride
+    # @TODO
+    # include BlacklightRangeLimit::ControllerOverride
     include Blacklight::Catalog
 
     configure_blacklight do |config|
@@ -116,7 +117,7 @@ module Admin
       ## FACETS
       #
       # Date Range Filter
-      config.add_facet_field "date_created_drsim", label: "Date Created", show: false
+      # config.add_facet_field "date_created_drsim", label: "Date Created", show: false
 
       # Date Created
       config.add_facet_field "time_period", label: "Date Created", query: {

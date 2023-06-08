@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency "amazing_print"
   s.add_dependency "blacklight", "~> 7.33"
   s.add_dependency "blacklight_advanced_search"
+  s.add_dependency "blacklight_range_limit"
   s.add_dependency "bootstrap", "~> 4.0"
   s.add_dependency "chosen-rails", "1.0"
   s.add_dependency "cocoon", "~> 1.2"
@@ -65,4 +66,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "sprockets", "< 4"
   s.add_development_dependency "standard", "~> 1.24"
   s.add_development_dependency "webdrivers"
+  s.add_development_dependency "web-console"
 end
