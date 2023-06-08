@@ -13,43 +13,43 @@ class FormElementsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get index" do
-    get form_elements_url
+    get admin_form_elements_url
     assert_response :success
   end
 
   test "should get new" do
-    get new_form_element_url
+    get new_admin_form_element_url
     assert_response :success
   end
 
   test "should create form_element" do
     assert_difference("FormElement.count") do
-      post form_elements_url, params: {form_element: {element_solr_field: @form_element.element_solr_field, label: @form_element.label, type: @form_element.type}}
+      post admin_form_elements_url, params: {form_element: {element_solr_field: @form_element.element_solr_field, label: @form_element.label, type: @form_element.type}}
     end
 
-    assert_redirected_to form_elements_url
+    assert_redirected_to admin_form_elements_url
   end
 
   test "should show form_element" do
-    get form_element_url(@form_element)
+    get admin_form_element_url(@form_element)
     assert_response :success
   end
 
   test "should get edit" do
-    get edit_form_element_url(@form_element)
+    get edit_admin_form_element_url(@form_element)
     assert_response :success
   end
 
   test "should update form_element" do
-    patch form_element_url(@form_element), params: {form_element: {element_solr_field: @form_element.element_solr_field, label: @form_element.label, type: @form_element.type}}
-    assert_redirected_to form_element_url(@form_element)
+    patch admin_form_element_url(@form_element), params: {form_element: {element_solr_field: @form_element.element_solr_field, label: @form_element.label, type: @form_element.type}}
+    assert_redirected_to admin_form_element_url(@form_element)
   end
 
   test "should destroy form_element" do
     assert_difference("FormElement.count", -1) do
-      delete form_element_url(@form_element)
+      delete admin_form_element_url(@form_element)
     end
 
-    assert_redirected_to form_elements_url
+    assert_redirected_to admin_form_elements_url
   end
 end
