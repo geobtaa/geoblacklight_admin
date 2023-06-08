@@ -38,7 +38,7 @@ module Admin
       respond_to do |format|
         if @mapping.save
           format.html do
-            redirect_to import_mapping_path(@import, @mapping), notice: "Mapping was successfully created."
+            redirect_to admin_import_mapping_path(@import, @mapping), notice: "Mapping was successfully created."
           end
           format.json { render :show, status: :created, location: @mapping }
         else
@@ -53,7 +53,7 @@ module Admin
     def update
       respond_to do |format|
         if @mapping.update(mapping_params)
-          format.html { redirect_to import_mappings_path(@mapping.import), notice: "Mapping was successfully updated." }
+          format.html { redirect_to admin_import_mappings_path(@mapping.import), notice: "Mapping was successfully updated." }
           format.json { render :show, status: :ok, location: @mapping }
         else
           format.html { render :edit }
@@ -67,7 +67,7 @@ module Admin
     def destroy
       @mapping.destroy
       respond_to do |format|
-        format.html { redirect_to import_mappings_url(@import), notice: "Mapping was successfully destroyed." }
+        format.html { redirect_to admin_import_mappings_url(@import), notice: "Mapping was successfully destroyed." }
         format.json { head :no_content }
       end
     end
