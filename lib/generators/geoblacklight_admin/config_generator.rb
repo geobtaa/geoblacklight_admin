@@ -45,6 +45,7 @@ module GeoblacklightAdmin
 
     def create_dotenv
       copy_file ".env.development.example", ".env.development"
+      copy_file ".env.development.example", ".env.test"
     end
 
     def copy_json_schema
