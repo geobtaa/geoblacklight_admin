@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Element < ApplicationRecord
   serialize :html_attributes
 
@@ -21,13 +23,13 @@ class Element < ApplicationRecord
   # Validations
   validates :label, :solr_field, :field_type, presence: true
 
-  FIELD_TYPES = [
-    "string",
-    "text",
-    "integer",
-    "boolean",
-    "datetime"
-  ]
+  FIELD_TYPES = %w[
+    string
+    text
+    integer
+    boolean
+    datetime
+  ].freeze
 
   # Find by solr_field shortcut
   def self.at(field)

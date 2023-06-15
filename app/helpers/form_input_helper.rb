@@ -47,7 +47,7 @@ module FormInputHelper
     category_list = [existing_category_value] + category_list unless category_list.include?(existing_category_value)
 
     # Turn category list into values and human labels, using i18n or rails humanizing.
-    category_list = category_list.collect { |key|
+    category_list = category_list.collect do |key|
       value = if key.nil?
         key
       elsif model_class.respond_to?(:model_name) && key.present?
@@ -59,15 +59,15 @@ module FormInputHelper
       end
 
       [value, key]
-    }.to_h
+    end.to_h
 
     tag.div(class: "form-row category-and-value") do
       tag.div(class: "col-left category") {
         builder.input category_key, collection: category_list, label: false, include_blank: false
       } +
-        tag.div(class: "col-sm value") {
+        tag.div(class: "col-sm value") do
           builder.input value_key, label: false, input_html: {data: input_data_attributes}
-        }
+        end
     end
   end
 end

@@ -12,6 +12,7 @@
 //
 
 //= require jquery3
+//= require rails-ujs
 //= require cocoon
 //= require chosen-jquery/lib/chosen.jquery.js
 

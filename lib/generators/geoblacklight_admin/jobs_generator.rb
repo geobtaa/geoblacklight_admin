@@ -2,7 +2,8 @@
 
 require "rails/generators"
 
-module GeoblacklightAdmin  class JobsGenerator < Rails::Generators::Base
+module GeoblacklightAdmin
+  class JobsGenerator < Rails::Generators::Base
     source_root File.expand_path("templates", __dir__)
 
     desc <<-DESCRIPTION
@@ -11,7 +12,7 @@ module GeoblacklightAdmin  class JobsGenerator < Rails::Generators::Base
     DESCRIPTION
 
     def config_development_jobs_queue_adapter
-      job_config = <<-"JOBS"
+      job_config = <<-JOBS
         config.active_job.queue_adapter = :inline
       JOBS
 

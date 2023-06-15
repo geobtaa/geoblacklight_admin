@@ -1,9 +1,7 @@
-$LOAD_PATH.push File.expand_path("../lib", __FILE__)
+# frozen_string_literal: true
 
-# Maintain your gem's version:
-require "geoblacklight_admin/version"
+require_relative "lib/geoblacklight_admin/version"
 
-# Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
   s.name = "geoblacklight_admin"
   s.version = GeoblacklightAdmin::VERSION
@@ -13,21 +11,25 @@ Gem::Specification.new do |s|
   s.summary = "Administrative UI for GeoBlacklight. Built on Kithe."
   s.license = "MIT"
 
-  s.files = `git ls-files -z`.split(%(\x0))
+  s.files = Dir.chdir(File.expand_path(__dir__)) do
+    Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
+  end
+
   s.executables = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
-  s.require_paths = ["lib"]
 
   s.add_dependency "active_storage_validations", "~> 1.0"
   s.add_dependency "amazing_print"
+  s.add_dependency "blacklight", "~> 7.33"
+  s.add_dependency "blacklight_advanced_search"
+  s.add_dependency "blacklight_range_limit"
   s.add_dependency "bootstrap", "~> 4.0"
+  s.add_dependency "chosen-rails", "1.0"
   s.add_dependency "cocoon", "~> 1.2"
   s.add_dependency "config", "~> 4.0"
-  s.add_dependency "chosen-rails", "1.0"
   s.add_dependency "devise", "~> 4.7"
   s.add_dependency "devise-bootstrap-views", "~> 1.0"
   s.add_dependency "devise_invitable", "~> 2.0"
-  s.add_dependency "blacklight", "~> 7.33"
-  s.add_dependency "blacklight_advanced_search"
+  s.add_dependency "dotenv-rails", "~> 2.8"
   s.add_dependency "geoblacklight", "~> 4.0"
   s.add_dependency "haml", "~> 5.2.0"
   s.add_dependency "httparty", "~> 0.21"
@@ -35,7 +37,7 @@ Gem::Specification.new do |s|
   s.add_dependency "jquery-rails", "~> 4.4"
   s.add_dependency "kithe", "~> 2.0"
   s.add_dependency "noticed", "~> 1.6"
-  s.add_dependency "pagy", "~> 3.8"
+  s.add_dependency "pagy", "~> 6.0"
   s.add_dependency "paper_trail", "~> 14.0"
   s.add_dependency "pg", "~> 1.4"
   s.add_dependency "qa", "~> 5.0"
@@ -64,4 +66,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "sprockets", "< 4"
   s.add_development_dependency "standard", "~> 1.24"
   s.add_development_dependency "webdrivers"
+  s.add_development_dependency "web-console"
 end

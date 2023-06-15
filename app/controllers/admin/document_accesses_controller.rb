@@ -39,7 +39,9 @@ module Admin
 
       respond_to do |format|
         if @document_access.save
-          format.html { redirect_to document_document_accesses_path(@document), notice: "Document access was successfully created." }
+          format.html do
+            redirect_to admin_document_document_accesses_path(@document), notice: "Document access was successfully created."
+          end
           format.json { render :show, status: :created, location: @document_access }
         else
           format.html { render :new }
@@ -53,7 +55,9 @@ module Admin
     def update
       respond_to do |format|
         if @document_access.update(document_access_params)
-          format.html { redirect_to document_document_accesses_path(@document), notice: "Document access was successfully updated." }
+          format.html do
+            redirect_to admin_document_document_accesses_path(@document), notice: "Document access was successfully updated."
+          end
           format.json { render :show, status: :ok, location: @document_access }
         else
           format.html { render :edit }
@@ -67,7 +71,9 @@ module Admin
     def destroy
       @document_access.destroy
       respond_to do |format|
-        format.html { redirect_to document_document_accesses_path(@document), notice: "Document access was successfully destroyed." }
+        format.html do
+          redirect_to admin_document_document_accesses_path(@document), notice: "Document access was successfully destroyed."
+        end
         format.json { head :no_content }
       end
     end

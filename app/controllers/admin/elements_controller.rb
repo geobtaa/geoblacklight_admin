@@ -29,7 +29,7 @@ module Admin
 
       respond_to do |format|
         if @element.save
-          format.html { redirect_to element_url(@element), notice: "Element was successfully created." }
+          format.html { redirect_to admin_element_url(@element), notice: "Element was successfully created." }
           format.json { render :show, status: :created, location: @element }
         else
           format.html { render :new, status: :unprocessable_entity }
@@ -42,7 +42,7 @@ module Admin
     def update
       respond_to do |format|
         if @element.update(element_params)
-          format.html { redirect_to element_url(@element), notice: "Element was successfully updated." }
+          format.html { redirect_to admin_element_url(@element), notice: "Element was successfully updated." }
           format.json { render :show, status: :ok, location: @element }
         else
           format.html { render :edit, status: :unprocessable_entity }
@@ -56,7 +56,7 @@ module Admin
       @element.destroy
 
       respond_to do |format|
-        format.html { redirect_to elements_url, notice: "Element was successfully destroyed." }
+        format.html { redirect_to admin_elements_url, notice: "Element was successfully destroyed." }
         format.json { head :no_content }
       end
     end
@@ -75,7 +75,8 @@ module Admin
 
     # Only allow a list of trusted parameters through.
     def element_params
-      params.require(:element).permit(:label, :solr_field, :field_definition, :field_type, :required, :repeatable, :formable, :placeholder_text, :data_entry_hint, :test_fixture_example, :controlled_vocabulary, :js_behaviors, :html_attributes, :display_only_on_persisted, :importable, :import_deliminated, :import_transformation_method, :exportable, :export_transformation_method, :indexable, :index_transformation_method, :validation_method, :position)
+      params.require(:element).permit(:label, :solr_field, :field_definition, :field_type, :required, :repeatable,
+        :formable, :placeholder_text, :data_entry_hint, :test_fixture_example, :controlled_vocabulary, :js_behaviors, :html_attributes, :display_only_on_persisted, :importable, :import_deliminated, :import_transformation_method, :exportable, :export_transformation_method, :indexable, :index_transformation_method, :validation_method, :position)
     end
   end
 end

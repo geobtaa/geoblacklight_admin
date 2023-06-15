@@ -1,5 +1,6 @@
-# -*- encoding : utf-8 -*-
-require 'blacklight/catalog'
+# frozen_string_literal: true
+
+require "blacklight/catalog"
 
 # Admin::ApiController
 module Admin
@@ -18,41 +19,43 @@ module Admin
       config.advanced_search ||= Blacklight::OpenStructWithHashAccess.new
 
       # Blacklight update to 7.0.0
-      config.add_results_document_tool(:bookmark, partial: 'bookmark_control', if: :render_bookmarks_control?)
+      config.add_results_document_tool(:bookmark, partial: "bookmark_control", if: :render_bookmarks_control?)
 
       config.add_results_collection_tool(:sort_widget)
       config.add_results_collection_tool(:per_page_widget)
       config.add_results_collection_tool(:view_type_group)
 
-      config.add_show_tools_partial(:bookmark, partial: 'bookmark_control', if: :render_bookmarks_control?)
+      config.add_show_tools_partial(:bookmark, partial: "bookmark_control", if: :render_bookmarks_control?)
       config.add_show_tools_partial(:email, callback: :email_action, validator: :validate_email_params)
-      config.add_show_tools_partial(:sms, if: :render_sms_action?, callback: :sms_action, validator: :validate_sms_params)
+      config.add_show_tools_partial(:sms, if: :render_sms_action?, callback: :sms_action,
+        validator: :validate_sms_params)
 
-      config.add_nav_action(:bookmark, partial: 'blacklight/nav/bookmark', if: :render_bookmarks_control?)
+      config.add_nav_action(:bookmark, partial: "blacklight/nav/bookmark", if: :render_bookmarks_control?)
       # Blacklight update to 7.0.0
 
       # Advanced config values
       config.advanced_search ||= Blacklight::OpenStructWithHashAccess.new
-      config.advanced_search[:url_key] ||= 'advanced'
-      config.advanced_search[:query_parser] ||= 'edismax'
+      config.advanced_search[:url_key] ||= "advanced"
+      config.advanced_search[:query_parser] ||= "edismax"
       config.advanced_search[:form_solr_parameters] ||= {}
-      config.advanced_search[:form_solr_parameters]['facet.field'] ||= [Settings.FIELDS.PROVIDER, Settings.FIELDS.B1G_CODE, Settings.FIELDS.MEMBER_OF, Settings.FIELDS.IS_PART_OF, Settings.FIELDS.RESOURCE_CLASS, Settings.FIELDS.RESOURCE_TYPE, Settings.FIELDS.SUBJECT, Settings.FIELDS.THEME, Settings.FIELDS.FORMAT, Settings.FIELDS.SUPPRESSED, Settings.FIELDS.B1G_CHILD_RECORD, Settings.FIELDS.GEOREFERENCED]
-      config.advanced_search[:form_solr_parameters]['facet.query'] ||= ''
-      config.advanced_search[:form_solr_parameters]['facet.limit'] ||= -1
-      config.advanced_search[:form_solr_parameters]['facet.sort'] ||= 'index'
+      config.advanced_search[:form_solr_parameters]["facet.field"] ||= [Settings.FIELDS.PROVIDER,
+        Settings.FIELDS.B1G_CODE, Settings.FIELDS.MEMBER_OF, Settings.FIELDS.IS_PART_OF, Settings.FIELDS.RESOURCE_CLASS, Settings.FIELDS.RESOURCE_TYPE, Settings.FIELDS.SUBJECT, Settings.FIELDS.THEME, Settings.FIELDS.FORMAT, Settings.FIELDS.SUPPRESSED, Settings.FIELDS.B1G_CHILD_RECORD, Settings.FIELDS.GEOREFERENCED]
+      config.advanced_search[:form_solr_parameters]["facet.query"] ||= ""
+      config.advanced_search[:form_solr_parameters]["facet.limit"] ||= -1
+      config.advanced_search[:form_solr_parameters]["facet.sort"] ||= "index"
 
       # Map views
       config.view.mapview.partials = [:index]
-      config.view['split'].title = "List view"
-      config.view['mapview'].title = "Map view"
+      config.view["split"].title = "List view"
+      config.view["mapview"].title = "Map view"
 
       config.raw_endpoint.enabled = true
 
       ## Default parameters to send to solr for all search-like requests. See also SolrHelper#solr_search_params
       config.default_solr_params = {
         :start => 0,
-        'q.alt' => '*:*',
-        'admin.api' => true
+        "q.alt" => "*:*",
+        "admin.api" => true
       }
 
       # @TODO
@@ -65,8 +68,8 @@ module Admin
       ## parameters included in the Blacklight-jetty document requestHandler.
       #
       config.default_document_solr_params = {
-       :qt => 'document',
-       :q => "{!raw f=#{Settings.FIELDS.B1G_GEOMG_ID} v=$id}"
+        qt: "document",
+        q: "{!raw f=#{Settings.FIELDS.B1G_GEOMG_ID} v=$id}"
       }
 
       # config.search_builder_class = Geoblacklight::SearchBuilder
@@ -80,7 +83,7 @@ module Admin
 
       # solr field configuration for document/show views
 
-      config.show.display_type_field = 'format'
+      config.show.display_type_field = "format"
 
       # Custom GeoBlacklight fields which currently map to GeoBlacklight-Schema
       # v0.3.2
@@ -121,29 +124,29 @@ module Admin
       # config.add_facet_field 'date_created_drsim', :label => 'Date Created', :show => false
 
       # Date Created
-      # config.add_facet_field 'time_period', label: 'Date Created', query: {
-      #  'today' => { label: 'Today', fq: "date_created_drsim:[#{Date.today.beginning_of_day.to_time.strftime('%Y-%m-%dT%H:%M:%S')} TO #{Date.today.end_of_day.to_time.strftime('%Y-%m-%dT%H:%M:%S')}]"},
-      #  'this_week' => { label: 'This week', fq: "date_created_drsim:[#{(Date.today.end_of_day - 1.week).to_time.strftime('%Y-%m-%dT%H:%M:%S')} TO  #{Date.today.end_of_day.to_time.strftime('%Y-%m-%dT%H:%M:%S')}]"},
-      #  'this_month' => { label: 'This month', fq: "date_created_drsim:[#{(Date.today.end_of_day - 1.month).to_time.strftime('%Y-%m-%dT%H:%M:%S')} TO  #{Date.today.end_of_day.to_time.strftime('%Y-%m-%dT%H:%M:%S')}]"},
-      #  'last_month' => { label: 'Last month', fq: "date_created_drsim:[#{(Date.today.end_of_day - 2.months).to_time.strftime('%Y-%m-%dT%H:%M:%S')} TO  #{(Date.today.end_of_day - 1.month).to_time.strftime('%Y-%m-%dT%H:%M:%S')}]"},
-      #  'this_quarter' => { label: 'This quarter', fq: "date_created_drsim:[#{(Date.today.end_of_day - 3.months).to_time.strftime('%Y-%m-%dT%H:%M:%S')} TO  #{(Date.today.end_of_day).to_time.strftime('%Y-%m-%dT%H:%M:%S')}]"},
-      #  'this_year' => { label: 'This year', fq: "date_created_drsim:[#{(Date.today.end_of_day - 1.year).to_time.strftime('%Y-%m-%dT%H:%M:%S')} TO  #{(Date.today.end_of_day).to_time.strftime('%Y-%m-%dT%H:%M:%S')}]"}
-      # }
+      config.add_facet_field "time_period", label: "Date Created", query: {
+        "today" => {label: "Today", fq: "date_created_drsim:[#{Date.today.beginning_of_day.to_time.strftime("%Y-%m-%dT%H:%M:%S")} TO #{Date.today.end_of_day.to_time.strftime("%Y-%m-%dT%H:%M:%S")}]"},
+        "this_week" => {label: "This week", fq: "date_created_drsim:[#{(Date.today.end_of_day - 1.week).to_time.strftime("%Y-%m-%dT%H:%M:%S")} TO  #{Date.today.end_of_day.to_time.strftime("%Y-%m-%dT%H:%M:%S")}]"},
+        "this_month" => {label: "This month", fq: "date_created_drsim:[#{(Date.today.end_of_day - 1.month).to_time.strftime("%Y-%m-%dT%H:%M:%S")} TO  #{Date.today.end_of_day.to_time.strftime("%Y-%m-%dT%H:%M:%S")}]"},
+        "last_month" => {label: "Last month", fq: "date_created_drsim:[#{(Date.today.end_of_day - 2.months).to_time.strftime("%Y-%m-%dT%H:%M:%S")} TO  #{(Date.today.end_of_day - 1.month).to_time.strftime("%Y-%m-%dT%H:%M:%S")}]"},
+        "this_quarter" => {label: "This quarter", fq: "date_created_drsim:[#{(Date.today.end_of_day - 3.months).to_time.strftime("%Y-%m-%dT%H:%M:%S")} TO  #{Date.today.end_of_day.to_time.strftime("%Y-%m-%dT%H:%M:%S")}]"},
+        "this_year" => {label: "This year", fq: "date_created_drsim:[#{(Date.today.end_of_day - 1.year).to_time.strftime("%Y-%m-%dT%H:%M:%S")} TO  #{Date.today.end_of_day.to_time.strftime("%Y-%m-%dT%H:%M:%S")}]"}
+      }
 
       # Publication State
-      # config.add_facet_field Settings.FIELDS.B1G_PUBLICATION_STATE, :label => 'Publication State', :limit => 8, collapse: false
+      config.add_facet_field Settings.FIELDS.B1G_PUBLICATION_STATE, label: "Publication State", limit: 8, collapse: false
 
       # Resouce Class
-      config.add_facet_field Settings.FIELDS.RESOURCE_CLASS, label: 'Resource Class', limit: 8
+      config.add_facet_field Settings.FIELDS.RESOURCE_CLASS, label: "Resource Class", limit: 8
 
       # Contributor
-      config.add_facet_field Settings.FIELDS.PROVIDER, label: 'Provider', limit: 15
+      config.add_facet_field Settings.FIELDS.PROVIDER, label: "Provider", limit: 15
 
       # Accrual Method
       # config.add_facet_field Settings.FIELDS.B1G_ACCRUAL_METHOD, :label => 'Accrual Method'
 
       # Public/Restricted
-      config.add_facet_field Settings.FIELDS.ACCESS_RIGHTS, :label => 'Public/Restricted'
+      config.add_facet_field Settings.FIELDS.ACCESS_RIGHTS, label: "Public/Restricted"
 
       # ADVANCED SEARCH
       #
@@ -151,31 +154,31 @@ module Admin
       # config.add_facet_field Settings.FIELDS.B1G_CODE, label: 'Code', show: false
 
       # Is Part Of
-      config.add_facet_field Settings.FIELDS.IS_PART_OF, label: 'Is Part Of', show: false
+      config.add_facet_field Settings.FIELDS.IS_PART_OF, label: "Is Part Of", show: false
 
       # Member Of
-      config.add_facet_field Settings.FIELDS.MEMBER_OF, label: 'Member Of', show: false
+      config.add_facet_field Settings.FIELDS.MEMBER_OF, label: "Member Of", show: false
 
       # Resource Type
-      config.add_facet_field Settings.FIELDS.RESOURCE_TYPE, label: 'Resource Type', show: false
+      config.add_facet_field Settings.FIELDS.RESOURCE_TYPE, label: "Resource Type", show: false
 
       # Subject
-      config.add_facet_field Settings.FIELDS.SUBJECT, label: 'Subject', show: false
+      config.add_facet_field Settings.FIELDS.SUBJECT, label: "Subject", show: false
 
       # Theme
-      config.add_facet_field Settings.FIELDS.THEME, label: 'Theme', show: false
+      config.add_facet_field Settings.FIELDS.THEME, label: "Theme", show: false
 
       # Format
-      config.add_facet_field Settings.FIELDS.FORMAT, label: 'Format', show: false
+      config.add_facet_field Settings.FIELDS.FORMAT, label: "Format", show: false
 
       # Suppressed
-      config.add_facet_field Settings.FIELDS.SUPPRESSED, label: 'Suppressed', show: false
+      config.add_facet_field Settings.FIELDS.SUPPRESSED, label: "Suppressed", show: false
 
       # Child Record
       # config.add_facet_field Settings.FIELDS.B1G_CHILD_RECORD, label: 'Child Record', show: false
 
       # Georeferenced
-      config.add_facet_field Settings.FIELDS.GEOREFERENCED, label: 'Georeferenced', show: false
+      config.add_facet_field Settings.FIELDS.GEOREFERENCED, label: "Georeferenced", show: false
 
       # Have BL send all facet field names to Solr, which has been the default
       # previously. Simply remove these lines if you'd rather use Solr request
@@ -194,17 +197,17 @@ module Admin
       # config.add_index_field 'published_vern_display', :label => 'Published:'
       # config.add_index_field 'lc_callnum_display', :label => 'Call number:'
 
-      config.add_index_field Settings.FIELDS.TITLE, :label => 'Title:'
+      config.add_index_field Settings.FIELDS.TITLE, label: "Title:"
       # config.add_index_field Settings.FIELDS.B1G_GEOMG_ID, :label => 'Identifier:'
-      config.add_index_field Settings.FIELDS.PROVIDER, :label => 'Institution:'
-      config.add_index_field Settings.FIELDS.ACCESS_RIGHTS, :label => 'Access:'
-      config.add_index_field Settings.FIELDS.SUBJECT, :label => 'Keywords:'
-      config.add_index_field Settings.FIELDS.CENTROID, :label => 'Centroid:'
+      config.add_index_field Settings.FIELDS.PROVIDER, label: "Institution:"
+      config.add_index_field Settings.FIELDS.ACCESS_RIGHTS, label: "Access:"
+      config.add_index_field Settings.FIELDS.SUBJECT, label: "Keywords:"
+      config.add_index_field Settings.FIELDS.CENTROID, label: "Centroid:"
       config.add_index_field Settings.FIELDS.INDEX_YEAR
       config.add_index_field Settings.FIELDS.CREATOR
       config.add_index_field Settings.FIELDS.DESCRIPTION, helper_method: :snippit
       config.add_index_field Settings.FIELDS.PUBLISHER
-      config.add_index_field Settings.FIELDS.SUPPRESSED, :label => 'Suppressed:'
+      config.add_index_field Settings.FIELDS.SUPPRESSED, label: "Suppressed:"
 
       # solr fields to be displayed in the show (single result) view
       #  The ordering of the field names is the order of the display
@@ -212,16 +215,19 @@ module Admin
       # item_prop: [String] property given to span with Schema.org item property
       # link_to_facet: [Boolean] that can be passed to link to a facet search
       # helper_method: [Symbol] method that can be used to render the value
-      config.add_show_field Settings.FIELDS.CREATOR, label: 'Creator', itemprop: 'creator'
-      config.add_show_field Settings.FIELDS.DESCRIPTION, label: 'Description', itemprop: 'description', helper_method: :render_value_as_truncate_abstract
-      config.add_show_field Settings.FIELDS.PUBLISHER, label: 'Publisher', itemprop: 'publisher', link_to_facet: true
-      config.add_show_field Settings.FIELDS.SPATIAL_COVERAGE, label: 'Place', itemprop: 'spatial', link_to_facet: true, helper_method: :render_placenames_as_truncate_abstract
-      config.add_show_field Settings.FIELDS.SUBJECT, label: 'Subject', itemprop: 'keywords', link_to_facet: true
-      config.add_show_field Settings.FIELDS.RESOURCE_TYPE, label: 'Type', itemprop: 'keywords', link_to_facet: true
-      config.add_show_field Settings.FIELDS.DATE_ISSUED, label: 'Date Published', itemprop: 'keywords', link_to_facet: true
-      config.add_show_field Settings.FIELDS.TEMPORAL_COVERAGE, label: 'Temporal Coverage', itemprop: 'temporal'
-      config.add_show_field Settings.FIELDS.PROVIDER, label: 'Contributed by', link_to_facet: true
-      config.add_show_field Settings.FIELDS.RIGHTS, label: 'Access Rights'
+      config.add_show_field Settings.FIELDS.CREATOR, label: "Creator", itemprop: "creator"
+      config.add_show_field Settings.FIELDS.DESCRIPTION, label: "Description", itemprop: "description",
+        helper_method: :render_value_as_truncate_abstract
+      config.add_show_field Settings.FIELDS.PUBLISHER, label: "Publisher", itemprop: "publisher", link_to_facet: true
+      config.add_show_field Settings.FIELDS.SPATIAL_COVERAGE, label: "Place", itemprop: "spatial", link_to_facet: true,
+        helper_method: :render_placenames_as_truncate_abstract
+      config.add_show_field Settings.FIELDS.SUBJECT, label: "Subject", itemprop: "keywords", link_to_facet: true
+      config.add_show_field Settings.FIELDS.RESOURCE_TYPE, label: "Type", itemprop: "keywords", link_to_facet: true
+      config.add_show_field Settings.FIELDS.DATE_ISSUED, label: "Date Published", itemprop: "keywords",
+        link_to_facet: true
+      config.add_show_field Settings.FIELDS.TEMPORAL_COVERAGE, label: "Temporal Coverage", itemprop: "temporal"
+      config.add_show_field Settings.FIELDS.PROVIDER, label: "Contributed by", link_to_facet: true
+      config.add_show_field Settings.FIELDS.RIGHTS, label: "Access Rights"
 
       # "fielded" search configuration. Used by pulldown among other places.
       # For supported keys in hash, see rdoc for Blacklight::SearchFields
@@ -241,48 +247,48 @@ module Admin
       # solr request handler? The one set in config[:default_solr_parameters][:qt],
       # since we aren't specifying it otherwise.
 
-      config.add_search_field('all_fields') do |field|
+      config.add_search_field("all_fields") do |field|
         field.include_in_advanced_search = false
-        field.label = 'All Fields'
+        field.label = "All Fields"
       end
 
-      config.add_search_field('keyword') do |field|
+      config.add_search_field("keyword") do |field|
         field.include_in_simple_select = false
-        field.qt = 'search'
-        field.label = 'Keyword'
+        field.qt = "search"
+        field.label = "Keyword"
         field.solr_local_parameters = {
-          qf: '$qf',
-          pf: '$pf'
+          qf: "$qf",
+          pf: "$pf"
         }
       end
 
-      config.add_search_field('title') do |field|
+      config.add_search_field("title") do |field|
         field.include_in_simple_select = false
-        field.qt = 'search'
-        field.label = 'Title'
+        field.qt = "search"
+        field.label = "Title"
         field.solr_local_parameters = {
-          qf: '$title_qf',
-          pf: '$title_pf'
+          qf: "$title_qf",
+          pf: "$title_pf"
         }
       end
 
-      config.add_search_field('placename') do |field|
+      config.add_search_field("placename") do |field|
         field.include_in_simple_select = false
-        field.qt = 'search'
-        field.label = 'Place'
+        field.qt = "search"
+        field.label = "Place"
         field.solr_local_parameters = {
-          qf: '$placename_qf',
-          pf: '$placename_pf'
+          qf: "$placename_qf",
+          pf: "$placename_pf"
         }
       end
 
-      config.add_search_field('publisher') do |field|
+      config.add_search_field("publisher") do |field|
         field.include_in_simple_select = false
-        field.qt = 'search'
-        field.label = 'Publisher/Creator'
+        field.qt = "search"
+        field.label = "Publisher/Creator"
         field.solr_local_parameters = {
-          qf: '$publisher_qf',
-          pf: '$publisher_pf'
+          qf: "$publisher_qf",
+          pf: "$publisher_pf"
         }
       end
 
@@ -290,41 +296,52 @@ module Admin
       # label in pulldown is followed by the name of the SOLR field to sort by and
       # whether the sort is ascending or descending (it must be asc or desc
       # except in the relevancy case).
-      config.add_sort_field 'score desc, dct_title_sort asc', :label => 'Relevance'
-      config.add_sort_field "#{Settings.FIELDS.INDEX_YEAR} desc, dct_title_sort asc", :label => 'Year (Newest first)'
-      config.add_sort_field "#{Settings.FIELDS.INDEX_YEAR} asc, dct_title_sort asc", :label => 'Year (Oldest first)'
-      config.add_sort_field 'dct_title_sort asc', :label => 'Title (A-Z)'
-      config.add_sort_field 'dct_title_sort desc', :label => 'Title (Z-A)'
-      config.add_sort_field 'date_modified_dtsi desc', :label => 'Updated At (Newest first)'
-      config.add_sort_field 'date_modified_dtsi asc', :label => 'Updated At (Oldest first)'
+      config.add_sort_field "score desc, dct_title_sort asc", label: "Relevance"
+      config.add_sort_field "#{Settings.FIELDS.INDEX_YEAR} desc, dct_title_sort asc", label: "Year (Newest first)"
+      config.add_sort_field "#{Settings.FIELDS.INDEX_YEAR} asc, dct_title_sort asc", label: "Year (Oldest first)"
+      config.add_sort_field "dct_title_sort asc", label: "Title (A-Z)"
+      config.add_sort_field "dct_title_sort desc", label: "Title (Z-A)"
+      config.add_sort_field "date_modified_dtsi desc", label: "Updated At (Newest first)"
+      config.add_sort_field "date_modified_dtsi asc", label: "Updated At (Oldest first)"
 
       # If there are more than this many search results, no spelling ("did you
       # mean") suggestion is offered.
       config.spell_max = 5
 
       # Custom tools for GeoBlacklight
-      config.add_show_tools_partial :more_details, partial: 'more_details', if: proc { |_context, _config, options| options[:document] && (!options[:document].references.nil? & !options[:document].references.url.nil?)}
-      config.add_show_tools_partial :metadata, if: proc { |_context, _config, options| options[:document] && (Settings.METADATA_SHOWN & options[:document].references.refs.map(&:type).map(&:to_s)).any? }
-      config.add_show_tools_partial :web_services, if: proc { |_context, _config, options| options[:document] && (Settings.WEBSERVICES_SHOWN & options[:document].references.refs.map(&:type).map(&:to_s)).any? }
-      config.add_show_tools_partial :exports, partial: 'exports', if: proc { |_context, _config, options| options[:document] }
-      config.add_show_tools_partial :data_dictionary, partial: 'data_dictionary', if: proc { |_context, _config, options| options[:document] && options[:document].data_dictionary_download.present?}
+      config.add_show_tools_partial :more_details, partial: "more_details", if: proc { |_context, _config, options|
+                                                                                  options[:document] && (!options[:document].references.nil? & !options[:document].references.url.nil?)
+                                                                                }
+      config.add_show_tools_partial :metadata, if: proc { |_context, _config, options|
+                                                     options[:document] && (Settings.METADATA_SHOWN & options[:document].references.refs.map(&:type).map(&:to_s)).any?
+                                                   }
+      config.add_show_tools_partial :web_services, if: proc { |_context, _config, options|
+                                                         options[:document] && (Settings.WEBSERVICES_SHOWN & options[:document].references.refs.map(&:type).map(&:to_s)).any?
+                                                       }
+      config.add_show_tools_partial :exports, partial: "exports", if: proc { |_context, _config, options|
+                                                                        options[:document]
+                                                                      }
+      config.add_show_tools_partial :data_dictionary, partial: "data_dictionary", if: proc { |_context, _config, options|
+                                                                                        options[:document] && options[:document].data_dictionary_download.present?
+                                                                                      }
       config.add_show_tools_partial(:citation)
-      config.add_show_tools_partial(:access_links, partial: 'access_links', if: proc { |_context, _config, options| options[:document] && options[:document].access_links.present?})
+      config.add_show_tools_partial(:access_links, partial: "access_links", if: proc { |_context, _config, options|
+                                                                                  options[:document] && options[:document].access_links.present?
+                                                                                })
 
       # Remove nav actions
-      config.add_nav_action(:bookmark, partial: 'blacklight/nav/bookmark', if: false)
+      config.add_nav_action(:bookmark, partial: "blacklight/nav/bookmark", if: false)
 
       # Remove show tools
       config.show.partials.delete(:show_header)
       config.show.partials.delete(:show)
 
-      config.show.display_type_field = 'format'
-      config.show.partials << 'show_header'
-      config.show.partials << 'show_default_viewer_container'
-      config.show.partials << 'show_default_viewer_information'
-      config.show.partials << 'show_default_attribute_table'
-      config.show.partials << 'show'
-
+      config.show.display_type_field = "format"
+      config.show.partials << "show_header"
+      config.show.partials << "show_default_viewer_container"
+      config.show.partials << "show_default_viewer_information"
+      config.show.partials << "show_default_attribute_table"
+      config.show.partials << "show"
 
       config.show.document_actions.delete(:email)
       config.show.document_actions.delete(:bookmark)
@@ -336,30 +353,30 @@ module Admin
       # 'mapquest' http://developer.mapquest.com/web/products/open/map
       # 'positron' http://cartodb.com/basemaps/
       # 'darkMatter' http://cartodb.com/basemaps/
-      config.basemap_provider = 'esri'
-      config.max_per_page = 100000
+      config.basemap_provider = "esri"
+      config.max_per_page = 100_000
 
       # Configuration for autocomplete suggestor
       config.autocomplete_enabled = true
-      config.autocomplete_path = 'suggest'
+      config.autocomplete_path = "suggest"
     end
 
     # Administrative view of document
     # - Sidecar Image
     # - URIs
     def admin
-      deprecated_response, @document = search_service.fetch(params[:id])
+      _, @document = search_service.fetch(params[:id])
     end
 
     # Administrative view for array of document ids
     # - bookmarks
     def fetch
-      @response, deprecated_document_list = search_service.fetch(params[:id])
+      @response, = search_service.fetch(params[:id])
 
       respond_to do |format|
         format.json do
           @presenter = Blacklight::JsonPresenter.new(@response,
-                                                     blacklight_config)
+            blacklight_config)
         end
       end
     end
@@ -369,16 +386,14 @@ module Admin
       # We want to find the facets available for the current search, but:
       # * IGNORING current query (add in facets_for_advanced_search_form filter)
       # * IGNORING current advanced search facets (remove add_advanced_search_to_solr filter)
-      @response, _ = search_service.search_results do |search_builder|
+      @response, = search_service.search_results do |search_builder|
         search_builder.except(:add_advanced_search_to_solr).append(:facets_for_advanced_search_form)
       end
-
-      @response
 
       respond_to do |format|
         format.json do
           @presenter = Blacklight::JsonPresenter.new(@response,
-                                                     blacklight_config)
+            blacklight_config)
         end
       end
     end

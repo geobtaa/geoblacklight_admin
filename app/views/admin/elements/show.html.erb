@@ -1,4 +1,4 @@
-<%- @page_title = "Element - #{@element.label}" %>
+<%- @page_title = "GBL♦Admin - Element - #{@element.label}" %>
 
 <h1>Element</h1>
 
@@ -6,7 +6,7 @@
   <div class="col-9">
     <h2>
       <%= @element.label %>
-      <%= link_to '~ Edit Element', edit_element_path, { class: 'btn btn-primary float-right' } %>
+      <%= link_to '~ Edit Element', edit_admin_element_path, { class: 'btn btn-primary float-right' } %>
     </h2>
 
     <table class="table table-bordered">
@@ -108,14 +108,14 @@
   </div>
 
   <div class="col-3">
-    <h3><%= link_to "Elements", elements_path %></h3>
+    <h3><%= link_to "Elements", admin_elements_path %></h3>
     <%- @elements = Element.all %>
     <ul>
       <%- @elements.each do |elm| %>
-        <li><%= link_to_unless_current(elm.label, elm) %></li>
+        <li><%= link_to_unless_current(elm.label, admin_element_url(elm)) %></li>
       <%- end %>
     </ul>
   </div>
 </div>
-<%= link_to 'Edit', edit_element_path(@element) %> |
-<%= link_to 'Back', elements_path %>
+<%= link_to 'Edit', edit_admin_element_path(@element) %> |
+<%= link_to 'Back', admin_elements_path %>

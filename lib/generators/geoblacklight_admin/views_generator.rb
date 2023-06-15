@@ -14,6 +14,5 @@ module GeoblacklightAdmin
     def create_views
       # @TODO
     end
-    
   end
 end

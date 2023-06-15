@@ -37,7 +37,8 @@ class Document
       end
 
       unless valid_geom
-        record.errors.add(GeoblacklightAdmin::Schema.instance.solr_fields[:geometry], "Invalid envelope: #{error_message}")
+        record.errors.add(GeoblacklightAdmin::Schema.instance.solr_fields[:geometry],
+          "Invalid envelope: #{error_message}")
       end
 
       valid_geom
@@ -60,7 +61,8 @@ class Document
       # Guard against a whole world polygons
       if geom == "POLYGON((-180 90, 180 90, 180 -90, -180 -90, -180 90))"
         valid_geom = false
-        record.errors.add(GeoblacklightAdmin::Schema.instance.solr_fields[:geometry], "Invalid polygon: all points are coplanar input, Solr will not index")
+        record.errors.add(GeoblacklightAdmin::Schema.instance.solr_fields[:geometry],
+          "Invalid polygon: all points are coplanar input, Solr will not index")
       end
 
       valid_geom

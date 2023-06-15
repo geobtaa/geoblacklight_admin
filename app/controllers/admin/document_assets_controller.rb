@@ -24,11 +24,11 @@ module Admin
       @asset = Kithe::Asset.find_by_friendlier_id!(params[:id])
       authorize! :read, @asset
 
-      if @asset.stored?
-        @checks = @asset.fixity_checks.order("created_at asc")
-        @latest_check = @checks.last
-        @earliest_check = @checks.first
-      end
+      return unless @asset.stored?
+
+      @checks = @asset.fixity_checks.order("created_at asc")
+      @latest_check = @checks.last
+      @earliest_check = @checks.first
     end
 
     def edit
@@ -58,7 +58,10 @@ module Admin
       @asset.destroy
 
       respond_to do |format|
-        format.html { redirect_to document_document_assets_path(@document), notice: "Asset '#{@asset.title}' was successfully destroyed." }
+        format.html do
+          redirect_to document_document_assets_path(@document),
+            notice: "Asset '#{@asset.title}' was successfully destroyed."
+        end
         format.json { head :no_content }
       end
     end
@@ -105,9 +108,7 @@ module Admin
         asset.save!
       end
 
-      if @parent.representative_id.nil?
-        @parent.update(representative: @parent.members.order(:position).first)
-      end
+      @parent.update(representative: @parent.members.order(:position).first) if @parent.representative_id.nil?
 
       redirect_to document_path(@parent.friendlier_id, anchor: "nav-members")
     end
@@ -155,7 +156,8 @@ module Admin
 
       RefreshActiveEncodeStatusJob.perform_later(status)
 
-      redirect_to admin_asset_url(status.asset), notice: "Started refresh for ActiveEncode job #{status.active_encode_id}"
+      redirect_to admin_asset_url(status.asset),
+        notice: "Started refresh for ActiveEncode job #{status.active_encode_id}"
     end
 
     def work_is_oral_history?
@@ -175,6 +177,7 @@ module Admin
 
     def parent_path(asset)
       return nil if asset.parent.nil?
+
       asset.parent.is_a? Collection ? collection_path(asset.parent) : admin_work_path(asset.parent)
     end
     helper_method :parent_path

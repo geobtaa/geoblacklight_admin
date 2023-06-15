@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= @page_title || 'GBL Admin' %></title>
+    <title><%= @page_title || 'GBL♦Admin' %></title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag 'application', media: 'all' %>
-    <%= javascript_include_tag "geoblacklight_admin" %>
-    <%= javascript_pack_tag 'application' %>
+    <%= stylesheet_link_tag "application", media: "all" %>
+    <%= javascript_include_tag "geoblacklight_admin", "data-turbolinks-track": "reload" %>
+    <%= javascript_pack_tag "application", "data-turbolinks-track": "reload" %>
     
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>

@@ -94,9 +94,7 @@ class Import < ApplicationRecord
       # logger.debug("Mapping: #{mapping.source_header} to #{mapping.destination_field}")
 
       # Handle discards
-      if mapping.destination_field == "Discard"
-        next
-      end
+      next if mapping.destination_field == "Discard"
 
       # Handle repeatable dct_references_s entries
       if mapping.destination_field == "dct_references_s"
@@ -118,7 +116,8 @@ class Import < ApplicationRecord
 
       # Split delimited field values, if field has a value present
       if mapping.delimited?
-        transformed_data[mapping.destination_field] = transformed_data[mapping.destination_field].present? ? transformed_data[mapping.destination_field].split(klass_delimiter) : ""
+        transformed_data[mapping.destination_field] =
+          transformed_data[mapping.destination_field].present? ? transformed_data[mapping.destination_field].split(klass_delimiter) : ""
       end
     end
 
@@ -175,9 +174,7 @@ class Import < ApplicationRecord
         required_mapping = {}
         required_mapping[key] = value
 
-        unless data_hash.has_key?(key)
-          data_hash.merge!(required_mapping.stringify_keys)
-        end
+        data_hash.merge!(required_mapping.stringify_keys) unless data_hash.key?(key)
       end
     end
 

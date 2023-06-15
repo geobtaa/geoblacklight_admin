@@ -15,7 +15,8 @@ class Import
       duplicate_id = validate_csv_file(record.csv_file)
       unless duplicate_id.nil?
         valid_csv_file = false
-        record.errors.add(:csv_file, "Duplicate ID value found: #{duplicate_id}. Please clean up the CSV file and reimport.")
+        record.errors.add(:csv_file,
+          "Duplicate ID value found: #{duplicate_id}. Please clean up the CSV file and reimport.")
       end
 
       valid_csv_file

@@ -1,6 +1,6 @@
 <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="<%=root_url%>">
-    <strong>G&middot;E&middot;O&middot;M&middot;G</strong>
+  <a class="navbar-brand gbl-admin" href="<%=admin_documents_url%>">
+    <strong>GBL♦Admin</strong>
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -24,7 +24,7 @@
           <span class="sr-only">Toggle Dropdown</span>
         </button>
         <div class="dropdown-menu">
-          <%= link_to "Advanced", admin_advanced_search_path, { class: 'dropdown-item' } %>
+          <%= link_to "Advanced", admin_search_path, { class: 'dropdown-item' } %>
         </div>
       </div>
     </div>
@@ -32,6 +32,11 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+    <li class="nav-item">
+      <%= link_to root_url, { class: 'nav-link' } do %>
+        GeoBlacklight Home
+      <% end %>
+    </li>
       <% if user_signed_in? %>
         <li class="nav-item">
           <%= link_to admin_notifications_url, { class: 'nav-link' } do %>

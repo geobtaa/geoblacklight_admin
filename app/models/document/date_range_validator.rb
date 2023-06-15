@@ -18,7 +18,8 @@ class Document
 
         # Must split into two via '-'
         if date_range.split("-").size != 2
-          record.errors.add(GeoblacklightAdmin::Schema.instance.solr_fields[:date_range], "invalid date range present - missing YYYY-YYYY value")
+          record.errors.add(GeoblacklightAdmin::Schema.instance.solr_fields[:date_range],
+            "invalid date range present - missing YYYY-YYYY value")
           valid_date_ranges = false
           return valid_date_ranges
         end
@@ -26,28 +27,30 @@ class Document
         start_date, end_date = date_range.split("-")
 
         unless valid_yyyy(start_date)
-          record.errors.add(GeoblacklightAdmin::Schema.instance.solr_fields[:date_range], "invalid start date - bad YYYY-YYYY value, only integers or the wildcard '*' allowed")
+          record.errors.add(GeoblacklightAdmin::Schema.instance.solr_fields[:date_range],
+            "invalid start date - bad YYYY-YYYY value, only integers or the wildcard '*' allowed")
           valid_date_ranges = false
         end
 
         unless valid_yyyy(end_date)
-          record.errors.add(GeoblacklightAdmin::Schema.instance.solr_fields[:date_range], "invalid end date - bad YYYY-YYYY value, only integers or the wildcard '*' allowed")
+          record.errors.add(GeoblacklightAdmin::Schema.instance.solr_fields[:date_range],
+            "invalid end date - bad YYYY-YYYY value, only integers or the wildcard '*' allowed")
           valid_date_ranges = false
         end
 
         # Allow only 1 wildcard
         if start_date == "*" && end_date == "*"
-          record.errors.add(GeoblacklightAdmin::Schema.instance.solr_fields[:date_range], "invalid only one wildcard can be used")
+          record.errors.add(GeoblacklightAdmin::Schema.instance.solr_fields[:date_range],
+            "invalid only one wildcard can be used")
           valid_date_ranges = false
         end
 
         # Avoid 1996-1946
-        if start_date[/\d+/] && end_date[/\d+/]
-          unless start_date.to_i <= end_date.to_i
-            record.errors.add(GeoblacklightAdmin::Schema.instance.solr_fields[:date_range], "invalid start date must be less than the end date")
-            valid_date_ranges = false
-          end
-        end
+        next unless start_date[/\d+/] && end_date[/\d+/] && start_date.to_i > end_date.to_i
+
+        record.errors.add(GeoblacklightAdmin::Schema.instance.solr_fields[:date_range],
+          "invalid start date must be less than the end date")
+        valid_date_ranges = false
       end
       valid_date_ranges
     end

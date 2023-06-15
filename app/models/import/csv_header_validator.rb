@@ -10,7 +10,8 @@ class Import
       valid_csv_header = true
       unless valid_csv_headers?(record.csv_file)
         valid_csv_header = false
-        record.errors.add(:csv_file, "Missing a required CSV header. Title, Resource Class, Access Rights, and ID are required.")
+        record.errors.add(:csv_file,
+          "Missing a required CSV header. Title, Resource Class, Access Rights, and ID are required.")
       end
 
       valid_csv_header

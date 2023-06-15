@@ -19,6 +19,7 @@
 // Modules
 @import "modules/autocomplete";
 @import "modules/blazer";
+@import "modules/chosen";
 @import "modules/code";
 @import "modules/datepicker";
 @import "modules/elements";
@@ -44,4 +45,8 @@ footer {
 
 div.container-fluid {
   margin-top: 5rem;
+}
+
+.navbar-brand.gbl-admin {
+  background: none;
 }

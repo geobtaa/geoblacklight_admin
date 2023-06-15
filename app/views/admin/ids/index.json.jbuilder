@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 json.links do
   json.self url_for(search_state.to_h.merge(only_path: false))
   json.prev url_for(search_state.to_h.merge(only_path: false, page: @response.prev_page.to_s)) if @response.prev_page
@@ -18,7 +19,7 @@ end
 
 json.included do
   json.array! search_fields do |(label, key)|
-    json.type 'search_field'
+    json.type "search_field"
     json.id key
     json.attributes do
       json.label label
@@ -29,7 +30,7 @@ json.included do
   end
 
   json.array! active_sort_fields do |key, field|
-    json.type 'sort'
+    json.type "sort"
     json.id key
     json.attributes do
       json.label field.label

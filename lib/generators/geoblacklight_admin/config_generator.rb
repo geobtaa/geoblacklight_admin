@@ -8,17 +8,20 @@ module GeoblacklightAdmin
 
     desc <<-DESCRIPTION
       This generator makes the following changes to your application:
-       1. Copies GBL Admin initializer file to host config 
+       1. Copies GBL Admin initializer file to host config#{" "}
        2. Copies Kithe initializer file to host config
        3. Copies Pagy initializer file to host config
        4. Copies Statesman initializer file to host config
        5. Copies PG database.yml connection to host config
-       6. Copies .env.development to host
+       5. Copies settings.yml to host config
+       6. Copies .env.development and .env.test to host
+       6. Copies JSON Schema to host
        7. Copies solr/* to host
        8. Sets Routes
        9. Sets Gems
        10.Sets MimeTypes
        11.Sets DB Seeds
+       11.Sets ActiveStorage
        12.Sets Pagy Backend
 
     DESCRIPTION
@@ -43,8 +46,13 @@ module GeoblacklightAdmin
       copy_file "config/database.yml", "config/database.yml", force: true
     end
 
+    def create_settings_yml
+      copy_file "config/settings.yml", "config/settings.yml", force: true
+    end
+
     def create_dotenv
       copy_file ".env.development.example", ".env.development"
+      copy_file ".env.development.example", ".env.test"
     end
 
     def copy_json_schema
@@ -52,7 +60,7 @@ module GeoblacklightAdmin
     end
 
     def copy_solr
-      directory 'solr', 'solr', force: true
+      directory "solr", "solr", force: true
     end
 
     def create_solr_yml
@@ -88,14 +96,14 @@ module GeoblacklightAdmin
             patch :run, on: :member
             patch :revert, on: :member
           end
-        
+
           # Imports
           resources :imports do
             resources :mappings
             resources :import_documents, only: [:show]
             patch :run, on: :member
           end
-        
+
           # Elements
           resources :elements do
             post :sort, on: :collection
@@ -109,7 +117,7 @@ module GeoblacklightAdmin
           resources :form_group, path: :form_elements, controller: :form_elements
           resources :form_control, path: :form_elements, controller: :form_elements
           resources :form_feature, path: :form_elements, controller: :form_elements
-        
+
           # Notifications
           resources :notifications do
             put "batch", on: :collection
@@ -121,7 +129,7 @@ module GeoblacklightAdmin
           # Bookmarks
           resources :bookmarks
           delete "/bookmarks", to: "bookmarks#destroy", as: :bookmarks_destroy_by_fkeys
-          
+        #{"  "}
           # AdvancedSearch controller
           get '/advanced_search' => 'advanced_search#index', constraints: lambda { |req| req.format == :json }
           get '/advanced_search/facets' => 'advanced_search#facets', constraints: lambda { |req| req.format == :json }
@@ -136,84 +144,84 @@ module GeoblacklightAdmin
           # Documents
           resources :documents do
             get "versions"
-            
+        #{"    "}
             # DocumentAccesses
             resources :document_accesses, path: "access" do
               collection do
                 get "import"
                 post "import"
-        
+
                 get "destroy_all"
                 post "destroy_all"
               end
             end
-            
+        #{"    "}
             # DocumentDownloads
             resources :document_downloads, path: "downloads" do
               collection do
                 get "import"
                 post "import"
-        
+
                 get "destroy_all"
                 post "destroy_all"
               end
             end
-            
+        #{"    "}
             # Document Assets
             resources :document_assets, path: "assets" do
               collection do
                 get "display_attach_form"
                 post "attach_files"
-        
+
                 get "destroy_all"
                 post "destroy_all"
               end
             end
-        
+
             collection do
               get "fetch"
             end
           end
-          
+        #{"  "}
           # Document Accesses
           resources :document_accesses, path: "access" do
             collection do
               get "import"
               post "import"
-        
+
               get "destroy_all"
               post "destroy_all"
             end
           end
-        
+
           # Document Downloads
           resources :document_downloads, path: "downloads" do
             collection do
               get "import"
               post "import"
-        
+
               get "destroy_all"
               post "destroy_all"
             end
           end
-        
+
           # Document Assets
           resources :document_assets, path: "assets" do
             collection do
               get "display_attach_form"
               post "attach_files"
-        
+
               get "destroy_all"
               post "destroy_all"
             end
           end
-        
+
           get "/documents/:id/ingest", to: "document_assets#display_attach_form", as: "asset_ingest"
           post "/documents/:id/ingest", to: "document_assets#attach_files"
           #mount Kithe::AssetUploader.upload_endpoint(:cache) => "/direct_upload", :as => :direct_app_upload
-        
+
           resources :collections, except: [:show]
-        
+
           # Note "assets" is Rails reserved word for routing, oops. So we use
           # asset_files.
           resources :assets, path: "asset_files", except: [:new, :create] do
@@ -221,11 +229,11 @@ module GeoblacklightAdmin
               put "convert_to_child_work"
             end
           end
-        
+
           # @TODO
           # mount Qa::Engine => "/authorities"
           mount ActionCable.server => "/cable"
-        
+
           # @TODO
           # authenticate :user, ->(user) { user } do
             # mount Blazer::Engine, at: "blazer"
@@ -243,16 +251,16 @@ module GeoblacklightAdmin
 gem 'active_storage_validations', '~> 1.0'
 gem 'amazing_print'
 gem 'blacklight_advanced_search'
-gem 'bootstrap', '~> 4.0'
+# gem 'bootstrap', '~> 4.0' (upstream)
 gem 'cocoon', '~> 1.2'
-# gem 'devise', '~> 4.7'
+# gem 'devise', '~> 4.7' (upstream)
 gem 'devise-bootstrap-views', '~> 1.0'
 gem 'devise_invitable', '~> 2.0'
 gem 'dotenv-rails'
 gem 'haml', '~> 5.2'
 gem 'httparty'
 gem 'inline_svg'
-# gem 'jquery-rails', '~> 4.4'
+# gem 'jquery-rails', '~> 4.4' (upstream)
 gem 'kithe', '~> 2.0'
 gem 'noticed'
 gem 'pagy'
@@ -282,7 +290,7 @@ Mime::Type.register "text/csv", :csv_document_access_links
 
     def set_seeds
       append_to_file "db/seeds.rb" do
-        'GeoblacklightAdmin::Engine.load_seed'
+        "GeoblacklightAdmin::Engine.load_seed"
       end
     end
 
@@ -294,7 +302,7 @@ Mime::Type.register "text/csv", :csv_document_access_links
 
     def add_activestorage
       append_to_file "app/assets/javascripts/application.js" do
-"
+        "
 
 // Required by GBL Admin
 //= require activestorage"
@@ -305,12 +313,16 @@ Mime::Type.register "text/csv", :csv_document_access_links
       copy_file "_user_util_links.html.erb", "app/views/shared/_user_util_links.html.erb"
     end
 
+    def add_show_sidebar
+      copy_file "_show_sidebar.html.erb", "app/views/catalog/_show_sidebar.html.erb"
+    end
+
     # @TODO
     # I'm certain this is not the best way to inject our JS behaviors into the root app
     # But for now, this will do...
     # Long term I hope to avoid webpack here altogether.
     def copy_app_javascript
-      directory 'javascript', 'app/javascript', force: true
+      directory "javascript", "app/javascript", force: true
     end
 
     def add_package_json

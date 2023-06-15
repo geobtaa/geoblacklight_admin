@@ -9,7 +9,10 @@ namespace :gbl_admin do
   task :server, [:rails_server_args] do |_t, args|
     require "solr_wrapper"
     SolrWrapper.wrap(port: "8983") do |solr|
-      solr.with_collection(name: "blacklight-core", dir: File.join(File.expand_path(Rails.root, File.dirname(__FILE__)), "solr", "conf")) do
+      solr.with_collection(name: "blacklight-core",
+        dir: File.join(
+          File.expand_path(Rails.root, File.dirname(__FILE__)), "solr", "conf"
+        )) do
         puts "\nSolr server running: http://localhost:#{solr.port}/solr/#/blacklight-core"
         puts "\n^C to stop"
         puts " "
@@ -23,8 +26,6 @@ namespace :gbl_admin do
     end
   end
 end
-
-
 
 desc "Run test suite"
 task ci: :environment do
@@ -80,7 +81,9 @@ namespace :geomg do
         puts " "
         begin
           # Rake::Task['geomg:solr:restore'].invoke
-          system "bundle exec rails s --binding=#{ENV.fetch("GEOMG_SERVER_BIND_INTERFACE", "0.0.0.0")} --port=#{ENV.fetch("GEOMG_SERVER_PORT", "3000")}"
+          system "bundle exec rails s --binding=#{ENV.fetch("GEOMG_SERVER_BIND_INTERFACE",
+            "0.0.0.0")} --port=#{ENV.fetch("GEOMG_SERVER_PORT",
+              "3000")}"
           sleep
         rescue Interrupt
           puts "\nShutting down..."
@@ -100,7 +103,7 @@ namespace :geomg do
           puts "Solr running at http://localhost:8983/solr/#/blacklight-core/, ^C to exit"
           begin
             Rake::Task["db:fixtures:load"].invoke
-            Rake::Task["geomg:solr:reindex"].invoke
+            # Rake::Task["geomg:solr:reindex"].invoke
             sleep
           rescue Interrupt
             puts "\nShutting down..."
@@ -200,7 +203,8 @@ namespace :geomg do
 
       snapshot = Dir.glob(Rails.root.join("solr/snapshots/snapshot.*").to_s).last
 
-      FileUtils.cp_r(snapshot, Rails.root.join("tmp/geoportal-core-development/server/solr/geoportal-core-development/data").to_s)
+      FileUtils.cp_r(snapshot,
+        Rails.root.join("tmp/geoportal-core-development/server/solr/geoportal-core-development/data").to_s)
 
       res = Faraday.get "#{solr}/#{replication}"
       puts res.body

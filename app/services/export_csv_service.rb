@@ -20,7 +20,11 @@ class ExportCsvService
     Rails.logger.debug { "\n\nExportCsvService: #{document_ids.inspect}\n\n" }
 
     CSV.generate(headers: true) do |_csv|
-      Rails.logger.debug { "\n\n CSV Fields: #{GeoblacklightAdmin::Schema.instance.exportable_fields.map { |k, _v| k.to_s }} \n\n" }
+      Rails.logger.debug do
+        "\n\n CSV Fields: #{GeoblacklightAdmin::Schema.instance.exportable_fields.map do |k, _v|
+                              k.to_s
+                            end} \n\n"
+      end
 
       csv_file << GeoblacklightAdmin::Schema.instance.exportable_fields.map { |k, _v| k.to_s }
       document_ids.each_slice(slice_count) do |slice|
