@@ -86,23 +86,24 @@ You're now done generating the test app and populating the Elements / FormElemen
 * Likely a lot more polish to be uncovered...
 
 
-# To Run Project
+## To Run Project
 drop and create databases (or engine_cart will fail)
 cd project root
 bundle exec rake engine_cart:regenerate
 
-## Run Solr
+### Run Solr
 bin/rails geoblacklight:solr
 
-## Run App
+### Run App
 cd .internal_test_app
 bundle exec rails server
 
-## Test App
+### Test App
 bundle exec rails test
 cd .internal_test_app
 rake db:seed
 rake geomg:solr:reindex
 
-# @TODO: Add chosen.js css
-# @TODO: Fix missing select form-control class
+## TODOs
+* @TODO: Add chosen.js css
+* @TODO: Fix missing select form-control class
