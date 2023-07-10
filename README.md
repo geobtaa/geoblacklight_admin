@@ -24,28 +24,18 @@ DROP DATABASE geoblacklight_development;
 CREATE DATABASE geoblacklight_development;
 ```
 
-### Terminal 2 - Bundle and run generator
+### Terminal 2
+
+#### Bundle and run generator
 ```bash
 bundle install
 bundle exec rake engine_cart:generate
 ```
 
-When the .internal_test_app is built, edit `geoblacklight_admin_helper.rb`, and uncomment this Pagy include. Why including Pagy here breaks the entire generator build is beyond me...
-
-```bash
-  # @TODO:
-  # Cannot generate app if uncommented...
-  # Uncomment after app is generated to fix view errors
-  # include ::Pagy::Frontend
-```
-
-### Terminal 2 - Seed and spin up server
+#### Seed and spin up server
 ```bash
 cd .internal_test_app
 bundle exec rake db:seed
-
-# JS was breaking in dev mode, had to add the yarn package below - EWL 6/5/23
-yarn add @babel/plugin-proposal-private-methods --dev
 
 # Run the app server
 bundle exec rake gbl_admin:server
