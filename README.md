@@ -101,8 +101,8 @@ bundle exec rails server
 ### Test App
 bundle exec rails test
 cd .internal_test_app
-rake db:seed
-rake geomg:solr:reindex
+bundle exec rake db:seed
+bundle exec rake geomg:solr:reindex
 
 ## TODOs
 * @TODO: Add chosen.js css

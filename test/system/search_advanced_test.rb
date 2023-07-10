@@ -8,7 +8,7 @@ class SearchAdvancedTest < ApplicationSystemTestCase
   end
 
   test "search advanced dom" do
-    visit "/admin/advanced_search"
+    visit "/admin/search"
     assert page.has_selector?("nav.navbar")
     assert page.has_selector?("#search-form")
     within("#search-form") do

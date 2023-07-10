@@ -130,6 +130,10 @@ module GeoblacklightAdmin
           resources :bookmarks
           delete "/bookmarks", to: "bookmarks#destroy", as: :bookmarks_destroy_by_fkeys
         #{"  "}
+
+          # Search controller
+          get "/search" => "search#index"
+          
           # AdvancedSearch controller
           get '/advanced_search' => 'advanced_search#index', constraints: lambda { |req| req.format == :json }
           get '/advanced_search/facets' => 'advanced_search#facets', constraints: lambda { |req| req.format == :json }
