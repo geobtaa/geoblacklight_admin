@@ -344,7 +344,7 @@ Mime::Type.register "text/csv", :csv_document_access_links
     end
 
     def add_catalog_controller_default_params
-      inject_into_file "app/controllers/catalog_controller.rb", after: "'q.alt' => '*:*'" do
+      inject_into_file "app/controllers/catalog_controller.rb", after: '"q.alt" => "*:*"' do
         ",\n      'fq' => ['b1g_publication_state_s:published']"
       end
     end
