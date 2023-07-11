@@ -49,12 +49,40 @@ You're now done generating the test app and populating the Elements / FormElemen
 2. Click on the "Sign in" link
 3. Enter email: admin@geoblacklight.org and password: 123456
 4. Click on the "GBL Admin" link
-5. Import some CSV
+5. Import some CSV (test/fixtures/files/btaa_sample_records.csv)
 
 -----
 
-### TODOs - Running list of things to accomplish
+## Run Project for Local Development
+Drop and recreate databases (or engine_cart:generate will fail)
 
+```bash
+cd project root
+bundle exec rake engine_cart:regenerate
+```
+
+### Run Solr
+```bash
+bin/rails geoblacklight:solr
+```
+
+### Run App
+```bash
+cd .internal_test_app
+bundle exec rails server
+```
+
+### Lint App
+```bash
+standardrb .
+```
+
+### Test App
+```bash
+RAILS_ENV=test bundle exec rails test
+```
+
+## TODOs
 * ~~SolrWrapper - Add persist option~~
 * ~~BlacklightApi returns not auth'd message (not requiring auth for now (not sensitive data))~~
 * ~~Facet links need /admin nesting~~
@@ -68,32 +96,10 @@ You're now done generating the test app and populating the Elements / FormElemen
 * ~~Routes - Get devise user~~
 * ~~No route matches [GET] "/users/sign_out"~~
 * ~~Bookmarks need to be Admin::Bookmarks~~
-* GitHub Actions / CI integration
-* Port the GEOMG test suite
+* ~~GitHub Actions / CI integration~~
+* ~~Port the GEOMG test suite~~
 * Remove legacy GEOMG / B1G everywhere...
 * Send GBLADMIN JavaScript pack to NPM like Blacklight
 * Project gem dependency injection redundancy...
+* DRY up Engine routing
 * Likely a lot more polish to be uncovered...
-
-
-## To Run Project
-drop and create databases (or engine_cart will fail)
-cd project root
-bundle exec rake engine_cart:regenerate
-
-### Run Solr
-bin/rails geoblacklight:solr
-
-### Run App
-cd .internal_test_app
-bundle exec rails server
-
-### Test App
-bundle exec rails test
-cd .internal_test_app
-bundle exec rake db:seed
-bundle exec rake geomg:solr:reindex
-
-## TODOs
-* @TODO: Add chosen.js css
-* @TODO: Fix missing select form-control class
