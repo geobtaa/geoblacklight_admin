@@ -26,8 +26,17 @@ module GeoblacklightAdmin
 
     DESCRIPTION
 
+    def create_statesman_initializer
+      copy_file "config/initializers/simple_form.rb", "config/initializers/simple_form.rb", force: true
+      copy_file "config/initializers/simple_form_bootstrap.rb", "config/initializers/simple_form_bootstrap.rb", force: true
+    end
+
     def create_gbl_admin_initializer
       copy_file "config/initializers/geoblacklight_admin.rb", "config/initializers/geoblacklight_admin.rb"
+    end
+
+    def create_devise_initializer
+      copy_file "config/initializers/devise.rb", "config/initializers/devise.rb", force: true
     end
 
     def create_kithe_initializer
@@ -251,28 +260,8 @@ module GeoblacklightAdmin
     def set_gems
       append_to_file "Gemfile" do
         "
-# GBL‡ADMIN // @TODO: Why is this necessary? Shouldn't the engine dependencies get installed on their own?
-gem 'active_storage_validations', '~> 1.0'
-gem 'amazing_print'
-gem 'blacklight_advanced_search'
-# gem 'bootstrap', '~> 4.0' (upstream)
-gem 'cocoon', '~> 1.2'
-# gem 'devise', '~> 4.7' (upstream)
-gem 'devise-bootstrap-views', '~> 1.0'
-gem 'devise_invitable', '~> 2.0'
-gem 'dotenv-rails'
-gem 'haml', '~> 5.2'
-gem 'httparty'
-gem 'inline_svg'
-# gem 'jquery-rails', '~> 4.4' (upstream)
+# GBL‡ADMIN
 gem 'kithe', '~> 2.0'
-gem 'noticed'
-gem 'pagy'
-gem 'paper_trail'
-gem 'qa', '~> 5.0'
-gem 'ruby-progressbar'
-gem 'simple_form', '~> 5.0'
-gem 'statesman', '~> 7.1.0'
         "
       end
     end

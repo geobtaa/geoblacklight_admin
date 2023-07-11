@@ -51,9 +51,5 @@ module GeoblacklightAdmin
     def install_yarn
       run "yarn install"
     end
-
-    def install_simple_form
-      run "bin/rails generate simple_form:install --bootstrap"
-    end
   end
 end

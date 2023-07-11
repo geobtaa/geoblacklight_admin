@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
   s.add_dependency "devise_invitable", "~> 2.0"
   s.add_dependency "dotenv-rails", "~> 2.8"
   s.add_dependency "geoblacklight", "~> 4.0"
-  s.add_dependency "haml", "~> 5.2.0"
+  s.add_dependency "haml", "~> 5.2"
   s.add_dependency "httparty", "~> 0.21"
   s.add_dependency "inline_svg", "~> 1.9"
   s.add_dependency "jquery-rails", "~> 4.4"
