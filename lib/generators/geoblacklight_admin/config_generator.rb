@@ -8,47 +8,29 @@ module GeoblacklightAdmin
 
     desc <<-DESCRIPTION
       This generator makes the following changes to your application:
-       1. Copies GBL Admin initializer file to host config#{" "}
-       2. Copies Kithe initializer file to host config
-       3. Copies Pagy initializer file to host config
-       4. Copies Statesman initializer file to host config
-       5. Copies PG database.yml connection to host config
+       1. Copies GBL Admin initializer files to host config
+       5. Copies database.yml connection to host config
        5. Copies settings.yml to host config
        6. Copies .env.development and .env.test to host
        6. Copies JSON Schema to host
        7. Copies solr/* to host
        8. Sets Routes
        9. Sets Gems
-       10.Sets MimeTypes
        11.Sets DB Seeds
        11.Sets ActiveStorage
        12.Sets Pagy Backend
 
     DESCRIPTION
 
-    def create_statesman_initializer
+    def create_gbl_admin_initializer_files
+      copy_file "config/initializers/geoblacklight_admin.rb", "config/initializers/geoblacklight_admin.rb", force: true
+      copy_file "config/initializers/devise.rb", "config/initializers/devise.rb", force: true
+      copy_file "config/initializers/kithe.rb", "config/initializers/kithe.rb", force: true
+      copy_file "config/initializers/mime_types.rb", "config/initializers/mime_types.rb", force: true
+      copy_file "config/initializers/pagy.rb", "config/initializers/pagy.rb", force: true
       copy_file "config/initializers/simple_form.rb", "config/initializers/simple_form.rb", force: true
       copy_file "config/initializers/simple_form_bootstrap.rb", "config/initializers/simple_form_bootstrap.rb", force: true
-    end
-
-    def create_gbl_admin_initializer
-      copy_file "config/initializers/geoblacklight_admin.rb", "config/initializers/geoblacklight_admin.rb"
-    end
-
-    def create_devise_initializer
-      copy_file "config/initializers/devise.rb", "config/initializers/devise.rb", force: true
-    end
-
-    def create_kithe_initializer
-      copy_file "config/initializers/kithe.rb", "config/initializers/kithe.rb"
-    end
-
-    def create_pagy_initializer
-      copy_file "config/initializers/pagy.rb", "config/initializers/pagy.rb"
-    end
-
-    def create_statesman_initializer
-      copy_file "config/initializers/statesman.rb", "config/initializers/statesman.rb"
+      copy_file "config/initializers/statesman.rb", "config/initializers/statesman.rb", force: true
     end
 
     def create_database_yml
@@ -255,30 +237,6 @@ module GeoblacklightAdmin
       ROUTES
 
       inject_into_file "config/routes.rb", gbl_admin_routes, before: /^end/
-    end
-
-    def set_gems
-      append_to_file "Gemfile" do
-        "
-# GBL‡ADMIN
-gem 'kithe', '~> 2.0'
-        "
-      end
-    end
-
-    def set_mime_types
-      append_to_file "config/initializers/mime_types.rb" do
-        '
-# GBL‡ADMIN
-# Order is important. ActiveStorage needs :json to be last
-Mime::Type.register "application/json", :json_aardvark
-Mime::Type.register "application/json", :json_btaa_aardvark
-Mime::Type.register "application/json", :json_gbl_v1
-Mime::Type.register "application/json", :json
-Mime::Type.register "text/csv", :csv_document_downloads
-Mime::Type.register "text/csv", :csv_document_access_links
-        '
-      end
     end
 
     def set_seeds

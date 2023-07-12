@@ -1,0 +1,9 @@
+# GBL‡ADMIN
+gem 'active_storage_validations'
+gem 'blacklight_advanced_search'
+gem 'dotenv-rails'
+gem 'haml'
+gem 'inline_svg'
+gem 'kithe', '~> 2.0'
+gem 'noticed'
+gem 'paper_trail'

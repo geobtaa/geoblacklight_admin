@@ -8,6 +8,7 @@ GeoBlacklight Admin is a [GeoBlacklight](https://github.com/geoblacklight/geobla
 
 ## Requirements
 
+* Rails v6.1 (not v7 yet)
 * Blacklight v7 (not v8)
 * GeoBlacklight v4 (not v3)
 * Solr v8.4+

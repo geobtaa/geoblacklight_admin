@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "httparty"
+
 # BlacklightApi
 class BlacklightApi
   include HTTParty
