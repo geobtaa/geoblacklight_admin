@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= @page_title || 'GBL♦Admin' %></title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", media: "all" %>
+    <%= javascript_include_tag "geoblacklight_admin", "data-turbolinks-track": "reload" %>
+    <%= javascript_pack_tag "application", "data-turbolinks-track": "reload" %>
+    
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <link rel="stylesheet" type="text/css" href="https://releases.transloadit.com/uppy/v3.6.1/uppy.min.css">
+  </head>
+
+  <body data-locale="en">
+    <%= render "geoblacklight_admin/shared/navbar" %>
+    <div class="container-fluid">
+      <%= render "geoblacklight_admin/shared/schema_timestamp" %>
+      <%= render "geoblacklight_admin/shared/flash_messages" %>
+      <div id="toast-wrapper" aria-live="polite" aria-atomic="true"></div>
+      <%= yield %>
+    </div>
+    <%= render "geoblacklight_admin/shared/footer" %>
+    <%= render "geoblacklight_admin/shared/js_behaviors" %>
+  </body>
+</html>
