@@ -99,8 +99,8 @@ RAILS_ENV=test bundle exec rails test
 * ~~Bookmarks need to be Admin::Bookmarks~~
 * ~~GitHub Actions / CI integration~~
 * ~~Port the GEOMG test suite~~
+* ~~Project gem dependency injection redundancy...~~
+* DRY up Engine routing
 * Remove legacy GEOMG / B1G everywhere...
 * Send GBLADMIN JavaScript pack to NPM like Blacklight
-* Project gem dependency injection redundancy...
-* DRY up Engine routing
 * Likely a lot more polish to be uncovered...
