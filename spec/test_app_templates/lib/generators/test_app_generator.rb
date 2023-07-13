@@ -11,6 +11,8 @@ class TestAppGenerator < Rails::Generators::Base
 
   def add_gems
     gem "blacklight", "~> 7.0"
+    gem "devise"
+    gem 'devise_invitable', '~> 2.0.0'
     gem "geoblacklight", ">= 4.0"
 
     Bundler.with_unbundled_env do
@@ -20,12 +22,18 @@ class TestAppGenerator < Rails::Generators::Base
 
   def run_blacklight_generator
     say_status("warning", "GENERATING BL", :yellow)
-    generate "blacklight:install", "--devise"
+    generate "blacklight:install"
   end
 
   def run_geoblacklight_generator
     say_status("warning", "GENERATING GBL", :yellow)
     generate "geoblacklight:install", "--force"
+  end
+
+  def run_devise_generators
+    say_status("warning", "GENERATING Devise", :yellow)
+    generate "devise:install"
+    generate "devise_invitable:install"
   end
 
   def run_geoblacklight_admin_generator
