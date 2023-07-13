@@ -40,8 +40,8 @@ task default: :test
 desc "Run test suite"
 task ci: ["geoblacklight:generate"] do
   within_test_app do
+    system "RAILS_ENV=test bin/rails db:migrate"
     system "RAILS_ENV=test rake db:seed"
-    system "RAILS_ENV=test rake geoblacklight:index:seed"
   end
 
   # Run RSpec tests with Coverage
@@ -53,7 +53,7 @@ namespace :geoblacklight do
   task :coverage do
     ENV["COVERAGE"] = "true"
     # Rake::Task["spec"].invoke
-    system("RAILS_ENV=test bundle exec rails test") || false
+    Rake::Task["test"].invoke
   end
 
   desc "Create the test rails app"
