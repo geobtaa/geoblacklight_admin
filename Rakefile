@@ -28,8 +28,9 @@ require "geoblacklight_admin/version"
 desc "Run test suite"
 task "ci" do
   ENV["RAILS_ENV"] = "test"
-  system("RAILS_ENV=test bundle exec rake test") || false
-  # system("RAILS_ENV=test bundle exec rake geomg:solr:reindex") || false
+  within_test_app do
+    system("RAILS_ENV=test bundle exec rake test") || false
+  end
 end
 
 require "rake/testtask"
