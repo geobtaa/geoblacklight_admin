@@ -13,9 +13,9 @@
     <% end %>
 
     <% if @document.persisted? %>
-      <%= link_to "Institutional Access Links", admin_document_document_accesses_url(@document), class: "ml-2" %>
-      <%= link_to "Multiple Download Links", admin_document_document_downloads_url(@document), class: "ml-2" %>
-      <%= link_to "Additional Assets", admin_document_document_assets_url(@document), class: "ml-2" %>
+      <%= link_to "Institutional Access Links", geoblacklight_admin.document_document_accesses_url(@document), class: "ml-2" %>
+      <%= link_to "Multiple Download Links", geoblacklight_admin.document_document_downloads_url(@document), class: "ml-2" %>
+      <%= link_to "Additional Assets", geoblacklight_admin.document_document_assets_url(@document), class: "ml-2" %>
     <% end %>
   </nav>
 </div>

@@ -150,7 +150,7 @@ module GeoblacklightAdmin
     def update
       respond_to do |format|
         if @document.update(document_params)
-          format.html { redirect_to edit_admin_document_path(@document), notice: "Document was successfully updated." }
+          format.html { redirect_to geoblacklight_admin.edit_document_path(@document), notice: "Document was successfully updated." }
           format.json { render :show, status: :ok, location: @document }
         else
           format.html { render :edit }
@@ -165,7 +165,7 @@ module GeoblacklightAdmin
       @document.destroy
       respond_to do |format|
         format.html do
-          redirect_to admin_documents_url, notice: "Document '#{@document.title}' was successfully destroyed."
+          redirect_to geoblacklight_admin.documents_url, notice: "Document '#{@document.title}' was successfully destroyed."
         end
         format.json { head :no_content }
       end
@@ -173,7 +173,7 @@ module GeoblacklightAdmin
 
     def show
       respond_to do |format|
-        format.html { redirect_to edit_admin_document_url(@document) }
+        format.html { redirect_to geoblacklight_admin.edit_document_url(@document) }
         format.json { render json: @document.to_json } # App-style JSON
         format.json_aardvark
         format.json_btaa_aardvark

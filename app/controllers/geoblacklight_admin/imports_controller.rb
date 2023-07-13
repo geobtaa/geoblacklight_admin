@@ -35,7 +35,7 @@ module GeoblacklightAdmin
       respond_to do |format|
         if @import.save
           format.html do
-            redirect_to admin_import_mappings_path(@import),
+            redirect_to geoblacklight_admin.import_mappings_path(@import),
               notice: "Import was successful. Please set your import mapping rules."
           end
           format.json { render :show, status: :created, location: @import }
