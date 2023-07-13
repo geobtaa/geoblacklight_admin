@@ -1,5 +1,6 @@
 # GBL‡ADMIN
 gem 'active_storage_validations'
+gem 'awesome_print'
 gem 'blacklight_advanced_search'
 gem 'dotenv-rails'
 gem 'haml'
