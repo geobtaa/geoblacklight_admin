@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
-# $ rails new gbl_admin -m https://raw.githubusercontent.com/geobtaa/geoblacklight_admin/develop/template.rb
+# $ rails new gbl_admin -m https://raw.githubusercontent.com/geobtaa/geoblacklight_admin/wip-dry-routing/template.rb
 
 gem "devise"
 gem 'devise_invitable', '~> 2.0.0'
 gem "blacklight", ">= 7.0", "< 8.0"
+gem "blacklight_advanced_search"
 gem "geoblacklight", ">= 4.0"
 gem "geoblacklight_admin"
 
