@@ -58,7 +58,7 @@ jobs:
       env:
         rails_version: 7.0.5
 
-    - name: Node - v14
+    - name: Node - v14 (Yes... 14 avoids the digital envelope routines::unsupported error seen on 18)
       uses: actions/setup-node@v2
       with:
         node-version: '14.18.1'
