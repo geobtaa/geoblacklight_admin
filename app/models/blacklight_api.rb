@@ -7,7 +7,7 @@ class BlacklightApi
   include HTTParty
   default_timeout 300
 
-  base_uri #{request.protocol}#{request.host_with_port}#{BLACKLIGHT_JSON_API}
+  base_uri "#{request.protocol}#{request.host_with_port}#{BLACKLIGHT_JSON_API}"
 
   def initialize(**args)
     defaults = {
