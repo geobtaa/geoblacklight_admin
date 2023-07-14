@@ -42,7 +42,7 @@ task ci: ["geoblacklight:generate"] do
   within_test_app do
     system "RAILS_ENV=test bin/rails db:migrate"
     system "RAILS_ENV=test rake db:seed"
-    system "RAILS_ENV=test rails assets:precompile"
+    system "RAILS_ENV=test rails webpacker:compile"
   end
 
   # Run RSpec tests with Coverage
