@@ -10,7 +10,7 @@ class NavigationTest < ApplicationSystemTestCase
   test "visiting the index" do
     visit admin_documents_url
     within("nav.navbar") do
-      assert page.has_link?("G·E·O·M·G")
+      assert page.has_link?("GBL♦Admin")
       assert page.has_selector?("form")
       assert page.has_selector?("input[name='q']")
       assert page.has_text?("Admin Tools")

@@ -20,10 +20,6 @@ module GeoblacklightAdmin
       end
     end
 
-    def generate_gbl_admin_example_docs
-      generate "geoblacklight_admin:example_docs"
-    end
-
     def generate_gbl_admin_jobs
       generate "geoblacklight_admin:jobs"
     end
