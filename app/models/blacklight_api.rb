@@ -7,7 +7,7 @@ class BlacklightApi
   include HTTParty
   default_timeout 300
 
-  def initialize(request, **args)
+  def initialize(request, args)
     defaults = {
       q: "*",
       page: 1,
@@ -15,7 +15,7 @@ class BlacklightApi
       rows: 20
     }
     @request = request
-    @options = defaults.merge(**args)
+    @options = defaults.merge(args)
     append_facets(@options[:f], @options)
     append_daterange(@options[:f], @options)
     @options.compact!

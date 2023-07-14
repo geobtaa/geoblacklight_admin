@@ -4,12 +4,12 @@ require "test_helper"
 
 class BlacklightApiTest < ActiveSupport::TestCase
   def setup
-    @blapi = BlacklightApi.new
+    @blapi = BlacklightApi.new("http://localhost:3000", {})
   end
 
   test "Expects hash for arguments" do
     error = assert_raises(ArgumentError) { BlacklightApi.new("foo", "bar", "baz") }
-    assert_equal error.message, "wrong number of arguments (given 3, expected 0)"
+    assert_equal error.message, "wrong number of arguments (given 3, expected 2)"
   end
 
   test "responds to fetch" do
