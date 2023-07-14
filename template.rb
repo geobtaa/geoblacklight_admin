@@ -4,6 +4,7 @@
 
 gem "devise"
 gem "blacklight", ">= 7.0", "< 8.0"
+gem "blacklight_advanced_search"
 gem "geoblacklight", ">= 4.0"
 gem "geoblacklight_admin"
 
