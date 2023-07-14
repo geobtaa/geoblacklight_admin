@@ -7,24 +7,22 @@ class BlacklightApi
   include HTTParty
   default_timeout 300
 
-  base_uri BLACKLIGHT_JSON_API
-
-  def initialize(**args)
+  def initialize(request, args)
     defaults = {
       q: "*",
       page: 1,
       sort: "score+desc%2C+dc_title_sort+asc",
       rows: 20
     }
-
-    @options = defaults.merge(**args)
+    @request = request
+    @options = defaults.merge(args)
     append_facets(@options[:f], @options)
     append_daterange(@options[:f], @options)
     @options.compact!
   end
 
   def fetch
-    @fetch ||= self.class.get("/", query: @options)
+    @fetch ||= self.class.get("#{@request}#{BLACKLIGHT_JSON_API}", query: @options)
   end
 
   def results

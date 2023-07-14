@@ -4,7 +4,8 @@
 module Admin
   class SearchController < Admin::AdminController
     def index
-      @facet_options = BlacklightApiFacets.new.facets
+      @request = "#{request.protocol}#{request.host}:#{request.port}"
+      @facet_options = BlacklightApiFacets.new(@request).facets
     end
   end
 end
