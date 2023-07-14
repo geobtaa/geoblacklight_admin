@@ -58,6 +58,11 @@ jobs:
       env:
         rails_version: 7.0.5
 
+    - name: Node - v14
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14.18.1'
+
     - name: Yarn - Setup
       run: exec "yarnpkg"
 
