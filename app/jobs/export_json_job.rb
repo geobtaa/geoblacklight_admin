@@ -47,7 +47,7 @@ class ExportJsonJob < ApplicationJob
           tree.dirname.mkpath
           Rails.logger.debug tree.inspect
 
-          json_output = DocumentsController.render("_#{query_params[:format]}",
+          json_output = Admin::DocumentsController.render("_#{query_params[:format]}",
             locals: {document: doc})
 
           json_obj = JSON.parse(json_output)

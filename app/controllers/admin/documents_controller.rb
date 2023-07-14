@@ -10,6 +10,8 @@ module Admin
     # GET /documents
     # GET /documents.json
     def index
+      @request = "#{request.protocol}#{request.host}:#{request.port}"
+
       query_params = {
         q: params["q"],
         f: params["f"],
@@ -18,7 +20,7 @@ module Admin
         sort: params["sort"] || "score desc",
         daterange: params["daterange"] || nil
       }
-      @documents = BlacklightApi.new(**query_params)
+      @documents = BlacklightApi.new(@request, **query_params)
 
       respond_to do |format|
         format.html { render :index }
