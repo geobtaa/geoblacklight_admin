@@ -6,7 +6,7 @@ class BlacklightApiFacets
   base_uri BLACKLIGHT_JSON_API_FACETS
 
   def initialize(request)
-    @request = request  
+    @request = request
   end
 
   def fetch
