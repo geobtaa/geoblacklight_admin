@@ -1,6 +1,6 @@
 # geoblacklight_admin
 
-GeoBlacklight Admin is a [GeoBlacklight](https://github.com/geoblacklight/geoblacklight) plugin, built on [Kithe](https://github.com/sciencehistory/kithe), that provides a complex web-form for editing documents and an CSV-based import/export workflow for OpenGeoMetadata's [Aardvark schema](https://opengeometadata.org/ogm-aardvark/). It's a Rubygem port of the Big Ten Academic Alliance's production workflow tool [GEOMG](https://github.com/geobtaa/geomg).
+GeoBlacklight Admin is a [GeoBlacklight](https://github.com/geoblacklight/geoblacklight) plugin, built on [Kithe](https://github.com/sciencehistory/kithe), that provides a complex web-form for editing documents and an CSV-based import/export workflow for OpenGeoMetadata's [Aardvark schema](https://opengeometadata.org/ogm-aardvark/). GBL Admin is based on the Big Ten Academic Alliance's production workflow tool [GEOMG](https://github.com/geobtaa/geomg).
 
 ## Warning: Pre-Alpha
 
@@ -16,33 +16,17 @@ GeoBlacklight Admin is a [GeoBlacklight](https://github.com/geoblacklight/geobla
 * Redis (for Sidekiq)
 * OpenGeoMetadata's Aardvark Schema
 
-## Install Notes
+## Installation
 
-### Terminal 1 - Drop/Create application PG database
+Use Ruby v3.2 and Rails v6.1.7.4 to bootstrap a new GeoBlacklight + GBL Admin application using the template script:
+
 ```bash
-psql postgres
-DROP DATABASE geoblacklight_development;
-CREATE DATABASE geoblacklight_development;
-```
-
-### Terminal 2
-
-#### Bundle and run generator
-```bash
-bundle install
-bundle exec rake engine_cart:generate
-```
-
-#### Seed and spin up server
-```bash
-cd .internal_test_app
-bundle exec rake db:seed
-
-# Run the app server
+rails _6.1.7.4_ new gbl_admin -m https://raw.githubusercontent.com/geobtaa/geoblacklight_admin/develop/template.rb
+cd gbl_admin
 bundle exec rake gbl_admin:server
 ```
 
-You're now done generating the test app and populating the Elements / FormElements tables with the basic Aardvark controls.
+You have now generated the .internal_test_app and populated the Elements / FormElements tables for OMG Aardvark support.
 
 ### View App in Browser
 
@@ -57,8 +41,16 @@ You're now done generating the test app and populating the Elements / FormElemen
 ## Run Project for Local Development
 Drop and recreate databases (or engine_cart:generate will fail)
 
+### Drop/Create application PG database
+```bash
+psql postgres
+DROP DATABASE geoblacklight_development;
+CREATE DATABASE geoblacklight_development;
+```
+
 ```bash
 cd project root
+bundle install
 bundle exec rake engine_cart:regenerate
 ```
 
@@ -103,4 +95,4 @@ RAILS_ENV=test bundle exec rails test
 * DRY up Engine routing
 * Remove legacy GEOMG / B1G everywhere...
 * Send GBLADMIN JavaScript pack to NPM like Blacklight
-* Likely a lot more polish to be uncovered...
+* Likely some more polish to be uncovered...
