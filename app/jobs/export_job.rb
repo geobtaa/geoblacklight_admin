@@ -6,8 +6,9 @@ require "csv"
 class ExportJob < ApplicationJob
   queue_as :default
 
-  def perform(current_user, query_params, export_service)
+  def perform(request, current_user, query_params, export_service)
     logger.debug("\n\n Background Job: ♞")
+    logger.debug("Request: #{request.inspect}")
     logger.debug("User: #{current_user.inspect}")
     logger.debug("Query: #{query_params.inspect}")
     logger.debug("Export Service: #{export_service.inspect}")
@@ -17,7 +18,7 @@ class ExportJob < ApplicationJob
     ActionCable.server.broadcast("export_channel", {data: "Hello from Export Job!"})
 
     # Query params into Doc ids
-    document_ids = query_params[:ids] || crawl_query(query_params)
+    document_ids = query_params[:ids] || crawl_query(request, query_params)
 
     logger.debug("Document Ids: #{document_ids}")
 
@@ -56,15 +57,16 @@ class ExportJob < ApplicationJob
     })
   end
 
-  def crawl_query(query_params, doc_ids = [])
+  def crawl_query(request, query_params, doc_ids = [])
     logger.debug("\n\n CRAWL Query: #{query_params}")
-    api_results = BlacklightApiIds.new(query_params)
+    logger.debug("\n\n CRAWL Query Request: #{request}")
+    api_results = BlacklightApiIds.new(request, query_params)
     logger.debug("API Results: #{api_results.results.inspect}")
 
     doc_ids << api_results.results.pluck("id")
 
     unless api_results.meta["pages"]["next_page"].nil?
-      crawl_query(query_params.merge!({page: api_results.meta["pages"]["next_page"]}),
+      crawl_query(request, query_params.merge!({page: api_results.meta["pages"]["next_page"]}),
         doc_ids)
     end
 
