@@ -3,7 +3,6 @@
 # BlacklightApiFacets
 class BlacklightApiFacets
   include HTTParty
-  base_uri BLACKLIGHT_JSON_API_FACETS
 
   def initialize(request)
     @request = request
