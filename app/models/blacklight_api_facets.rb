@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'httparty'
+
 # BlacklightApiFacets
 class BlacklightApiFacets
   include HTTParty
