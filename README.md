@@ -18,6 +18,15 @@ GeoBlacklight Admin is a [GeoBlacklight](https://github.com/geoblacklight/geobla
 
 ## Installation
 
+### PostgreSQL
+
+You need a PostgreSQL database to use this project.
+
+* Homebrew: https://wiki.postgresql.org/wiki/Homebrew
+* Docker: https://www.docker.com/blog/how-to-use-the-postgres-docker-official-image/
+
+### Install Template
+
 Use Ruby v3.2 and Rails v6.1.7.4 to bootstrap a new GeoBlacklight + GBL Admin application using the template script:
 
 ```bash
