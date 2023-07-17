@@ -3,7 +3,7 @@
 require "json"
 require "pathname"
 
-# ExportJob
+# ExportJsonJob
 class ExportJsonJob < ApplicationJob
   queue_as :default
 

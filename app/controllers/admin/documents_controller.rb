@@ -45,6 +45,12 @@ module Admin
           head :no_content
         end
 
+        # JSON - FILE 
+        format.json_file do
+          ExportJsonBulkJob.perform_later(@request, current_user, query_params.merge!({format: "json_file"}), ExportJsonService)
+          head :no_content
+        end
+
         # CSV - B1G
         format.csv do
           ExportJob.perform_later(@request, current_user, query_params, ExportCsvService)
