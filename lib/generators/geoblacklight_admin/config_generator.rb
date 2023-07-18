@@ -59,7 +59,7 @@ module GeoblacklightAdmin
     end
 
     def set_routes
-      gbl_admin_routes = <<-"ROUTES"
+      gbl_admin_routes = <<-ROUTES
         ####################
         # GBL‡ADMIN
 
@@ -240,7 +240,7 @@ module GeoblacklightAdmin
 
     def set_development_mailer_host
       mailer_host = "\n  config.action_mailer.default_url_options = { :host => 'localhost:3000' }\n"
-      inject_into_file "config/environments/development.rb", mailer_host, after: 'config.action_mailer.perform_caching = false'
+      inject_into_file "config/environments/development.rb", mailer_host, after: "config.action_mailer.perform_caching = false"
     end
 
     def set_seeds
