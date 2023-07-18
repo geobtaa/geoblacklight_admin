@@ -27,11 +27,11 @@ class ExportJsonBulkJob < ApplicationJob
 
     begin
       # Array of JSON
-      @json_array = Array.new
+      @json_array = []
 
       documents.each do |doc|
         json_output = Admin::DocumentsController.render("_json_file.jbuilder",
-        locals: {document: doc})
+          locals: {document: doc})
 
         json_obj = JSON.parse(json_output)
         Rails.logger.debug json_obj
@@ -40,7 +40,7 @@ class ExportJsonBulkJob < ApplicationJob
         json_obj.compact!
 
         @json_array << JSON.pretty_generate(json_obj)
-        
+
       rescue NoMethodError => e
         Rails.logger.debug { "==== Error! - #{doc.friendlier_id} ====" }
         Rails.logger.debug e.inspect
