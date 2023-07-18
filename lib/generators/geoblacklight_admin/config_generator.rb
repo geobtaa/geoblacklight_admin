@@ -37,13 +37,17 @@ module GeoblacklightAdmin
       copy_file "config/database.yml", "config/database.yml", force: true
     end
 
+    def create_dotenv
+      copy_file ".env.development.example", ".env.development"
+      copy_file ".env.development.example", ".env.test"
+    end
+
     def create_settings_yml
       copy_file "config/settings.yml", "config/settings.yml", force: true
     end
 
-    def create_dotenv
-      copy_file ".env.development.example", ".env.development"
-      copy_file ".env.development.example", ".env.test"
+    def create_solr_yml
+      copy_file ".solr_wrapper.yml", ".solr_wrapper.yml", force: true
     end
 
     def copy_json_schema
@@ -52,10 +56,6 @@ module GeoblacklightAdmin
 
     def copy_solr
       directory "solr", "solr", force: true
-    end
-
-    def create_solr_yml
-      copy_file ".solr_wrapper.yml", ".solr_wrapper.yml", force: true
     end
 
     def set_routes
@@ -120,7 +120,6 @@ module GeoblacklightAdmin
           # Bookmarks
           resources :bookmarks
           delete "/bookmarks", to: "bookmarks#destroy", as: :bookmarks_destroy_by_fkeys
-        #{"  "}
 
           # Search controller
           get "/search" => "search#index"
@@ -139,7 +138,7 @@ module GeoblacklightAdmin
           # Documents
           resources :documents do
             get "versions"
-        #{"    "}
+
             # DocumentAccesses
             resources :document_accesses, path: "access" do
               collection do
@@ -150,7 +149,7 @@ module GeoblacklightAdmin
                 post "destroy_all"
               end
             end
-        #{"    "}
+
             # DocumentDownloads
             resources :document_downloads, path: "downloads" do
               collection do
@@ -161,7 +160,7 @@ module GeoblacklightAdmin
                 post "destroy_all"
               end
             end
-        #{"    "}
+
             # Document Assets
             resources :document_assets, path: "assets" do
               collection do
@@ -177,7 +176,7 @@ module GeoblacklightAdmin
               get "fetch"
             end
           end
-        #{"  "}
+
           # Document Accesses
           resources :document_accesses, path: "access" do
             collection do
@@ -237,6 +236,11 @@ module GeoblacklightAdmin
       ROUTES
 
       inject_into_file "config/routes.rb", gbl_admin_routes, before: /^end/
+    end
+
+    def set_development_mailer_host
+      mailer_host = "\n  config.action_mailer.default_url_options = { :host => 'localhost:3000' }\n"
+      inject_into_file "config/environments/development.rb", mailer_host, after: 'config.action_mailer.perform_caching = false'
     end
 
     def set_seeds
