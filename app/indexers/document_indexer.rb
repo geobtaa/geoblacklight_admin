@@ -28,7 +28,7 @@ class DocumentIndexer < Kithe::Indexer
       rec.updated_at.utc.iso8601 if rec&.updated_at
     end
 
-    # - GEOMG
+    # - GBL ADMIN
     to_field "b1g_geom_import_id_ssi", obj_extract("import_id")
   end
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 task stats: :environment do
-  Rake::Task["geomg:stats"].invoke
+  Rake::Task["gbl_admin:stats"].invoke
 end
 
 namespace :gbl_admin do
@@ -43,7 +43,7 @@ task ci: :environment do
   exit!(1) unless success
 end
 
-namespace :geomg do
+namespace :gbl_admin do
   desc "Set everything to published state"
   task publish_all: :environment do
     Document.all.each do |doc|
@@ -68,7 +68,7 @@ namespace :geomg do
     CodeStatistics::TEST_TYPES << "Indexers Tests"
   end
 
-  desc "Run Solr and GEOMG for development"
+  desc "Run Solr and GBLADMIN for development"
   task server: :environment do
     require "solr_wrapper"
 
@@ -80,7 +80,7 @@ namespace :geomg do
         puts "Solr running at http://localhost:8983/solr/blacklight-core/, ^C to exit"
         puts " "
         begin
-          # Rake::Task['geomg:solr:restore'].invoke
+          # Rake::Task['gbl_admin:solr:restore'].invoke
           system "bundle exec rails s --binding=#{ENV.fetch("GEOMG_SERVER_BIND_INTERFACE",
             "0.0.0.0")} --port=#{ENV.fetch("GEOMG_SERVER_PORT",
               "3000")}"
@@ -103,7 +103,7 @@ namespace :geomg do
           puts "Solr running at http://localhost:8983/solr/#/blacklight-core/, ^C to exit"
           begin
             Rake::Task["db:fixtures:load"].invoke
-            # Rake::Task["geomg:solr:reindex"].invoke
+            # Rake::Task["gbl_admin:solr:reindex"].invoke
             sleep
           rescue Interrupt
             puts "\nShutting down..."
@@ -111,7 +111,7 @@ namespace :geomg do
         end
       end
     else
-      system("rake geomg:test RAILS_ENV=test")
+      system("rake gbl_admin:test RAILS_ENV=test")
     end
   end
 
