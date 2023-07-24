@@ -163,6 +163,7 @@ class AddGeoblacklightAdminGem < ActiveRecord::Migration[6.1]
 
     create_table 'bulk_actions', force: :cascade do |t|
       t.string 'name'
+      t.string 'request', null: false
       t.string 'scope', null: false
       t.string 'field_name', null: false
       t.string 'field_value', null: false

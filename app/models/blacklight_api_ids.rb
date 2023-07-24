@@ -5,9 +5,7 @@ class BlacklightApiIds
   include HTTParty
   default_timeout 300
 
-  base_uri BLACKLIGHT_JSON_API_IDS
-
-  def initialize(args = {})
+  def initialize(request, args = {})
     defaults = {
       q: "*",
       page: 1,
@@ -15,6 +13,7 @@ class BlacklightApiIds
       rows: 1000
     }
 
+    @request = request
     @options = defaults.merge(**args)
     append_facets(@options[:f], @options)
     append_daterange(@options[:f], @options)
@@ -24,7 +23,7 @@ class BlacklightApiIds
   def fetch
     Rails.logger.debug { "BlacklightApiIds > fetch > query: #{@options.inspect}" }
 
-    @fetch ||= self.class.get("/", query: @options)
+    @fetch ||= self.class.get("#{@request}#{BLACKLIGHT_JSON_API_IDS}", query: @options)
   end
 
   def results

@@ -21,6 +21,12 @@
         "type": "string"
       }
     },
+    "gbl_displayNote_sm": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "dct_creator_sm": {
       "type": "array",
       "items": {
@@ -91,6 +97,7 @@
     },
     "locn_geometry": { "type": "string" },
     "dcat_centroid_ss": { "type": "string" },
+    "gbl_georeferenced_b": { "type": "boolean" },
     "dct_relation_sm": {
       "type": "array",
       "items": {
@@ -133,7 +140,12 @@
         "type": "string"
       }
     },
-    "dct_accessRights_s": { "type": "string" },
+    "dct_rights_sm": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "dct_rightsHolder_sm": {
       "type": "array",
       "items": {
@@ -146,21 +158,16 @@
         "type": "string"
       }
     },
-    "dct_rights_sm": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
+    "dct_accessRights_s": { "type": "string" },
     "dct_format_s": { "type": "string" },
     "gbl_fileSize_s": { "type": "string" },
-    "gbl_wxsIdentifier_s": { "type": "string" },
     "dct_references_s": {
       "type": "array",
       "items": {
         "type": "object"
       }
     },
+    "gbl_wxsIdentifier_s": { "type": "string" },
     "id": { "type": "string" },
     "geomg_id_s": { "type": "string" },
     "dct_identifier_sm": {
@@ -175,7 +182,6 @@
     },
     "gbl_mdVersion_s": { "type": "string" },
     "gbl_suppressed_b": { "type": "boolean" },
-    "gbl_georeferenced_b": { "type": "boolean" },
     "b1g_image_ss": { "type": "string" },
     "b1g_geonames_sm": {
       "type": "array",

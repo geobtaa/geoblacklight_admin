@@ -1,6 +1,7 @@
 <span id="result-selected-options" class="hidden" data-scope="pageset" data-controller="results" data-resultset="<%= admin_documents_path( params.to_unsafe_h.merge({rows: '1000000'})) %>" data-pageset="/fetch?">
 
   <%= form_with(model: BulkAction.new, html: { id: 'result-action-form', data: { type: "html", action: "submit->results#setPubState" }, style: 'display:inline'}, url: admin_bulk_actions_path) do |form| -%>
+    <%= form.hidden_field :request, value: "#{request.protocol}#{request.host}:#{request.port}" %>
     <%= form.hidden_field :scope, value: "-" %>
     <%= form.hidden_field :field_name, value: "" %>
     <%= form.hidden_field :field_value, value: "" %>
@@ -16,7 +17,8 @@
         CSV
       </a>
       <div class="dropdown-divider"></div>
-      <a class="dropdown-item" data-action="click->results#exportJsonAardvark" href="javascript:void(0);">JSON (Aardvark)</a>
+      <a class="dropdown-item" data-action="click->results#exportJsonFile" href="javascript:void(0);">JSON (Single File)</a>
+      <a class="dropdown-item" data-action="click->results#exportJsonAardvark" href="javascript:void(0);">JSON (Tree Directory)</a>
       <a class="dropdown-item" data-action="click->results#exportJsonBtaaAardvark" href="javascript:void(0);">JSON (BTAA Aardvark)</a>
       <a class="dropdown-item" data-action="click->results#exportJsonGBLv1" href="javascript:void(0);">JSON (GBL v1.0)</a>
       <div class="dropdown-divider"></div>

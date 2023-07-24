@@ -10,6 +10,8 @@ module Admin
     # GET /documents
     # GET /documents.json
     def index
+      @request = "#{request.protocol}#{request.host}:#{request.port}"
+
       query_params = {
         q: params["q"],
         f: params["f"],
@@ -18,7 +20,7 @@ module Admin
         sort: params["sort"] || "score desc",
         daterange: params["daterange"] || nil
       }
-      @documents = BlacklightApi.new(**query_params)
+      @documents = BlacklightApi.new(@request, **query_params)
 
       respond_to do |format|
         format.html { render :index }
@@ -26,38 +28,44 @@ module Admin
 
         # JSON - BTAA Aardvark
         format.json_btaa_aardvark do
-          ExportJsonJob.perform_later(current_user, query_params.merge!({format: "json_btaa_aardvark"}),
+          ExportJsonJob.perform_later(@request, current_user, query_params.merge!({format: "json_btaa_aardvark"}),
             ExportJsonService)
           head :no_content
         end
 
         # JSON - GBL Aardvark
         format.json_aardvark do
-          ExportJsonJob.perform_later(current_user, query_params.merge!({format: "json_aardvark"}), ExportJsonService)
+          ExportJsonJob.perform_later(@request, current_user, query_params.merge!({format: "json_aardvark"}), ExportJsonService)
           head :no_content
         end
 
         # JSON - GBL v1
         format.json_gbl_v1 do
-          ExportJsonJob.perform_later(current_user, query_params.merge!({format: "json_gbl_v1"}), ExportJsonService)
+          ExportJsonJob.perform_later(@request, current_user, query_params.merge!({format: "json_gbl_v1"}), ExportJsonService)
+          head :no_content
+        end
+
+        # JSON - FILE
+        format.json_file do
+          ExportJsonBulkJob.perform_later(@request, current_user, query_params.merge!({format: "json_file"}), ExportJsonService)
           head :no_content
         end
 
         # CSV - B1G
         format.csv do
-          ExportJob.perform_later(current_user, query_params, ExportCsvService)
+          ExportJob.perform_later(@request, current_user, query_params, ExportCsvService)
           head :no_content
         end
 
         # CSV Document Downloads - B1G
         format.csv_document_downloads do
-          ExportJob.perform_later(current_user, query_params, ExportCsvDocumentDownloadsService)
+          ExportJob.perform_later(@request, current_user, query_params, ExportCsvDocumentDownloadsService)
           head :no_content
         end
 
         # CSV Document Access Links - B1G
         format.csv_document_access_links do
-          ExportJob.perform_later(current_user, query_params, ExportCsvDocumentAccessLinksService)
+          ExportJob.perform_later(@request, current_user, query_params, ExportCsvDocumentAccessLinksService)
           head :no_content
         end
       end
@@ -65,6 +73,7 @@ module Admin
 
     # Fetch documents from array of friendlier_ids
     def fetch
+      @request = "#{request.protocol}#{request.host}:#{request.port}"
       @documents = Document.where(friendlier_id: params["ids"])
 
       respond_to do |format|
@@ -73,42 +82,42 @@ module Admin
 
         # JSON - BTAA Aardvark
         format.json_btaa_aardvark do
-          ExportJsonJob.perform_later(current_user, {ids: @documents.pluck(:friendlier_id), format: "json_btaa_aardvark"},
+          ExportJsonJob.perform_later(@request, current_user, {ids: @documents.pluck(:friendlier_id), format: "json_btaa_aardvark"},
             ExportJsonService)
           head :no_content
         end
 
         # JSON - GBL Aardvark
         format.json_aardvark do
-          ExportJsonJob.perform_later(current_user, {ids: @documents.pluck(:friendlier_id), format: "json_aardvark"},
+          ExportJsonJob.perform_later(@request, current_user, {ids: @documents.pluck(:friendlier_id), format: "json_aardvark"},
             ExportJsonService)
           head :no_content
         end
 
         # JSON - GBL v1
         format.json_gbl_v1 do
-          ExportJsonJob.perform_later(current_user, {ids: @documents.pluck(:friendlier_id), format: "json_gbl_v1"},
+          ExportJsonJob.perform_later(@request, current_user, {ids: @documents.pluck(:friendlier_id), format: "json_gbl_v1"},
             ExportJsonService)
           head :no_content
         end
 
         # CSV - B1G
         format.csv do
-          ExportJob.perform_later(current_user, {ids: @documents.pluck(:friendlier_id), format: "csv"},
+          ExportJob.perform_later(@request, current_user, {ids: @documents.pluck(:friendlier_id), format: "csv"},
             ExportCsvService)
           head :no_content
         end
 
         # CSV Document Downloads - B1G
         format.csv_document_downloads do
-          ExportJob.perform_later(current_user,
+          ExportJob.perform_later(@request, current_user,
             {ids: @documents.pluck(:friendlier_id), format: "csv_document_downloads"}, ExportCsvDocumentDownloadsService)
           head :no_content
         end
 
         # CSV Document Downloads - B1G
         format.csv_document_access_links do
-          ExportJob.perform_later(current_user,
+          ExportJob.perform_later(@request, current_user,
             {ids: @documents.pluck(:friendlier_id), format: "csv_document_access_links"}, ExportCsvDocumentAccessLinksService)
           head :no_content
         end

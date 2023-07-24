@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "kithe"
+
 traject_logger = ActiveSupport::Logger.new("#{Rails.root}/log/traject.log")
 
 Kithe.indexable_settings.solr_url = ENV["SOLR_URL"]

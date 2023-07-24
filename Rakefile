@@ -24,14 +24,6 @@ RuboCop::RakeTask.new(:rubocop)
 require "solr_wrapper/rake_task"
 require "engine_cart/rake_task"
 require "geoblacklight_admin/version"
-
-desc "Run test suite"
-task "ci" do
-  ENV["RAILS_ENV"] = "test"
-  system("RAILS_ENV=test bundle exec rake test") || false
-  # system("RAILS_ENV=test bundle exec rake geomg:solr:reindex") || false
-end
-
 require "rake/testtask"
 
 # Searches for files ending in _test.rb in the test directory
@@ -45,12 +37,35 @@ end
 # Will use test as defaut task if rake is run by itself
 task default: :test
 
+desc "Run test suite"
+task ci: ["geoblacklight:generate"] do
+  within_test_app do
+    system "RAILS_ENV=test bin/rails db:migrate"
+    system "RAILS_ENV=test rake db:seed"
+    system "RAILS_ENV=test rails webpacker:compile"
+  end
+
+  # Run RSpec tests with Coverage
+  Rake::Task["geoblacklight:coverage"].invoke
+end
+
 namespace :geoblacklight do
+  desc "Run tests with coverage"
+  task :coverage do
+    ENV["COVERAGE"] = "true"
+    # Rake::Task["spec"].invoke
+    Rake::Task["test"].invoke
+  end
+
+  desc "Create the test rails app"
+  task generate: ["engine_cart:generate"] do
+    # Intentionally Empty Block
+  end
+
   namespace :internal do
     task seed: ["engine_cart:generate"] do
       within_test_app do
-        # @TODO - Seed Elements / FormElements
-        # system "bundle exec rake gbl_admin:seed"
+        system "bundle exec rake db:seed"
         system "bundle exec rake geoblacklight:downloads:mkdir"
       end
     end

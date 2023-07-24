@@ -75,3 +75,4 @@ yarn-debug.log*
 !/storage/.keep
 .env.test
 test/reports/*.xml
+yarn.lock

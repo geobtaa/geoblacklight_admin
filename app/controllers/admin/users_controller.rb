@@ -4,7 +4,7 @@
 module Admin
   class UsersController < Admin::AdminController
     def index
-      @users = User.all
+      @users = User.where(admin: true)
     end
   end
 end

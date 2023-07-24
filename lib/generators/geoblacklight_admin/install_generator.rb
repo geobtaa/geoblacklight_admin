@@ -20,10 +20,6 @@ module GeoblacklightAdmin
       end
     end
 
-    def generate_gbl_admin_example_docs
-      generate "geoblacklight_admin:example_docs"
-    end
-
     def generate_gbl_admin_jobs
       generate "geoblacklight_admin:jobs"
     end
@@ -44,15 +40,11 @@ module GeoblacklightAdmin
       generate "geoblacklight_admin:config"
     end
 
-    def kithe_install
-      run "bundle exec rails generate simple_form:install --bootstrap"
-    end
-
     def install_active_storage
       run "bin/rails active_storage:install"
     end
 
-    def yarn_install
+    def install_yarn
       run "yarn install"
     end
   end

@@ -2,8 +2,8 @@
 
 require "csv"
 
-# ExportJob
-class ExportJob < ApplicationJob
+# ExportJsonBulkJob
+class ExportJsonBulkJob < ApplicationJob
   queue_as :default
 
   def perform(request, current_user, query_params, export_service)
@@ -23,27 +23,47 @@ class ExportJob < ApplicationJob
     logger.debug("Document Ids: #{document_ids}")
 
     # Send progress
-    file_content = export_service.call(document_ids)
+    documents = export_service.call(document_ids)
 
-    # Write into tempfile
-    @tempfile = Tempfile.new(["export-#{Time.zone.today}", ".csv"]).tap do |file|
-      CSV.open(file, "wb") do |csv|
-        file_content.each do |row|
-          csv << row
-        end
+    begin
+      # Array of JSON
+      @json_array = []
+
+      documents.each do |doc|
+        json_output = Admin::DocumentsController.render("_json_file.jbuilder",
+          locals: {document: doc})
+
+        json_obj = JSON.parse(json_output)
+        Rails.logger.debug json_obj
+
+        # Remove nil/null values from JSON
+        json_obj.compact!
+
+        @json_array << JSON.pretty_generate(json_obj)
+
+      rescue NoMethodError => e
+        Rails.logger.debug { "==== Error! - #{doc.friendlier_id} ====" }
+        Rails.logger.debug e.inspect
+        next
       end
     end
 
+    # Write into tempfile
+    @tempfile = Tempfile.new(["export-#{Time.zone.today}", ".json"]).tap do |file|
+      file.write("[#{@json_array.join(",")}]")
+    end
+    @tempfile.rewind
+
     # Create notification
     # Message: "Download Type|Row Count|Button Label"
-    notification = ExportNotification.with(message: "CSV (#{export_service.short_name})|#{ActionController::Base.helpers.number_with_delimiter(file_content.size - 1)} rows|CSV")
+    notification = ExportNotification.with(message: "JSON FILE |#{ActionController::Base.helpers.number_with_delimiter(documents.size)} rows|JSON")
 
     # Deliver notification
     notification.deliver(current_user)
 
-    # Attach CSV file (can only attach after persisted)
-    notification.record.file.attach(io: @tempfile, filename: "geomg-export-#{Time.zone.today}.csv",
-      content_type: "text/csv")
+    # Attach JSON file (can only attach after persisted)
+    notification.record.file.attach(io: @tempfile, filename: "geomg-export-#{Time.zone.today}.json",
+      content_type: "application/json")
 
     # Update UI
     ActionCable.server.broadcast("export_channel", {

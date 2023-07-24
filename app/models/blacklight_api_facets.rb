@@ -1,12 +1,17 @@
 # frozen_string_literal: true
 
+require "httparty"
+
 # BlacklightApiFacets
 class BlacklightApiFacets
   include HTTParty
-  base_uri BLACKLIGHT_JSON_API_FACETS
+
+  def initialize(request)
+    @request = request
+  end
 
   def fetch
-    @fetch ||= self.class.get("/", query: {})
+    @fetch ||= self.class.get("#{@request}#{BLACKLIGHT_JSON_API_FACETS}", query: {})
   end
 
   def facets

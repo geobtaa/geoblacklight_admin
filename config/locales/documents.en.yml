@@ -154,6 +154,9 @@ en:
         b1g_access_s:
           one: "Access"
           other: "Access"
+        gbl_displayNote_sm:
+          one: "Display Note"
+          other: "Display Note"
 
   activemodel:
     models:

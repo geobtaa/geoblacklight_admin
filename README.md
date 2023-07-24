@@ -1,13 +1,14 @@
 # geoblacklight_admin
 
-GeoBlacklight Admin is a [GeoBlacklight](https://github.com/geoblacklight/geoblacklight) plugin, built on [Kithe](https://github.com/sciencehistory/kithe), that provides a complex web-form for editing documents and an CSV-based import/export workflow for OpenGeoMetadata's [Aardvark schema](https://opengeometadata.org/ogm-aardvark/). It's a Rubygem port of the Big Ten Academic Alliance's production workflow tool [GEOMG](https://github.com/geobtaa/geomg).
+![CI](https://github.com/geobtaa/geoblacklight_admin/actions/workflows/ci.yml/badge.svg)
 
-## Warning: Pre-Alpha
+GeoBlacklight Admin is a [GeoBlacklight](https://github.com/geoblacklight/geoblacklight) plugin, built on [Kithe](https://github.com/sciencehistory/kithe), that provides a complex web-form for editing documents and an CSV-based import/export workflow for OpenGeoMetadata's [Aardvark schema](https://opengeometadata.org/ogm-aardvark/). GBL Admin is based on the Big Ten Academic Alliance's production workflow tool [GEOMG](https://github.com/geobtaa/geomg).
 
-> :warning: This gem is not ready for public adoption yet, but hopefully someday soon (Late Summer 2023?). Feel free to kick the tires if you are curious and know GeoBlacklight's codebase/stack well.
+[![GeoBlackliht Admin](https://raw.githubusercontent.com/geobtaa/geoblacklight_admin/develop/docs/gbl_admin_screenshot.png)](https://youtu.be/lWjcr-Ow228 "GeoBlacklight Admin")
 
 ## Requirements
 
+* Rails v6.1 (not v7 yet)
 * Blacklight v7 (not v8)
 * GeoBlacklight v4 (not v3)
 * Solr v8.4+
@@ -15,43 +16,26 @@ GeoBlacklight Admin is a [GeoBlacklight](https://github.com/geoblacklight/geobla
 * Redis (for Sidekiq)
 * OpenGeoMetadata's Aardvark Schema
 
-## Install Notes
+## Installation
 
-### Terminal 1 - Drop/Create application PG database
-```bash
-psql postgres
-DROP DATABASE geoblacklight_development;
-CREATE DATABASE geoblacklight_development;
-```
+### PostgreSQL
 
-### Terminal 2 - Bundle and run generator
-```bash
-bundle install
-bundle exec rake engine_cart:generate
-```
+You need a PostgreSQL database to use this project.
 
-When the .internal_test_app is built, edit `geoblacklight_admin_helper.rb`, and uncomment this Pagy include. Why including Pagy here breaks the entire generator build is beyond me...
+* Homebrew: https://wiki.postgresql.org/wiki/Homebrew
+* Docker: https://www.docker.com/blog/how-to-use-the-postgres-docker-official-image/
+
+### Install Template
+
+Use Ruby v3.2 and Rails v6.1.7.4 to bootstrap a new GeoBlacklight + GBL Admin application using the template script:
 
 ```bash
-  # @TODO:
-  # Cannot generate app if uncommented...
-  # Uncomment after app is generated to fix view errors
-  # include ::Pagy::Frontend
-```
-
-### Terminal 2 - Seed and spin up server
-```bash
-cd .internal_test_app
-bundle exec rake db:seed
-
-# JS was breaking in dev mode, had to add the yarn package below - EWL 6/5/23
-yarn add @babel/plugin-proposal-private-methods --dev
-
-# Run the app server
+rails _6.1.7.4_ new gbl_admin -m https://raw.githubusercontent.com/geobtaa/geoblacklight_admin/develop/template.rb
+cd gbl_admin
 bundle exec rake gbl_admin:server
 ```
 
-You're now done generating the test app and populating the Elements / FormElements tables with the basic Aardvark controls.
+You have now generated the .internal_test_app and populated the Elements / FormElements tables for OMG Aardvark support.
 
 ### View App in Browser
 
@@ -59,12 +43,48 @@ You're now done generating the test app and populating the Elements / FormElemen
 2. Click on the "Sign in" link
 3. Enter email: admin@geoblacklight.org and password: 123456
 4. Click on the "GBL Admin" link
-5. Import some CSV
+5. Import some CSV (test/fixtures/files/btaa_sample_records.csv)
 
 -----
 
-### TODOs - Running list of things to accomplish
+## Run Project for Local Development
+Drop and recreate databases (or engine_cart:generate will fail)
 
+### Drop/Create application PG database
+```bash
+psql postgres
+DROP DATABASE geoblacklight_development;
+CREATE DATABASE geoblacklight_development;
+```
+
+```bash
+cd project root
+bundle install
+bundle exec rake engine_cart:regenerate
+```
+
+### Run Solr
+```bash
+bin/rails geoblacklight:solr
+```
+
+### Run App
+```bash
+cd .internal_test_app
+bundle exec rails server
+```
+
+### Lint App
+```bash
+standardrb .
+```
+
+### Test App
+```bash
+RAILS_ENV=test bundle exec rails test
+```
+
+## TODOs
 * ~~SolrWrapper - Add persist option~~
 * ~~BlacklightApi returns not auth'd message (not requiring auth for now (not sensitive data))~~
 * ~~Facet links need /admin nesting~~
@@ -78,31 +98,10 @@ You're now done generating the test app and populating the Elements / FormElemen
 * ~~Routes - Get devise user~~
 * ~~No route matches [GET] "/users/sign_out"~~
 * ~~Bookmarks need to be Admin::Bookmarks~~
-* GitHub Actions / CI integration
-* Port the GEOMG test suite
+* ~~GitHub Actions / CI integration~~
+* ~~Port the GEOMG test suite~~
+* ~~Project gem dependency injection redundancy...~~
+* DRY up Engine routing
 * Remove legacy GEOMG / B1G everywhere...
 * Send GBLADMIN JavaScript pack to NPM like Blacklight
-* Project gem dependency injection redundancy...
-* Likely a lot more polish to be uncovered...
-
-
-# To Run Project
-drop and create databases (or engine_cart will fail)
-cd project root
-bundle exec rake engine_cart:regenerate
-
-## Run Solr
-bin/rails geoblacklight:solr
-
-## Run App
-cd .internal_test_app
-bundle exec rails server
-
-## Test App
-bundle exec rails test
-cd .internal_test_app
-rake db:seed
-rake geomg:solr:reindex
-
-# @TODO: Add chosen.js css
-# @TODO: Fix missing select form-control class
+* Likely some more polish to be uncovered...

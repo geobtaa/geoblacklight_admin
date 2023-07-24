@@ -8,51 +8,46 @@ module GeoblacklightAdmin
 
     desc <<-DESCRIPTION
       This generator makes the following changes to your application:
-       1. Copies GBL Admin initializer file to host config#{" "}
-       2. Copies Kithe initializer file to host config
-       3. Copies Pagy initializer file to host config
-       4. Copies Statesman initializer file to host config
-       5. Copies PG database.yml connection to host config
+       1. Copies GBL Admin initializer files to host config
+       5. Copies database.yml connection to host config
        5. Copies settings.yml to host config
        6. Copies .env.development and .env.test to host
        6. Copies JSON Schema to host
        7. Copies solr/* to host
        8. Sets Routes
        9. Sets Gems
-       10.Sets MimeTypes
        11.Sets DB Seeds
        11.Sets ActiveStorage
        12.Sets Pagy Backend
 
     DESCRIPTION
 
-    def create_gbl_admin_initializer
-      copy_file "config/initializers/geoblacklight_admin.rb", "config/initializers/geoblacklight_admin.rb"
-    end
-
-    def create_kithe_initializer
-      copy_file "config/initializers/kithe.rb", "config/initializers/kithe.rb"
-    end
-
-    def create_pagy_initializer
-      copy_file "config/initializers/pagy.rb", "config/initializers/pagy.rb"
-    end
-
-    def create_statesman_initializer
-      copy_file "config/initializers/statesman.rb", "config/initializers/statesman.rb"
+    def create_gbl_admin_initializer_files
+      copy_file "config/initializers/geoblacklight_admin.rb", "config/initializers/geoblacklight_admin.rb", force: true
+      copy_file "config/initializers/devise.rb", "config/initializers/devise.rb", force: true
+      copy_file "config/initializers/kithe.rb", "config/initializers/kithe.rb", force: true
+      copy_file "config/initializers/mime_types.rb", "config/initializers/mime_types.rb", force: true
+      copy_file "config/initializers/pagy.rb", "config/initializers/pagy.rb", force: true
+      copy_file "config/initializers/simple_form.rb", "config/initializers/simple_form.rb", force: true
+      copy_file "config/initializers/simple_form_bootstrap.rb", "config/initializers/simple_form_bootstrap.rb", force: true
+      copy_file "config/initializers/statesman.rb", "config/initializers/statesman.rb", force: true
     end
 
     def create_database_yml
       copy_file "config/database.yml", "config/database.yml", force: true
     end
 
+    def create_dotenv
+      copy_file ".env.development.example", ".env.development"
+      copy_file ".env.development.example", ".env.test"
+    end
+
     def create_settings_yml
       copy_file "config/settings.yml", "config/settings.yml", force: true
     end
 
-    def create_dotenv
-      copy_file ".env.development.example", ".env.development"
-      copy_file ".env.development.example", ".env.test"
+    def create_solr_yml
+      copy_file ".solr_wrapper.yml", ".solr_wrapper.yml", force: true
     end
 
     def copy_json_schema
@@ -63,12 +58,8 @@ module GeoblacklightAdmin
       directory "solr", "solr", force: true
     end
 
-    def create_solr_yml
-      copy_file ".solr_wrapper.yml", ".solr_wrapper.yml", force: true
-    end
-
     def set_routes
-      gbl_admin_routes = <<-"ROUTES"
+      gbl_admin_routes = <<-ROUTES
         ####################
         # GBL‡ADMIN
 
@@ -129,7 +120,10 @@ module GeoblacklightAdmin
           # Bookmarks
           resources :bookmarks
           delete "/bookmarks", to: "bookmarks#destroy", as: :bookmarks_destroy_by_fkeys
-        #{"  "}
+
+          # Search controller
+          get "/search" => "search#index"
+          
           # AdvancedSearch controller
           get '/advanced_search' => 'advanced_search#index', constraints: lambda { |req| req.format == :json }
           get '/advanced_search/facets' => 'advanced_search#facets', constraints: lambda { |req| req.format == :json }
@@ -144,7 +138,7 @@ module GeoblacklightAdmin
           # Documents
           resources :documents do
             get "versions"
-        #{"    "}
+
             # DocumentAccesses
             resources :document_accesses, path: "access" do
               collection do
@@ -155,7 +149,7 @@ module GeoblacklightAdmin
                 post "destroy_all"
               end
             end
-        #{"    "}
+
             # DocumentDownloads
             resources :document_downloads, path: "downloads" do
               collection do
@@ -166,7 +160,7 @@ module GeoblacklightAdmin
                 post "destroy_all"
               end
             end
-        #{"    "}
+
             # Document Assets
             resources :document_assets, path: "assets" do
               collection do
@@ -182,7 +176,7 @@ module GeoblacklightAdmin
               get "fetch"
             end
           end
-        #{"  "}
+
           # Document Accesses
           resources :document_accesses, path: "access" do
             collection do
@@ -244,48 +238,9 @@ module GeoblacklightAdmin
       inject_into_file "config/routes.rb", gbl_admin_routes, before: /^end/
     end
 
-    def set_gems
-      append_to_file "Gemfile" do
-        "
-# GBL‡ADMIN // @TODO: Why is this necessary? Shouldn't the engine dependencies get installed on their own?
-gem 'active_storage_validations', '~> 1.0'
-gem 'amazing_print'
-gem 'blacklight_advanced_search'
-# gem 'bootstrap', '~> 4.0' (upstream)
-gem 'cocoon', '~> 1.2'
-# gem 'devise', '~> 4.7' (upstream)
-gem 'devise-bootstrap-views', '~> 1.0'
-gem 'devise_invitable', '~> 2.0'
-gem 'dotenv-rails'
-gem 'haml', '~> 5.2'
-gem 'httparty'
-gem 'inline_svg'
-# gem 'jquery-rails', '~> 4.4' (upstream)
-gem 'kithe', '~> 2.0'
-gem 'noticed'
-gem 'pagy'
-gem 'paper_trail'
-gem 'qa', '~> 5.0'
-gem 'ruby-progressbar'
-gem 'simple_form', '~> 5.0'
-gem 'statesman', '~> 7.1.0'
-        "
-      end
-    end
-
-    def set_mime_types
-      append_to_file "config/initializers/mime_types.rb" do
-        '
-# GBL‡ADMIN
-# Order is important. ActiveStorage needs :json to be last
-Mime::Type.register "application/json", :json_aardvark
-Mime::Type.register "application/json", :json_btaa_aardvark
-Mime::Type.register "application/json", :json_gbl_v1
-Mime::Type.register "application/json", :json
-Mime::Type.register "text/csv", :csv_document_downloads
-Mime::Type.register "text/csv", :csv_document_access_links
-        '
-      end
+    def set_development_mailer_host
+      mailer_host = "\n  config.action_mailer.default_url_options = { :host => 'localhost:3000' }\n"
+      inject_into_file "config/environments/development.rb", mailer_host, after: "config.action_mailer.perform_caching = false"
     end
 
     def set_seeds
@@ -340,7 +295,7 @@ Mime::Type.register "text/csv", :csv_document_access_links
     end
 
     def add_catalog_controller_default_params
-      inject_into_file "app/controllers/catalog_controller.rb", after: "'q.alt' => '*:*'" do
+      inject_into_file "app/controllers/catalog_controller.rb", after: '"q.alt" => "*:*"' do
         ",\n      'fq' => ['b1g_publication_state_s:published']"
       end
     end

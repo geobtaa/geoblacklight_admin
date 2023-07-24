@@ -13,7 +13,7 @@
 
 //= require jquery3
 //= require rails-ujs
-//= require cocoon
+//= require @nathanvda/cocoon/cocoon.js
 //= require chosen-jquery/lib/chosen.jquery.js
 
 // VENDOR

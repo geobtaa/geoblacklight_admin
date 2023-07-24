@@ -1,10 +1,34 @@
 # frozen_string_literal: true
 
-# $ rails _7.0.4.2_ new gbl_admin -m https://raw.githubusercontent.com/geobtaa/geoblacklight_admin/develop/template.rb
+##### INSTALL NOTES #####
+#
+# 1. Create your geoblacklight_development PostgreSQL database
+#
+# $> psql postgres
+# $> CREATE DATABASE geoblacklight_development;
+#
+# 2. Run these lines below to stand up a new GBL + GBL Admin instance:
+#
+# $> rails _6.1.7.4_ new gbl_admin -m https://raw.githubusercontent.com/geobtaa/geoblacklight_admin/develop/template.rb
+# $> cd gbl_admin
+# $> bundle exec rake gbl_admin:server
+#
 
+gem "devise"
 gem "blacklight", ">= 7.0", "< 8.0"
 gem "geoblacklight", ">= 4.0"
-gem "geoblacklight_admin"
+gem "geoblacklight_admin", git: "git@github.com:geobtaa/geoblacklight_admin.git", branch: "develop"
+
+# GBL‡ADMIN
+gem "active_storage_validations"
+gem "awesome_print"
+gem "blacklight_advanced_search"
+gem "dotenv-rails"
+gem "haml"
+gem "inline_svg"
+gem "kithe", "~> 2.0"
+gem "noticed"
+gem "paper_trail"
 
 run "bundle install"
 
