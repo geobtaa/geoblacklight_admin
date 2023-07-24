@@ -4,9 +4,7 @@
 
 GeoBlacklight Admin is a [GeoBlacklight](https://github.com/geoblacklight/geoblacklight) plugin, built on [Kithe](https://github.com/sciencehistory/kithe), that provides a complex web-form for editing documents and an CSV-based import/export workflow for OpenGeoMetadata's [Aardvark schema](https://opengeometadata.org/ogm-aardvark/). GBL Admin is based on the Big Ten Academic Alliance's production workflow tool [GEOMG](https://github.com/geobtaa/geomg).
 
-## Warning: Pre-Alpha
-
-> :warning: This gem is not ready for public adoption yet, but hopefully someday soon (Late Summer 2023?). Feel free to kick the tires if you are curious and know GeoBlacklight's codebase/stack well.
+[![GeoBlackliht Admin](https://raw.githubusercontent.com/geobtaa/geoblacklight_admin/develop/docs/gbl_admin_screenshot.png)](https://youtu.be/lWjcr-Ow228 "GeoBlacklight Admin")
 
 ## Requirements
 
