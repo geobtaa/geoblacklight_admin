@@ -110,7 +110,7 @@ module Admin
 
       @parent.update(representative: @parent.members.order(:position).first) if @parent.representative_id.nil?
 
-      redirect_to document_path(@parent.friendlier_id, anchor: "nav-members")
+      redirect_to admin_document_path(@parent.friendlier_id, anchor: "nav-members")
     end
 
     def convert_to_child_work
