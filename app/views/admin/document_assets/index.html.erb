@@ -2,12 +2,12 @@
   Document &middot; Assets
 
   <% if params[:document_id] %>
-    <%= link_to '+ Upload Assets', display_attach_form_document_document_assets_url(@document), { class: 'btn btn-primary float-right mr-2' } %>
+    <%= link_to '+ Upload Assets', display_attach_form_admin_document_document_assets_url(@document), { class: 'btn btn-primary float-right mr-2' } %>
   <% end %>
 </h1>
 <% if params[:document_id] %>
   <h2 class='h3'>
-    <%= link_to(@document.title, document_path(@document)) %>
+    <%= link_to(@document.title, admin_document_path(@document)) %>
     &middot;
     <%= @document_assets.count %> assets
   </h2>
