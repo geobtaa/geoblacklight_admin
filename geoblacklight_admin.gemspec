@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency "blacklight_advanced_search"
   s.add_dependency "blacklight_range_limit"
   s.add_dependency "bootstrap", "~> 4.0"
-  s.add_dependency "chosen-rails", "1.0"
+  s.add_dependency "chosen-rails", "~> 1.10"
   s.add_dependency "cocoon", "~> 1.2"
   s.add_dependency "config", "~> 4.0"
   s.add_dependency "devise", "~> 4.7"
