@@ -45,7 +45,7 @@ Gem::Specification.new do |s|
   s.add_dependency "ruby-progressbar"
   s.add_dependency "simple_form", "~> 5.0"
   s.add_dependency "sprockets", "< 4"
-  s.add_dependency "statesman", "~> 7.1.0"
+  s.add_dependency "statesman", "~> 10.0"
 
   s.add_development_dependency "byebug", "~> 11.1"
   s.add_development_dependency "capybara", "~> 3.0"
