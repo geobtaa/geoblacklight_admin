@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "csv"
+
 # DocumentAccess
 class DocumentAccess < ApplicationRecord
   belongs_to :document, foreign_key: :friendlier_id, primary_key: :friendlier_id

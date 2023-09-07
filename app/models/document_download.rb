@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "csv"
+
 # DocumentDownload
 class DocumentDownload < ApplicationRecord
   belongs_to :document, inverse_of: :document_downloads, foreign_key: :friendlier_id, primary_key: :friendlier_id
