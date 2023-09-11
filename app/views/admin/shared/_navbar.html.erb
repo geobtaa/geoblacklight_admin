@@ -32,11 +32,6 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
-    <li class="nav-item">
-      <%= link_to root_url, { class: 'nav-link' } do %>
-        GeoBlacklight Home
-      <% end %>
-    </li>
       <% if user_signed_in? %>
         <li class="nav-item">
           <%= link_to admin_notifications_url, { class: 'nav-link' } do %>
@@ -78,6 +73,11 @@
           <%= link_to('Sign in', new_user_session_path, {class: 'nav-link'}) %>
         </li>
       <% end %>
+      <li class="nav-item">
+        <%= link_to root_url, { class: 'nav-link' } do %>
+          GeoBlacklight Home
+        <% end %>
+      </li>
     </ul>
   </div>
 </nav>
