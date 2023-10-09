@@ -7,7 +7,7 @@ class Document < Kithe::Work
 
   attr_accessor :skip_callbacks
 
-  has_paper_trail
+  has_paper_trail ignore: [:publication_state]
   belongs_to :import, optional: true
 
   # Statesman
