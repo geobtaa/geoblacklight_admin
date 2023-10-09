@@ -40,7 +40,6 @@ class ExportJsonBulkJob < ApplicationJob
         json_obj.compact!
 
         @json_array << JSON.pretty_generate(json_obj)
-
       rescue NoMethodError => e
         Rails.logger.debug { "==== Error! - #{doc.friendlier_id} ====" }
         Rails.logger.debug e.inspect
