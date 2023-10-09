@@ -71,9 +71,7 @@ module Admin
       @document_download.destroy
 
       respond_to do |format|
-        format.html do
-          redirect_to admin_document_downloads_url, notice: "Document download was successfully destroyed."
-        end
+        format.html { redirect_to admin_document_downloads_url, notice: "Document download was successfully destroyed." }
         format.json { head :no_content }
       end
     end

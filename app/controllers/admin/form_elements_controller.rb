@@ -42,9 +42,7 @@ module Admin
     def update
       respond_to do |format|
         if @form_element.update(form_element_params)
-          format.html do
-            redirect_to admin_form_element_url(@form_element), notice: "Form element was successfully updated."
-          end
+          format.html { redirect_to admin_form_element_url(@form_element), notice: "Form element was successfully updated." }
           format.json { render :show, status: :ok, location: @form_element }
         else
           format.html { render :edit, status: :unprocessable_entity }

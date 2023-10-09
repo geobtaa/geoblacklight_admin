@@ -29,9 +29,7 @@ class MappingsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create mapping" do
     assert_difference("Mapping.count") do
-      post admin_import_mappings_url(@import),
-        params: {mapping: {delimited: @mapping.delimited, destination_field: @mapping.destination_field,
-                           import_id: @mapping.import_id, source_header: @mapping.source_header, transformation_method: @mapping.transformation_method}}
+      post admin_import_mappings_url(@import), params: {mapping: {delimited: @mapping.delimited, destination_field: @mapping.destination_field, import_id: @mapping.import_id, source_header: @mapping.source_header, transformation_method: @mapping.transformation_method}}
     end
 
     assert_redirected_to admin_import_mapping_url(@import, Mapping.last)
@@ -48,9 +46,7 @@ class MappingsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update mapping" do
-    patch admin_import_mapping_url(@import, @mapping),
-      params: {mapping: {delimited: @mapping.delimited, destination_field: @mapping.destination_field,
-                         import_id: @mapping.import_id, source_header: @mapping.source_header, transformation_method: @mapping.transformation_method}}
+    patch admin_import_mapping_url(@import, @mapping), params: {mapping: {delimited: @mapping.delimited, destination_field: @mapping.destination_field, import_id: @mapping.import_id, source_header: @mapping.source_header, transformation_method: @mapping.transformation_method}}
     assert_redirected_to admin_import_mappings_url(@import)
   end
 

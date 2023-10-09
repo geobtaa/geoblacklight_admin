@@ -30,8 +30,7 @@ module GeoblacklightAdmin
       copy_file "config/initializers/pagy.rb", "config/initializers/pagy.rb", force: true
       copy_file "config/initializers/shrine.rb", "config/initializers/shrine.rb", force: true
       copy_file "config/initializers/simple_form.rb", "config/initializers/simple_form.rb", force: true
-      copy_file "config/initializers/simple_form_bootstrap.rb", "config/initializers/simple_form_bootstrap.rb",
-        force: true
+      copy_file "config/initializers/simple_form_bootstrap.rb", "config/initializers/simple_form_bootstrap.rb", force: true
       copy_file "config/initializers/statesman.rb", "config/initializers/statesman.rb", force: true
     end
 
@@ -125,7 +124,7 @@ module GeoblacklightAdmin
 
           # Search controller
           get "/search" => "search#index"
-        #{"  "}
+          
           # AdvancedSearch controller
           get '/advanced_search' => 'advanced_search#index', constraints: lambda { |req| req.format == :json }
           get '/advanced_search/facets' => 'advanced_search#facets', constraints: lambda { |req| req.format == :json }
@@ -242,8 +241,7 @@ module GeoblacklightAdmin
 
     def set_development_mailer_host
       mailer_host = "\n  config.action_mailer.default_url_options = { :host => 'localhost:3000' }\n"
-      inject_into_file "config/environments/development.rb", mailer_host,
-        after: "config.action_mailer.perform_caching = false"
+      inject_into_file "config/environments/development.rb", mailer_host, after: "config.action_mailer.perform_caching = false"
     end
 
     def set_seeds

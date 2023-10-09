@@ -53,9 +53,7 @@ module Admin
     def update
       respond_to do |format|
         if @mapping.update(mapping_params)
-          format.html do
-            redirect_to admin_import_mappings_path(@mapping.import), notice: "Mapping was successfully updated."
-          end
+          format.html { redirect_to admin_import_mappings_path(@mapping.import), notice: "Mapping was successfully updated." }
           format.json { render :show, status: :ok, location: @mapping }
         else
           format.html { render :edit }

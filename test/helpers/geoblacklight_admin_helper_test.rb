@@ -19,7 +19,7 @@ class GeoblacklightAdminHelperTest < ActionView::TestCase
   test "no_json_blanks" do
     assert_equal "foo", no_json_blanks("foo")
     assert_nil no_json_blanks([""])
-    assert_equal %w[foo bar], no_json_blanks(%w[foo bar])
+    assert_equal ["foo", "bar"], no_json_blanks(["foo", "bar"])
   end
 
   test "qa_search_vocab_path" do
@@ -60,7 +60,7 @@ class GeoblacklightAdminHelperTest < ActionView::TestCase
   end
 
   test "flat_hash_key" do
-    assert_equal "foo[bar]", flat_hash_key(%w[foo bar])
+    assert_equal "foo[bar]", flat_hash_key(["foo", "bar"])
   end
 
   test "flatten_hash" do
@@ -69,7 +69,6 @@ class GeoblacklightAdminHelperTest < ActionView::TestCase
   end
 
   test "params_as_hidden_fields" do
-    assert_equal '<input type="hidden" name="q" value="foo" autocomplete="off" />',
-      params_as_hidden_fields({"q" => "foo"})
+    assert_equal "<input type=\"hidden\" name=\"q\" value=\"foo\" autocomplete=\"off\" />", params_as_hidden_fields({"q" => "foo"})
   end
 end

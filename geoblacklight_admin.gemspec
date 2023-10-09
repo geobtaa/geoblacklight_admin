@@ -65,6 +65,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "solr_wrapper", "~> 4.0"
   s.add_development_dependency "sprockets", "< 4"
   s.add_development_dependency "standard", "~> 1.24"
-  s.add_development_dependency "web-console"
   s.add_development_dependency "webdrivers"
+  s.add_development_dependency "web-console"
 end

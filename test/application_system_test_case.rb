@@ -16,7 +16,7 @@ Capybara.register_driver :selenium_chrome_headless do |app|
     "disable-gpu" # https://developers.google.com/web/updates/2017/04/headless-chrome
   ].each { |arg| options.add_argument(arg) }
 
-  Capybara::Selenium::Driver.new(app, browser: :chrome, options:).tap do |driver|
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options).tap do |driver|
     driver.browser.download_path = Rails.root.join("tmp/downloads")
   end
 end

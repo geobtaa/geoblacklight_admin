@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "test_helper"
 
 class FormElementsControllerTest < ActionDispatch::IntegrationTest
@@ -26,9 +24,7 @@ class FormElementsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create form_element" do
     assert_difference("FormElement.count") do
-      post admin_form_elements_url,
-        params: {form_element: {element_solr_field: @form_element.element_solr_field, label: @form_element.label,
-                                type: @form_element.type}}
+      post admin_form_elements_url, params: {form_element: {element_solr_field: @form_element.element_solr_field, label: @form_element.label, type: @form_element.type}}
     end
 
     assert_redirected_to admin_form_elements_url
@@ -45,9 +41,7 @@ class FormElementsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update form_element" do
-    patch admin_form_element_url(@form_element),
-      params: {form_element: {element_solr_field: @form_element.element_solr_field, label: @form_element.label,
-                              type: @form_element.type}}
+    patch admin_form_element_url(@form_element), params: {form_element: {element_solr_field: @form_element.element_solr_field, label: @form_element.label, type: @form_element.type}}
     assert_redirected_to admin_form_element_url(@form_element)
   end
 

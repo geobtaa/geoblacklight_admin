@@ -9,10 +9,10 @@ json.data do
       doc_presenter = index_presenter(document)
 
       doc_presenter.fields_to_render.each do |field_name, field|
-        json.partial! "field", field:,
-          field_name:,
-          document_url:,
-          doc_presenter:
+        json.partial! "field", field: field,
+          field_name: field_name,
+          document_url: document_url,
+          doc_presenter: doc_presenter
       end
     end
 

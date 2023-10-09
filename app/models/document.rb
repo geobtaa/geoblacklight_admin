@@ -197,7 +197,7 @@ class Document < Kithe::Work
 
   # Institutional Access URLs
   def access_urls
-    DocumentAccess.where(friendlier_id:).order(institution_code: :asc)
+    DocumentAccess.where(friendlier_id: friendlier_id).order(institution_code: :asc)
   end
 
   def derive_locn_geometry

@@ -40,8 +40,7 @@ module Admin
       respond_to do |format|
         if @document_access.save
           format.html do
-            redirect_to admin_document_document_accesses_path(@document),
-              notice: "Document access was successfully created."
+            redirect_to admin_document_document_accesses_path(@document), notice: "Document access was successfully created."
           end
           format.json { render :show, status: :created, location: @document_access }
         else
@@ -57,8 +56,7 @@ module Admin
       respond_to do |format|
         if @document_access.update(document_access_params)
           format.html do
-            redirect_to admin_document_document_accesses_path(@document),
-              notice: "Document access was successfully updated."
+            redirect_to admin_document_document_accesses_path(@document), notice: "Document access was successfully updated."
           end
           format.json { render :show, status: :ok, location: @document_access }
         else
@@ -74,8 +72,7 @@ module Admin
       @document_access.destroy
       respond_to do |format|
         format.html do
-          redirect_to admin_document_document_accesses_path(@document),
-            notice: "Document access was successfully destroyed."
+          redirect_to admin_document_document_accesses_path(@document), notice: "Document access was successfully destroyed."
         end
         format.json { head :no_content }
       end
@@ -104,9 +101,7 @@ module Admin
 
       respond_to do |format|
         if DocumentAccess.import(params.dig(:document_access, :assets, :file))
-          format.html do
-            redirect_to admin_document_accesses_path, notice: "Document access links were created successfully."
-          end
+          format.html { redirect_to admin_document_accesses_path, notice: "Document access links were created successfully." }
         else
           format.html { redirect_to admin_document_accesses_path, notice: "Access URLs could not be created." }
         end

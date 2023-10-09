@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "test_helper"
 
 class ElementsControllerTest < ActionDispatch::IntegrationTest
@@ -28,9 +26,7 @@ class ElementsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create element" do
     assert_difference("Element.count") do
-      post admin_elements_url,
-        params: {element: {controlled_vocabulary: @element.controlled_vocabulary, data_entry_hint: @element.data_entry_hint,
-                           display_only_on_persisted: @element.display_only_on_persisted, export_transformation_method: @element.export_transformation_method, exportable: @element.exportable, field_definition: @element.field_definition, field_type: @element.field_type, formable: @element.formable, html_attributes: @element.html_attributes, import_deliminated: @element.import_deliminated, import_transformation_method: @element.import_transformation_method, importable: @element.importable, index_transformation_method: @element.index_transformation_method, indexable: @element.indexable, js_behaviors: @element.js_behaviors, label: @element.label, placeholder_text: @element.placeholder_text, repeatable: @element.repeatable, required: @element.required, solr_field: @element.solr_field, test_fixture_example: @element.test_fixture_example, validation_method: @element.validation_method}}
+      post admin_elements_url, params: {element: {controlled_vocabulary: @element.controlled_vocabulary, data_entry_hint: @element.data_entry_hint, display_only_on_persisted: @element.display_only_on_persisted, export_transformation_method: @element.export_transformation_method, exportable: @element.exportable, field_definition: @element.field_definition, field_type: @element.field_type, formable: @element.formable, html_attributes: @element.html_attributes, import_deliminated: @element.import_deliminated, import_transformation_method: @element.import_transformation_method, importable: @element.importable, index_transformation_method: @element.index_transformation_method, indexable: @element.indexable, js_behaviors: @element.js_behaviors, label: @element.label, placeholder_text: @element.placeholder_text, repeatable: @element.repeatable, required: @element.required, solr_field: @element.solr_field, test_fixture_example: @element.test_fixture_example, validation_method: @element.validation_method}}
     end
 
     assert_redirected_to admin_element_url(Element.last)
@@ -47,9 +43,7 @@ class ElementsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update element" do
-    patch admin_element_url(@element),
-      params: {element: {controlled_vocabulary: @element.controlled_vocabulary, data_entry_hint: @element.data_entry_hint,
-                         display_only_on_persisted: @element.display_only_on_persisted, export_transformation_method: @element.export_transformation_method, exportable: @element.exportable, field_definition: @element.field_definition, field_type: @element.field_type, formable: @element.formable, html_attributes: @element.html_attributes, import_deliminated: @element.import_deliminated, import_transformation_method: @element.import_transformation_method, importable: @element.importable, index_transformation_method: @element.index_transformation_method, indexable: @element.indexable, js_behaviors: @element.js_behaviors, label: @element.label, placeholder_text: @element.placeholder_text, repeatable: @element.repeatable, required: @element.required, solr_field: @element.solr_field, test_fixture_example: @element.test_fixture_example, validation_method: @element.validation_method}}
+    patch admin_element_url(@element), params: {element: {controlled_vocabulary: @element.controlled_vocabulary, data_entry_hint: @element.data_entry_hint, display_only_on_persisted: @element.display_only_on_persisted, export_transformation_method: @element.export_transformation_method, exportable: @element.exportable, field_definition: @element.field_definition, field_type: @element.field_type, formable: @element.formable, html_attributes: @element.html_attributes, import_deliminated: @element.import_deliminated, import_transformation_method: @element.import_transformation_method, importable: @element.importable, index_transformation_method: @element.index_transformation_method, indexable: @element.indexable, js_behaviors: @element.js_behaviors, label: @element.label, placeholder_text: @element.placeholder_text, repeatable: @element.repeatable, required: @element.required, solr_field: @element.solr_field, test_fixture_example: @element.test_fixture_example, validation_method: @element.validation_method}}
     assert_redirected_to admin_element_url(@element)
   end
 

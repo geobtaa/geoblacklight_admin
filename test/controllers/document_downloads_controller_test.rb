@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "test_helper"
 
 class DocumentDownloadsControllerTest < ActionDispatch::IntegrationTest
@@ -27,9 +25,7 @@ class DocumentDownloadsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create document_download" do
     assert_difference("DocumentDownload.count") do
-      post admin_document_downloads_url,
-        params: {document_download: {friendlier_id: @document_download.friendlier_id, label: @document_download.label,
-                                     position: @document_download.position, value: @document_download.value}}
+      post admin_document_downloads_url, params: {document_download: {friendlier_id: @document_download.friendlier_id, label: @document_download.label, position: @document_download.position, value: @document_download.value}}
     end
 
     assert_redirected_to admin_document_document_downloads_url(@document)
@@ -46,9 +42,7 @@ class DocumentDownloadsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update document_download" do
-    patch admin_document_document_download_url(@document, @document_download),
-      params: {document_download: {friendlier_id: @document_download.friendlier_id, label: @document_download.label,
-                                   position: @document_download.position, value: @document_download.value}}
+    patch admin_document_document_download_url(@document, @document_download), params: {document_download: {friendlier_id: @document_download.friendlier_id, label: @document_download.label, position: @document_download.position, value: @document_download.value}}
     assert_redirected_to admin_document_document_downloads_url(@document)
   end
 
