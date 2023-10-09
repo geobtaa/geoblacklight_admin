@@ -57,7 +57,7 @@ class Document
 
     def valid_yyyy(date)
       if date[/\D/]
-        return false unless date == "*"
+        false unless date == "*"
       else
         true
       end
