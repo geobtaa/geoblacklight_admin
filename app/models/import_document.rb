@@ -37,17 +37,15 @@ class ImportDocument < ApplicationRecord
 
   def append_created_at(data_hash)
     if data_hash[:json_attributes].has_key?("date_created_dtsi")
-      data_hash.merge!({created_at: data_hash[:json_attributes]["date_created_dtsi"]})
+      data_hash[:created_at] = data_hash[:json_attributes]["date_created_dtsi"]
     end
-
     data_hash
   end
 
   def append_updated_at(data_hash)
     if data_hash[:json_attributes].has_key?("date_modified_dtsi")
-      data_hash.merge!({updated_at: data_hash[:json_attributes]["date_modified_dtsi"]})
+      data_hash[:updated_at] = data_hash[:json_attributes]["date_modified_dtsi"]
     end
-    
     data_hash
   end
 end
