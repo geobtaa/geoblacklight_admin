@@ -80,7 +80,7 @@ class ImportGblv1 < Import
 
       json_data.each do |key, value|
         reference = {
-          value: value,
+          value:,
           category: Geomg::FieldMappingsGblv1.uri_2_category_references_mappings[key]
         }
         references << reference

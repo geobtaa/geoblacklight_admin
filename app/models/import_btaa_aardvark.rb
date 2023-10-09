@@ -97,7 +97,7 @@ class ImportBtaaAardvark < Import
 
       json_data.each do |key, value|
         reference = {
-          value: value,
+          value:,
           category: Geomg.uri_2_category_references_mappings[key]
         }
         references << reference

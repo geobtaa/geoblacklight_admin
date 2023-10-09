@@ -33,7 +33,7 @@ class ExportCsvService
         progress = ((count.to_f / total) * 100).round
         progress = 100 if progress > 100
 
-        ActionCable.server.broadcast("export_channel", {progress: progress})
+        ActionCable.server.broadcast("export_channel", {progress:})
         slice.each do |doc_id|
           doc = Document.find_by(friendlier_id: doc_id)
           csv_file << doc.to_csv

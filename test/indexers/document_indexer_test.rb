@@ -22,7 +22,8 @@ class DocumentIndexerTest < ActiveSupport::TestCase
     # - Descriptive
     assert_equal output_hash[GeoblacklightAdmin::Schema.instance.solr_fields[:title]], ["Agricultural Districts: Iowa"]
     assert_equal output_hash[GeoblacklightAdmin::Schema.instance.solr_fields[:alternative_title]], ["Ag Districts"]
-    assert_equal output_hash[GeoblacklightAdmin::Schema.instance.solr_fields[:description]], ["Iowa Agricultural Districts"]
+    assert_equal output_hash[GeoblacklightAdmin::Schema.instance.solr_fields[:description]],
+      ["Iowa Agricultural Districts"]
     assert_equal output_hash[GeoblacklightAdmin::Schema.instance.solr_fields[:language]], ["eng"]
     assert_equal output_hash[GeoblacklightAdmin::Schema.instance.solr_fields[:b1g_language]], ["English"]
 
@@ -33,7 +34,8 @@ class DocumentIndexerTest < ActiveSupport::TestCase
     # - Categories
     assert_equal output_hash[GeoblacklightAdmin::Schema.instance.solr_fields[:resource_class]], ["Datasets"]
     assert_equal output_hash[GeoblacklightAdmin::Schema.instance.solr_fields[:subject]], ["Boundaries"]
-    assert_equal output_hash[GeoblacklightAdmin::Schema.instance.solr_fields[:keyword]], %w[iowa judicial districts boundaries]
+    assert_equal output_hash[GeoblacklightAdmin::Schema.instance.solr_fields[:keyword]],
+      %w[iowa judicial districts boundaries]
 
     # - Temporal
     assert_equal output_hash[GeoblacklightAdmin::Schema.instance.solr_fields[:date_issued]], ["2015-09-03"]
@@ -44,8 +46,10 @@ class DocumentIndexerTest < ActiveSupport::TestCase
     # - Spatial
     assert_equal output_hash[GeoblacklightAdmin::Schema.instance.solr_fields[:spatial_coverage]], ["Iowa"]
     assert_nil output_hash[GeoblacklightAdmin::Schema.instance.solr_fields[:geonames]]
-    assert_equal output_hash[GeoblacklightAdmin::Schema.instance.solr_fields[:geometry]], ["POLYGON((-80 25, -65 18, -64 33, -80 25))"]
-    assert_equal output_hash[GeoblacklightAdmin::Schema.instance.solr_fields[:bounding_box]], ["ENVELOPE(-96.6391,-90.1401,43.5012,40.3754)"]
+    assert_equal output_hash[GeoblacklightAdmin::Schema.instance.solr_fields[:geometry]],
+      ["POLYGON((-80 25, -65 18, -64 33, -80 25))"]
+    assert_equal output_hash[GeoblacklightAdmin::Schema.instance.solr_fields[:bounding_box]],
+      ["ENVELOPE(-96.6391,-90.1401,43.5012,40.3754)"]
     assert_equal output_hash[GeoblacklightAdmin::Schema.instance.solr_fields[:centroid]], ["41.9383,-93.3896"]
 
     # Distribution
@@ -65,8 +69,10 @@ class DocumentIndexerTest < ActiveSupport::TestCase
 
     # Administrative
     # - Codes
-    assert_equal output_hash[GeoblacklightAdmin::Schema.instance.solr_fields[:identifier]], ["35c8a641589c4e13b7aa11e37f3f00a1_0"]
-    assert_equal output_hash[GeoblacklightAdmin::Schema.instance.solr_fields[:id]], ["35c8a641589c4e13b7aa11e37f3f00a1_0"]
+    assert_equal output_hash[GeoblacklightAdmin::Schema.instance.solr_fields[:identifier]],
+      ["35c8a641589c4e13b7aa11e37f3f00a1_0"]
+    assert_equal output_hash[GeoblacklightAdmin::Schema.instance.solr_fields[:id]],
+      ["35c8a641589c4e13b7aa11e37f3f00a1_0"]
     assert_equal output_hash[GeoblacklightAdmin::Schema.instance.solr_fields[:provider]], ["Iowa"]
     assert_equal output_hash[GeoblacklightAdmin::Schema.instance.solr_fields[:code]], ["03a-04"]
 

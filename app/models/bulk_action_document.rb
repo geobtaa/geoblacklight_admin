@@ -16,7 +16,7 @@ class BulkActionDocument < ApplicationRecord
   # @TODO: Needed?
   def to_hash
     {
-      friendlier_id: friendlier_id
+      friendlier_id:
     }
   end
 end

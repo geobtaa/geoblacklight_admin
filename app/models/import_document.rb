@@ -15,10 +15,10 @@ class ImportDocument < ApplicationRecord
 
   def to_hash
     data_hash = {
-      friendlier_id: friendlier_id,
-      title: title,
+      friendlier_id:,
+      title:,
       json_attributes: nullify_empty_json_attributes,
-      import_id: import_id
+      import_id:
     }
 
     append_created_at(data_hash)
@@ -36,18 +36,18 @@ class ImportDocument < ApplicationRecord
   end
 
   def append_created_at(data_hash)
-    if data_hash[:json_attributes].has_key?("date_created_dtsi")
-      data_hash.merge!({created_at: data_hash[:json_attributes]["date_created_dtsi"]})
+    if data_hash[:json_attributes].key?("date_created_dtsi")
+      data_hash[:created_at] = data_hash[:json_attributes]["date_created_dtsi"]
     end
 
     data_hash
   end
 
   def append_updated_at(data_hash)
-    if data_hash[:json_attributes].has_key?("date_modified_dtsi")
-      data_hash.merge!({updated_at: data_hash[:json_attributes]["date_modified_dtsi"]})
+    if data_hash[:json_attributes].key?("date_modified_dtsi")
+      data_hash[:updated_at] = data_hash[:json_attributes]["date_modified_dtsi"]
     end
-    
+
     data_hash
   end
 end

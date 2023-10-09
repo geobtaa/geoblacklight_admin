@@ -8,7 +8,8 @@ class DocumentHelperTest < ActionView::TestCase
     remote_link = 'https://geodev.btaa.org/admin/api.json?q=water\u0026search_field=all_fields\u0026sort=solr_year_i+desc%2C+dc_title_sort+asc'
     local_link = localize_link(remote_link)
 
-    assert_equal '/admin/documents?q=water\\u0026search_field=all_fields\\u0026sort=solr_year_i+desc%2C+dc_title_sort+asc', local_link
+    assert_equal '/admin/documents?q=water\\u0026search_field=all_fields\\u0026sort=solr_year_i+desc%2C+dc_title_sort+asc',
+      local_link
   end
 
   # Render local sort link from API results
@@ -26,7 +27,8 @@ class DocumentHelperTest < ActionView::TestCase
 
     link = @documents.sorts.first
 
-    assert_equal '<a class="dropdown-item" href="/admin/documents?page=1&amp;q=water&amp;rows=20&amp;sort=score+desc%2C+dct_title_sort+asc">Relevance</a>', link_to(link["attributes"]["label"], localize_link(link["links"]["self"]), {class: "dropdown-item"})
+    assert_equal '<a class="dropdown-item" href="/admin/documents?page=1&amp;q=water&amp;rows=20&amp;sort=score+desc%2C+dct_title_sort+asc">Relevance</a>',
+      link_to(link["attributes"]["label"], localize_link(link["links"]["self"]), {class: "dropdown-item"})
   end
 
   # Render local link from API results
@@ -47,7 +49,8 @@ class DocumentHelperTest < ActionView::TestCase
     assert_equal "add", agg[:action]
 
     # Facet is added to query
-    assert_equal "/documents?f%5Bb1g_genre_sm%5D%5B%5D=Geospatial+data&q=water&rows=20&sort=solr_year_i%2Bdesc%252C%2Bdc_title_sort%2Basc", agg[:link]
+    assert_equal "/documents?f%5Bb1g_genre_sm%5D%5B%5D=Geospatial+data&q=water&rows=20&sort=solr_year_i%2Bdesc%252C%2Bdc_title_sort%2Basc",
+      agg[:link]
   end
 
   test "link_from_api - facet remove link" do

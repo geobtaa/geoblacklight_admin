@@ -2,20 +2,22 @@
 
 require "test_helper"
 
-class Import::CsvHeaderValidatorTest < ActiveSupport::TestCase
-  include ActionDispatch::TestProcess
+module Import
+  class CsvHeaderValidatorTest < ActiveSupport::TestCase
+    include ActionDispatch::TestProcess
 
-  test "validate - no duplicate IDs allow" do
-    skip("file download missing in test runner")
-    @import = Import.new(
-      name: "Test Header Validity",
-      csv_file: fixture_file_upload("#{Rails.root}/test/fixtures/files/duplicate_ids.csv", "text/csv")
-    )
+    test "validate - no duplicate IDs allow" do
+      skip("file download missing in test runner")
+      @import = Import.new(
+        name: "Test Header Validity",
+        csv_file: fixture_file_upload("#{Rails.root}/test/fixtures/files/duplicate_ids.csv", "text/csv")
+      )
 
-    @import.run_callbacks(:commit)
-    @import.save
+      @import.run_callbacks(:commit)
+      @import.save
 
-    assert @import.invalid?
-    assert @import.errors
+      assert @import.invalid?
+      assert @import.errors
+    end
   end
 end

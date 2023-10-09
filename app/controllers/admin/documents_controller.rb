@@ -35,19 +35,22 @@ module Admin
 
         # JSON - GBL Aardvark
         format.json_aardvark do
-          ExportJsonJob.perform_later(@request, current_user, query_params.merge!({format: "json_aardvark"}), ExportJsonService)
+          ExportJsonJob.perform_later(@request, current_user, query_params.merge!({format: "json_aardvark"}),
+            ExportJsonService)
           head :no_content
         end
 
         # JSON - GBL v1
         format.json_gbl_v1 do
-          ExportJsonJob.perform_later(@request, current_user, query_params.merge!({format: "json_gbl_v1"}), ExportJsonService)
+          ExportJsonJob.perform_later(@request, current_user, query_params.merge!({format: "json_gbl_v1"}),
+            ExportJsonService)
           head :no_content
         end
 
         # JSON - FILE
         format.json_file do
-          ExportJsonBulkJob.perform_later(@request, current_user, query_params.merge!({format: "json_file"}), ExportJsonService)
+          ExportJsonBulkJob.perform_later(@request, current_user, query_params.merge!({format: "json_file"}),
+            ExportJsonService)
           head :no_content
         end
 
