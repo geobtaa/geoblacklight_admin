@@ -34,9 +34,9 @@
         <td><%= bulk_action.field_name %></td>
         <td><%= bulk_action.field_value %></td>
         <td><%= bulk_action.created_at %></td>
-        <td><%= link_to 'Show', bulk_action %></td>
+        <td><%= link_to 'Show', admin_bulk_action_path(bulk_action) %></td>
         <td><%= link_to 'Edit', edit_bulk_action_path(bulk_action) %></td>
-        <td><%= link_to 'Destroy', bulk_action, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Destroy', admin_bulk_action_path(bulk_action), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

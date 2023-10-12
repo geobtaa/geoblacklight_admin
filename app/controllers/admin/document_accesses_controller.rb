@@ -101,12 +101,12 @@ module Admin
 
       respond_to do |format|
         if DocumentAccess.import(params.dig(:document_access, :assets, :file))
-          format.html { redirect_to document_accesses_path, notice: "Document access links were created successfully." }
+          format.html { redirect_to admin_document_accesses_path, notice: "Document access links were created successfully." }
         else
-          format.html { redirect_to document_accesses_path, notice: "Access URLs could not be created." }
+          format.html { redirect_to admin_document_accesses_path, notice: "Access URLs could not be created." }
         end
       rescue => e
-        format.html { redirect_to document_accesses_path, notice: "Access URLs could not be created. #{e}" }
+        format.html { redirect_to admin_document_accesses_path, notice: "Access URLs could not be created. #{e}" }
       end
     end
 

@@ -28,6 +28,7 @@ module GeoblacklightAdmin
       copy_file "config/initializers/kithe.rb", "config/initializers/kithe.rb", force: true
       copy_file "config/initializers/mime_types.rb", "config/initializers/mime_types.rb", force: true
       copy_file "config/initializers/pagy.rb", "config/initializers/pagy.rb", force: true
+      copy_file "config/initializers/shrine.rb", "config/initializers/shrine.rb", force: true
       copy_file "config/initializers/simple_form.rb", "config/initializers/simple_form.rb", force: true
       copy_file "config/initializers/simple_form_bootstrap.rb", "config/initializers/simple_form_bootstrap.rb", force: true
       copy_file "config/initializers/statesman.rb", "config/initializers/statesman.rb", force: true
@@ -212,7 +213,7 @@ module GeoblacklightAdmin
 
           get "/documents/:id/ingest", to: "document_assets#display_attach_form", as: "asset_ingest"
           post "/documents/:id/ingest", to: "document_assets#attach_files"
-          #mount Kithe::AssetUploader.upload_endpoint(:cache) => "/direct_upload", :as => :direct_app_upload
+          mount Kithe::AssetUploader.upload_endpoint(:cache) => "/direct_upload", :as => :direct_app_upload
 
           resources :collections, except: [:show]
 

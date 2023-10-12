@@ -48,10 +48,10 @@ Accrual Periodicity,b1g_dct_accrualPeriodicity_s,https://geobtaa.github.io/metad
 Date Accessioned,b1g_dateAccessioned_sm,https://geobtaa.github.io/metadata/b1g-custom-elements/#date-accessioned,string,FALSE,TRUE,TRUE,,,date-accessioned1|date-accessioned2,,,,FALSE,TRUE,TRUE,,TRUE,,TRUE,,,47
 Date Retired,b1g_dateRetired_s,https://geobtaa.github.io/metadata/b1g-custom-elements/#date-retired,string,FALSE,FALSE,TRUE,,YYYY-MM-DD,date-retired,,datepicker,,FALSE,TRUE,FALSE,,TRUE,,TRUE,,,48
 Status,b1g_status_s,https://geobtaa.github.io/metadata/b1g-custom-elements/#status,string,FALSE,FALSE,TRUE,,,Active,,,,FALSE,TRUE,FALSE,,TRUE,,TRUE,,,49
-Publication State,b1g_publication_state_s,https://geobtaa.github.io/metadata/b1g-custom-elements/#publication-state,string,TRUE,FALSE,TRUE,,,published,publication_states,,,TRUE,FALSE,FALSE,,TRUE,current_state,TRUE,current_state,,50
+Publication State,b1g_publication_state_s,https://geobtaa.github.io/metadata/b1g-custom-elements/#publication-state,string,TRUE,FALSE,TRUE,,,published,publication_states,,,TRUE,TRUE,FALSE,,TRUE,current_state,TRUE,current_state,,50
 Suppressed Record,gbl_suppressed_b,https://opengeometadata.org/ogm-aardvark/#suppressed,boolean,FALSE,FALSE,TRUE,,,FALSE,,,,FALSE,TRUE,FALSE,,TRUE,,TRUE,,,51
 Child Record,b1g_child_record_b,https://geobtaa.github.io/metadata/b1g-custom-elements/#child-record,boolean,FALSE,FALSE,TRUE,,,FALSE,,,,FALSE,TRUE,FALSE,,TRUE,,TRUE,,,52
 Mediator,b1g_dct_mediator_sm,https://geobtaa.github.io/metadata/b1g-custom-elements/#mediator,string,FALSE,TRUE,TRUE,,,mediator1|mediator2,,,,FALSE,TRUE,TRUE,,TRUE,,TRUE,,,53
 Access,b1g_access_s,https://geobtaa.github.io/metadata/b1g-custom-elements/#access,string,FALSE,FALSE,TRUE,,,access,,,,FALSE,TRUE,FALSE,,TRUE,,TRUE,access_json,,54
-Created At,date_created_dtsi,,datetime,FALSE,FALSE,FALSE,,,2021-12-09 15:50:49.803415,,,,TRUE,FALSE,FALSE,,TRUE,created_at_dt,TRUE,created_at_dt,,55
-Updated At,date_modified_dtsi,,datetime,FALSE,FALSE,FALSE,,,2022-12-12 17:02:03.422663,,,,TRUE,FALSE,FALSE,,TRUE,gbl_mdModified_dt,TRUE,gbl_mdModified_dt,,56
+Created At,date_created_dtsi,,datetime,FALSE,FALSE,FALSE,,,2021-12-09 15:50:49.803415,,,,TRUE,TRUE,FALSE,,TRUE,created_at_dt,TRUE,created_at_dt,,55
+Updated At,date_modified_dtsi,,datetime,FALSE,FALSE,FALSE,,,2022-12-12 17:02:03.422663,,,,TRUE,TRUE,FALSE,,TRUE,gbl_mdModified_dt,TRUE,gbl_mdModified_dt,,56
