@@ -281,6 +281,10 @@ module GeoblacklightAdmin
       directory "javascript", "app/javascript", force: true
     end
 
+    def copy_app_images
+      directory "images", "app/images", force: true
+    end
+
     def add_package_json
       copy_file "package.json", "package.json", force: true
     end
