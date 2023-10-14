@@ -282,7 +282,8 @@ module GeoblacklightAdmin
     end
 
     def copy_app_images
-      directory "images", "app/images", force: true
+      copy_file "images/bookmark-regular.svg", "app/assets/images/bookmark-regular.svg"
+      copy_file "images/bookmark-solid.svg", "app/assets/images/bookmark-solid.svg"
     end
 
     def add_package_json
