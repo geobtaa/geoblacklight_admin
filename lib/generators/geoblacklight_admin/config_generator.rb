@@ -281,6 +281,11 @@ module GeoblacklightAdmin
       directory "javascript", "app/javascript", force: true
     end
 
+    def copy_app_images
+      copy_file "images/bookmark-regular.svg", "app/assets/images/bookmark-regular.svg"
+      copy_file "images/bookmark-solid.svg", "app/assets/images/bookmark-solid.svg"
+    end
+
     def add_package_json
       copy_file "package.json", "package.json", force: true
     end
