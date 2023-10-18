@@ -9,9 +9,10 @@ module GeoblacklightAdmin
     desc <<-DESCRIPTION
       This generator makes the following changes to your application:
        1. Copies GBL Admin initializer files to host config
-       5. Copies database.yml connection to host config
-       5. Copies settings.yml to host config
-       6. Copies .env.development and .env.test to host
+       2. Copies database.yml connection to host config
+       3. Copies sidekiq.yml connection to host config
+       4. Copies settings.yml to host config
+       5. Copies .env.development and .env.test to host
        6. Copies JSON Schema to host
        7. Copies solr/* to host
        8. Sets Routes
@@ -36,6 +37,10 @@ module GeoblacklightAdmin
 
     def create_database_yml
       copy_file "config/database.yml", "config/database.yml", force: true
+    end
+
+    def create_sidekiq_yml
+      copy_file "config/sidekiq.yml", "config/sidekiq.yml", force: true
     end
 
     def create_dotenv
@@ -279,6 +284,11 @@ module GeoblacklightAdmin
     # Long term I hope to avoid webpack here altogether.
     def copy_app_javascript
       directory "javascript", "app/javascript", force: true
+    end
+
+    def copy_app_images
+      copy_file "images/bookmark-regular.svg", "app/assets/images/bookmark-regular.svg"
+      copy_file "images/bookmark-solid.svg", "app/assets/images/bookmark-solid.svg"
     end
 
     def add_package_json

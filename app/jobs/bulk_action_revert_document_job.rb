@@ -2,7 +2,7 @@
 
 # BulkActionRevertDocumentJob
 class BulkActionRevertDocumentJob < ApplicationJob
-  queue_as :default
+  queue_as :priority
 
   def perform(action, doc)
     case action
