@@ -2,7 +2,7 @@
 
 # ImportDocumentJob class
 class ImportDocumentJob < ApplicationJob
-  queue_as :default
+  queue_as :priority
 
   def perform(import_document)
     # @TODO: Check for friendlier_id or raise error
