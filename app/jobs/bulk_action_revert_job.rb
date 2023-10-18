@@ -2,7 +2,7 @@
 
 # BulkActionRevertJob
 class BulkActionRevertJob < ApplicationJob
-  queue_as :default
+  queue_as :priority
 
   def perform(bulk_action)
     action = case bulk_action.field_name

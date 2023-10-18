@@ -2,7 +2,7 @@
 
 # BulkActionRunDocumentJob
 class BulkActionRunDocumentJob < ApplicationJob
-  queue_as :default
+  queue_as :priority
 
   def perform(action, doc, field_name, field_value)
     case action

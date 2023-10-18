@@ -2,7 +2,7 @@
 
 # ImportRunJob class
 class ImportRunJob < ApplicationJob
-  queue_as :default
+  queue_as :priority
 
   def perform(import)
     data = CSV.parse(import.csv_file.download.force_encoding("UTF-8"), headers: true)

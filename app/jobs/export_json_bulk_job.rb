@@ -4,7 +4,7 @@ require "csv"
 
 # ExportJsonBulkJob
 class ExportJsonBulkJob < ApplicationJob
-  queue_as :default
+  queue_as :priority
 
   def perform(request, current_user, query_params, export_service)
     logger.debug("\n\n Background Job: ♞")
