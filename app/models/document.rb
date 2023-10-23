@@ -192,7 +192,8 @@ class Document < Kithe::Work
   end
 
   def current_version
-    versions.last.index
+    # Will return 0 if no PaperTrail version exists yet
+    versions&.last&.index || 0
   end
 
   # Institutional Access URLs
