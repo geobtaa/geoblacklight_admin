@@ -5,6 +5,13 @@ class Document < Kithe::Work
   include AttrJson::Record::QueryScopes
   include ActiveModel::Validations
 
+  delegate :viewer_protocol, to: :item_viewer
+  delegate :viewer_endpoint, to: :item_viewer
+
+  def item_viewer
+    GeoblacklightAdmin::ItemViewer.new(references)
+  end
+
   attr_accessor :skip_callbacks
 
   has_paper_trail ignore: [:publication_state]
@@ -68,12 +75,15 @@ class Document < Kithe::Work
   attr_json :dct_references_s, Document::Reference.to_type, array: true, default: -> { [] }
 
   # Index Transformations - *_json functions
-  def references_json
+  def references
     references = ActiveSupport::HashWithIndifferentAccess.new
     send(GeoblacklightAdmin::Schema.instance.solr_fields[:reference]).each do |ref|
       references[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] = ref.value
     end
-    references = apply_downloads(references)
+    apply_downloads(references)
+  end
+
+  def references_json
     references.to_json
   end
 
@@ -121,6 +131,104 @@ class Document < Kithe::Work
     value = prefix + format.to_s
     value.html_safe
   end
+
+  ##
+  # GBL SolrDocument convience methods
+  #
+  def available?
+    public? || same_institution?
+  end
+
+  def public?
+    rights_field_data.present? && rights_field_data.casecmp("public").zero?
+  end
+
+  def local_restricted?
+    local? && restricted?
+  end
+
+  def local?
+    local = send(Settings.FIELDS.PROVIDER) || ""
+    local.casecmp(Settings.INSTITUTION_LOCAL_NAME)&.zero?
+  end
+
+  def restricted?
+    rights_field_data.blank? || rights_field_data.casecmp("restricted").zero?
+  end
+
+  def rights_field_data
+    send(Settings.FIELDS.ACCESS_RIGHTS) || ""
+  end
+
+  def downloadable?
+    (direct_download || download_types.present? || iiif_download) && available?
+  end
+
+  def direct_download
+    references.download.to_hash if references.download.present?
+  end
+
+  def display_note
+    send(Settings.FIELDS.DISPLAY_NOTE) || ""
+  end
+
+  def hgl_download
+    references.hgl.to_hash if references.hgl.present?
+  end
+
+  def oembed
+    references.oembed.endpoint if references.oembed.present?
+  end
+
+  def same_institution?
+    institution = send(Settings.FIELDS.PROVIDER) || ""
+    institution.casecmp(Settings.INSTITUTION.downcase).zero?
+  end
+
+  def iiif_download
+    references.iiif.to_hash if references.iiif.present?
+  end
+
+  def data_dictionary_download
+    references.data_dictionary.to_hash if references.data_dictionary.present?
+  end
+
+  def external_url
+    references.url&.endpoint
+  end
+
+  def itemtype
+    "http://schema.org/Dataset"
+  end
+
+  def geom_field
+    send(Settings.FIELDS.GEOMETRY) || ""
+  end
+
+  def geometry
+    # @TODO
+    # @geometry ||= Geoblacklight::Geometry.new(geom_field)
+  end
+
+  def wxs_identifier
+    send(Settings.FIELDS.WXS_IDENTIFIER) || ""
+  end
+
+  def file_format
+    send(Settings.FIELDS.FORMAT) || ""
+  end
+
+  ##
+  # Provides a convenience method to access a SolrDocument's References
+  # endpoint url without having to check and see if it is available
+  # :type => a string which if its a Geoblacklight::Constants::URI key
+  #          will return a coresponding Geoblacklight::Reference
+  def checked_endpoint(type)
+    type = references.send(type)
+    type.endpoint if type.present?
+  end
+
+
   ### End / From GBL
 
   def access_json
