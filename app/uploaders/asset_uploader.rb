@@ -2,10 +2,6 @@ class AssetUploader < Kithe::AssetUploader
   # gives us md5, sha1, sha512
   plugin :kithe_checksum_signatures
 
-  # Used by our browse_everything integration, let's us set a hash with remote
-  # URL location, to be fetched on promotion.
-  plugin :kithe_accept_remote_url
-
   THUMB_WIDTHS = {
     mini: 54,
     large: 525,
@@ -19,17 +15,9 @@ class AssetUploader < Kithe::AssetUploader
       Kithe::VipsCliImageToJpeg.new(max_width: width, thumbnail_mode: true).call(original_file)
     end
 
-    Attacher.define_derivative("thumb_#{key}", content_type: "application/pdf") do |original_file|
-      Kithe::VipsCliPdfToJpeg.new(max_width: width).call(original_file)
-    end
-
     # Double-width thumbnails
     Attacher.define_derivative("thumb_#{key}_2X", content_type: "image") do |original_file|
       Kithe::VipsCliImageToJpeg.new(max_width: width * 2, thumbnail_mode: true).call(original_file)
-    end
-
-    Attacher.define_derivative("thumb_#{key}_2X", content_type: "application/pdf") do |original_file|
-      Kithe::VipsCliPdfToJpeg.new(max_width: width * 2).call(original_file)
     end
   end
 

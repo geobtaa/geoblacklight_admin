@@ -291,3 +291,5 @@ HELP_TEXT:
 SIDEBAR_STATIC_MAP:
   - 'iiif'
   - 'iiif_manifest'
+
+GBLSI_THUMBNAIL_FIELD: 'b1g_image_ss'
