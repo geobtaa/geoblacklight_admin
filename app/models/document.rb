@@ -228,8 +228,11 @@ class Document < Kithe::Work
     type.endpoint if type.present?
   end
 
-
   ### End / From GBL
+  
+  def thumbnail
+    members.find { |m| m.respond_to?(:thumbnail) }
+  end
 
   def access_json
     access = {}
