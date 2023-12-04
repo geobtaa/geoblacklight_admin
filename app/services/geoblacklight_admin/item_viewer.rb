@@ -4,7 +4,7 @@ module GeoblacklightAdmin
   class ItemViewer
     def initialize(references)
       @references = references
-      @keys= references.keys.collect{|k| reference_uri_2_key(k)}
+      @keys = references.keys.collect { |k| reference_uri_2_key(k) }
     end
 
     def viewer_protocol

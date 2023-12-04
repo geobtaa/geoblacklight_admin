@@ -229,7 +229,7 @@ class Document < Kithe::Work
   end
 
   ### End / From GBL
-  
+
   def thumbnail
     members.find { |m| m.respond_to?(:thumbnail) }
   end

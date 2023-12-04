@@ -1,6 +1,6 @@
 class Asset < Kithe::Asset
   include AttrJson::Record::QueryScopes
-  
+
   set_shrine_uploader(AssetUploader)
 
   # AttrJSON

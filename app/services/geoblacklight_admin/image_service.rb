@@ -12,10 +12,7 @@ module GeoblacklightAdmin
 
       @metadata = {}
       @metadata["solr_doc_id"] = document.id
-      # @metadata["solr_version"] = @document.sidecar.version
       @metadata["placeheld"] = false
-
-      # @document.sidecar.image_state.transition_to!(:processing, @metadata)
 
       @logger ||= ActiveSupport::TaggedLogging.new(
         Logger.new(
@@ -38,7 +35,6 @@ module GeoblacklightAdmin
 
       if io_file.nil?
         puts "IO is NIL"
-        # @document.sidecar.image_state.transition_to!(:placeheld, @metadata)
       else
         puts "Attaching IO"
         attach_io(io_file)
@@ -46,9 +42,7 @@ module GeoblacklightAdmin
 
       log_output
     rescue => e
-      # @metadata["exception"] = e.inspect
-      # @document.sidecar.image_state.transition_to!(:failed, @metadata)
-
+      @metadata["exception"] = e.inspect
       log_output
     end
 
@@ -86,12 +80,13 @@ module GeoblacklightAdmin
       mime_type = Marcel::TYPES[content_type][0][0]
 
       puts "Content Type: #{content_type.inspect}"
+      puts "MIME Type: #{mime_type.inspect}"
 
       if content_type.start_with?("image")
 
         puts "\n\nStoring an image!\n\n"
 
-        asset = Asset.new()
+        asset = Asset.new
         asset.parent_id = @document.id
         asset.file = io
         asset.title = (asset.file&.original_filename || "Untitled")
@@ -99,7 +94,6 @@ module GeoblacklightAdmin
         asset.save
       else
         # @TODO: If no thumb, what to do?
-        # @document.sidecar.image_state.transition_to!(:placeheld, @metadata)
       end
     end
 
@@ -177,12 +171,8 @@ module GeoblacklightAdmin
       # puts "restricted_scanned_map?: #{restricted_scanned_map?}"
       # puts "service_url: #{service_url.inspect}"
       # puts "image_reference: #{image_reference.inspect}"
-      
-      @image_url ||= if gblsi_thumbnail_uri
-        gblsi_thumbnail_uri
-      else
-        service_url || image_reference
-      end
+
+      @image_url ||= gblsi_thumbnail_uri || service_url || image_reference
     end
 
     # Checks if the document is Local restriced access and is a scanned map.

@@ -314,13 +314,13 @@ module GeoblacklightAdmin
         "\nrequire 'kithe/blacklight_tools/bulk_loading_search_service'"
       end
 
-      inject_into_file "app/controllers/catalog_controller.rb", after: 'include Blacklight::Catalog' do
+      inject_into_file "app/controllers/catalog_controller.rb", after: "include Blacklight::Catalog" do
         "\nself.search_service_class = Kithe::BlacklightTools::BulkLoadingSearchService"
       end
     end
 
     def add_kithe_model_to_solr_document
-      inject_into_file "app/models/solr_document.rb", after: 'include Geoblacklight::SolrDocument' do
+      inject_into_file "app/models/solr_document.rb", after: "include Geoblacklight::SolrDocument" do
         "\n\nattr_accessor :model"
       end
     end
