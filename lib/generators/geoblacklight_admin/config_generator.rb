@@ -319,8 +319,6 @@ module GeoblacklightAdmin
       end
     end
 
-    self.search_service_class = Kithe::BlacklightTools::BulkLoadingSearchService
-
     def add_kithe_model_to_solr_document
       inject_into_file "app/models/solr_document.rb", after: 'include Geoblacklight::SolrDocument' do
         "\n\nattr_accessor :model"
