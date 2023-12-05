@@ -139,7 +139,7 @@ module Admin
       # Resouce Class
       config.add_facet_field Settings.FIELDS.RESOURCE_CLASS, label: "Resource Class", limit: 8
 
-      # Contributor
+      # Provider
       config.add_facet_field Settings.FIELDS.PROVIDER, label: "Provider", limit: 15
 
       # Accrual Method

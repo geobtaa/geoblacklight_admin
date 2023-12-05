@@ -270,6 +270,10 @@ module GeoblacklightAdmin
       end
     end
 
+    def add_api_controller
+      copy_file "api_controller.rb", "app/controllers/admin/api_controller.rb"
+    end
+
     def add_user_util_links
       copy_file "_user_util_links.html.erb", "app/views/shared/_user_util_links.html.erb"
     end
