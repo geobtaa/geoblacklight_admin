@@ -57,6 +57,7 @@ class Document < Kithe::Work
     references_json.include?("downloadUrl")
   end
 
+  validates_with Document::DateValidator
   validates_with Document::DateRangeValidator
   validates_with Document::BboxValidator
   validates_with Document::GeomValidator
