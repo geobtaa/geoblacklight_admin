@@ -6,7 +6,9 @@ require "cgi"
 # BulkAction
 class BulkAction < ApplicationRecord
   # Callbacks
-  after_create_commit :collect_documents
+  after_create do
+    BulkActionCollectDocuments.perform_later(id)
+  end
 
   # Associations
   has_many :documents, class_name: "BulkActionDocument", autosave: false, dependent: :destroy
@@ -48,8 +50,6 @@ class BulkAction < ApplicationRecord
     BulkActionRevertJob.perform_later(self)
   end
 
-  private
-
   def collect_documents
     cgi = CGI.unescape(scope)
     uri = URI.parse(cgi)
@@ -59,6 +59,8 @@ class BulkAction < ApplicationRecord
       api_documents(uri)
     end
   end
+
+  private
 
   def fetch_documents(uri)
     qargs = Rack::Utils.parse_nested_query(uri.query)
