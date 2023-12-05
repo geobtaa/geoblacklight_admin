@@ -6,7 +6,7 @@
         <div class='status-icons mb-2'>
           <%= render partial: 'header_icons', locals: { document: document } %>
         </div>
-        <% if document.model.thumbnail %>
+        <% if document&.model&.thumbnail %>
           <%= image_tag document.model.thumbnail.file_url(:thumb_mini) %>
         <% end %>
       </div>
