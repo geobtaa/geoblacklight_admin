@@ -5,13 +5,7 @@ module GeoblacklightAdmin
     queue_as :default
 
     def perform(solr_document_id)
-      document = Geoblacklight::SolrDocument.find(solr_document_id)
-
-      metadata = {}
-      metadata["solr_doc_id"] = document.id
-      metadata["solr_version"] = document.sidecar.version
-
-      document.sidecar.image_state.transition_to!(:queued, metadata)
+      document = Document.find_by_friendlier_id(solr_document_id)
       GeoblacklightAdmin::ImageService.new(document).store
     end
   end
