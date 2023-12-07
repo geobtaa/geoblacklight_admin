@@ -115,4 +115,34 @@ module GeoblacklightAdminHelper
       ""
     end
   end
+
+  def link_to_admin_import(import)
+    path = admin_documents_path(
+      {
+        f: {b1g_geom_import_id_ssi: [import]}
+      }
+    )
+
+    link_to import.name, path
+  end
+
+  def link_to_gbl_import(label, import, state=false)
+    if state
+      path = blacklight_path(
+        { 
+          f: { b1g_geom_import_id_ssi: [import] }, 
+          publication_state: state
+        }
+      )
+    else
+      path = blacklight_path(
+        { 
+          f: { b1g_geom_import_id_ssi: [import] }, 
+          publication_state: '*'
+        }
+      )
+    end
+
+    link_to(label, path)
+  end
 end

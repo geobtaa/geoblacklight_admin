@@ -91,6 +91,7 @@ FIELDS:
   :B1G_CODE: 'b1g_code_s'
   :B1G_CHILD_RECORD: 'b1g_child_record_b'
   :B1G_GEOMG_ID: 'geomg_id_s'
+  :B1G_IMPORT_ID: 'b1g_geom_import_id_ssi'
 
 # Institution deployed at
 INSTITUTION: 'Stanford'

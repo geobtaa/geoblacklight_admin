@@ -1,3 +1,27 @@
+<a class="h5" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+  Imports
+</a>
+
+<% if params["f"]&.keys&.include?("b1g_geom_import_id_ssi") %>
+  <% import = Import.find_by_id(params["f"]["b1g_geom_import_id_ssi"]) %>
+  <ul class="list-unstyled mt-3">
+    <li><%= link_to("- #{import.name} &#10060;".html_safe) %></li>
+  </ul>
+<% else %>
+  <div class="collapse" id="collapseExample">
+    <ul class="list-unstyled mt-3">
+      <% Import.last(20).each do |import| %>
+        <li>
+          <%= link_to_admin_import(import) %> - 
+          <small><%= time_ago_in_words(import.created_at) %> ago</small>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<hr/>
+
 <%= form_with url: '/documents', method: :get, local: true  do |form| %>
   <div class="input-group mb-3" style="width:300px">
     <%= form.text_field("daterange", { class: 'form-control', placeholder: 'Date range filter', size: 24, 'aria-label': "Date range filter", value: params['daterange']  }) %>
@@ -16,7 +40,7 @@
 <% if @documents.facets.present? %>
   <% @documents.facets.each do |facet| %>
     <% if facet['type'] == 'facet' %>
-      <%- next if ['b1g_code_s', 'dct_isPartOf_sm'].include?(facet['id']) %>
+      <%- next if ['b1g_geom_import_id_ssi', 'b1g_code_s', 'dct_isPartOf_sm'].include?(facet['id']) %>
       <h3 class="h5"><%= facet['attributes']['label'] %></h3>
       <ul class="list-unstyled">
         <%- facet['attributes']['items'].each do |item| %>

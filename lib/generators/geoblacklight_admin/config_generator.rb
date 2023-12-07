@@ -329,9 +329,9 @@ module GeoblacklightAdmin
       end
     end
 
-    def add_catalog_controller_default_params
-      inject_into_file "app/controllers/catalog_controller.rb", after: '"q.alt" => "*:*"' do
-        ",\n      'fq' => ['b1g_publication_state_s:published']"
+    def add_search_builder_publication_state_concern
+      inject_into_file "app/models/search_builder.rb", after: 'include Geoblacklight::SuppressedRecordsSearchBehavior' do
+        "\n      include GeoblacklightAdmin::PublicationStateSearchBehavior"
       end
     end
   end
