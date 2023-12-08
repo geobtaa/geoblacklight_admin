@@ -10,7 +10,7 @@
 <% else %>
   <div class="collapse" id="collapseExample">
     <ul class="list-unstyled mt-3">
-      <% Import.last(20).each do |import| %>
+      <% Import.last(20).sort_by(&:created_at).reverse.each do |import| %>
         <li>
           <%= link_to_admin_import(import) %> - 
           <small><%= time_ago_in_words(import.created_at) %> ago</small>
