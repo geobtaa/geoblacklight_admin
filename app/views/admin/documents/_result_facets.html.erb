@@ -22,7 +22,7 @@
 
 <hr/>
 
-<%= form_with url: '/documents', method: :get, local: true  do |form| %>
+<%= form_with url: '/admin/documents', method: :get, local: true  do |form| %>
   <div class="input-group mb-3" style="width:300px">
     <%= form.text_field("daterange", { class: 'form-control', placeholder: 'Date range filter', size: 24, 'aria-label': "Date range filter", value: params['daterange']  }) %>
     <%= params_as_hidden_fields(
