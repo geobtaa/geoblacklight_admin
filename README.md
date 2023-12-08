@@ -77,6 +77,7 @@ bundle exec rails server
 ### Lint App
 ```bash
 standardrb .
+standardrb --fix
 ```
 
 ### Test App

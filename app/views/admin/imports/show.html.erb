@@ -50,7 +50,7 @@
         <h3 class="h5">Imported Documents</h3>
       </div>
       <ul class="list-group list-group-flush">
-        <li class="list-group-item text-center">
+        <li class="list-group-item">
           <% if @import.state_machine.current_state == 'mapped' %>
             <%= form_tag run_admin_import_path(@import), method: :patch do -%>
               <%= hidden_field_tag :run, true -%>
@@ -58,7 +58,34 @@
             <%- end -%>
           <% end %>
           <% if @import.state_machine.current_state == 'imported' %>
-            <%= @import.documents.size %>
+            <table class="table table-sm table-bordered import-documents">
+              <thead>
+                <tr>
+                  <th>Publication State</th>
+                  <th>Document Count</th>
+                </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td><%= link_to_gbl_import('Published', @import, 'published') %></td>
+                <td><%= @import.documents.where(publication_state: 'published').size %></td>
+              </tr>
+              <tr>
+                <td><%= link_to_gbl_import('Unpublished', @import, 'unpublished') %></td>
+                <td><%= @import.documents.where(publication_state: 'unpublished').size %></td>
+              </tr>
+              <tr>
+                <td><%= link_to_gbl_import('Draft', @import, 'draft') %></td>
+                <td><%= @import.documents.where(publication_state: 'draft').size %></td>
+              </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th><%= link_to_gbl_import('Total', @import) %></th>
+                  <td><%= @import.documents.size %></td>
+              </tr>
+              </tfoot>
+            </table>
           <% end %>
         </li>
       </ul>
@@ -104,19 +131,18 @@
 
     <nav>
       <div class="nav nav-tabs" id="import-state-tabs" role="tablist">
-        <a class="nav-item nav-link active" id="import-failed-tab" data-toggle="tab" href="#import-state-failed" role="tab" aria-controls="import-state-failed" aria-selected="true">Failed</a>
-        <a class="nav-item nav-link" id="import-success-tab" data-toggle="tab" href="#import-state-success" role="tab" aria-controls="import-state-success"
-          aria-selected="false">Success</a>
+        <a class="nav-item nav-link active" id="import-success-tab" data-toggle="tab" href="#import-state-success" role="tab" aria-controls="import-state-success" aria-selected="true">Success</a>
+        <a class="nav-item nav-link" id="import-failed-tab" data-toggle="tab" href="#import-state-failed" role="tab" aria-controls="import-state-failed" aria-selected="false">Failed</a>
       </div>
     </nav>
 
     <div class="tab-content" id="import-states">
-      <div class="tab-pane fade show active" id="import-state-failed" role="tabpanel" aria-labelledby="import-state-failed-tab">
-        <%= render partial: 'show_failed_tab' %>
+      <div class="tab-pane fade show active" id="import-state-success" role="tabpanel" aria-labelledby="import-state-success-tab">
+        <%= render partial: 'show_success_tab' %>
       </div>
 
-      <div class="tab-pane fade" id="import-state-success" role="tabpanel" aria-labelledby="import-state-success-tab">
-        <%= render partial: 'show_success_tab' %>
+      <div class="tab-pane fade" id="import-state-failed" role="tabpanel" aria-labelledby="import-state-failed-tab">
+        <%= render partial: 'show_failed_tab' %>
       </div>
     </div>
   </div>

@@ -28,6 +28,7 @@ class Element < ApplicationRecord
     text
     integer
     boolean
+    date
     datetime
   ].freeze
 

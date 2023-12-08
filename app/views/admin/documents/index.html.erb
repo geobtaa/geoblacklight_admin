@@ -11,18 +11,14 @@
   </div>
 
   <div id="resultset" class="col-8">
-    <p>
-      <%= render "result_toggle" %>
-      <%= render "result_selected_options" %>
-      <%= render "result_pagination" %>
-    </p>
 
-    <hr/>
-
+    <%= render "result_toggle" %>
+    <%= render "result_selected_options" %>
+    <%= render "result_pagination" %>
     <%= render "result_selection_options" %>
 
     <% if @documents.results.present? &&  @documents.results.kind_of?(Array) %>
-      <ol id='results' class='list-unstyled' data-controller='results'>
+      <ol id='results' class='list-unstyled mt-4' data-controller='results'>
         <% @documents.results.each_with_index do |document, index| %>
           <% doc = Document.find_by(friendlier_id: document['id']) %>
           <% if doc.present? %>
