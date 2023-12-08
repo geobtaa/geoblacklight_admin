@@ -16,10 +16,10 @@ module GeoblacklightAdmin
     # @return [Blacklight::Solr::Request]
     def publication_state_records(solr_params)
       solr_params[:fq] ||= []
-      if blacklight_params["publication_state"]
-        solr_params[:fq] << "b1g_publication_state_s:#{blacklight_params['publication_state']}"
-      else 
-        solr_params[:fq] << "b1g_publication_state_s:published"
+      solr_params[:fq] << if blacklight_params["publication_state"]
+        "b1g_publication_state_s:#{blacklight_params["publication_state"]}"
+      else
+        "b1g_publication_state_s:published"
       end
     end
   end
