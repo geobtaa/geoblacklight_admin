@@ -42,7 +42,8 @@ class BulkAction < ApplicationRecord
   def check_run_state
     return if state_machine.current_state == "complete"
 
-    state_machine.transition_to!(:complete) if documents.in_state(:queued).blank?
+    # @TODO / background job for collecting documents
+    # state_machine.transition_to!(:complete) if documents.in_state(:queued).blank?
   end
 
   def revert!
