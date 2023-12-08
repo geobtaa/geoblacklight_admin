@@ -270,8 +270,16 @@ module GeoblacklightAdmin
       end
     end
 
+    def add_api_controller
+      copy_file "api_controller.rb", "app/controllers/admin/api_controller.rb"
+    end
+
     def add_user_util_links
       copy_file "_user_util_links.html.erb", "app/views/shared/_user_util_links.html.erb"
+    end
+
+    def copy_catalog_index_view
+      copy_file "views/_index_split_default.html.erb", "app/views/catalog/_index_split_default.html.erb"
     end
 
     def add_show_sidebar
@@ -305,9 +313,31 @@ module GeoblacklightAdmin
       end
     end
 
-    def add_catalog_controller_default_params
-      inject_into_file "app/controllers/catalog_controller.rb", after: '"q.alt" => "*:*"' do
-        ",\n      'fq' => ['b1g_publication_state_s:published']"
+    def add_kithe_bulk_loading_service
+      inject_into_file "app/controllers/catalog_controller.rb", after: 'require "blacklight/catalog"' do
+        "\nrequire 'kithe/blacklight_tools/bulk_loading_search_service'"
+      end
+
+      inject_into_file "app/controllers/catalog_controller.rb", after: "include Blacklight::Catalog" do
+        "\nself.search_service_class = Kithe::BlacklightTools::BulkLoadingSearchService"
+      end
+    end
+
+    def add_kithe_model_to_solr_document
+      inject_into_file "app/models/solr_document.rb", after: "include Geoblacklight::SolrDocument" do
+        "\n\nattr_accessor :model"
+      end
+    end
+
+    def add_search_builder_publication_state_concern
+      inject_into_file "app/models/search_builder.rb", after: "include Geoblacklight::SuppressedRecordsSearchBehavior" do
+        "\n      include GeoblacklightAdmin::PublicationStateSearchBehavior"
+      end
+    end
+
+    def add_import_id_facet
+      inject_into_file "app/controllers/catalog_controller.rb", before: "# Item Relationship Facets" do
+        "\nconfig.add_facet_field Settings.FIELDS.B1G_IMPORT_ID, label: 'Import ID', show: false\n"
       end
     end
   end
