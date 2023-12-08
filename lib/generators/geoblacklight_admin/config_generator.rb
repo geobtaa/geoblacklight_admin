@@ -330,14 +330,14 @@ module GeoblacklightAdmin
     end
 
     def add_search_builder_publication_state_concern
-      inject_into_file "app/models/search_builder.rb", after: 'include Geoblacklight::SuppressedRecordsSearchBehavior' do
+      inject_into_file "app/models/search_builder.rb", after: "include Geoblacklight::SuppressedRecordsSearchBehavior" do
         "\n      include GeoblacklightAdmin::PublicationStateSearchBehavior"
       end
     end
 
     def add_import_id_facet
       inject_into_file "app/controllers/catalog_controller.rb", before: "# Item Relationship Facets" do
-        "\nconfig.add_facet_field Settings.FIELDS.B1G_IMPORT_ID, label: "Import ID", show: false\n"
+        "\nconfig.add_facet_field Settings.FIELDS.B1G_IMPORT_ID, label: 'Import ID', show: false\n"
       end
     end
   end
