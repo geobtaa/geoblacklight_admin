@@ -249,6 +249,7 @@ module GeoblacklightAdmin
         "
 # GBL‡ADMIN
 gem 'webpacker', '~> 5.0'
+gem 'simple_form'
         "
       end
     end
