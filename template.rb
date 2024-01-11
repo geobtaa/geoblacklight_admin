@@ -29,6 +29,7 @@ gem "inline_svg"
 gem "kithe", "~> 2.0"
 gem "noticed"
 gem "paper_trail"
+gem "simple_form"
 
 run "bundle install"
 
