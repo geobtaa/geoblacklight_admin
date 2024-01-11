@@ -50,9 +50,13 @@ else
     end
 
     case ENV["RAILS_VERSION"]
-    when /^6.0/
+    when /^7.0/
       gem "sass-rails", ">= 6"
       gem "webpacker", "~> 5.0"
+      gem "simple_form"
+    when /^6.0/
+      gem "sass-rails", ">= 6"
+      gem "webpacker", "~> 4.0"
     when /^5.[12]/
       gem "sass-rails", "~> 5.0"
       gem "sprockets", "~> 3.7"
@@ -88,6 +92,7 @@ else
     when /^7.0/
       gem "sass-rails", ">= 6"
       gem "webpacker", "~> 5.0"
+      gem "simple_form"
     when /^6.0/
       gem "sass-rails", ">= 6"
       gem "webpacker", "~> 4.0"
