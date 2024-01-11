@@ -17,7 +17,7 @@
 gem "devise"
 gem "blacklight", ">= 7.0", "< 8.0"
 gem "geoblacklight", ">= 4.0"
-gem "geoblacklight_admin", git: "git@github.com:geobtaa/geoblacklight_admin.git", branch: "develop"
+gem "geoblacklight_admin", git: "git@github.com:geobtaa/geoblacklight_admin.git", branch: "feature/test-ruby-3.3"
 
 # GBL‡ADMIN
 gem "active_storage_validations"
