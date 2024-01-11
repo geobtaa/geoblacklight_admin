@@ -44,6 +44,10 @@ module GeoblacklightAdmin
       run "bin/rails active_storage:install"
     end
 
+    def install_webpacker
+      run "bundle exec rails webpacker:install"
+    end
+
     def install_yarn
       run "yarn install"
     end

@@ -244,6 +244,15 @@ module GeoblacklightAdmin
       inject_into_file "config/routes.rb", gbl_admin_routes, before: /^end/
     end
 
+    def set_gems
+      append_to_file "Gemfile" do
+        "
+# GBL‡ADMIN
+gem 'webpacker', '~> 5.0'
+        "
+      end
+    end
+
     def set_development_mailer_host
       mailer_host = "\n  config.action_mailer.default_url_options = { :host => 'localhost:3000' }\n"
       inject_into_file "config/environments/development.rb", mailer_host, after: "config.action_mailer.perform_caching = false"

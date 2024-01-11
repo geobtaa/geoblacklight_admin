@@ -30,6 +30,7 @@ gem "kithe", "~> 2.0"
 gem "noticed"
 gem "paper_trail"
 gem "simple_form"
+gem "webpacker"
 
 run "bundle install"
 
