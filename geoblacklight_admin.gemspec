@@ -41,7 +41,7 @@ Gem::Specification.new do |s|
   s.add_dependency "paper_trail", "~> 14.0"
   s.add_dependency "pg", "~> 1.4"
   s.add_dependency "qa", "~> 5.0"
-  s.add_dependency "rails", ">= 6.1", "< 7.1"
+  s.add_dependency "rails", "~> 7.0", "< 8.0"
   s.add_dependency "ruby-progressbar"
   s.add_dependency "simple_form", "~> 5.0"
   s.add_dependency "sprockets", "< 4"
