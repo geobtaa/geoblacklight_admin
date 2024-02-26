@@ -38,7 +38,7 @@ Gem::Specification.new do |s|
   s.add_dependency "kithe", "~> 2.0"
   s.add_dependency "noticed", "~> 1.6"
   s.add_dependency "pagy", "~> 6.0"
-  s.add_dependency "paper_trail", "~> 14.0"
+  s.add_dependency "paper_trail", "~> 15.0"
   s.add_dependency "pg", "~> 1.4"
   s.add_dependency "qa", "~> 5.0"
   s.add_dependency "rails", "~> 7.0", "< 8.0"
