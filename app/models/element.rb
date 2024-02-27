@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Element < ApplicationRecord
-  serialize :html_attributes
+  serialize :html_attributes, coder: JSON
 
   # Scopes
   scope :formable, -> { where(formable: true) }
