@@ -21,12 +21,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - gemfile: rails_70
-            ruby: '3.2'
-
-          - gemfile: rails_71
-            ruby: '3.2'
+        ruby_version: ['3.2', '3.3']
+        rails_version: [7.0.8.1, 7.1.3.2]
 
     services:
       postgres:
@@ -51,18 +47,18 @@ jobs:
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: ${{ matrix.ruby }}
+        ruby-version: ${{ matrix.ruby_version }}
         bundler-cache: false
 
     - name: Solr - Create container
       run: docker run -d -p 8983:8983 geoblacklight/solr:8.9-v1.0.0 server/scripts/ci-start.sh
 
     - name: Bundler - Install
-      run: |
-        bundle config set gemfile "${GITHUB_WORKSPACE}/gemfiles/${{ matrix.gemfile }}.gemfile"
-        bundle install --jobs 4 --retry 3
+      env:
+        RAILS_VERSION: ${{ matrix.rails_version }}
+      run: bundle install
 
-    - name: Node - v20 (Yes... 14 avoids the digital envelope routines::unsupported error seen on 18)
+    - name: Node - v20
       uses: actions/setup-node@v2
       with:
         node-version: '20.11.0'
@@ -77,7 +73,7 @@ jobs:
           curl -H "Content-type:application/octet-stream" --data-binary @solr_config.zip "http://solr:SolrRocks@127.0.0.1:8983/solr/admin/configs?action=UPLOAD&name=blacklight"
           curl -H 'Content-type: application/json' http://solr:SolrRocks@127.0.0.1:8983/api/collections/  -d '{create: {name: blacklight-core, config: blacklight, numShards: 1}}'
 
-    - name: Test ${{ matrix.gemfile }}, ruby ${{ matrix.ruby }}
+    - name: Test ${{ matrix.rails_version }}, ruby ${{ matrix.ruby_version }}
       run: bundle exec rake ci
       env:
         RAILS_ENV: test
