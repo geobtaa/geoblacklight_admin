@@ -10,7 +10,7 @@ jobs:
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 3.1
+        ruby-version: 3.2.1
     - name: Install dependencies
       run: bundle install
     - name: Run linter
@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby: ['3.0.6']
+        ruby: ['3.2', '3.3']
 
     services:
       postgres:
@@ -58,10 +58,10 @@ jobs:
       env:
         rails_version: 7.0.5
 
-    - name: Node - v14 (Yes... 14 avoids the digital envelope routines::unsupported error seen on 18)
+    - name: Node - v20 (Yes... 14 avoids the digital envelope routines::unsupported error seen on 18)
       uses: actions/setup-node@v2
       with:
-        node-version: '14.18.1'
+        node-version: '20.11.0'
 
     - name: Yarn - Setup
       run: exec "yarnpkg"
@@ -77,7 +77,7 @@ jobs:
       run: bundle exec rake ci
       env:
         RAILS_ENV: test
-        rails_version: 6.1.7.4
+        rails_version: 7.0.5
         ENGINE_CART_RAILS_OPTIONS: '--skip-git --skip-listen --skip-spring --skip-keeps --skip-coffee'
         SOLR_URL: http://solr:SolrRocks@localhost:8983/solr/blacklight-core
 
