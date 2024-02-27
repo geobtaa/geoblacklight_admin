@@ -1,5 +1,5 @@
 {
-  "name": "internal",
+  "name": "geoblacklight-admin",
   "private": true,
   "dependencies": {
     "@nathanvda/cocoon": "^1.2.14",
