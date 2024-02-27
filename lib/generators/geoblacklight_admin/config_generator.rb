@@ -309,7 +309,8 @@ module GeoblacklightAdmin
         # GBL ADMIN
         Rails.application.config.assets.paths << Rails.root.join('node_modules')
         Rails.application.config.assets.precompile += %w( geoblacklight_admin.js )
-        Rails.application.config.assets.precompile += %w[application.js]"
+        Rails.application.config.assets.precompile += %w[application.js]
+        Rails.application.config.assets.precompile += %w[application.css]"
       end
     end
 
