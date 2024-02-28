@@ -264,9 +264,9 @@ module GeoblacklightAdmin
     def add_activestorage
       append_to_file "app/assets/javascripts/application.js" do
         "
-
 // Required by GBL Admin
-//= require activestorage"
+//= require activestorage
+//= require geoblacklight_admin"
       end
     end
 
