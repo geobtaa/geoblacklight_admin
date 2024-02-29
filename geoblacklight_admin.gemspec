@@ -56,7 +56,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "m", "~> 1.5"
   s.add_development_dependency "minitest", "~> 5.18"
   s.add_development_dependency "minitest-ci", "~> 3.4"
-  s.add_development_dependency "minitest-rails", "~> 6.1"
+  s.add_development_dependency "minitest-rails", "~> 7.0"
   s.add_development_dependency "minitest-reporters", "~> 1.6"
   s.add_development_dependency "rspec-rails", "~> 3.0"
   s.add_development_dependency "selenium-webdriver"
