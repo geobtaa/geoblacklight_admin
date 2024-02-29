@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "blacklight/catalog"
-
 # Admin::ApiController
 module Admin
   class ApiController < ApplicationController

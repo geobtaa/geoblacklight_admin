@@ -11,16 +11,29 @@ module GeoblacklightAdmin
        1. Copies GBL Admin initializer files to host config
        2. Copies database.yml connection to host config
        3. Copies sidekiq.yml connection to host config
-       4. Copies settings.yml to host config
        5. Copies .env.development and .env.test to host
+       4. Copies settings.yml to host config
+       create_solr_yml
        6. Copies JSON Schema to host
        7. Copies solr/* to host
        8. Sets Routes
-       9. Sets Gems
+       set_development_mailer_host
        11.Sets DB Seeds
-       11.Sets ActiveStorage
        12.Sets Pagy Backend
-
+       11.Sets ActiveStorage
+       add_api_controller
+       add_user_util_links
+       copy_catalog_index_view
+       add_show_sidebar
+       copy_app_javascript
+       copy_app_images
+       add_package_json
+       add_assets_initialier
+       add_kithe_bulk_loading_service
+       add_kithe_model_to_solr_document
+       add_search_builder_publication_state_concern
+       add_import_id_facet
+       add_vite_rails_config
     DESCRIPTION
 
     def create_gbl_admin_initializer_files
@@ -339,6 +352,26 @@ module GeoblacklightAdmin
     def add_import_id_facet
       inject_into_file "app/controllers/catalog_controller.rb", before: "# Item Relationship Facets" do
         "\nconfig.add_facet_field Settings.FIELDS.B1G_IMPORT_ID, label: 'Import ID', show: false\n"
+      end
+    end
+
+    def add_vite_rails_config
+      copy_file "base.html.erb", "app/views/layouts/blacklight/base.html.erb"
+      copy_file "vite.config.ts", "vite.config.ts", force: true
+      copy_file "config/vite.json", "config/vite.json", force: true
+      copy_file "config/vite.rb", "config/vite.rb", force: true
+      copy_file "frontend/entrypoints/application.js", "app/javascript/entrypoints/application.js", force: true
+
+      append_to_file "Gemfile" do
+        "gem \"vite_rails\", \"~> 3.0\""
+      end
+    end
+
+    # Run bundle with vite install
+    def bundle_install
+      Bundler.with_clean_env do
+        run "bundle install"
+        run "bundle exec vite install"
       end
     end
   end

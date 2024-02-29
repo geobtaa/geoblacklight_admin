@@ -30,7 +30,7 @@ Gem::Specification.new do |s|
   s.add_dependency "devise-bootstrap-views", "~> 1.0"
   s.add_dependency "devise_invitable", "~> 2.0"
   s.add_dependency "dotenv-rails", "~> 2.8"
-  s.add_dependency "geoblacklight", "~> 4.0"
+  s.add_dependency "geoblacklight", "4.1"
   s.add_dependency "haml", "~> 5.2"
   s.add_dependency "httparty", "~> 0.21"
   s.add_dependency "inline_svg", "~> 1.9"
@@ -46,6 +46,8 @@ Gem::Specification.new do |s|
   s.add_dependency "simple_form", "~> 5.0"
   s.add_dependency "sprockets", "< 4"
   s.add_dependency "statesman", "~> 10.0"
+  s.add_dependency "vite_rails", "~> 3.0"
+  s.add_dependency "vite_ruby", ">= 3.5"
 
   s.add_development_dependency "byebug", "~> 11.1"
   s.add_development_dependency "capybara", "~> 3.0"

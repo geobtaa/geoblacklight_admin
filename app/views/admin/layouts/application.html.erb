@@ -8,6 +8,10 @@
     <%= stylesheet_link_tag "application", media: "all" %>
     <%= javascript_include_tag "application", "data-turbolinks-track": "reload" %>
     <%= javascript_include_tag "geoblacklight_admin", "data-turbolinks-track": "reload" %>
+
+    <!-- Vite -->
+    <%= vite_client_tag %>
+    <%= vite_javascript_tag 'application', media: 'all' %>
     
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
