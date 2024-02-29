@@ -15,8 +15,9 @@ class DocumentDownload < ApplicationRecord
     ::CSV.foreach(file.path, headers: true) do |row|
       logger.debug("CSV Row: #{row.to_hash}")
       document_download = DocumentDownload.find_or_initialize_by(friendlier_id: row[0], label: row[1], value: row[2])
-      document_download.update(row.to_hash)
+      document_download.update!(row.to_hash)
     end
+    true
   end
 
   def self.destroy_all(file)
@@ -25,6 +26,7 @@ class DocumentDownload < ApplicationRecord
       logger.debug("CSV Row: #{row.to_hash}")
       DocumentDownload.destroy_by(id: row[0], friendlier_id: row[1])
     end
+    true
   end
 
   def to_csv
