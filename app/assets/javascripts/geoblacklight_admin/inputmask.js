@@ -1,4 +1,4 @@
-// jQuery Ready
-$(document).on('ready turbolinks:load', function() {
+// VanillaJS Ready
+document.addEventListener('DOMContentLoaded', function() {
   $("input[data-inputmask]").inputmask();
 });
