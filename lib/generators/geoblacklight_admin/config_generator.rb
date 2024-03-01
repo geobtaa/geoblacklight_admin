@@ -314,12 +314,12 @@ module GeoblacklightAdmin
     end
 
     def add_kithe_bulk_loading_service
-      inject_into_file "app/controllers/catalog_controller.rb", after: 'require "blacklight/catalog"' do
-        "\nrequire 'kithe/blacklight_tools/bulk_loading_search_service'"
+      prepend_to_file "app/controllers/catalog_controller.rb" do
+        "require 'kithe/blacklight_tools/bulk_loading_search_service'\n\n"
       end
 
       inject_into_file "app/controllers/catalog_controller.rb", after: "include Blacklight::Catalog" do
-        "\nself.search_service_class = Kithe::BlacklightTools::BulkLoadingSearchService"
+        "\n  self.search_service_class = Kithe::BlacklightTools::BulkLoadingSearchService"
       end
     end
 

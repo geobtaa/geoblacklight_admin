@@ -82,7 +82,7 @@ module Admin
 
       respond_to do |format|
         if DocumentDownload.destroy_all(params.dig(:document_download, :downloads, :file))
-          format.html { redirect_to admin_document_downloads_path, notice: "Download Links were created destroyed." }
+          format.html { redirect_to admin_document_downloads_path, notice: "Download Links were destroyed." }
         else
           format.html { redirect_to admin_document_downloads_path, notice: "Download Links could not be destroyed." }
         end
