@@ -1,7 +1,7 @@
 {
   "all": {
     "sourceCodeDir": "app/frontend",
-    "publicOutputDir": "geoblacklight-admin-vite",
+    "publicOutputDir": "geoblacklight-admin",
     "watchAdditionalPaths": []
   },
   "development": {
