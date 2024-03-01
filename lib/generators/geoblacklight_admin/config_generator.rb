@@ -299,14 +299,6 @@ module GeoblacklightAdmin
       copy_file "_show_sidebar.html.erb", "app/views/catalog/_show_sidebar.html.erb"
     end
 
-    # @TODO
-    # I'm certain this is not the best way to inject our JS behaviors into the root app
-    # But for now, this will do...
-    # Long term I hope to avoid webpack here altogether.
-    def copy_app_javascript
-      directory "javascript", "app/javascript", force: true
-    end
-
     def copy_app_images
       copy_file "images/bookmark-regular.svg", "app/assets/images/bookmark-regular.svg"
       copy_file "images/bookmark-solid.svg", "app/assets/images/bookmark-solid.svg"

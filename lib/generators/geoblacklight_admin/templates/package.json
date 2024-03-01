@@ -22,8 +22,8 @@
     "popper.js": "^1.16.1",
     "serialize-javascript": "^3.1.0",
     "shave": "^2.5.10",
-    "stimulus": "^1.1.1",
-    "stimulus-scroll-to": "^2.0.1",
+    "stimulus": "^3.2.2",
+    "stimulus-scroll-to": "^4.1.0",
     "turbolinks": "^5.2.0",
     "yargs-parser": "^13.1.2"
   },
