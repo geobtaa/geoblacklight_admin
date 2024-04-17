@@ -98,6 +98,22 @@ class Document
       pmtiles: {
         label: "PMTiles",
         uri: "https://github.com/protomaps/PMTiles"
+      },
+      xyz_tiles: {
+        label: "XYZ Tiles",
+        uri: "https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames"
+      },
+      wmts: {
+        label: "WMTS",
+        uri: "http://www.opengis.net/def/serviceType/ogc/wmts"
+      },
+      tile_json: {
+        label: "TileJSON",
+        uri: "https://github.com/mapbox/tilejson-spec"
+      },
+      tile_map_service: {
+        label: "Tile Map Service",
+        uri: "https://wiki.osgeo.org/wiki/Tile_Map_Service_Specification"
       }
     }.freeze
 

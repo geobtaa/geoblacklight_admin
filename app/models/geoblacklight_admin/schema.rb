@@ -174,6 +174,26 @@ module GeoblacklightAdmin
           destination: solr_fields[:reference],
           delimited: false,
           transformation_method: "build_dct_references"
+        },
+        "XYZ Tiles": {
+          destination: solr_fields[:reference],
+          delimited: false,
+          transformation_method: "build_dct_references"
+        },
+        WMTS: {
+          destination: solr_fields[:reference],
+          delimited: false,
+          transformation_method: "build_dct_references"
+        },
+        TileJSON: {
+          destination: solr_fields[:reference],
+          delimited: false,
+          transformation_method: "build_dct_references"
+        },
+        "Tile Map Service": {
+          destination: solr_fields[:reference],
+          delimited: false,
+          transformation_method: "build_dct_references"
         }
       }
     end
@@ -202,7 +222,11 @@ module GeoblacklightAdmin
         Thumbnail: "thumbnail",
         Image: "image",
         COG: "cog",
-        PMTiles: "pmtiles"
+        PMTiles: "pmtiles",
+        "XYZ Tiles": "xyz_tiles",
+        WMTS: "wmts",
+        TileJSON: "tile_json",
+        "Tile Map Service": "tile_map_service"
       }
     end
   end

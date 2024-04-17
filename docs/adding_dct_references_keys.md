@@ -13,6 +13,7 @@ Update: self.uri_2_category_references_mappings
 * app/models/geoblacklight_admin/field_mappings_btaa_aardvark.rb
 
 ### Schema
+Update: dct_references_import_mappings
 Update: dct_references_mappings
 * app/models/geoblacklight_admin/schema.rb
 
