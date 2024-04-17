@@ -13,6 +13,7 @@ class TestAppGenerator < Rails::Generators::Base
     gem "blacklight", "~> 7.0"
     gem "geoblacklight", ">= 4.0"
     gem "simple_form", "~> 5.0"
+    gem "pagy", "~> 6.0"
 
     Bundler.with_unbundled_env do
       run "bundle install"
