@@ -164,6 +164,16 @@ module GeoblacklightAdmin
           destination: solr_fields[:reference],
           delimited: false,
           transformation_method: "build_dct_references"
+        },
+        COG: {
+          destination: solr_fields[:reference],
+          delimited: false,
+          transformation_method: "build_dct_references"
+        },
+        PMTiles: {
+          destination: solr_fields[:reference],
+          delimited: false,
+          transformation_method: "build_dct_references"
         }
       }
     end
@@ -190,7 +200,9 @@ module GeoblacklightAdmin
         WCS: "wcs",
         oEmbed: "oembed",
         Thumbnail: "thumbnail",
-        Image: "image"
+        Image: "image",
+        COG: "cog",
+        PMTiles: "pmtiles"
       }
     end
   end

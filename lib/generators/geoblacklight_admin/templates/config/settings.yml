@@ -287,6 +287,8 @@ HELP_TEXT:
       - 'wms'
       - 'tms'
       - 'oembed'
+      - 'cog'
+      - 'pmtiles'
 
 # Enable catalog#show sidebar static map for items with the following viewer protocols
 SIDEBAR_STATIC_MAP:

@@ -372,7 +372,9 @@ module GeoblacklightAdmin
         "urn:x-esri:serviceType:ArcGIS#ImageMapLayer": "arcgis_image_map_layer",
         "http://schema.org/DownloadAction": "harvard",
         "https://openindexmaps.org": "open_index_map",
-        "https://oembed.com": "oembed"
+        "https://oembed.com": "oembed",
+        "https://github.com/cogeotiff/cog-spec": "cog",
+        "https://github.com/protomaps/PMTiles": "pmtiles"
       })
     end
   end

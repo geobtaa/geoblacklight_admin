@@ -185,6 +185,8 @@ en:
           harvard_download: Harvard Download
           open_index_map: OpenIndexMap
           oembed: oEmbed
+          cog: Cloud Optimized GeoTIFF
+          pmtiles: PMTiles
 
   simple_form:
     hints:

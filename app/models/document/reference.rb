@@ -90,6 +90,14 @@ class Document
       oembed: {
         label: "oEmbed",
         uri: "https://oembed.com"
+      },
+      cog: {
+        label: "COG",
+        uri: "https://github.com/cogeotiff/cog-spec"
+      },
+      pmtiles: {
+        label: "PMTiles",
+        uri: "https://github.com/protomaps/PMTiles"
       }
     }.freeze
 
