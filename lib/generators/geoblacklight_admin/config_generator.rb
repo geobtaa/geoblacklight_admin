@@ -348,10 +348,9 @@ module GeoblacklightAdmin
     end
 
     def add_vite_rails_config
-      copy_file "base.html.erb", "app/views/layouts/blacklight/base.html.erb"
+      copy_file "base.html.erb", "app/views/layouts/blacklight/base.html.erb", force: true
       copy_file "vite.config.ts", "vite.config.ts", force: true
       copy_file "config/vite.json", "config/vite.json", force: true
-      copy_file "config/vite.rb", "config/vite.rb", force: true
       copy_file "frontend/entrypoints/application.js", "app/javascript/entrypoints/application.js", force: true
 
       append_to_file "Gemfile" do
