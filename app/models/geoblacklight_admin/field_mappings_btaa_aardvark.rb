@@ -376,9 +376,9 @@ module GeoblacklightAdmin
         "https://github.com/cogeotiff/cog-spec": "cog",
         "https://github.com/protomaps/PMTiles": "pmtiles",
         "https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames": "xyz_tiles",
-        "http://www.opengis.net/def/serviceType/ogc/wmts": 'wmts',
-        "https://github.com/mapbox/tilejson-spec": 'tile_json',
-        "https://wiki.osgeo.org/wiki/Tile_Map_Service_Specification": 'tile_map_service'
+        "http://www.opengis.net/def/serviceType/ogc/wmts": "wmts",
+        "https://github.com/mapbox/tilejson-spec": "tile_json",
+        "https://wiki.osgeo.org/wiki/Tile_Map_Service_Specification": "tile_map_service"
       })
     end
   end
