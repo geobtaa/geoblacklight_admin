@@ -28,19 +28,8 @@ namespace :gbl_admin do
 end
 
 desc "Run test suite"
-task ci: :environment do
-  Rails.env = "test"
-  shared_solr_opts = {managed: true, verbose: true, persist: false, download_dir: "tmp"}
-  shared_solr_opts[:version] = ENV["SOLR_VERSION"] if ENV["SOLR_VERSION"]
-
-  success = true
-  SolrWrapper.wrap(shared_solr_opts.merge(port: 8983, instance_dir: "tmp/blacklight-core")) do |solr|
-    solr.with_collection(name: "blacklight-core", dir: Rails.root.join("solr/conf").to_s) do
-      system('RAILS_ENV=test TESTOPTS="-v" bundle exec rails test:system test') || success = false
-    end
-  end
-
-  exit!(1) unless success
+task ci: ["engine_cart:generate"] do
+  system('RAILS_ENV=test TESTOPTS="-v" bundle exec rails test:system test')
 end
 
 namespace :gbl_admin do

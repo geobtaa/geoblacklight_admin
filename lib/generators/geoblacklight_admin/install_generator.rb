@@ -45,6 +45,7 @@ module GeoblacklightAdmin
     end
 
     def install_yarn
+      run "yarn link @geoblacklight/frontend"
       run "yarn install"
     end
   end

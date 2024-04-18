@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "blacklight/catalog"
 require "blacklight_range_limit/controller_override"
 
 module Admin

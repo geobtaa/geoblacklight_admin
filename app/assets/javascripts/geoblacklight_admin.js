@@ -11,12 +11,9 @@
 // about supported directives.
 //
 
-//= require jquery3
-//= require rails-ujs
+// VENDOR
 //= require @nathanvda/cocoon/cocoon.js
 //= require chosen-jquery/lib/chosen.jquery.js
-
-// VENDOR
 //= require bootstrap-datepicker/js/bootstrap-datepicker.js
 //= require inputmask/dist/jquery.inputmask
 //= require shave/dist/jquery.shave.js

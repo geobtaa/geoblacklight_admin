@@ -3,7 +3,7 @@
 module Admin
   class AdminController < ApplicationController
     include Devise::Controllers::Helpers
-    include Pagy::Backend
+    include ::Pagy::Backend
     layout "admin/layouts/application"
 
     before_action :authenticate_admin!

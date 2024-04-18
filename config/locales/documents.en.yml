@@ -185,6 +185,12 @@ en:
           harvard_download: Harvard Download
           open_index_map: OpenIndexMap
           oembed: oEmbed
+          cog: Cloud Optimized GeoTIFF (COG)
+          pmtiles: PMTiles
+          xyz_tiles: XYZ Tiles (XYZ)
+          wmts: Web Map Tile Service (WMTS)
+          tile_json: TileJSON
+          tile_map_service: Tile Map Service (TMS)
 
   simple_form:
     hints:
