@@ -1,5 +1,4 @@
 csv:
-  id: 1
   key: '12345678'
   filename: 'btaa_formatted_records.csv'
   content_type: 'text/csv'
