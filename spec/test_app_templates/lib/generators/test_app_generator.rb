@@ -11,6 +11,7 @@ class TestAppGenerator < Rails::Generators::Base
 
   def add_gems
     gem "blacklight", "~> 7.0"
+    gem "config"
     gem "geoblacklight", ">= 4.0"
     gem "pagy"
     gem "simple_form"

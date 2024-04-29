@@ -2,6 +2,7 @@
 gem "active_storage_validations"
 gem "awesome_print"
 gem "blacklight_advanced_search"
+gem "config"
 gem "devise-bootstrap-views", "~> 1.0"
 gem "devise_invitable", "~> 2.0.0"
 gem "dotenv-rails"
