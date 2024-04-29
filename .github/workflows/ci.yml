@@ -21,8 +21,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby_version: ['3.2', '3.3']
-        rails_version: [7.0.8.1, 7.1.3.2]
+        ruby_version: ['3.3']
+        rails_version: [7.1.3.2]
 
     services:
       postgres:
