@@ -16,7 +16,7 @@ class TestAppGenerator < Rails::Generators::Base
     gem "pagy"
     gem "simple_form"
 
-    copy_file "../lib/generators/geoblacklight_admin/templates/config/settings.yml", "config/settings.yml"
+    copy_file "settings.yml", "config/settings.yml"
 
     Bundler.with_unbundled_env do
       run "bundle install"
