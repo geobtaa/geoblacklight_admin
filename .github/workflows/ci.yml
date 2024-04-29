@@ -77,7 +77,7 @@ jobs:
       run: bundle exec rake ci
       env:
         RAILS_ENV: test
-        ENGINE_CART_RAILS_OPTIONS: '--skip-git --skip-listen --skip-spring --skip-keeps --skip-action-cable --skip-coffee --skip-webpack-install --skip-javascript'
+        ENGINE_CART_RAILS_OPTIONS: '--skip-git --skip-listen --skip-spring --skip-keeps --skip-coffee --skip-webpack-install --skip-javascript'
         SOLR_URL: http://solr:SolrRocks@localhost:8983/solr/blacklight-core
 
     - name: Artifacts - Upload coverage
