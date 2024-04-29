@@ -21,18 +21,23 @@ class TestAppGenerator < Rails::Generators::Base
     end
   end
 
+  def run_simple_form_generator
+    say_status("warning", "GENERATING SIMPLE FORM", :yellow)
+    generate "simple_form:install", "--bootstrap"
+  end
+
   def run_blacklight_generator
-    say_status("warning", "GENERATING BL", :yellow)
+    say_status("warning", "GENERATING BLACKLIGHT", :yellow)
     generate "blacklight:install", "--devise"
   end
 
   def run_geoblacklight_generator
-    say_status("warning", "GENERATING GBL", :yellow)
+    say_status("warning", "GENERATING GEOBLACKLIGHT", :yellow)
     generate "geoblacklight:install", "--force"
   end
 
   def run_geoblacklight_admin_generator
-    say_status("warning", "GENERATING GBL Admin", :yellow)
+    say_status("warning", "GENERATING GEOBLACKLIGHT ADMIN", :yellow)
     generate "geoblacklight_admin:install", "--force"
   end
 end

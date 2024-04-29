@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "simple_form"
+
 # These defaults are defined and maintained by the community at
 # https://github.com/heartcombo/simple_form-bootstrap
 # Please submit feedback, changes and tests only there.
