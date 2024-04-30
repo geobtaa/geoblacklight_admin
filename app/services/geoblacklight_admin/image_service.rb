@@ -37,6 +37,7 @@ module GeoblacklightAdmin
         puts "IO is NIL"
       else
         puts "Attaching IO"
+        puts io_file.inspect
         attach_io(io_file)
       end
 
@@ -49,16 +50,10 @@ module GeoblacklightAdmin
     private
 
     def image_tempfile(document_id)
-      # puts "IMAGE TEMPFILE..."
+      puts "IMAGE TEMPFILE..."
       puts "Document Viewer Protocol: #{@document.viewer_protocol}"
-      # puts "Image URL: #{image_url}"
-      # puts "IMAGE DATA: #{image_data}"
-
-      @metadata["viewer_protocol"] = @document.viewer_protocol
-      @metadata["image_url"] = image_url
-      @metadata["gblsi_thumbnail_uri"] = gblsi_thumbnail_uri
-
-      # puts "IMAGE DATA: #{image_data.inspect}"
+      puts "Image URL: #{image_url}"
+      puts "IMAGE DATA: #{image_data.inspect}"
 
       return nil unless image_data && @metadata["placeheld"] == false
 
@@ -68,19 +63,16 @@ module GeoblacklightAdmin
       temp_file.rewind
 
       # puts "TEMPFILE: #{temp_file.inspect}"
-
-      @metadata["image_tempfile"] = temp_file.inspect
       temp_file
     end
 
     def attach_io(io)
       # Remote content-type headers are untrustworthy
       # Pull the mimetype and file extension via MimeMagic
-      content_type = Marcel::MimeType.for(File.open(io))
-      mime_type = Marcel::TYPES[content_type][0][0]
 
+      puts "ATTACHING IO..."
+      content_type = Marcel::MimeType.for(File.open(io))
       puts "Content Type: #{content_type.inspect}"
-      puts "MIME Type: #{mime_type.inspect}"
 
       if content_type.start_with?("image")
 
@@ -119,7 +111,7 @@ module GeoblacklightAdmin
     end
 
     def gblsi_thumbnail_uri
-      if gblsi_thumbnail_field? && @document.send(Settings.GBLSI_THUMBNAIL_FIELD)
+      if gblsi_thumbnail_field? && @document.send(Settings.GBLSI_THUMBNAIL_FIELD).present?
         @document.send(Settings.GBLSI_THUMBNAIL_FIELD)
       else
         false
@@ -128,7 +120,7 @@ module GeoblacklightAdmin
 
     # Generates hash containing thumbnail mime_type and image.
     def image_data
-      # puts "IMAGE DATA..."
+      puts "\nIMAGE DATA..."
       return nil unless image_url
 
       remote_image
@@ -166,11 +158,11 @@ module GeoblacklightAdmin
     # have not been set beyond the default, then a thumbnail url from
     # dct references is used instead.
     def image_url
-      # puts "IMAGE URL..."
-      # puts "gblsi_thumbnail_uri: #{gblsi_thumbnail_uri.inspect}"
-      # puts "restricted_scanned_map?: #{restricted_scanned_map?}"
-      # puts "service_url: #{service_url.inspect}"
-      # puts "image_reference: #{image_reference.inspect}"
+      puts "\nIMAGE URL..."
+      puts "gblsi_thumbnail_uri: #{gblsi_thumbnail_uri.inspect}"
+      puts "restricted_scanned_map?: #{restricted_scanned_map?}"
+      puts "service_url: #{service_url.inspect}"
+      puts "image_reference: #{image_reference.inspect}\n"
 
       @image_url ||= gblsi_thumbnail_uri || service_url || image_reference
     end
@@ -186,14 +178,13 @@ module GeoblacklightAdmin
     # from the viewer protocol, and if it's loaded, the image_url
     # method is called.
     def service_url
-      # puts "SERVICE URL..."
+      puts "\nSERVICE URL..."
       # Follow image_url instead
-      return nil if gblsi_thumbnail_uri
+      return nil if gblsi_thumbnail_uri.present?
 
       @service_url ||=
         begin
           return unless @document.available?
-
           protocol = @document.viewer_protocol
 
           if protocol == "map" || protocol.nil?

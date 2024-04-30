@@ -308,6 +308,10 @@ module GeoblacklightAdmin
       copy_file "package.json", "package.json", force: true
     end
 
+    def copy_rake_tasks
+      append_to_file "Rakefile", "require \"geoblacklight_admin/rake_task\"\n"
+    end
+
     def add_assets_initialier
       append_to_file "config/initializers/assets.rb" do
         "

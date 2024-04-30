@@ -9,8 +9,8 @@ module GeoblacklightAdmin
       # @param [SolrDocument]
       # @param [Integer] thumbnail size
       # @return [String] iiif thumbnail url
-      def self.image_url(document, size)
-        "#{document.viewer_endpoint.gsub("info.json", "")}full/#{size},/0/default.jpg"
+      def self.image_url(document, _size)
+        "#{document.viewer_endpoint.gsub("info.json", "")}full/max/0/default.jpg"
       end
     end
   end

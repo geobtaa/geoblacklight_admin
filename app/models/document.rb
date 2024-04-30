@@ -29,6 +29,15 @@ class Document < Kithe::Work
   has_many :document_downloads, primary_key: "friendlier_id", foreign_key: "friendlier_id", autosave: false, dependent: :destroy,
     inverse_of: :document
 
+  # DocumentAssets
+  def document_assets
+    scope = Kithe::Asset
+    scope = scope.where(parent_id: self.id)
+
+    # scope = scope.page(params[:page]).per(20).order(created_at: :desc)
+    scope.includes(:parent)
+  end
+
   include Statesman::Adapters::ActiveRecordQueries[
     transition_class: DocumentTransition,
     initial_state: :draft

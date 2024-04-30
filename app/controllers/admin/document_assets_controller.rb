@@ -59,7 +59,7 @@ module Admin
 
       respond_to do |format|
         format.html do
-          redirect_to document_document_assets_path(@document),
+          redirect_to admin_document_document_assets_path(@document),
             notice: "Asset '#{@asset.title}' was successfully destroyed."
         end
         format.json { head :no_content }
