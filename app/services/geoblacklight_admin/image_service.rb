@@ -69,6 +69,8 @@ module GeoblacklightAdmin
     def attach_io(io)
       # Remote content-type headers are untrustworthy
       # Pull the mimetype and file extension via MimeMagic
+      puts "REMOVING OLD THUMBNAILS..."
+      @document.document_assets.where("json_attributes->>'thumbnail' = ?", "true").destroy_all
 
       puts "ATTACHING IO..."
       content_type = Marcel::MimeType.for(File.open(io))

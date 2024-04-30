@@ -12,10 +12,7 @@ module GeoblacklightAdmin
       # @param [Integer] thumbnail size
       # @return [String] wms thumbnail url
       def self.image_url(document, size)
-        # Swap proxy url with princeton geoserver url.
-        # Thumbnail requests send geoserver auth.
-        endpoint = document.viewer_endpoint.gsub(Settings.PROXY_GEOSERVER_URL,
-          Settings.INSTITUTION_GEOSERVER_URL)
+        endpoint = document.viewer_endpoint
         "#{endpoint}/reflect?" \
           "&FORMAT=image%2Fpng" \
           "&TRANSPARENT=TRUE" \
