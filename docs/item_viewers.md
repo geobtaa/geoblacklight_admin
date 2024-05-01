@@ -112,3 +112,13 @@ TITLE: [Quaternary Fault and Fold Database of the United States (XYZ)](http://lo
 ```
 DOC_ID=6f47b103-9955-4bbe-a364-387039623106-xyz rake geoblacklight_admin:images:harvest_doc_id
 ```
+
+
+- - - - -
+
+## Create Derivatives
+
+```
+d = Kithe::Model.find("1078446a-ae55-476f-84bb-2ea196154113")
+d.create_derivatives
+```
