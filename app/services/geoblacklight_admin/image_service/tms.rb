@@ -1,18 +1,18 @@
 # frozen_string_literal: true
 
-require 'addressable/uri'
+require "addressable/uri"
 
 module GeoblacklightAdmin
   class ImageService
     module Tms
       ##
-      # Formats and returns a thumbnail url from a Web Map Service endpoint.
+      # Formats and returns a thumbnail url for a TMS endpoint from a Web Map Service.
       # This utilizes the GeoServer specific 'reflect' service to generate
       # parameters like bbox that are difficult to tweak without more detailed
       # information about the layer.
       # @param [SolrDocument]
       # @param [Integer] thumbnail size
-      # @return [String] wms thumbnail url
+      # @return [String] tms thumbnail url
       def self.image_url(document, size)
         puts "\nTMS IMAGE URL..."
         puts "document.viewer_endpoint: #{document.viewer_endpoint.inspect}"
@@ -29,12 +29,9 @@ module GeoblacklightAdmin
 
         puts "Parsed URL: #{parsed_url.inspect}"
 
-        # Extract the path from the URL
-        path = parsed_url.path
-      
         # Build a hash to store the extracted components
         parsed_data = {
-          base_url: "#{parsed_url.scheme}://#{parsed_url.host}#{parsed_url.port ? ':' + parsed_url.port.to_s : ''}",
+          base_url: "#{parsed_url.scheme}://#{parsed_url.host}#{parsed_url.port ? ":" + parsed_url.port.to_s : ""}",
           path_pattern: parsed_url.path
         }
 

@@ -32,7 +32,7 @@ class Document < Kithe::Work
   # DocumentAssets
   def document_assets
     scope = Kithe::Asset
-    scope = scope.where(parent_id: self.id)
+    scope = scope.where(parent_id: id)
 
     # scope = scope.page(params[:page]).per(20).order(created_at: :desc)
     scope.includes(:parent)
