@@ -312,6 +312,25 @@ export default class extends Controller {
     form.submit();
   }
 
+  deleteThumbnails(event) {
+    var el = document.querySelector('#bulk_action_field_name');
+    el.setAttribute('value', "Delete Thumbnails");
+
+    // Set field value
+    var el = document.querySelector('#bulk_action_field_value');
+    el.setAttribute(
+      'value',
+      event.currentTarget.innerHTML.toLowerCase().trim()
+    );
+
+    // Set scope value
+    this.setPubState(event);
+
+    // Submit form
+    var form = document.querySelector('#result-action-form');
+    form.submit();
+  }
+
   bulkActionDelete(event) {
     event.preventDefault();
 

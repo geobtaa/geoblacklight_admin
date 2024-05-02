@@ -15,6 +15,9 @@ class BulkActionRunJob < ApplicationJob
     when "Harvest Thumbnails"
       logger.debug("BulkAction: Harvest Thumbnails")
       :harvest_thumbnails
+    when "Delete Thumbnails"
+      logger.debug("BulkAction: Delete Thumbnails")
+      :delete_thumbnails
     else
       :update_field_value
     end
