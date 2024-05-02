@@ -7,12 +7,21 @@
         <div class="mr-2">
           <h1 class="h5">
             <% if @document.persisted? %>
-              <span id="<%=@document.friendlier_id %>">
-              <%= render 'document_bookmark', document: @document %>
-              <%= truncate(@document.title, length: 80) %>
-              <%= publication_state_badge(@document) %>
-              <p class='mb-0'>
-                <small>Last updated <%= time_ago_in_words(@document.updated_at) %> ago. <%= link_to 'Versions', admin_document_versions_path(@document) %></small></p>
+              <div class="row">
+                <% if @document.thumbnail.present? %>
+                  <div class="thumbnail col-2">
+                    <%= image_tag @document.thumbnail.file_url(:thumb_mini) %>
+                  </div>
+                <% end %>
+                <div class="col">
+                  <span id="<%=@document.friendlier_id %>">
+                  <%= render 'document_bookmark', document: @document %>
+                  <%= truncate(@document.title, length: 80) %>
+                  <%= publication_state_badge(@document) %>
+                  <p class='mb-0'>
+                    <small>Last updated <%= time_ago_in_words(@document.updated_at) %> ago. <%= link_to 'Versions', admin_document_versions_path(@document) %></small></p>
+                </div>
+              </div>
             <% else %>
               New document
             <% end %>
