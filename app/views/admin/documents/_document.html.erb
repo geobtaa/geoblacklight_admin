@@ -6,7 +6,7 @@
       <div class="thumbnail col-1">
         <% # This should happen elsewhere %>
         <% @document = Document.find_by(friendlier_id: document.friendlier_id) %>
-        <%= image_tag @document.thumbnail.file_url(:thumb_mini) if @document.thumbnail.present? %>
+        <%= image_tag @document&.thumbnail&.file_url(:thumb_mini) if @document&.thumbnail&.present? && @document&.thumbnail&.file_url %>
       </div>
       <div class="result col">
         <%= check_box_tag nil, nil, false, data: { id: document.friendlier_id, action: 'click->results#checkChecked'}%>
