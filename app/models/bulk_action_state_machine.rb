@@ -10,7 +10,7 @@ class BulkActionStateMachine
   state :failed
   state :reverted
 
-  transition from: :created, to: %i[queued complete failed]
-  transition from: :queued, to: %i[created queued complete failed]
-  transition from: :complete, to: %i[queued reverted]
+  transition from: :created, to: %i[queued]
+  transition from: :queued, to: %i[created complete failed]
+  transition from: :complete, to: %i[reverted]
 end
