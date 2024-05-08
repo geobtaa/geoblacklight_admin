@@ -1,5 +1,5 @@
-require 'tempfile'
-require 'tty/command'
+require "tempfile"
+require "tty/command"
 
 module Kithe
   # Use the [vips](https://jcupitt.github.io/libvips/) command-line utility (via shell-out)
@@ -35,7 +35,7 @@ module Kithe
 
     attr_reader :max_width, :png_compression
 
-    def initialize(max_width:nil, png_compression: 1, thumbnail_mode: false)
+    def initialize(max_width: nil, png_compression: 1, thumbnail_mode: false)
       @max_width = max_width
       @png_compression = png_compression
       @thumbnail_mode = !!thumbnail_mode
@@ -74,7 +74,7 @@ module Kithe
 
       TTY::Command.new(printer: :null).run(*vips_args)
 
-      return tempfile
+      tempfile
     end
 
     private
