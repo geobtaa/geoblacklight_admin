@@ -3,10 +3,14 @@
 <% if document.respond_to?('friendlier_id') %>
   <%= content_tag :li, id: document.friendlier_id, class: bookmarked do %>
     <div class="row">
-      <div class="thumbnail col-1">
+      <div class="col-1">
         <% # This should happen elsewhere %>
         <% @document = Document.find_by(friendlier_id: document.friendlier_id) %>
-        <%= image_tag @document&.thumbnail&.file_url(:thumb_mini) if @document&.thumbnail&.present? && @document&.thumbnail&.file_url %>
+        <% if @document&.thumbnail&.present? && @document&.thumbnail&.file_url %>
+          <%= link_to edit_admin_document_path(document.friendlier_id) do %>
+            <%= image_tag(@document&.thumbnail&.file_url(:thumb_mini_2X), class: "thumbnail") %>
+          <% end %>
+        <% end %>
       </div>
       <div class="result col">
         <%= check_box_tag nil, nil, false, data: { id: document.friendlier_id, action: 'click->results#checkChecked'}%>
