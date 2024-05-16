@@ -41,6 +41,8 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+    
+    name: Test ${{ matrix.rails_version }}, ruby ${{ matrix.ruby_version }}
     steps:
     - uses: actions/checkout@v3
 
@@ -73,7 +75,7 @@ jobs:
           curl -H "Content-type:application/octet-stream" --data-binary @solr_config.zip "http://solr:SolrRocks@127.0.0.1:8983/solr/admin/configs?action=UPLOAD&name=blacklight"
           curl -H 'Content-type: application/json' http://solr:SolrRocks@127.0.0.1:8983/api/collections/  -d '{create: {name: blacklight-core, config: blacklight, numShards: 1}}'
 
-    - name: Test ${{ matrix.rails_version }}, ruby ${{ matrix.ruby_version }}
+    - name: Run Tests
       run: bundle exec rake ci
       env:
         RAILS_ENV: test
