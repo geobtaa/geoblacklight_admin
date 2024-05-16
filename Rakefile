@@ -26,6 +26,7 @@ require "engine_cart/rake_task"
 require "geoblacklight_admin/version"
 require "rake/testtask"
 require "geoblacklight_admin/rake_task"
+require "simple_form"
 
 # Searches for files ending in _test.rb in the test directory
 Rake::TestTask.new do |t|
