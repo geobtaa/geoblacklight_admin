@@ -7,7 +7,7 @@ module GeoblacklightAdmin
     def perform(solr_document_id, bad_id = nil)
       # Find the document
       document = Document.find_by_friendlier_id(solr_document_id)
-      
+
       # Crawl politely
       sleep(rand(1..5))
 
