@@ -3,7 +3,7 @@
 require "rails/generators"
 
 class TestAppGenerator < Rails::Generators::Base
-  source_root "./test/test_app_templates"
+  source_root File.expand_path("../../../../spec/test_app_templates", __FILE__)
 
   # if you need to generate any additional configuration
   # into the test app, this generator will be run immediately
@@ -12,19 +12,6 @@ class TestAppGenerator < Rails::Generators::Base
   def add_gems
     gem "blacklight", "~> 7.0"
     gem "geoblacklight", ">= 4.0"
-
-    # GBL‡ADMIN
-    gem "active_storage_validations"
-    gem "awesome_print"
-    gem "blacklight_advanced_search"
-    gem "devise-bootstrap-views", "~> 1.0"
-    gem "devise_invitable", "~> 2.0.0"
-    gem "dotenv-rails"
-    gem "haml"
-    gem "inline_svg"
-    gem "kithe", "~> 2.0"
-    gem "noticed"
-    gem "paper_trail"
 
     Bundler.with_unbundled_env do
       run "bundle install"
