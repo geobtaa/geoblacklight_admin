@@ -50,15 +50,11 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby_version }}
-        bundler-cache: false
+        bundler-cache: true
+        cache-version: 1
 
     - name: Solr - Create container
       run: docker run -d -p 8983:8983 geoblacklight/solr:8.9-v1.0.0 server/scripts/ci-start.sh
-
-    - name: Bundler - Install
-      env:
-        RAILS_VERSION: ${{ matrix.rails_version }}
-      run: bundle install
 
     - name: Node - v20
       uses: actions/setup-node@v2
