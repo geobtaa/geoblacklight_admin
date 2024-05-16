@@ -13,6 +13,19 @@ class TestAppGenerator < Rails::Generators::Base
     gem "blacklight", "~> 7.0"
     gem "geoblacklight", ">= 4.0"
 
+    # GBL‡ADMIN
+    gem 'active_storage_validations'
+    gem 'awesome_print'
+    gem 'blacklight_advanced_search'
+    gem 'devise-bootstrap-views', '~> 1.0'
+    gem "devise_invitable", "~> 2.0.0"
+    gem 'dotenv-rails'
+    gem 'haml'
+    gem 'inline_svg'
+    gem 'kithe', '~> 2.0'
+    gem 'noticed'
+    gem 'paper_trail'
+
     Bundler.with_unbundled_env do
       run "bundle install"
     end
