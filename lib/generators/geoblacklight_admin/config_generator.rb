@@ -358,7 +358,6 @@ module GeoblacklightAdmin
       copy_file "frontend/entrypoints/application.js", "app/javascript/entrypoints/application.js", force: true
 
       append_to_file "Gemfile" do
-        "gem \"vite_rails\", \"~> 3.0\""
         "gem \"simple_form\", \"~> 5.0\""
       end
     end

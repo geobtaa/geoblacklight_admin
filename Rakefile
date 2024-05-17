@@ -42,6 +42,7 @@ task default: :test
 desc "Run test suite"
 task ci: ["geoblacklight:generate"] do
   within_test_app do
+    require "simple_form"
     system "RAILS_ENV=test bin/rails db:migrate"
     system "RAILS_ENV=test rake db:seed"
     system "RAILS_ENV=test rails webpacker:compile"
