@@ -359,6 +359,7 @@ module GeoblacklightAdmin
 
       append_to_file "Gemfile" do
         "gem \"vite_rails\", \"~> 3.0\""
+        "gem \"simple_form\", \"~> 5.0\""
       end
     end
 
