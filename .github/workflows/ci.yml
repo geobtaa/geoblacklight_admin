@@ -51,7 +51,7 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby_version }}
         bundler-cache: true
-        cache-version: 1
+        cache-version: 2
 
     - name: Solr - Create container
       run: docker run -d -p 8983:8983 geoblacklight/solr:8.9-v1.0.0 server/scripts/ci-start.sh

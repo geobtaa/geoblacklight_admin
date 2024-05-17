@@ -41,6 +41,7 @@ else
   gem "geoblacklight", ">= 4.0"
   gem "statesman", ">= 3.4"
 
+  Bundler.ui.warn "[GBL‡ADMIN] Adding geoblacklight_admin dependencies"
   # GBL‡ADMIN
   gem "active_storage_validations"
   gem "awesome_print"
@@ -53,6 +54,7 @@ else
   gem "kithe", "~> 2.0"
   gem "noticed"
   gem "paper_trail"
+  gem "simple_form", "~> 5.0"
 
   if ENV["RAILS_VERSION"]
     if ENV["RAILS_VERSION"] == "edge"
