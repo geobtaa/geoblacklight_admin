@@ -367,7 +367,7 @@ module GeoblacklightAdmin
         "
 // @TODO: Why is this necessary?
 // Addresses: https://github.com/geobtaa/geoblacklight_admin/issues/42
-# GBL‡ADMIN 
+# GBL‡ADMIN
 gem 'cocoon', '~> 1.2'
 gem 'kithe', '~> 2.0'
 gem 'pagy'
