@@ -361,8 +361,7 @@ module GeoblacklightAdmin
     def set_gems
       append_to_file "Gemfile" do
         "
-// @TODO: Why is this necessary?
-// Addresses: https://github.com/geobtaa/geoblacklight_admin/issues/42
+# Addresses: https://github.com/geobtaa/geoblacklight_admin/issues/42
 # GBL‡ADMIN
 gem 'cocoon', '~> 1.2'
 gem 'kithe', '~> 2.0'
