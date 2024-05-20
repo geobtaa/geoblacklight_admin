@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "simple_form"
 require "kithe"
 
 traject_logger = ActiveSupport::Logger.new("#{Rails.root}/log/traject.log")

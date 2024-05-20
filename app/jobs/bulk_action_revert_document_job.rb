@@ -22,9 +22,9 @@ class BulkActionRevertDocumentJob < ApplicationJob
 
     versions = document.versions
     document = versions[doc.version].reify
-    document.skip_callbacks = true
+    document&.skip_callbacks = true
 
-    if document.save
+    if document&.save
       doc.state_machine.transition_to!(:success)
     else
       doc.state_machine.transition_to!(:failed)

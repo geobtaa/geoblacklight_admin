@@ -308,6 +308,10 @@ module GeoblacklightAdmin
       copy_file "package.json", "package.json", force: true
     end
 
+    def copy_rake_tasks
+      append_to_file "Rakefile", "require \"geoblacklight_admin/rake_task\"\n"
+    end
+
     def add_assets_initialier
       append_to_file "config/initializers/assets.rb" do
         "
@@ -354,7 +358,21 @@ module GeoblacklightAdmin
       copy_file "frontend/entrypoints/application.js", "app/javascript/entrypoints/application.js", force: true
 
       append_to_file "Gemfile" do
-        "gem \"vite_rails\", \"~> 3.0\""
+        "gem \"simple_form\", \"~> 5.0\""
+      end
+    end
+
+    def set_gems
+      append_to_file "Gemfile" do
+        "
+// @TODO: Why is this necessary?
+// Addresses: https://github.com/geobtaa/geoblacklight_admin/issues/42
+# GBL‡ADMIN
+gem 'cocoon', '~> 1.2'
+gem 'kithe', '~> 2.0'
+gem 'pagy'
+gem 'simple_form', '~> 5.0'
+        "
       end
     end
 

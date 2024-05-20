@@ -22,7 +22,7 @@ bin/rails geoblacklight:solr
 ### Run App
 ```bash
 cd .internal_test_app
-bundle exec rails server
+bin/rails server
 ```
 
 ### Lint App

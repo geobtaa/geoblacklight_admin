@@ -24,7 +24,16 @@
           <% if doc.present? %>
             <%= render "document", document: doc, index: index %>
           <% else %>
-            <p><%= "#{index + 1}." %> Database is missing document <%= document['id'] %></p>
+            <li>
+              <div class="row">
+                <div class="thumbnail col-1">
+                  &nbsp;
+                </div>
+                <div class="result col">
+                  <p><%= "#{index + 1}." %> Database is missing document <%= document['id'] %></p>
+                </div>
+              </div>
+            </li>
           <% end %>
         <% end %>
       </ol>

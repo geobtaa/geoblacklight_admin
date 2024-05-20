@@ -21,8 +21,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby_version: ['3.2', '3.3']
-        rails_version: [7.0.8.1, 7.1.3.2]
+        ruby_version: ['3.3']
+        rails_version: [7.1.3.2]
 
     services:
       postgres:
@@ -41,6 +41,8 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+    
+    name: Test ${{ matrix.rails_version }}, ruby ${{ matrix.ruby_version }}
     steps:
     - uses: actions/checkout@v3
 
@@ -48,15 +50,11 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby_version }}
-        bundler-cache: false
+        bundler-cache: true
+        cache-version: 2
 
     - name: Solr - Create container
       run: docker run -d -p 8983:8983 geoblacklight/solr:8.9-v1.0.0 server/scripts/ci-start.sh
-
-    - name: Bundler - Install
-      env:
-        RAILS_VERSION: ${{ matrix.rails_version }}
-      run: bundle install
 
     - name: Node - v20
       uses: actions/setup-node@v2
@@ -73,7 +71,7 @@ jobs:
           curl -H "Content-type:application/octet-stream" --data-binary @solr_config.zip "http://solr:SolrRocks@127.0.0.1:8983/solr/admin/configs?action=UPLOAD&name=blacklight"
           curl -H 'Content-type: application/json' http://solr:SolrRocks@127.0.0.1:8983/api/collections/  -d '{create: {name: blacklight-core, config: blacklight, numShards: 1}}'
 
-    - name: Test ${{ matrix.rails_version }}, ruby ${{ matrix.ruby_version }}
+    - name: Run Tests
       run: bundle exec rake ci
       env:
         RAILS_ENV: test

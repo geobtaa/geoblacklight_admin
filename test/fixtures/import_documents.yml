@@ -12,4 +12,4 @@ ag:
     utc: &3 2020-08-03 19:25:53.006901000 Z
     zone: *2
     time: *3
-  import_id: 1
+  import_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
