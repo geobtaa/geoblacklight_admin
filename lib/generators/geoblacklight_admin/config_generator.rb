@@ -356,10 +356,6 @@ module GeoblacklightAdmin
       copy_file "vite.config.ts", "vite.config.ts", force: true
       copy_file "config/vite.json", "config/vite.json", force: true
       copy_file "frontend/entrypoints/application.js", "app/javascript/entrypoints/application.js", force: true
-
-      append_to_file "Gemfile" do
-        "gem \"simple_form\", \"~> 5.0\""
-      end
     end
 
     def set_gems
