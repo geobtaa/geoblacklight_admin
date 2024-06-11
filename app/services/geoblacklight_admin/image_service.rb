@@ -66,7 +66,7 @@ module GeoblacklightAdmin
       @metadata["content_type"] = content_type.inspect
 
       if content_type.start_with?("image")
-        @metadata["storing_image"] = temp_file.inspect
+        @metadata["storing_image"] = io.inspect
 
         asset = Asset.new
         asset.parent_id = @document.id
