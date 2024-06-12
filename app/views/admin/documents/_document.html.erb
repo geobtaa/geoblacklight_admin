@@ -8,7 +8,9 @@
         <% @document = Document.find_by(friendlier_id: document.friendlier_id) %>
         <% if @document&.thumbnail&.present? && @document&.thumbnail&.file_url %>
           <%= link_to edit_admin_document_path(document.friendlier_id) do %>
-            <%= image_tag(@document&.thumbnail&.file_url(:thumb_mini_2X), class: "thumbnail") %>
+            <% unless @document&.thumbnail&.file_url(:thumb_mini_2X).nil? %>
+              <%= image_tag(@document&.thumbnail&.file_url(:thumb_mini_2X), class: "thumbnail") %>
+            <% end %>
           <% end %>
         <% end %>
       </div>
