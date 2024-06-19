@@ -23,7 +23,7 @@ class Document < Kithe::Work
     inverse_of: :document
   # - Thumbnail State
   has_many :document_thumbnail_transitions, foreign_key: "kithe_model_id", autosave: false, dependent: :destroy,
-  inverse_of: :document
+    inverse_of: :document
 
   # Document Collections
   # - DocumentAccesses
@@ -63,7 +63,7 @@ class Document < Kithe::Work
   end
 
   def raw_solr_document
-    Blacklight.default_index.connection.get("select", { params: { q: "id:\"#{self.geomg_id_s}\"" }} )["response"]["docs"][0]
+    Blacklight.default_index.connection.get("select", {params: {q: "id:\"#{geomg_id_s}\""}})["response"]["docs"][0]
   end
 
   delegate :current_state, to: :state_machine
