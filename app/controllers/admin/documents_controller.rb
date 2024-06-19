@@ -5,7 +5,7 @@ module Admin
   class DocumentsController < Admin::AdminController
     ActionController::Parameters.permit_all_parameters = true
     before_action :set_document,
-      only: %i[show edit update destroy versions]
+      only: %i[show edit update destroy admin versions]
 
     # GET /documents
     # GET /documents.json
@@ -132,6 +132,10 @@ module Admin
 
     # GET /documents/1/edit
     def edit
+    end
+
+    # GET /documents/1/admin
+    def admin
     end
 
     # GET /documents/1/versions

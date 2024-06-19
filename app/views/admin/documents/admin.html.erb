@@ -1,0 +1,107 @@
+<div class="row flex-xl-nowrap">
+  <main class="col-md-12">
+    <h1 style="width:100%;">
+      Document &middot; Admin View
+    </h1>
+
+    <h3>
+      <%= link_to(@document.title, admin_document_path(@document)) %>
+    </h3>
+
+    <table class="table table-borderless table-sm">
+      <thead>
+        <tr>
+          <th>Provenance</th>
+          <th>Updated At</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><%= @document.schema_provider_s %></td>
+          <td>
+            <table>
+              <tr>
+                <th>Solr</th>
+                <td><%= DateTime.parse(@document.raw_solr_document["timestamp"]).strftime('%D %r') %></td>
+              </tr>
+              <tr>
+                <th>Database</th>
+                <td><%= @document.updated_at.strftime('%D %r') %></td>  
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <hr/>
+
+    <h3>Raw Solr Document</h3>
+    <div class="solr-document">
+      <%= ap(JSON.parse(@document.raw_solr_document.to_json)).html_safe %>
+    </div>
+
+    <br/>
+    <h3>Item Viewer</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Protocol</th>
+          <th>Endpoint</th>
+        </tr>
+      <tbody>
+        <tr>
+          <td><%= @document.viewer_protocol %></td>
+          <td><%= link_to(@document.viewer_endpoint, @document.viewer_endpoint) %></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Thumbnail</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Display</th>
+          <th>Attached</th>
+          <th>State</th>
+          <th>Last Transition</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <% if @document&.thumbnail&.present? %>
+            <td>
+              <span>AWS S3</span>
+              <div class="media">
+                <span class="mr-3"><%= image_tag @document&.thumbnail&.file_url(:thumb_mini) %></span>
+              </div>
+            </td>
+          <% else %>
+            <td><span>None</span></td>
+          <% end %>
+          <td><%= @document&.thumbnail&.present? %></td>
+          <td><%= @document&.thumbnail_state_machine&.current_state %></td>
+          <td><%= @document&.thumbnail_state_machine&.last_transition&.inspect %></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Access Links</h3>
+    <table class="table responsive">
+      <thead>
+        <tr>
+          <th>University</th>
+          <th>Access Link</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @document.document_accesses.each do |da| %>
+          <tr>
+            <td><%= da.institution_code %></td>
+            <td><a href="<%= da.access_url %>"><%= da.access_url %></a></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </main>
+</div>

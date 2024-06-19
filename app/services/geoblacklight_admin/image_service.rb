@@ -10,10 +10,13 @@ module GeoblacklightAdmin
     def initialize(document)
       @document = document
 
+      # State Machine
       @metadata = {}
       @metadata["solr_doc_id"] = document.id
       @metadata["placeheld"] = false
+      @document.thumbnail_state_machine.transition_to!(:processing, @metadata)
 
+      # Logger
       @logger ||= ActiveSupport::TaggedLogging.new(
         Logger.new(
           Rails.root.join("log", "image_service_#{Rails.env}.log")
@@ -30,8 +33,9 @@ module GeoblacklightAdmin
 
       io_file = image_tempfile(@document.id)
 
-      if io_file.nil?
+      if io_file.nil? || @metadata["placeheld"] == true
         @metadata["IO"] = "NIL"
+        @document.thumbnail_state_machine.transition_to!(:placeheld, @metadata)
       else
         attach_io(io_file)
       end
@@ -39,6 +43,7 @@ module GeoblacklightAdmin
       log_output
     rescue => e
       @metadata["exception"] = e.inspect
+      @document.thumbnail_state_machine.transition_to!(:failed, @metadata)
       log_output
     end
 
@@ -74,8 +79,10 @@ module GeoblacklightAdmin
         asset.title = (asset.file&.original_filename || "Untitled")
         asset.thumbnail = true
         asset.save
+
+        @document.thumbnail_state_machine.transition_to!(:succeeded, @metadata)
       else
-        # @TODO: If no thumb, what to do?
+        @document.thumbnail_state_machine.transition_to!(:placeheld, @metadata)
       end
     end
 

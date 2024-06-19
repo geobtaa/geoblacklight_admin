@@ -18,18 +18,23 @@ class Document < Kithe::Work
   belongs_to :import, optional: true
 
   # Statesman
+  # - Publication State
   has_many :document_transitions, foreign_key: "kithe_model_id", autosave: false, dependent: :destroy,
     inverse_of: :document
+  # - Thumbnail State
+  has_many :document_thumbnail_transitions, foreign_key: "kithe_model_id", autosave: false, dependent: :destroy,
+  inverse_of: :document
 
-  # DocumentAccesses
+  # Document Collections
+  # - DocumentAccesses
   has_many :document_accesses, primary_key: "friendlier_id", foreign_key: "friendlier_id", autosave: false, dependent: :destroy,
     inverse_of: :document
 
-  # DocumentDownloads
+  # - DocumentDownloads
   has_many :document_downloads, primary_key: "friendlier_id", foreign_key: "friendlier_id", autosave: false, dependent: :destroy,
     inverse_of: :document
 
-  # DocumentAssets
+  # DocumentAssets - Thumbnails, Attachments, etc
   def document_assets
     scope = Kithe::Asset
     scope = scope.where(parent_id: id)
@@ -43,8 +48,22 @@ class Document < Kithe::Work
     initial_state: :draft
   ]
 
+  # @TODO: Rename this to publication_state_machine
   def state_machine
     @state_machine ||= DocumentStateMachine.new(self, transition_class: DocumentTransition)
+  end
+
+  include Statesman::Adapters::ActiveRecordQueries[
+    transition_class: DocumentThumbnailTransition,
+    initial_state: :initialized
+  ]
+
+  def thumbnail_state_machine
+    @thumbnail_state_machine ||= DocumentThumbnailStateMachine.new(self, transition_class: DocumentThumbnailTransition)
+  end
+
+  def raw_solr_document
+    Blacklight.default_index.connection.get("select", { params: { q: "id:\"#{self.geomg_id_s}\"" }} )["response"]["docs"][0]
   end
 
   delegate :current_state, to: :state_machine

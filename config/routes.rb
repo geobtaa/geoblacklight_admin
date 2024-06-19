@@ -74,6 +74,7 @@ GeoblacklightAdmin::Engine.routes.draw do
 
     resources :documents do
       get "versions"
+      get "admin"
 
       resources :document_accesses, path: "access" do
         collection do
