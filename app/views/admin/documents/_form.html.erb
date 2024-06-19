@@ -10,7 +10,9 @@
               <div class="row">
                 <% if @document.thumbnail.present? %>
                   <div class="thumbnail col-2">
-                    <%= image_tag @document&.thumbnail&.file_url(:thumb_mini) %>
+                    <% unless @document&.thumbnail&.file_url(:thumb_mini).nil? %>
+                      <%= image_tag @document&.thumbnail&.file_url(:thumb_mini) %>
+                    <% end %>
                   </div>
                 <% end %>
                 <div class="col">
