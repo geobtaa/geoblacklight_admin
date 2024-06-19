@@ -73,7 +73,11 @@
             <td>
               <span>AWS S3</span>
               <div class="media">
-                <span class="mr-3"><%= image_tag @document&.thumbnail&.file_url(:thumb_mini) %></span>
+                <span class="mr-3">
+                  <% unless @document&.thumbnail&.file_url(:thumb_mini).nil? %>
+                    <%= image_tag @document&.thumbnail&.file_url(:thumb_mini) %>
+                  <% end %>
+                </span>
               </div>
             </td>
           <% else %>
