@@ -79,7 +79,7 @@
           <% else %>
             <td><span>None</span></td>
           <% end %>
-          <td><%= @document&.thumbnail&.present? %></td>
+          <td><%= @document.thumbnail.present? %></td>
           <td><%= @document&.thumbnail_state_machine&.current_state %></td>
           <td><%= @document&.thumbnail_state_machine&.last_transition&.inspect %></td>
         </tr>
