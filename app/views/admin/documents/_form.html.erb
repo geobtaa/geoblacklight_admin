@@ -10,7 +10,9 @@
               <div class="row">
                 <% if @document.thumbnail.present? %>
                   <div class="thumbnail col-2">
-                    <%= image_tag @document.thumbnail.file_url(:thumb_mini) %>
+                    <% unless @document&.thumbnail&.file_url(:thumb_mini).nil? %>
+                      <%= image_tag @document&.thumbnail&.file_url(:thumb_mini) %>
+                    <% end %>
                   </div>
                 <% end %>
                 <div class="col">
@@ -19,7 +21,11 @@
                   <%= truncate(@document.title, length: 80) %>
                   <%= publication_state_badge(@document) %>
                   <p class='mb-0'>
-                    <small>Last updated <%= time_ago_in_words(@document.updated_at) %> ago. <%= link_to 'Versions', admin_document_versions_path(@document) %></small></p>
+                    <small>Last updated <%= time_ago_in_words(@document.updated_at) %> ago. 
+                    <%= link_to 'Versions', admin_document_versions_path(@document) %> | 
+                    <%= link_to 'Admin View', admin_document_admin_path(@document) %>
+                    </small>
+                  </p>
                 </div>
               </div>
             <% else %>

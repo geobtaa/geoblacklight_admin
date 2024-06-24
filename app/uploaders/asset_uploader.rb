@@ -1,11 +1,7 @@
 class AssetUploader < Kithe::AssetUploader
   plugin :kithe_checksum_signatures
 
-  THUMB_WIDTHS = {
-    mini: 54,
-    large: 525,
-    standard: 208
-  }
+  THUMB_WIDTHS = Settings.GBL_ADMIN_THUMBNAIL_WIDTHS
 
   # Define thumb derivatives for image input: :thumb_mini, :thumb_mini_2X, etc.
   THUMB_WIDTHS.each_pair do |key, width|
