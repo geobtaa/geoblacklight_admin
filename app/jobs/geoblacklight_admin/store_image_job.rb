@@ -8,8 +8,10 @@ module GeoblacklightAdmin
       # Find the document
       document = Document.find_by_friendlier_id(solr_document_id)
 
-      # Skip if thumbnail is already stored
-      return if document&.thumbnail&.present?
+      # Delete thumbnail if already present
+      if document&.thumbnail&.present?
+        document.thumbnail.destroy!
+      end
 
       # Statesman
       metadata = {}
