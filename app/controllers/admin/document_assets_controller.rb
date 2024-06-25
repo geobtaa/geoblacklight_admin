@@ -6,7 +6,7 @@ module Admin
     before_action :set_document
 
     def index
-      scope = Kithe::Asset
+      scope = Asset
 
       # simple simple search on a few simple attributes with OR combo.
       if params[:document_id].present?
@@ -21,7 +21,7 @@ module Admin
     end
 
     def show
-      @asset = Kithe::Asset.find_by_friendlier_id!(params[:id])
+      @asset = Asset.find_by_friendlier_id!(params[:id])
       authorize! :read, @asset
 
       return unless @asset.stored?
@@ -32,14 +32,14 @@ module Admin
     end
 
     def edit
-      @asset = Kithe::Asset.find_by_friendlier_id!(params[:id])
+      @asset = Asset.find_by_friendlier_id!(params[:id])
       authorize! :update, @asset
     end
 
     # PATCH/PUT /works/1
     # PATCH/PUT /works/1.json
     def update
-      @asset = Kithe::Asset.find_by_friendlier_id!(params[:id])
+      @asset = Asset.find_by_friendlier_id!(params[:id])
       authorize! :update, @asset
 
       respond_to do |format|
@@ -54,7 +54,7 @@ module Admin
     end
 
     def destroy
-      @asset = Kithe::Asset.find_by_friendlier_id!(params[:id])
+      @asset = Asset.find_by_friendlier_id!(params[:id])
       @asset.destroy
 
       respond_to do |format|
@@ -67,7 +67,7 @@ module Admin
     end
 
     def check_fixity
-      @asset = Kithe::Asset.find_by_friendlier_id!(params[:asset_id])
+      @asset = Asset.find_by_friendlier_id!(params[:asset_id])
       SingleAssetCheckerJob.perform_later(@asset)
       redirect_to admin_asset_url(@asset), notice: "This file will be checked shortly."
     end
@@ -95,11 +95,15 @@ module Admin
         .sort_by { |h| h&.dig("metadata", "filename") }
 
       files_params.each do |file_data|
-        asset = Kithe::Asset.new
+        asset = Asset.new
 
         # if derivative_storage_type = params.dig(:storage_type_for, file_data["id"])
         #  asset.derivative_storage_type = derivative_storage_type
         # end
+
+        # References
+        references = params.dig(:dct_references_for, file_data["id"])
+        asset.dct_references_uri_key = references if references
 
         asset.position = (current_position += 1)
         asset.parent_id = @parent.id
@@ -110,11 +114,11 @@ module Admin
 
       @parent.update(representative: @parent.members.order(:position).first) if @parent.representative_id.nil?
 
-      redirect_to admin_document_path(@parent.friendlier_id, anchor: "nav-members")
+      redirect_to admin_document_document_assets_path(@parent.friendlier_id, anchor: "nav-members")
     end
 
     def convert_to_child_work
-      @asset = Kithe::Asset.find_by_friendlier_id!(params[:id])
+      @asset = Asset.find_by_friendlier_id!(params[:id])
 
       parent = @asset.parent
 
@@ -193,7 +197,7 @@ module Admin
     def asset_params
       allowed_params = [:title, :derivative_storage_type, :alt_text, :caption,
         :transcription, :english_translation,
-        :role, {admin_note_attributes: []}]
+        :role, {admin_note_attributes: []}, :dct_references_for]
       allowed_params << :published if can?(:publish, @asset)
       params.require(:asset).permit(*allowed_params)
     end

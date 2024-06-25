@@ -146,4 +146,8 @@ module GeoblacklightAdminHelper
 
     link_to(label, path)
   end
+
+  def assets_dct_references_options
+    escape_javascript(options_for_select(I18n.t("activemodel.enum_values.document/reference.category").invert.sort.insert(0, ["Choose Reference Type", nil]))).to_s
+  end
 end

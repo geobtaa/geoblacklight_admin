@@ -38,6 +38,7 @@
             <th>Preview</th>
             <th>Title</th>
             <th>MimeType</th>
+            <th>Reference URI Type</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -46,21 +47,23 @@
             <tr>
               <td>
                 <% if document_asset.respond_to?(:thumbnail) %>
-                  <%= document_asset.respond_to?(:thumbnail) %> 
+                  <%= document_asset.thumbnail %> 
                 <% end %>
               </td>
               <td>
                 <% if document_asset.respond_to?(:thumbnail) %>
-                  <% unless document_asset.file_url(:thumb_large).nil? %>
-                    <%= image_tag(document_asset.file_url(:thumb_large), { height: 100 }) %>
+                  <% unless document_asset.file_url(:thumb_standard).nil? %>
+                    <%= image_tag(document_asset.file_url(:thumb_standard), { height: 100 }) %>
                   <% end %>
                 <% end %>
               </td>
               <td><%= link_to(document_asset.title, document_asset.file.url) %></td>
-
               <td>
                 <%= document_asset.file_data["metadata"]["mime_type"] %>
                 <span class="sr-only"><%= document_asset.inspect %></span>
+              </td>
+              <td>
+                <%= document_asset.dct_references_uri_key %>
               </td>
               <td><%= link_to 'Destroy', admin_document_document_asset_path(document_asset.parent, document_asset), method: :delete, data: { confirm: 'Are you sure?' } %></td>
             </tr>
