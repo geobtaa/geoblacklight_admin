@@ -76,7 +76,6 @@ jobs:
 
     - name: Run Tests
       run: |
-        bundle config path ./vendor/bundle
         bundle exec rake ci
       env:
         RAILS_ENV: test
