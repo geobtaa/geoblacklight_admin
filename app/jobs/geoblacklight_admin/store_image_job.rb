@@ -2,7 +2,9 @@
 
 module GeoblacklightAdmin
   class StoreImageJob < ApplicationJob
-    queue_as queue
+    queue_as do 
+      queue = self.arguments.last
+    end
 
     def perform(solr_document_id, bad_id = nil, queue = :default)
       # Find the document
