@@ -359,19 +359,6 @@ module GeoblacklightAdmin
       copy_file "frontend/entrypoints/application.js", "app/javascript/entrypoints/application.js", force: true
     end
 
-    def set_gems
-      append_to_file "Gemfile" do
-        "
-# Addresses: https://github.com/geobtaa/geoblacklight_admin/issues/42
-# GBL‡ADMIN
-gem 'cocoon', '~> 1.2'
-gem 'kithe', '~> 2.0'
-gem 'pagy'
-gem 'simple_form', '~> 5.0'
-        "
-      end
-    end
-
     # Run bundle with vite install
     def bundle_install
       Bundler.with_clean_env do
