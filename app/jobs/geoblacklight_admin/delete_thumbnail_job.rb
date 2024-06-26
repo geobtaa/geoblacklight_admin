@@ -2,9 +2,9 @@
 
 module GeoblacklightAdmin
   class DeleteThumbnailJob < ApplicationJob
-    queue_as :default
+    queue_as queue
 
-    def perform(solr_document_id, bad_id = nil)
+    def perform(solr_document_id, bad_id = nil, queue = :priority)
       document = Document.find_by_friendlier_id(solr_document_id)
       if document.thumbnail.present?
         document.thumbnail.destroy!

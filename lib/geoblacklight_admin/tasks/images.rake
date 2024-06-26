@@ -22,7 +22,7 @@ namespace :geoblacklight_admin do
         )
 
         response["response"]["docs"].each do |doc|
-          GeoblacklightAdmin::StoreImageJob.perform_later(doc["id"])
+          GeoblacklightAdmin::StoreImageJob.perform_later(doc["id"], nil, :low_priority)
         end
 
         break if response["nextCursorMark"] == cursor_mark # this means the result set is finished
