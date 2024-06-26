@@ -84,12 +84,12 @@ module Admin
 
       respond_to do |format|
         if DocumentAccess.destroy_all(params.dig(:document_access, :assets, :file))
-          format.html { redirect_to document_accesses_path, notice: "Document Access Links were created destroyed." }
+          format.html { redirect_to admin_document_accesses_path, notice: "Document Access Links were created destroyed." }
         else
-          format.html { redirect_to document_accesses_path, notice: "Document Access Links could not be destroyed." }
+          format.html { redirect_to admin_document_accesses_path, notice: "Document Access Links could not be destroyed." }
         end
       rescue => e
-        format.html { redirect_to document_accesses_path, notice: "Document Access Links could not be destroyed. #{e}" }
+        format.html { redirect_to admin_document_accesses_path, notice: "Document Access Links could not be destroyed. #{e}" }
       end
     end
 

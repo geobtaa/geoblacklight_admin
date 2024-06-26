@@ -2,12 +2,12 @@ require "csv"
 
 namespace :geoblacklight_admin do
   namespace :images do
-    desc "Harvest image for specific document"
+    desc "Harvest image for specific document - priority queue"
     task harvest_doc_id: :environment do
-      GeoblacklightAdmin::StoreImageJob.perform_later(ENV["DOC_ID"])
+      GeoblacklightAdmin::StoreImageJob.perform_later(ENV["DOC_ID"], nil, :priority)
     end
 
-    desc "Harvest all images"
+    desc "Harvest all images - uses low priority queue"
     task harvest_all: [:environment] do
       cursor_mark = "*"
       loop do
@@ -22,7 +22,7 @@ namespace :geoblacklight_admin do
         )
 
         response["response"]["docs"].each do |doc|
-          GeoblacklightAdmin::StoreImageJob.perform_later(doc["id"])
+          GeoblacklightAdmin::StoreImageJob.perform_later(doc["id"], nil, :low_priority)
         end
 
         break if response["nextCursorMark"] == cursor_mark # this means the result set is finished
