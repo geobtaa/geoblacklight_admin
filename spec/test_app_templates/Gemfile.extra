@@ -1,4 +1,4 @@
-# GBL‡ADMIN
+# GBL‡ADMIN - For GH Actions CI
 gem 'active_storage_validations'
 gem 'awesome_print'
 gem 'blacklight_advanced_search'
