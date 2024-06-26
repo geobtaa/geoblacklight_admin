@@ -75,7 +75,9 @@ jobs:
       run: bundle install
 
     - name: Run Tests
-      run: bundle exec rake ci
+      run: |
+        bundle config path ./vendor/bundle
+        bundle exec rake ci
       env:
         RAILS_ENV: test
         ENGINE_CART_RAILS_OPTIONS: '--skip-git --skip-listen --skip-spring --skip-keeps --skip-coffee'
