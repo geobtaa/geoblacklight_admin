@@ -40,10 +40,11 @@
       <thead class="thead-dark">
         <tr>
           <th class="header" colspan="2">Actions</th>
-          <th class="header">Layer Slug</th>
-          <th class="header">Institution Code</th>
-          <th class="header">Institution Name</th>
-          <th class="header" style="max-width:200px;">Access URL</th>
+          <th class="header">id</th>
+          <th class="header">friendlier_id</th>
+          <th class="header">institution_code</th>
+          <th class="header">institution_name</th>
+          <th class="header" style="max-width:200px;">access_url</th>
         </tr>
       </thead>
 
@@ -52,6 +53,7 @@
           <tr>
             <td><%= link_to 'Edit', edit_admin_document_document_access_path(document_access.document, document_access) %></td>
             <td><%= link_to 'Destroy', admin_document_document_access_path(document_access.document, document_access), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <td><%= document_access.id %></td>
             <td><%= link_to document_access.friendlier_id, admin_document_path(document_access.document) %></td>
             <td><%= document_access.institution_code %></td>
             <td><%= b1g_institution_codes[document_access.institution_code] %></td>
