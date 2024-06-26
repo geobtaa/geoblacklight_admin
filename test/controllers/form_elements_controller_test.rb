@@ -2,7 +2,7 @@ require "test_helper"
 
 class FormElementsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
-  
+
   setup do
     @form_element = FormElement.first
 

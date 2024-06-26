@@ -2,7 +2,7 @@ require "test_helper"
 
 class DocumentAccessesControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
-  
+
   setup do
     @document = documents(:ag)
     @document_access = document_accesses(:one)

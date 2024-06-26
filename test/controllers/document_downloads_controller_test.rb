@@ -2,7 +2,7 @@ require "test_helper"
 
 class DocumentDownloadsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
-  
+
   setup do
     @document = documents(:ag)
     @document_download = document_downloads(:one)
