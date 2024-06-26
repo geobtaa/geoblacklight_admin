@@ -10,6 +10,7 @@ class TestAppGenerator < Rails::Generators::Base
   # after setting up the application
 
   def add_gems
+    gem "simple_form", "~> 5.0"
     gem "blacklight", "~> 7.0"
     gem "geoblacklight", ">= 4.0"
 
