@@ -2,7 +2,7 @@
 
 module GeoblacklightAdmin
   class DeleteThumbnailJob < ApplicationJob
-    queue_as :default
+    queue_as :priority
 
     def perform(solr_document_id, bad_id = nil)
       document = Document.find_by_friendlier_id(solr_document_id)
