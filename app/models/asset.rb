@@ -25,13 +25,13 @@ class Asset < Kithe::Asset
   after_promotion :set_parent_dct_references_uri
 
   def set_parent_dct_references_uri
-    GeoblacklightAdmin::SetParentDctReferencesUriJob.perform_later(self)
+    GeoblacklightAdmin::SetParentDctReferencesUriJob.perform_later(self) if self.parent_id.present?
   end
 
   # Before Destroy Callbacks
   before_destroy :remove_parent_dct_references_uri
 
   def remove_parent_dct_references_uri
-    GeoblacklightAdmin::RemoveParentDctReferencesUriJob.perform_later(self)
+    GeoblacklightAdmin::RemoveParentDctReferencesUriJob.perform_later(self) if self.parent_id.present?
   end
 end
