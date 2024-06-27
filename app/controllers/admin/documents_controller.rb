@@ -149,7 +149,7 @@ module Admin
       @document.friendlier_id = @document.send(GeoblacklightAdmin::Schema.instance.solr_fields[:id])
       respond_to do |format|
         if @document.save
-          format.html { redirect_to admin_documents_path, notice: "Document was successfully created." }
+          format.html { redirect_to edit_admin_document_path(@document), notice: "Document was successfully created." }
           format.json { render :show, status: :created, location: @document }
         else
           format.html { render :edit }
