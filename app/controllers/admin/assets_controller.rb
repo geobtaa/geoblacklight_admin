@@ -19,7 +19,7 @@ module Admin
           Asset.where(parent_id: params[:q])
         )
       end
-      
+
       @pagy, @assets = pagy(scope, items: 20)
     end
 

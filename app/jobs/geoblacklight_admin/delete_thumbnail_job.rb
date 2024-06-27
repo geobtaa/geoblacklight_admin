@@ -3,7 +3,7 @@
 module GeoblacklightAdmin
   class DeleteThumbnailJob < ApplicationJob
     queue_as do
-      queue = self.arguments.last
+      arguments.last
     end
 
     def perform(solr_document_id, bad_id = nil, queue = :priority)
