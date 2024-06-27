@@ -7,7 +7,20 @@ module Admin
 
     # GET /assets or /assets.json
     def index
-      @pagy, @assets = pagy(Asset.all.order(position: :asc), items: 50)
+      scope = Asset
+
+      # Basic search functionality
+      if params[:q].present?
+        scope = scope.where(id: params[:q]).or(
+          Asset.where(friendlier_id: params[:q])
+        ).or(
+          Asset.where("title like ?", "%" + Asset.sanitize_sql_like(params[:q]) + "%")
+        ).or(
+          Asset.where(parent_id: params[:q])
+        )
+      end
+      
+      @pagy, @assets = pagy(scope, items: 20)
     end
 
     # GET /assets/1 or /assets/1.json

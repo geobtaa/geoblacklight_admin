@@ -19,10 +19,21 @@
     <table class="table table-striped table-bordered sortable">
       <thead class="thead-dark">
         <tr>
-          <th class="header">Title</th>
+          <th colspan="9">
+            <span class="sr-only">Search Assets</span>
+            <%= form_tag admin_assets_path, method: :get, class: "form-inline float-right" do %>
+              <%= text_field_tag :q, params[:q], class: "form-control mr-2", placeholder: "Search*" %>
+              <%= submit_tag "Search", class: "btn btn-primary" %>
+            <% end %>
+          </th>
+        </tr>
+        <tr>
+          <th class="header">ID*</th>
+          <th class="header">Title*</th>
           <th class="header">MimeType</th>
           <th class="header">Thumbnail</th>
-          <th class="header">Parent</th>  
+          <th class="header">Parent ID*</th>
+          <th class="header">Parent Title</th>
           <th class="header" colspan="3">Actions</th>
         </tr>
       </thead>
@@ -30,6 +41,7 @@
       <tbody>
         <% @assets.each do |asset| %>
           <tr data-id="<%= asset.id %>">
+            <td><%= asset.id %></td>
             <td><%= link_to asset.title, asset.file.url %></td>
             <td><%= asset.file_data["metadata"]["mime_type"] %></td>
             <td>
@@ -39,10 +51,11 @@
                 <% end %>
               <% end %>
             </td>
+            <td><%= asset.parent.id if asset.parent.present? %></td>
             <td><%= link_to asset.parent.title, admin_document_path(asset.parent.friendlier_id) if asset.parent.present? %></td>
             <td><%= link_to 'Show', admin_asset_path(asset.id) %></td>
-            <td><%= link_to 'Edit', edit_admin_asset_path(asset) %></td>
-            <td><%= link_to 'Destroy', admin_asset_path(asset), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <td><%= link_to_if false, 'Edit', edit_admin_asset_path(asset) %></td>
+            <td><%= link_to 'Destroy', admin_asset_path(asset.id), method: :delete, data: { confirm: 'Are you sure?' } %></td>
           </tr>
         <% end %>
       </tbody>
