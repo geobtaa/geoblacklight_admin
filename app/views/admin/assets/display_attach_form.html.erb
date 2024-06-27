@@ -1,10 +1,10 @@
 <div class="scihist-attach-files">
 
   <h1>Add Files</h1>
-  <h2>To: <%= @document.title %> (<%= @document.friendlier_id %>)</h2>
+  <h2>To: General Application Asset Pool</h2>
   <p>Once the files have been uploaded and are ready for attachment, you can proceed to Attach.</p>
 
-  <%= form_with(url: admin_asset_ingest_path(@document && @document.friendlier_id), method: :post, local: true) do |form| %>
+  <%= form_with(url: admin_asset_files_ingest_path, method: :post, local: true) do |form| %>
 
     <div class="row">
 
@@ -19,7 +19,7 @@
           <h2>2. Attach Files</h2>
           <div class="d-flex justify-content-between">
             <%= form.submit "Attach", class: "btn btn-primary btn-lg", data: { toggle: "kithe-upload-submit" } %>
-            <%= link_to  "Cancel", admin_document_path(@document),
+            <%= link_to  "Cancel", admin_assets_url,
                   class: "btn btn-outline-secondary btn-lg",
                   data: { confirm: "Cancel attach files?" }
             %>
