@@ -1,6 +1,8 @@
 <%- @page_title = "GBL♦Admin - Asset - #{@asset.title}" %>
 
-<h1>Asset</h1>
+<%= link_to 'Back to Assets', admin_assets_path, {class: "mb-2"} %>
+
+<h1 class="mt-1">Asset</h1>
 
 <div class="row">
   <div class="col-12">
@@ -11,7 +13,8 @@
       <% else %>
         <%= @asset.title %>
       <% end %>
-      <%= link_to '~ Edit Asset', edit_admin_asset_path(@asset.id), { class: 'btn btn-primary float-right' } %>
+      <%= link_to '- Delete Asset', admin_asset_path, { class: 'btn btn-danger float-right ml-2', method: :delete, data: { confirm: 'Are you sure?' } } %>
+      <%= link_to '~ Edit Asset', edit_admin_asset_path(@asset.id), { class: 'btn btn-primary float-right'} %>
     </h2>
 
     <table class="table table-bordered">
@@ -24,6 +27,10 @@
       <tr>
         <th>Title</th>
         <td><%= @asset.title %></td>
+      </tr>
+      <tr>
+        <th>Asset Link</th>
+        <td><%= link_to "Asset Link", @asset.file.url %></td>
       </tr>
       <% if @asset.respond_to?(:thumbnail) && @asset.file_derivatives(:thumb_standard_2X)&.exists? %>
         <tr>
