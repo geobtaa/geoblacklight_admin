@@ -2,7 +2,7 @@
 
   <h1>Add Files</h1>
   <h2>To: General Application Asset Pool</h2>
-  <p>Once the files have been uploaded and are ready for attachment, you can proceed to Attach</p>
+  <p>Once the files have been uploaded and are ready for attachment, you can proceed to Attach.</p>
 
   <%= form_with(url: admin_asset_files_ingest_path, method: :post, local: true) do |form| %>
 
@@ -16,7 +16,7 @@
         </div>
 
         <div class="col-sm-6">
-          <h2>2. Attach files</h2>
+          <h2>2. Attach Files</h2>
           <div class="d-flex justify-content-between">
             <%= form.submit "Attach", class: "btn btn-primary btn-lg", data: { toggle: "kithe-upload-submit" } %>
             <%= link_to  "Cancel", admin_assets_url,
@@ -24,16 +24,11 @@
                   data: { confirm: "Cancel attach files?" }
             %>
           </div>
-          <p class="text-muted small mt-3">
-            <i class="fa fa-info-circle mr-2" aria-hidden="true"></i>
-            Use the <b>restricted</b> storage type for confidential files such as restricted oral histories.
-            Otherwise, normally use <b>public</b> storage type.
-          </p>
           <table class="table table-sm mt-3 attach-files-table" data-toggle="cached-files-table">
             <tr>
               <th class="attach-files-table-filename">Filename</th>
               <th class="attach-files-table-size">Size</th>
-              <th class="attach-files-table-storage-type">Storage Type</th>
+              <th class="attach-files-table-references">References</th>
               <th class="attach-files-table-remove"></th>
             </tr>
           </table>

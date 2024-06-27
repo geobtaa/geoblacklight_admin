@@ -4,7 +4,7 @@
   <div class="col">
     <h1 style="width:100%;">
       Assets
-      <%= link_to '+ New Asset', new_admin_asset_path, { class: 'btn btn-primary float-right' } %>
+      <%= link_to '+ Upload Assets', display_attach_form_admin_assets_url, { class: 'btn btn-primary float-right mr-2' } %>
     </h1>
 
     <h6>
@@ -30,17 +30,17 @@
       <tbody>
         <% @assets.each do |asset| %>
           <tr data-id="<%= asset.id %>">
-            <td><%= link_to asset.title, admin_asset_path(asset.id) %></td>
+            <td><%= link_to asset.title, asset.file.url %></td>
             <td><%= asset.file_data["metadata"]["mime_type"] %></td>
             <td>
               <% if asset.respond_to?(:thumbnail) %>
-                <% unless asset.file_url(:thumb_large).nil? %>
-                  <%= image_tag(asset.file_url(:thumb_large), { height: 100 }) %>
+                <% unless asset.file_url(:thumb_standard_2X).nil? %>
+                  <%= image_tag(asset.file_url(:thumb_standard_2X), { height: 100 }) %>
                 <% end %>
               <% end %>
             </td>
             <td><%= link_to asset.parent.title, admin_document_path(asset.parent.friendlier_id) if asset.parent.present? %></td>
-            <td><%= link_to 'Show', admin_asset_path(asset) %></td>
+            <td><%= link_to 'Show', admin_asset_path(asset.id) %></td>
             <td><%= link_to 'Edit', edit_admin_asset_path(asset) %></td>
             <td><%= link_to 'Destroy', admin_asset_path(asset), method: :delete, data: { confirm: 'Are you sure?' } %></td>
           </tr>
@@ -65,5 +65,3 @@
     "<%= sort_admin_assets_path %>"
   );
 </script>
-
-<%= console %>

@@ -3,4 +3,4 @@
 <h3>File: <%= @asset.file_data["metadata"]["filename"] %></h3>
 <h3>Parent: <%= @asset.parent.title if @asset.parent.present? %></h3>
 <h3>Thumbnail: <%= image_tag(@asset.file_url(:thumb_large), { height: 100 }) if @asset.respond_to?(:thumbnail) %></h3>
-<h3>Actions: <%= link_to 'Edit', edit_admin_asset_path(@asset) %> | <%= link_to 'Destroy', admin_asset_path(@asset), method: :delete, data: { confirm: 'Are you sure?' } %></h3>
+<h3>Actions: <%= link_to 'Edit', edit_admin_asset_path(@asset.id) %> | <%= link_to 'Destroy', admin_asset_path(@asset.id), method: :delete, data: { confirm: 'Are you sure?' } %></h3>

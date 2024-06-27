@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-# Admin::Kithe::AssetsController
+# Admin::AssetsController
 module Admin
   class AssetsController < Admin::AdminController
     before_action :set_asset, only: %i[show edit update destroy]
 
     # GET /assets or /assets.json
     def index
-      @pagy, @assets = pagy(Kithe::Asset.all.order(position: :asc), items: 100)
+      @pagy, @assets = pagy(Asset.all.order(position: :asc), items: 50)
     end
 
     # GET /assets/1 or /assets/1.json
@@ -16,7 +16,7 @@ module Admin
 
     # GET /assets/new
     def new
-      @asset = Kithe::Asset.new
+      @asset = Asset.new
     end
 
     # GET /assets/1/edit
@@ -25,7 +25,7 @@ module Admin
 
     # POST /assets or /assets.json
     def create
-      @asset = Kithe::Asset.new(asset_params)
+      @asset = Asset.new(asset_params)
 
       respond_to do |format|
         if @asset.save
@@ -42,7 +42,7 @@ module Admin
     def update
       respond_to do |format|
         if @asset.update(asset_params)
-          format.html { redirect_to admin_asset_url(@asset), notice: "Kithe::Asset was successfully updated." }
+          format.html { redirect_to admin_asset_url(@asset), notice: "Asset was successfully updated." }
           format.json { render :show, status: :ok, location: @asset }
         else
           format.html { render :edit, status: :unprocessable_entity }
@@ -80,7 +80,7 @@ module Admin
         .sort_by { |h| h&.dig("metadata", "filename") }
 
       files_params.each do |file_data|
-        asset = Kithe::Asset.new
+        asset = Asset.new
 
         # if derivative_storage_type = params.dig(:storage_type_for, file_data["id"])
         #  asset.derivative_storage_type = derivative_storage_type
@@ -99,7 +99,7 @@ module Admin
     end
 
     def sort
-      Kithe::Asset.sort_assets(params[:id_list])
+      Asset.sort_assets(params[:id_list])
       render body: nil
     end
 
@@ -107,7 +107,7 @@ module Admin
 
     # Use callbacks to share common setup or constraints between actions.
     def set_asset
-      @asset = Kithe::Asset.find(params[:id])
+      @asset = Asset.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.

@@ -1,8 +1,8 @@
 <div class="scihist-attach-files">
 
   <h1>Add Files</h1>
-  <p>To: <%= @document.title %> (<%= @document.friendlier_id %>)
-  <p>Once the files have been uploaded and are ready for attachment, you can proceed to Attach</p>
+  <h2>To: <%= @document.title %> (<%= @document.friendlier_id %>)</h2>
+  <p>Once the files have been uploaded and are ready for attachment, you can proceed to Attach.</p>
 
   <%= form_with(url: admin_asset_ingest_path(@document && @document.friendlier_id), method: :post, local: true) do |form| %>
 
@@ -16,7 +16,7 @@
         </div>
 
         <div class="col-sm-6">
-          <h2>2. Attach files</h2>
+          <h2>2. Attach Files</h2>
           <div class="d-flex justify-content-between">
             <%= form.submit "Attach", class: "btn btn-primary btn-lg", data: { toggle: "kithe-upload-submit" } %>
             <%= link_to  "Cancel", admin_document_path(@document),
