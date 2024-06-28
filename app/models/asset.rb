@@ -2,6 +2,9 @@ class Asset < Kithe::Asset
   include AttrJson::Record::QueryScopes
   include Rails.application.routes.url_helpers
 
+  # Default Sort Order
+  default_scope { order(parent_id: :desc, created_at: :asc) }
+
   set_shrine_uploader(AssetUploader)
 
   # AttrJSON

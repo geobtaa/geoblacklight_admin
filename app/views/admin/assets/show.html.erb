@@ -50,14 +50,25 @@
         <th>JSON Attributes</th>
         <td><%= ap(JSON.parse(@asset.json_attributes.to_json)).html_safe %></td>
       </tr>
-      <tr>
-        <th>Parent ID</th>
-        <td><%= @asset.parent_id %></td>
-      </tr>
-      <tr>
-        <th>Parent Link</th>
-        <td><%= link_to(@asset.parent.friendlier_id, admin_document_path(@asset.parent)) %></td>
-      </tr>
+      <% if @asset.parent.present? %>
+        <tr>
+          <th>Parent Title</th>
+          <td><%= @asset.parent.title %></td>
+        </tr>
+        <tr>
+          <th>Parent ID</th>
+          <td><%= @asset.parent_id %></td>
+        </tr>
+        <tr>
+          <th>Parent Link</th>
+          <td><%= link_to(@asset.parent.friendlier_id, admin_document_path(@asset.parent)) %></td>
+        </tr>
+      <% else %>
+        <tr>
+          <th>Parent ID</th>
+          <td>FALSE</td>
+        </tr>
+      <% end %>
       <tr>
         <th>Friendlier ID</th>
         <td><%= @asset.friendlier_id %></td>

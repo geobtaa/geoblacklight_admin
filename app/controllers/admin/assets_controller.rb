@@ -17,6 +17,8 @@ module Admin
           Asset.where("title like ?", "%" + Asset.sanitize_sql_like(params[:q]) + "%")
         ).or(
           Asset.where(parent_id: params[:q])
+        ).or(
+          Asset.where("created_at BETWEEN ? AND ?", params[:q].to_date.beginning_of_day, params[:q].to_date.end_of_day) 
         )
       end
 
@@ -55,7 +57,7 @@ module Admin
     def update
       respond_to do |format|
         if @asset.update(asset_params)
-          format.html { redirect_to admin_asset_url(@asset), notice: "Asset was successfully updated." }
+          format.html { redirect_to admin_asset_url(@asset.id), notice: "Asset was successfully updated." }
           format.json { render :show, status: :ok, location: @asset }
         else
           format.html { render :edit, status: :unprocessable_entity }
