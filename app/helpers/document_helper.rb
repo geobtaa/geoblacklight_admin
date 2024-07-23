@@ -60,5 +60,5 @@ module DocumentHelper
 
   def thumb_to_render?(document)
     document&.thumbnail&.file_url&.present? && document&.thumbnail&.file_derivatives&.present?
-  end  
+  end
 end
