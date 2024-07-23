@@ -35,6 +35,7 @@ class Document < Kithe::Work
     inverse_of: :document
 
   # DocumentAssets - Thumbnails, Attachments, etc
+  # @TODO: Redundant? Kithe also includes a members association
   def document_assets
     scope = Kithe::Asset
     scope = scope.where(parent_id: id)
@@ -259,8 +260,9 @@ class Document < Kithe::Work
 
   ### End / From GBL
 
+  # Thumbnail is a special case of document_assets
   def thumbnail
-    members.find { |m| m.respond_to?(:thumbnail) }
+    members.find { |m| m.respond_to?(:thumbnail) && m.thumbnail? }
   end
 
   def access_json
