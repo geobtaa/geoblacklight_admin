@@ -57,4 +57,8 @@ module DocumentHelper
   def blacklight_link(document)
     "#{BLACKLIGHT_URL}/catalog/#{document.friendlier_id}"
   end
+
+  def thumb_to_render?(document)
+    document&.thumbnail&.file_url&.present? && document&.thumbnail&.file_derivatives&.present?
+  end
 end

@@ -6,7 +6,7 @@
       <div class="col-1">
         <% # This should happen elsewhere %>
         <% @document = Document.find_by(friendlier_id: document.friendlier_id) %>
-        <% if @document&.thumbnail&.present? && @document&.thumbnail&.file_url %>
+        <% if thumb_to_render?(@document) %>
           <%= link_to edit_admin_document_path(document.friendlier_id) do %>
             <% if @document.thumbnail.file_derivatives[:thumb_standard_2X].exists? %>
               <%= image_tag(@document.thumbnail.file_url(:thumb_standard_2X), class: "thumbnail") %>
