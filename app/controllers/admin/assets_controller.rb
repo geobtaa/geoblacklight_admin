@@ -18,7 +18,7 @@ module Admin
         ).or(
           Asset.where(parent_id: params[:q])
         ).or(
-          Asset.where("created_at BETWEEN ? AND ?", params[:q].to_date.beginning_of_day, params[:q].to_date.end_of_day) 
+          Asset.where("created_at BETWEEN ? AND ?", params[:q].to_date.beginning_of_day, params[:q].to_date.end_of_day)
         )
       end
 
