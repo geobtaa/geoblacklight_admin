@@ -8,18 +8,21 @@ module Admin
     # GET /assets or /assets.json
     def index
       scope = Asset
+      search_query = params[:q].strip if params[:q].present?
 
       # Basic search functionality
-      if params[:q].present?
-        scope = scope.where(id: params[:q]).or(
-          Asset.where(friendlier_id: params[:q])
-        ).or(
-          Asset.where("title like ?", "%" + Asset.sanitize_sql_like(params[:q]) + "%")
-        ).or(
-          Asset.where(parent_id: params[:q])
-        ).or(
-          Asset.where("created_at BETWEEN ? AND ?", params[:q].to_date.beginning_of_day, params[:q].to_date.end_of_day)
-        )
+      if search_query.present?
+        scope = if date_check?(search_query)
+          Asset.where("created_at BETWEEN ? AND ?", search_query.to_date.beginning_of_day, search_query.to_date.end_of_day)
+        else
+          scope.where(id: search_query).or(
+            Asset.where(friendlier_id: search_query)
+          ).or(
+            Asset.where("title like ?", "%" + Asset.sanitize_sql_like(search_query) + "%")
+          ).or(
+            Asset.where(parent_id: search_query)
+          )
+        end
       end
 
       @pagy, @assets = pagy(scope, items: 20)
@@ -128,6 +131,12 @@ module Admin
     # Only allow a list of trusted parameters through.
     def asset_params
       params.require(:asset)
+    end
+
+    def date_check?(val)
+      val.to_date
+    rescue Date::Error
+      false
     end
   end
 end
