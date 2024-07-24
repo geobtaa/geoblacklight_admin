@@ -16,7 +16,7 @@
           <th class="header">Label</th>
           <th class="header">Element</th>
           <th class="header">Reorder</th>
-          <th class="header" colspan="3"></th>
+          <th class="header" colspan="2">Actions</th>
         </tr>
       </thead>
 
@@ -31,7 +31,6 @@
               <%- end %>
             </td>
             <td class="handle" style="text-align:center">&varr;</td>
-            <td><%= link_to 'Show', admin_form_element_path(form_element) %></td>
             <td><%= link_to 'Edit', edit_admin_form_element_path(form_element) %></td>
             <td><%= link_to 'Destroy', admin_form_element_path(form_element), method: :delete, data: { confirm: 'Are you sure?' } %></td>
           </tr>

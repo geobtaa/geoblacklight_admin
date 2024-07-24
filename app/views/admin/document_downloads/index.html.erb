@@ -38,21 +38,21 @@
     <table class="table table-striped table-bordered sortable">
       <thead class="thead-dark">
         <tr>
-          <th class="header" colspan="2">Actions</th>
           <th class="header">Layer Slug</th>
           <th class="header">Download Label</th>
           <th class="header">Download URL</th>
+          <th class="header" colspan="2">Actions</th>
         </tr>
       </thead>
 
       <tbody>
         <% @document_downloads.each do |document_download| %>
           <tr>
-            <td><%= link_to 'Edit', edit_admin_document_document_download_path(document_download.document, document_download) %></td>
-            <td><%= link_to 'Destroy', admin_document_document_download_path(document_download.document, document_download), method: :delete, data: { confirm: 'Are you sure?' } %></td>
             <td><%= link_to document_download.friendlier_id, admin_document_path(document_download.document) %></td>
             <td><%= document_download.label %></td>
             <td><%= link_to document_download.value %></td>
+            <td><%= link_to 'Edit', edit_admin_document_document_download_path(document_download.document, document_download) %></td>
+            <td><%= link_to 'Destroy', admin_document_document_download_path(document_download.document, document_download), method: :delete, data: { confirm: 'Are you sure?' } %></td>
           </tr>
         <% end %>
       </tbody>
