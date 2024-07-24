@@ -21,12 +21,12 @@
 
   <body data-locale="en">
     <%= render "admin/shared/navbar" %>
-    <div class="container-fluid">
+    <main class="container-fluid">
       <%= render "admin/shared/schema_timestamp" %>
       <%= render "admin/shared/flash_messages" %>
       <div id="toast-wrapper" aria-live="polite" aria-atomic="true"></div>
       <%= yield %>
-    </div>
+    </main>
     <%= render "admin/shared/footer" %>
     <%= render "admin/shared/js_behaviors" %>
   </body>
