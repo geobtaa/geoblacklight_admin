@@ -4,6 +4,7 @@
 module Admin
   class DocumentAssetsController < Admin::AdminController
     before_action :set_document
+    before_action :set_document_asset, only: %i[show edit update destroy]
 
     def index
       scope = Asset
@@ -22,7 +23,6 @@ module Admin
 
     def show
       @asset = Asset.find_by_friendlier_id!(params[:id])
-      authorize! :read, @asset
 
       return unless @asset.stored?
 
@@ -32,23 +32,20 @@ module Admin
     end
 
     def edit
-      @asset = Asset.find_by_friendlier_id!(params[:id])
-      authorize! :update, @asset
     end
 
     # PATCH/PUT /works/1
     # PATCH/PUT /works/1.json
     def update
-      @asset = Asset.find_by_friendlier_id!(params[:id])
-      authorize! :update, @asset
+      @document_asset = DocumentAsset.find_by_friendlier_id!(params[:id])
 
       respond_to do |format|
-        if @asset.update(asset_params)
-          format.html { redirect_to admin_asset_url(@asset), notice: "Asset was successfully updated." }
-          format.json { render :show, status: :ok, location: @asset }
+        if @document_asset.update(document_asset_params)
+          format.html { redirect_to admin_document_document_assets_path(@document, @document_asset.parent), notice: "Asset was successfully updated." }
+          format.json { render :show, status: :ok, location: @document_asset }
         else
           format.html { render :edit }
-          format.json { render json: @asset.errors, status: :unprocessable_entity }
+          format.json { render json: @document_asset.errors, status: :unprocessable_entity }
         end
       end
     end
@@ -188,18 +185,27 @@ module Admin
 
     private
 
-    def set_document
-      return unless params[:document_id] # If not nested
-
-      @document = Document.includes(:leaf_representative).find_by!(friendlier_id: params[:document_id])
-    end
-
     def asset_params
       allowed_params = [:title, :derivative_storage_type, :alt_text, :caption,
         :transcription, :english_translation,
         :role, {admin_note_attributes: []}, :dct_references_for]
       allowed_params << :published if can?(:publish, @asset)
       params.require(:asset).permit(*allowed_params)
+    end
+
+    def set_document
+      return unless params[:document_id] # If not nested
+
+      @document = Document.includes(:leaf_representative).find_by!(friendlier_id: params[:document_id])
+    end
+
+    def set_document_asset
+      @document_asset = DocumentAsset.find_by_friendlier_id(params[:id])
+    end
+
+    # Only allow a list of trusted parameters through.
+    def document_asset_params
+      params.require(:asset).permit(:title, :label, :dct_references_uri_key)
     end
   end
 end

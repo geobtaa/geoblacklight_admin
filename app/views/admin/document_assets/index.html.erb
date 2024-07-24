@@ -37,6 +37,7 @@
             <th>Thumbnail</th>
             <th>Preview</th>
             <th>Title</th>
+            <th>Label</th>
             <th>MimeType</th>
             <th>Reference URI Type</th>
             <th>Actions</th>
@@ -58,6 +59,7 @@
                 <% end %>
               </td>
               <td><%= link_to(document_asset.title, document_asset.file.url) %></td>
+              <td><%= document_asset.label %></td>
               <td>
                 <%= document_asset.file_data["metadata"]["mime_type"] %>
                 <span class="sr-only"><%= document_asset.inspect %></span>
@@ -65,7 +67,10 @@
               <td>
                 <%= document_asset.dct_references_uri_key %>
               </td>
-              <td><%= link_to 'Destroy', admin_document_document_asset_path(document_asset.parent, document_asset), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+              <td>
+                <%= link_to 'Edit', edit_admin_document_document_asset_path(document_asset.parent, document_asset) %>
+                <%= link_to 'Destroy', admin_document_document_asset_path(document_asset.parent, document_asset), method: :delete, data: { confirm: 'Are you sure?' } %>
+              </td>
             </tr>
           <% end %>
         </tbody>

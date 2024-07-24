@@ -44,6 +44,10 @@ class Document < Kithe::Work
     scope.includes(:parent)
   end
 
+  def downloadable_assets
+    document_assets.select { |a| a.dct_references_uri_key == "download" }
+  end
+
   include Statesman::Adapters::ActiveRecordQueries[
     transition_class: DocumentTransition,
     initial_state: :draft
@@ -117,6 +121,14 @@ class Document < Kithe::Work
     references.to_json
   end
 
+  def asset_label(asset)
+    if asset.label.present?
+      asset.label
+    else
+      asset.title
+    end
+  end
+
   def apply_downloads(references)
     dct_downloads = references["http://schema.org/downloadUrl"]
     # Make sure downloads exist!
@@ -126,6 +138,13 @@ class Document < Kithe::Work
         multiple_downloads << {label: download_text(send(GeoblacklightAdmin::Schema.instance.solr_fields[:format])),
                                 url: dct_downloads}
       end
+
+      if downloadable_assets.present?
+        downloadable_assets.each do |asset|
+          multiple_downloads << {label: asset_label(asset), url: asset.file.url}
+        end
+      end
+
       references[:"http://schema.org/downloadUrl"] = multiple_downloads
     end
     references

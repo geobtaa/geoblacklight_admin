@@ -11,6 +11,7 @@ class Asset < Kithe::Asset
   attr_json :thumbnail, :boolean, default: "false"
   attr_json :derivative_storage_type, :string, default: "public"
   attr_json :dct_references_uri_key, :string
+  attr_json :label, :string
 
   DERIVATIVE_STORAGE_TYPE_LOCATIONS = {
     "public" => :kithe_derivatives
@@ -37,4 +38,14 @@ class Asset < Kithe::Asset
   def remove_parent_dct_references_uri
     GeoblacklightAdmin::RemoveParentDctReferencesUriJob.perform_later(self) if parent_id.present?
   end
+
+  # After Save Callbacks
+  after_save :reindex_parent
+
+  def reindex_parent
+    parent.save
+  end
 end
+
+# Allow DocumentAsset to be used as a synonym for Asset
+DocumentAsset = Asset
