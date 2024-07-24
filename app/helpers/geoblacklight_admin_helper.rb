@@ -58,6 +58,11 @@ module GeoblacklightAdminHelper
     }
   end
 
+  def bookmarks_badge
+    bookmarks_classes = ["badge", "badge-dark"]
+    "<span class='#{bookmarks_classes.join(" ")}' id='bookmarks-count'>#{current_user.bookmarks.size}</span>"
+  end
+
   def notifications_badge
     notifications_classes = ["badge"]
     notifications_classes << "badge-dark" if current_user.notifications.unread.empty?

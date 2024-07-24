@@ -59,15 +59,17 @@
           <div class="dropdown-divider"></div>
           <%= link_to "Users", admin_users_index_path, {class: 'dropdown-item'} %>
         </div>
-      <li class="nav-item">
-        <%= link_to "Bookmarks", admin_bookmarks_path, {class: 'nav-link'} if current_user %>
       </li>
       <% if user_signed_in? %>
-        <li class="nav-item">
-          <%= link_to "Sign out", destroy_user_session_path, { :method => :delete, class: 'nav-link'} %>
-        </li>
-        <li class="nav-item">
-          <%= link_to(current_user.email, edit_user_registration_path, {class: 'nav-link'}) %>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUser" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <%= current_user.email %>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownUser">
+            <%= link_to "Bookmarks #{bookmarks_badge}".html_safe, admin_bookmarks_path, {class: 'dropdown-item'} %>
+            <%= link_to("Edit User Account", edit_user_registration_path, {class: 'dropdown-item'}) %>
+            <%= link_to "Sign Out", destroy_user_session_path, { :method => :delete, class: 'dropdown-item'} %>
+          </div>
         </li>
         <% else %>
         <li class="nav-item">
