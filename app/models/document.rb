@@ -111,10 +111,32 @@ class Document < Kithe::Work
   # Index Transformations - *_json functions
   def references
     references = ActiveSupport::HashWithIndifferentAccess.new
+
+    # Prep value arrays
     send(GeoblacklightAdmin::Schema.instance.solr_fields[:reference]).each do |ref|
-      references[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] = ref.value
+      references[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] = []
     end
-    apply_downloads(references)
+
+    # Seed value arrays
+    send(GeoblacklightAdmin::Schema.instance.solr_fields[:reference]).each do |ref|
+      # @TODO: Need to support multiple entries per key here
+      # See GitHub issue #73
+      references[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] << ref.value
+    end
+
+    # Apply Downloads
+    references = apply_downloads(references)
+
+    # Need to flatten the arrays here to avoid the following potential error:
+    # - ArgumentError: Please use symbols for polymorphic route arguments.
+    # - Via: app/helpers/geoblacklight_helper.rb:224:in `render_references_url'
+    references.each do |key, value|
+      if value.is_a?(Array) && value.length == 1
+        references[key] = value.first
+      end
+    end
+
+    references
   end
 
   def references_json
@@ -129,24 +151,40 @@ class Document < Kithe::Work
     end
   end
 
+  # Apply Downloads
+  # 1. Native Aardvark Downloads
+  # 2. Multiple Document Download Links
+  # 3. Downloadable Document Assets
   def apply_downloads(references)
+    multiple_downloads = []
+
     dct_downloads = references["http://schema.org/downloadUrl"]
-    # Make sure downloads exist!
-    if document_downloads.present?
-      multiple_downloads = multiple_downloads_array
-      if dct_downloads.present?
+
+    # Native Aardvark Downloads
+    # - Via CSV Import or via the webform
+    if dct_downloads.present?
+      dct_downloads.each do |download|
         multiple_downloads << {label: download_text(send(GeoblacklightAdmin::Schema.instance.solr_fields[:format])),
-                                url: dct_downloads}
+                              url: download}
       end
-
-      if downloadable_assets.present?
-        downloadable_assets.each do |asset|
-          multiple_downloads << {label: asset_label(asset), url: asset.file.url}
-        end
-      end
-
-      references[:"http://schema.org/downloadUrl"] = multiple_downloads
     end
+
+    # Multiple Document Download Links
+    # - Via DocumentDownloads
+    if document_downloads.present?
+      multiple_downloads << multiple_downloads_array
+    end
+
+    # Downloadable Document Assets
+    # - Via DocumentAssets (Assets)
+    # - With Downloadable URI
+    if downloadable_assets.present?
+      downloadable_assets.each do |asset|
+        multiple_downloads << {label: asset_label(asset), url: asset.file.url}
+      end
+    end
+
+    references[:"http://schema.org/downloadUrl"] = multiple_downloads.flatten
     references
   end
 
