@@ -123,8 +123,12 @@ class Document < Kithe::Work
       references[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] << ref.value
     end
 
+    logger.debug("\n\nDocument#references > seeded: #{references}")
+
     # Apply Downloads
     references = apply_downloads(references)
+
+    logger.debug("Document#references > downloads: #{references}\n\n")
 
     # Need to flatten the arrays here to avoid the following potential error:
     # - ArgumentError: Please use symbols for polymorphic route arguments.
@@ -159,6 +163,8 @@ class Document < Kithe::Work
 
     dct_downloads = references["http://schema.org/downloadUrl"]
 
+    logger.debug("Document#dct_downloads > init: #{dct_downloads}\n\n")
+
     # Native Aardvark Downloads
     # - Via CSV Import or via the webform
     if dct_downloads.present?
@@ -168,20 +174,34 @@ class Document < Kithe::Work
       end
     end
 
+    logger.debug("Document#multiple_downloads > aardvark: #{multiple_downloads.inspect}\n\n")
+
     # Multiple Document Download Links
     # - Via DocumentDownloads
     if document_downloads.present?
       multiple_downloads << multiple_downloads_array
     end
 
+    logger.debug("Document#dct_downloads > document_downloads: #{multiple_downloads.inspect}\n\n")
+
     # Downloadable Document Assets
     # - Via DocumentAssets (Assets)
     # - With Downloadable URI
     if downloadable_assets.present?
       downloadable_assets.each do |asset|
-        multiple_downloads << {label: asset_label(asset), url: asset.file.url}
+        logger.debug("\n\n Document#dct_downloads > dupe?: #{multiple_downloads.detect { |d| d[:url].include?(asset.file.url) }}\n\n")
+
+        if multiple_downloads.detect { |d| d[:url].include?(asset.file.url) }
+          logger.debug("\n\n Detected duplicate download URL: #{asset.file.url}\n\n")
+          index = multiple_downloads.index { |d| d[:url].include?(asset.file.url) }
+          multiple_downloads[index] = {label: asset_label(asset), url: asset.file.url}
+        else
+          logger.debug("\n\n No duplicates found\n\n")
+        end
       end
     end
+
+    logger.debug("Document#dct_downloads > downloadable_assets: #{multiple_downloads.inspect}\n\n")
 
     references[:"http://schema.org/downloadUrl"] = multiple_downloads.flatten unless multiple_downloads.empty?
     references
