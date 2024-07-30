@@ -134,6 +134,7 @@ class Document < Kithe::Work
     # - ArgumentError: Please use symbols for polymorphic route arguments.
     # - Via: app/helpers/geoblacklight_helper.rb:224:in `render_references_url'
     references.each do |key, value|
+      next if key == "http://schema.org/downloadUrl"
       if value.is_a?(Array) && value.length == 1
         references[key] = value.first
       end
