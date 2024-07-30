@@ -43,7 +43,7 @@ class Asset < Kithe::Asset
   after_save :reindex_parent
 
   def reindex_parent
-    parent.save
+    parent.save if parent.present?
   end
 end
 
