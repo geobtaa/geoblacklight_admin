@@ -1,6 +1,20 @@
 # Configure Rails Environment
 ENV["RAILS_ENV"] = "test"
 
+# SimpleCov
+require "simplecov"
+SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
+
+SimpleCov.start "rails" do
+  add_filter "lib/generators/geoblacklight_admin/install_generator.rb"
+  add_filter "lib/geoblacklight_admin/version.rb"
+  add_filter "lib/generators"
+  add_filter "lib/geoblacklight_admin/tasks/*.rake"
+  add_filter "/spec"
+  add_filter ".internal_test_app/"
+  minimum_coverage 100
+end
+
 require_relative "../.internal_test_app/config/environment"
 ActiveRecord::Migrator.migrations_paths = [File.expand_path("../.internal_test_app/db/migrate", __dir__)]
 # ActiveRecord::Migrator.migrations_paths << File.expand_path("../db/migrate", __dir__)
