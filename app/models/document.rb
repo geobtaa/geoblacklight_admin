@@ -197,7 +197,8 @@ class Document < Kithe::Work
           index = multiple_downloads.index { |d| d[:url].include?(asset.file.url) }
           multiple_downloads[index] = {label: asset_label(asset), url: asset.file.url}
         else
-          logger.debug("\n\n No duplicates found\n\n")
+          logger.debug("\n\n No duplicate found - Adding downloadable asset: #{asset.file.url}\n\n")
+          multiple_downloads << {label: asset_label(asset), url: asset.file.url}
         end
       end
     end
