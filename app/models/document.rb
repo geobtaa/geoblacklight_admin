@@ -120,7 +120,6 @@ class Document < Kithe::Work
     # Seed value arrays
     send(GeoblacklightAdmin::Schema.instance.solr_fields[:reference]).each do |ref|
       # @TODO: Need to support multiple entries per key here
-      # See GitHub issue #73
       references[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] << ref.value
     end
 
@@ -184,7 +183,7 @@ class Document < Kithe::Work
       end
     end
 
-    references[:"http://schema.org/downloadUrl"] = multiple_downloads.flatten
+    references[:"http://schema.org/downloadUrl"] = multiple_downloads.flatten unless multiple_downloads.empty?
     references
   end
 
@@ -369,6 +368,9 @@ class Document < Kithe::Work
       if value[:delimited]
         send(value[:destination])&.join("|")
       elsif value[:destination] == "dct_references_s"
+        # @TODO: Downloads need to be handled differently
+        # - Need to support multiple entries per key here
+        # - Need to respect label and url
         dct_references_s_to_csv(key, value[:destination])
       elsif value[:destination] == "b1g_publication_state_s"
         send(:current_state)
