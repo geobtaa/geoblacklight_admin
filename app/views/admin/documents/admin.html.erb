@@ -35,8 +35,12 @@
     </table>
 
     <hr/>
+    <!--<h3 id="document">Database Object</h3>
+    <div class="database-object">
+      <%= ap(JSON.parse(@document.to_json)).html_safe %>
+    </div>-->
 
-    <h3>Raw Solr Document</h3>
+    <h3 id="solr-document">Solr Document</h3>
     <div class="solr-document">
       <%= ap(JSON.parse(@document.raw_solr_document.to_json)).html_safe %>
     </div>
@@ -57,7 +61,7 @@
       </tbody>
     </table>
 
-    <h3>Thumbnail</h3>
+    <h3 id="thumbnail">Thumbnail</h3>
     <table class="table">
       <thead>
         <tr>
@@ -85,12 +89,48 @@
           <% end %>
           <td><%= @document.thumbnail.present? %></td>
           <td><%= @document&.thumbnail_state_machine&.current_state %></td>
-          <td><%= @document&.thumbnail_state_machine&.last_transition&.inspect %></td>
+          <td><%= ap(@document&.thumbnail_state_machine&.last_transition).html_safe %></td>
         </tr>
       </tbody>
     </table>
 
-    <h3>Access Links</h3>
+    <h3 id="references">References</h3>
+    <table class="table responsive">
+      <thead>
+        <tr>
+          <th>Key</th>
+          <th>Values</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @document.references.each do |entry| %>
+          <tr>
+            <td><%= entry[0] %></td>
+            <td>
+              <% if entry[1].is_a?(Array) %>
+                <ul>
+                  <% entry[1].each do |value| %>
+                    <li><%= value %></li>
+                  <% end %>
+                </ul>
+                <% else %>
+                  <% if entry[1].is_a?(Hash) %>
+                    <ul>
+                      <% entry[1].each do |key, value| %>
+                        <li><%= key %>: <%= value %></li>
+                      <% end %>
+                    </ul>
+                  <% else %>
+                    <p><%= link_to(entry[1], entry[1]) %></p>
+                  <% end %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <h3 id="access-links">Access Links</h3>
     <table class="table responsive">
       <thead>
         <tr>
