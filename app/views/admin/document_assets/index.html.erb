@@ -40,7 +40,7 @@
             <th>Label</th>
             <th>MimeType</th>
             <th>Reference URI Type</th>
-            <th>Actions</th>
+            <th colspan="2">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -69,6 +69,8 @@
               </td>
               <td>
                 <%= link_to 'Edit', edit_admin_document_document_asset_path(document_asset.parent, document_asset) %>
+              </td>
+              <td>
                 <%= link_to 'Destroy', admin_document_document_asset_path(document_asset.parent, document_asset), method: :delete, data: { confirm: 'Are you sure?' } %>
               </td>
             </tr>
