@@ -32,7 +32,7 @@
         <th>Asset Link</th>
         <td><%= link_to "Asset Link", @asset.file.url %></td>
       </tr>
-      <% if thumb_to_render?(@asset) %>
+      <% if asset_thumb_to_render?(@asset) %>
         <tr>
           <th>Thumbnail</th>
           <td><%= image_tag(@asset.file_url(:thumb_standard_2X)) %></td>
