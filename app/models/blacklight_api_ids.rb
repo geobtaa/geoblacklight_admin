@@ -33,11 +33,11 @@ class BlacklightApiIds
   end
 
   def facets
-    fetch["included"]&.filter_map { |s| s if s["type"] == "facet" }
+    fetch["included"]&.select { |s| s["type"] == "facet" }
   end
 
   def sorts
-    fetch["included"].filter_map { |s| s if s["type"] == "sort" }
+    fetch["included"].select { |s| s["type"] == "sort" }
   end
 
   def meta
