@@ -11,6 +11,7 @@ GeoBlacklight Admin is a [GeoBlacklight](https://github.com/geoblacklight/geobla
 * Rails v7
 * Blacklight v7 (not v8)
 * GeoBlacklight v4.4+ (Vite.js)
+* @geoblacklight/frontend v4 (NPM package)
 * Solr v8.4+
 * PostgreSQL (not MySQL-based DBs)
 * Redis (for Sidekiq)
