@@ -25,6 +25,8 @@ require "solr_wrapper/rake_task"
 require "engine_cart/rake_task"
 require "geoblacklight_admin/version"
 require "rake/testtask"
+require "geoblacklight_admin/rake_task"
+require "simple_form"
 
 # Searches for files ending in _test.rb in the test directory
 Rake::TestTask.new do |t|
@@ -40,6 +42,7 @@ task default: :test
 desc "Run test suite"
 task ci: ["geoblacklight:generate"] do
   within_test_app do
+    require "simple_form"
     system "RAILS_ENV=test bin/rails db:migrate"
     system "RAILS_ENV=test rake db:seed"
     system "RAILS_ENV=test rails webpacker:compile"

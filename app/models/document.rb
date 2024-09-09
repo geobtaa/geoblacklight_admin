@@ -18,24 +18,57 @@ class Document < Kithe::Work
   belongs_to :import, optional: true
 
   # Statesman
+  # - Publication State
   has_many :document_transitions, foreign_key: "kithe_model_id", autosave: false, dependent: :destroy,
     inverse_of: :document
+  # - Thumbnail State
+  has_many :document_thumbnail_transitions, foreign_key: "kithe_model_id", autosave: false, dependent: :destroy,
+    inverse_of: :document
 
-  # DocumentAccesses
+  # Document Collections
+  # - DocumentAccesses
   has_many :document_accesses, primary_key: "friendlier_id", foreign_key: "friendlier_id", autosave: false, dependent: :destroy,
     inverse_of: :document
 
-  # DocumentDownloads
+  # - DocumentDownloads
   has_many :document_downloads, primary_key: "friendlier_id", foreign_key: "friendlier_id", autosave: false, dependent: :destroy,
     inverse_of: :document
+
+  # DocumentAssets - Thumbnails, Attachments, etc
+  # @TODO: Redundant? Kithe also includes a members association
+  def document_assets
+    scope = Kithe::Asset
+    scope = scope.where(parent_id: id)
+
+    # scope = scope.page(params[:page]).per(20).order(created_at: :desc)
+    scope.includes(:parent)
+  end
+
+  def downloadable_assets
+    document_assets.select { |a| a.dct_references_uri_key == "download" }
+  end
 
   include Statesman::Adapters::ActiveRecordQueries[
     transition_class: DocumentTransition,
     initial_state: :draft
   ]
 
+  # @TODO: Rename this to publication_state_machine
   def state_machine
     @state_machine ||= DocumentStateMachine.new(self, transition_class: DocumentTransition)
+  end
+
+  include Statesman::Adapters::ActiveRecordQueries[
+    transition_class: DocumentThumbnailTransition,
+    initial_state: :initialized
+  ]
+
+  def thumbnail_state_machine
+    @thumbnail_state_machine ||= DocumentThumbnailStateMachine.new(self, transition_class: DocumentThumbnailTransition)
+  end
+
+  def raw_solr_document
+    Blacklight.default_index.connection.get("select", {params: {q: "id:\"#{geomg_id_s}\""}})["response"]["docs"][0]
   end
 
   delegate :current_state, to: :state_machine
@@ -78,27 +111,101 @@ class Document < Kithe::Work
   # Index Transformations - *_json functions
   def references
     references = ActiveSupport::HashWithIndifferentAccess.new
+
+    # Prep value arrays
     send(GeoblacklightAdmin::Schema.instance.solr_fields[:reference]).each do |ref|
-      references[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] = ref.value
+      references[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] = []
     end
-    apply_downloads(references)
+
+    # Seed value arrays
+    send(GeoblacklightAdmin::Schema.instance.solr_fields[:reference]).each do |ref|
+      # @TODO: Need to support multiple entries per key here
+      references[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] << ref.value
+    end
+
+    logger.debug("\n\nDocument#references > seeded: #{references}")
+
+    # Apply Downloads
+    references = apply_downloads(references)
+
+    logger.debug("Document#references > downloads: #{references}\n\n")
+
+    # Need to flatten the arrays here to avoid the following potential error:
+    # - ArgumentError: Please use symbols for polymorphic route arguments.
+    # - Via: app/helpers/geoblacklight_helper.rb:224:in `render_references_url'
+    references.each do |key, value|
+      next if key == "http://schema.org/downloadUrl"
+      if value.is_a?(Array) && value.length == 1
+        references[key] = value.first
+      end
+    end
+
+    references
   end
 
   def references_json
     references.to_json
   end
 
-  def apply_downloads(references)
-    dct_downloads = references["http://schema.org/downloadUrl"]
-    # Make sure downloads exist!
-    if document_downloads.present?
-      multiple_downloads = multiple_downloads_array
-      if dct_downloads.present?
-        multiple_downloads << {label: download_text(send(GeoblacklightAdmin::Schema.instance.solr_fields[:format])),
-                                url: dct_downloads}
-      end
-      references[:"http://schema.org/downloadUrl"] = multiple_downloads
+  def asset_label(asset)
+    if asset.label.present?
+      asset.label
+    else
+      asset.title
     end
+  end
+
+  # Apply Downloads
+  # 1. Native Aardvark Downloads
+  # 2. Multiple Document Download Links
+  # 3. Downloadable Document Assets
+  def apply_downloads(references)
+    multiple_downloads = []
+
+    dct_downloads = references["http://schema.org/downloadUrl"]
+
+    logger.debug("Document#dct_downloads > init: #{dct_downloads}\n\n")
+
+    # Native Aardvark Downloads
+    # - Via CSV Import or via the webform
+    if dct_downloads.present?
+      dct_downloads.each do |download|
+        multiple_downloads << {label: download_text(send(GeoblacklightAdmin::Schema.instance.solr_fields[:format])),
+                              url: download}
+      end
+    end
+
+    logger.debug("Document#multiple_downloads > aardvark: #{multiple_downloads.inspect}\n\n")
+
+    # Multiple Document Download Links
+    # - Via DocumentDownloads
+    if document_downloads.present?
+      multiple_downloads << multiple_downloads_array
+    end
+
+    logger.debug("Document#dct_downloads > document_downloads: #{multiple_downloads.inspect}\n\n")
+
+    # Downloadable Document Assets
+    # - Via DocumentAssets (Assets)
+    # - With Downloadable URI
+    if downloadable_assets.present?
+      downloadable_assets.each do |asset|
+        logger.debug("\n\n Document#dct_downloads > dupe?: #{multiple_downloads.detect { |d| d[:url].include?(asset.file.url) }}\n\n")
+
+        if multiple_downloads.detect { |d| d[:url].include?(asset.file.url) }
+          logger.debug("\n\n Detected duplicate download URL: #{asset.file.url}\n\n")
+          index = multiple_downloads.index { |d| d[:url].include?(asset.file.url) }
+          multiple_downloads[index] = {label: asset_label(asset), url: asset.file.url}
+        else
+          logger.debug("\n\n No duplicate found - Adding downloadable asset: #{asset.file.url}\n\n")
+          multiple_downloads << {label: asset_label(asset), url: asset.file.url}
+        end
+      end
+    end
+
+    logger.debug("Document#dct_downloads > downloadable_assets: #{multiple_downloads.inspect}\n\n")
+
+    references[:"http://schema.org/downloadUrl"] = multiple_downloads.flatten unless multiple_downloads.empty?
     references
   end
 
@@ -231,8 +338,9 @@ class Document < Kithe::Work
 
   ### End / From GBL
 
+  # Thumbnail is a special case of document_assets
   def thumbnail
-    members.find { |m| m.respond_to?(:thumbnail) }
+    members.find { |m| m.respond_to?(:thumbnail) && m.thumbnail? }
   end
 
   def access_json
@@ -282,6 +390,9 @@ class Document < Kithe::Work
       if value[:delimited]
         send(value[:destination])&.join("|")
       elsif value[:destination] == "dct_references_s"
+        # @TODO: Downloads need to be handled differently
+        # - Need to support multiple entries per key here
+        # - Need to respect label and url
         dct_references_s_to_csv(key, value[:destination])
       elsif value[:destination] == "b1g_publication_state_s"
         send(:current_state)

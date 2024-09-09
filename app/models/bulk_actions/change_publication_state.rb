@@ -18,4 +18,14 @@ module BulkActions
   class DraftDocument < BulkAction
     # Add specific methods and validations for DraftDocument here
   end
+
+  # Subclass for HarvestThumbnails
+  class HarvestThumbnails < BulkAction
+    # Add specific methods and validations for HarvestThumbnails here
+  end
+
+  # Subclass for DeleteThumbnails
+  class DeleteThumbnails < BulkAction
+    # Add specific methods and validations for DeleteThumbnails here
+  end
 end

@@ -1,5 +1,5 @@
-// jQuery Ready
-$(document).on('ready turbolinks:load', function() {
+// VanillaJS Ready
+document.addEventListener('DOMContentLoaded', function() {
   // Datepickers - YYYY-MM-DD
   if($("input[data-js='datepicker']").length > 0) {
     $("input[data-js='datepicker']").datepicker({

@@ -25,7 +25,9 @@
 @import "modules/elements";
 @import "modules/forms";
 @import "modules/icons";
+@import "modules/images";
 @import "modules/nav";
+@import "modules/results";
 @import "modules/tables";
 @import "modules/toasts";
 @import "modules/visibility";
@@ -43,7 +45,7 @@ footer.gbl-admin {
   box-shadow: inset 0 0 0 50vw rgba(0, 0, 0, 0.8);
 }
 
-div.container-fluid {
+main.container-fluid {
   margin-top: 5rem;
 }
 

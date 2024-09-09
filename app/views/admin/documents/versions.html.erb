@@ -34,7 +34,7 @@
                 <%- if index == 0 %>
                   <%- current = @document.json_attributes %>
                   <%- previous = version&.previous&.reify&.json_attributes %>
-                  <%- diff = Hashdiff.diff(previous,current) %>
+                  <%- diff = ::Hashdiff.diff(previous,current) %>
                   <%- changeset = version.changeset.except(:json_attributes).collect{ |change| ["+", change[0], change[1][1]] }.flatten %>
                   <%- diff << changeset %>
                   <%- diff.each do |d| %>
@@ -51,7 +51,7 @@
                 <%- elsif version.previous && version.previous.reify %>
                   <%- current = version.reify&.json_attributes %>
                   <%- previous = version.previous.reify&.json_attributes %>
-                  <%- diff = Hashdiff.diff(previous,current) %>
+                  <%- diff = ::Hashdiff.diff(previous,current) %>
                   <%- changeset = version.changeset.except(:json_attributes).collect{ |change| ["+", change[0], change[1][1]] }.flatten %>
                   <%- diff << changeset %>
                   <%- diff.each do |d| %>
@@ -75,7 +75,7 @@
                 <% else %>
                   <%- current = version.changeset %>
                   <%- previous = {} %>
-                  <%- diff = Hashdiff.diff(previous,current) %>
+                  <%- diff = ::Hashdiff.diff(previous,current) %>
                   <%- changeset = version.changeset.except(:json_attributes, :updated_at).collect{ |change| ["+", change[0], change[1][1]] }.flatten %>
 
                   <%- diff.each do |d| %>

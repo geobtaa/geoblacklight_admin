@@ -10,8 +10,12 @@ class BulkActionRunDocumentJob < ApplicationJob
       update_publication_status(doc, field_value)
     when :update_delete
       update_delete(doc, field_value)
-    # @TODO: Field Level changes
+    when :harvest_thumbnails
+      GeoblacklightAdmin::StoreImageJob.perform_later(doc.friendlier_id, doc.id, :priority)
+    when :delete_thumbnails
+      GeoblacklightAdmin::DeleteThumbnailJob.perform_later(doc.friendlier_id, doc.id, :priority)
     else
+      # @TODO: Field Level changes
       logger.debug("@TODO - #{field_name} => #{field_value}")
     end
   end

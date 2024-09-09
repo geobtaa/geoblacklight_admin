@@ -53,8 +53,14 @@ module GeoblacklightAdminHelper
       "11" => "The Ohio State University",
       "12" => "University of Chicago",
       "13" => "University of Nebraska-Lincoln",
-      "14" => "Rutgers University-New Brunswick"
+      "14" => "Rutgers University-New Brunswick",
+      "15" => "Northwestern University"
     }
+  end
+
+  def bookmarks_badge
+    bookmarks_classes = ["badge", "badge-dark"]
+    "<span class='#{bookmarks_classes.join(" ")}' id='bookmarks-count'>#{current_user.bookmarks.size}</span>"
   end
 
   def notifications_badge
@@ -144,5 +150,9 @@ module GeoblacklightAdminHelper
     end
 
     link_to(label, path)
+  end
+
+  def assets_dct_references_options
+    escape_javascript(options_for_select(I18n.t("activemodel.enum_values.document/reference.category").invert.sort.insert(0, ["Choose Reference Type", nil]))).to_s
   end
 end

@@ -125,6 +125,8 @@ WEBSERVICES_SHOWN:
   - 'tiled_map_layer'
   - 'dynamic_map_layer'
   - 'image_map_layer'
+  - 'cog'
+  - 'pmtiles'
 
 # Display Notes to display / Non-prefixed default bootstrap class is alert-secondary
 DISPLAY_NOTES_SHOWN:
@@ -287,6 +289,9 @@ HELP_TEXT:
       - 'wms'
       - 'tms'
       - 'oembed'
+      - 'cog'
+      - 'pmtiles'
+
 
 # Enable catalog#show sidebar static map for items with the following viewer protocols
 SIDEBAR_STATIC_MAP:
@@ -294,3 +299,12 @@ SIDEBAR_STATIC_MAP:
   - 'iiif_manifest'
 
 GBLSI_THUMBNAIL_FIELD: 'b1g_image_ss'
+
+#########
+# GBL ADMIN SETTINGS
+
+# Used to generate derivatives in app/uploaders/asset_uploader.rb
+# Hash of thumbnail sizes
+GBL_ADMIN_THUMBNAIL_WIDTHS:
+  mini: 50
+  standard: 200

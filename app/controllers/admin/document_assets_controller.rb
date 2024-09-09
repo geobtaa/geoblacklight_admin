@@ -4,9 +4,10 @@
 module Admin
   class DocumentAssetsController < Admin::AdminController
     before_action :set_document
+    before_action :set_document_asset, only: %i[show edit update destroy]
 
     def index
-      scope = Kithe::Asset
+      scope = Asset
 
       # simple simple search on a few simple attributes with OR combo.
       if params[:document_id].present?
@@ -21,8 +22,7 @@ module Admin
     end
 
     def show
-      @asset = Kithe::Asset.find_by_friendlier_id!(params[:id])
-      authorize! :read, @asset
+      @asset = Asset.find_by_friendlier_id!(params[:id])
 
       return unless @asset.stored?
 
@@ -32,34 +32,31 @@ module Admin
     end
 
     def edit
-      @asset = Kithe::Asset.find_by_friendlier_id!(params[:id])
-      authorize! :update, @asset
     end
 
     # PATCH/PUT /works/1
     # PATCH/PUT /works/1.json
     def update
-      @asset = Kithe::Asset.find_by_friendlier_id!(params[:id])
-      authorize! :update, @asset
+      @document_asset = DocumentAsset.find_by_friendlier_id!(params[:id])
 
       respond_to do |format|
-        if @asset.update(asset_params)
-          format.html { redirect_to admin_asset_url(@asset), notice: "Asset was successfully updated." }
-          format.json { render :show, status: :ok, location: @asset }
+        if @document_asset.update(document_asset_params)
+          format.html { redirect_to admin_document_document_assets_path(@document, @document_asset.parent), notice: "Asset was successfully updated." }
+          format.json { render :show, status: :ok, location: @document_asset }
         else
           format.html { render :edit }
-          format.json { render json: @asset.errors, status: :unprocessable_entity }
+          format.json { render json: @document_asset.errors, status: :unprocessable_entity }
         end
       end
     end
 
     def destroy
-      @asset = Kithe::Asset.find_by_friendlier_id!(params[:id])
+      @asset = Asset.find_by_friendlier_id!(params[:id])
       @asset.destroy
 
       respond_to do |format|
         format.html do
-          redirect_to document_document_assets_path(@document),
+          redirect_to admin_document_document_assets_path(@document),
             notice: "Asset '#{@asset.title}' was successfully destroyed."
         end
         format.json { head :no_content }
@@ -67,7 +64,7 @@ module Admin
     end
 
     def check_fixity
-      @asset = Kithe::Asset.find_by_friendlier_id!(params[:asset_id])
+      @asset = Asset.find_by_friendlier_id!(params[:asset_id])
       SingleAssetCheckerJob.perform_later(@asset)
       redirect_to admin_asset_url(@asset), notice: "This file will be checked shortly."
     end
@@ -95,11 +92,15 @@ module Admin
         .sort_by { |h| h&.dig("metadata", "filename") }
 
       files_params.each do |file_data|
-        asset = Kithe::Asset.new
+        asset = Asset.new
 
         # if derivative_storage_type = params.dig(:storage_type_for, file_data["id"])
         #  asset.derivative_storage_type = derivative_storage_type
         # end
+
+        # References
+        references = params.dig(:dct_references_for, file_data["id"])
+        asset.dct_references_uri_key = references if references
 
         asset.position = (current_position += 1)
         asset.parent_id = @parent.id
@@ -110,11 +111,11 @@ module Admin
 
       @parent.update(representative: @parent.members.order(:position).first) if @parent.representative_id.nil?
 
-      redirect_to admin_document_path(@parent.friendlier_id, anchor: "nav-members")
+      redirect_to admin_document_document_assets_path(@parent.friendlier_id, anchor: "nav-members")
     end
 
     def convert_to_child_work
-      @asset = Kithe::Asset.find_by_friendlier_id!(params[:id])
+      @asset = Asset.find_by_friendlier_id!(params[:id])
 
       parent = @asset.parent
 
@@ -184,18 +185,27 @@ module Admin
 
     private
 
+    def asset_params
+      allowed_params = [:title, :derivative_storage_type, :alt_text, :caption,
+        :transcription, :english_translation,
+        :role, {admin_note_attributes: []}, :dct_references_for]
+      allowed_params << :published if can?(:publish, @asset)
+      params.require(:asset).permit(*allowed_params)
+    end
+
     def set_document
       return unless params[:document_id] # If not nested
 
       @document = Document.includes(:leaf_representative).find_by!(friendlier_id: params[:document_id])
     end
 
-    def asset_params
-      allowed_params = [:title, :derivative_storage_type, :alt_text, :caption,
-        :transcription, :english_translation,
-        :role, {admin_note_attributes: []}]
-      allowed_params << :published if can?(:publish, @asset)
-      params.require(:asset).permit(*allowed_params)
+    def set_document_asset
+      @document_asset = DocumentAsset.find_by_friendlier_id(params[:id])
+    end
+
+    # Only allow a list of trusted parameters through.
+    def document_asset_params
+      params.require(:asset).permit(:title, :label, :dct_references_uri_key)
     end
   end
 end

@@ -8,9 +8,10 @@ GeoBlacklight Admin is a [GeoBlacklight](https://github.com/geoblacklight/geobla
 
 ## Requirements
 
-* Rails v6.1 (not v7 yet)
+* Rails v7
 * Blacklight v7 (not v8)
-* GeoBlacklight v4 (not v3)
+* GeoBlacklight v4.4+ (Vite.js)
+* @geoblacklight/frontend v4 (NPM package)
 * Solr v8.4+
 * PostgreSQL (not MySQL-based DBs)
 * Redis (for Sidekiq)
@@ -27,10 +28,10 @@ You need a PostgreSQL database to use this project.
 
 ### Install Template
 
-Use Ruby v3.2 and Rails v6.1.7.4 to bootstrap a new GeoBlacklight + GBL Admin application using the template script:
+Use Ruby v3.3 and Rails v7.0.8.1 to bootstrap a new GeoBlacklight + GBL Admin application using the template script:
 
 ```bash
-rails _6.1.7.4_ new gbl_admin -m https://raw.githubusercontent.com/geobtaa/geoblacklight_admin/develop/template.rb
+rails _7.0.8.1_ new gbl_admin -m https://raw.githubusercontent.com/geobtaa/geoblacklight_admin/develop/template.rb
 cd gbl_admin
 bundle exec rake gbl_admin:server
 ```
@@ -47,62 +48,16 @@ You have now generated the .internal_test_app and populated the Elements / FormE
 
 -----
 
-## Run Project for Local Development
-Drop and recreate databases (or engine_cart:generate will fail)
+## Contributing
 
-### Drop/Create application PG database
-```bash
-psql postgres
-DROP DATABASE geoblacklight_development;
-CREATE DATABASE geoblacklight_development;
-```
+For Developer documentation see [doc/developer.md](./docs/development.md)
 
-```bash
-cd project root
-bundle install
-bundle exec rake engine_cart:regenerate
-```
+## License
+The gem is available as open source under the terms of the [Apache 2.0 License](https://opensource.org/license/apache-2-0).
 
-### Run Solr
-```bash
-bin/rails geoblacklight:solr
-```
-
-### Run App
-```bash
-cd .internal_test_app
-bundle exec rails server
-```
-
-### Lint App
-```bash
-standardrb .
-standardrb --fix
-```
-
-### Test App
-```bash
-RAILS_ENV=test bundle exec rails test
-```
 
 ## TODOs
-* ~~SolrWrapper - Add persist option~~
-* ~~BlacklightApi returns not auth'd message (not requiring auth for now (not sensitive data))~~
-* ~~Facet links need /admin nesting~~
-* ~~Imports#new -- undefined method `imports_path'~~
-* ~~Elements#index -- undefined method `element_path'~~
-* ~~Imports#new -- cannot upload files~~
-* ~~Import#run -- doesn't fire~~
-* ~~Documents - JS actions not working~~
-* ~~GBL needs to honor publication state~~
-* ~~Add GBL Admin link to nav~~
-* ~~Routes - Get devise user~~
-* ~~No route matches [GET] "/users/sign_out"~~
-* ~~Bookmarks need to be Admin::Bookmarks~~
-* ~~GitHub Actions / CI integration~~
-* ~~Port the GEOMG test suite~~
-* ~~Project gem dependency injection redundancy...~~
+* ~~Send GBLADMIN JavaScript pack to NPM like Blacklight~~
 * DRY up Engine routing
 * Remove legacy GEOMG / B1G everywhere...
-* Send GBLADMIN JavaScript pack to NPM like Blacklight
 * Likely some more polish to be uncovered...

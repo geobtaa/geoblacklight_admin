@@ -5,7 +5,7 @@ module Admin
   class DocumentsController < Admin::AdminController
     ActionController::Parameters.permit_all_parameters = true
     before_action :set_document,
-      only: %i[show edit update destroy versions]
+      only: %i[show edit update destroy admin versions]
 
     # GET /documents
     # GET /documents.json
@@ -134,6 +134,10 @@ module Admin
     def edit
     end
 
+    # GET /documents/1/admin
+    def admin
+    end
+
     # GET /documents/1/versions
     def versions
     end
@@ -145,7 +149,7 @@ module Admin
       @document.friendlier_id = @document.send(GeoblacklightAdmin::Schema.instance.solr_fields[:id])
       respond_to do |format|
         if @document.save
-          format.html { redirect_to admin_documents_path, notice: "Document was successfully created." }
+          format.html { redirect_to edit_admin_document_path(@document), notice: "Document was successfully created." }
           format.json { render :show, status: :created, location: @document }
         else
           format.html { render :edit }

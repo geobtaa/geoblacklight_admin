@@ -15,6 +15,6 @@ class BlacklightApiFacets
   end
 
   def facets
-    fetch["included"].filter_map { |s| s if s["type"] == "facet" } if fetch["included"].present?
+    fetch["included"].select { |s| s["type"] == "facet" } if fetch["included"].present?
   end
 end

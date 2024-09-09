@@ -10,10 +10,13 @@ module GeoblacklightAdmin
     def initialize(document)
       @document = document
 
+      # State Machine
       @metadata = {}
       @metadata["solr_doc_id"] = document.id
       @metadata["placeheld"] = false
+      @document.thumbnail_state_machine.transition_to!(:processing, @metadata)
 
+      # Logger
       @logger ||= ActiveSupport::TaggedLogging.new(
         Logger.new(
           Rails.root.join("log", "image_service_#{Rails.env}.log")
@@ -28,37 +31,27 @@ module GeoblacklightAdmin
       # Gentle hands
       sleep(1)
 
-      puts "Storing ImageService..."
-      puts "Document ID: #{@document.id}"
-
       io_file = image_tempfile(@document.id)
 
-      if io_file.nil?
-        puts "IO is NIL"
+      if io_file.nil? || @metadata["placeheld"] == true
+        @metadata["IO"] = "NIL"
+        @document.thumbnail_state_machine.transition_to!(:placeheld, @metadata)
       else
-        puts "Attaching IO"
         attach_io(io_file)
       end
 
       log_output
     rescue => e
       @metadata["exception"] = e.inspect
+      @document.thumbnail_state_machine.transition_to!(:failed, @metadata)
       log_output
     end
 
     private
 
     def image_tempfile(document_id)
-      # puts "IMAGE TEMPFILE..."
-      puts "Document Viewer Protocol: #{@document.viewer_protocol}"
-      # puts "Image URL: #{image_url}"
-      # puts "IMAGE DATA: #{image_data}"
-
       @metadata["viewer_protocol"] = @document.viewer_protocol
       @metadata["image_url"] = image_url
-      @metadata["gblsi_thumbnail_uri"] = gblsi_thumbnail_uri
-
-      # puts "IMAGE DATA: #{image_data.inspect}"
 
       return nil unless image_data && @metadata["placeheld"] == false
 
@@ -67,24 +60,18 @@ module GeoblacklightAdmin
       temp_file.write(image_data)
       temp_file.rewind
 
-      # puts "TEMPFILE: #{temp_file.inspect}"
-
       @metadata["image_tempfile"] = temp_file.inspect
       temp_file
     end
 
     def attach_io(io)
-      # Remote content-type headers are untrustworthy
-      # Pull the mimetype and file extension via MimeMagic
-      content_type = Marcel::MimeType.for(File.open(io))
-      mime_type = Marcel::TYPES[content_type][0][0]
+      @document.document_assets.where("json_attributes->>'thumbnail' = ?", "true").destroy_all
 
-      puts "Content Type: #{content_type.inspect}"
-      puts "MIME Type: #{mime_type.inspect}"
+      content_type = Marcel::MimeType.for(File.open(io))
+      @metadata["content_type"] = content_type.inspect
 
       if content_type.start_with?("image")
-
-        puts "\n\nStoring an image!\n\n"
+        @metadata["storing_image"] = io.inspect
 
         asset = Asset.new
         asset.parent_id = @document.id
@@ -92,8 +79,10 @@ module GeoblacklightAdmin
         asset.title = (asset.file&.original_filename || "Untitled")
         asset.thumbnail = true
         asset.save
+
+        @document.thumbnail_state_machine.transition_to!(:succeeded, @metadata)
       else
-        # @TODO: If no thumb, what to do?
+        @document.thumbnail_state_machine.transition_to!(:placeheld, @metadata)
       end
     end
 
@@ -119,7 +108,7 @@ module GeoblacklightAdmin
     end
 
     def gblsi_thumbnail_uri
-      if gblsi_thumbnail_field? && @document.send(Settings.GBLSI_THUMBNAIL_FIELD)
+      if gblsi_thumbnail_field? && @document.send(Settings.GBLSI_THUMBNAIL_FIELD).present?
         @document.send(Settings.GBLSI_THUMBNAIL_FIELD)
       else
         false
@@ -128,7 +117,6 @@ module GeoblacklightAdmin
 
     # Generates hash containing thumbnail mime_type and image.
     def image_data
-      # puts "IMAGE DATA..."
       return nil unless image_url
 
       remote_image
@@ -136,7 +124,6 @@ module GeoblacklightAdmin
 
     # Gets thumbnail image from URL. On error, placehold image.
     def remote_image
-      # puts "remote_image..."
       auth = geoserver_credentials
 
       uri = Addressable::URI.parse(image_url)
@@ -166,12 +153,6 @@ module GeoblacklightAdmin
     # have not been set beyond the default, then a thumbnail url from
     # dct references is used instead.
     def image_url
-      # puts "IMAGE URL..."
-      # puts "gblsi_thumbnail_uri: #{gblsi_thumbnail_uri.inspect}"
-      # puts "restricted_scanned_map?: #{restricted_scanned_map?}"
-      # puts "service_url: #{service_url.inspect}"
-      # puts "image_reference: #{image_reference.inspect}"
-
       @image_url ||= gblsi_thumbnail_uri || service_url || image_reference
     end
 
@@ -186,14 +167,12 @@ module GeoblacklightAdmin
     # from the viewer protocol, and if it's loaded, the image_url
     # method is called.
     def service_url
-      # puts "SERVICE URL..."
       # Follow image_url instead
-      return nil if gblsi_thumbnail_uri
+      return nil if gblsi_thumbnail_uri.present?
 
       @service_url ||=
         begin
           return unless @document.available?
-
           protocol = @document.viewer_protocol
 
           if protocol == "map" || protocol.nil?
@@ -201,8 +180,6 @@ module GeoblacklightAdmin
             @metadata["placeheld"] = true
             return nil
           end
-
-          puts "Image Service: #{protocol.to_s.camelcase}"
 
           "GeoblacklightAdmin::ImageService::#{protocol.to_s.camelcase}".constantize.image_url(@document, image_size)
         rescue NameError
@@ -229,7 +206,6 @@ module GeoblacklightAdmin
 
     # Capture metadata within image harvest log
     def log_output
-      # @metadata["state"] = @document.sidecar.image_state.current_state
       @metadata.each do |key, value|
         @logger.tagged(@document.id, key.to_s) { @logger.info value }
       end
