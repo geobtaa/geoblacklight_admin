@@ -5,12 +5,12 @@ require "test_helper"
 module Admin
   class AssetsControllerTest < ActionDispatch::IntegrationTest
     setup do
-      @asset = assets(:asset_1) 
+      @asset = assets(:asset_1)
 
       get "/users/sign_in"
       sign_in_as users(:user_001)
       post user_session_url
-  
+
       follow_redirect!
       assert_response :success
     end
