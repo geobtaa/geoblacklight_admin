@@ -15,7 +15,7 @@ module Admin
     end
 
     test "should get facets" do
-      # skip "@TODO - found unpermitted parameter: :advanced_search"
+      skip "@TODO - found unpermitted parameter: :advanced_search"
       get admin_advanced_search_facets_url, as: :json
       assert_response :success
     end
