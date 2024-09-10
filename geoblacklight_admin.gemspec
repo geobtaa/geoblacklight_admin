@@ -60,6 +60,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "minitest-ci", "~> 3.4"
   s.add_development_dependency "minitest-rails", "~> 7.0"
   s.add_development_dependency "minitest-reporters", "~> 1.6"
+  s.add_development_dependency "rails-controller-testing", "~> 1.0"
   s.add_development_dependency "rspec-rails", "~> 3.0"
   s.add_development_dependency "selenium-webdriver"
   s.add_development_dependency "shoulda-context", "~> 2.0"

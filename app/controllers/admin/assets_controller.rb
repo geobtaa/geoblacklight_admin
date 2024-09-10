@@ -5,7 +5,7 @@ module Admin
   class AssetsController < Admin::AdminController
     before_action :set_asset, only: %i[show edit update destroy]
 
-    # GET /assets or /assets.json
+    # GET /admin/asset_files
     def index
       scope = Asset
       search_query = params[:q].strip if params[:q].present?
@@ -32,34 +32,14 @@ module Admin
     def show
     end
 
-    # GET /assets/new
-    def new
-      @asset = Asset.new
-    end
-
     # GET /assets/1/edit
     def edit
-    end
-
-    # POST /assets or /assets.json
-    def create
-      @asset = Asset.new(asset_params)
-
-      respond_to do |format|
-        if @asset.save
-          format.html { redirect_to admin_asset_url(@asset), notice: "Asset was successfully created." }
-          format.json { render :show, status: :created, location: @asset }
-        else
-          format.html { render :new, status: :unprocessable_entity }
-          format.json { render json: @asset.errors, status: :unprocessable_entity }
-        end
-      end
     end
 
     # PATCH/PUT /assets/1 or /assets/1.json
     def update
       respond_to do |format|
-        if @asset.update(asset_params)
+        if @asset.update(asset_params.merge!(parent_id: parent_id_via_friendly_id(asset_params[:parent_id])))
           format.html { redirect_to admin_asset_url(@asset.id), notice: "Asset was successfully updated." }
           format.json { render :show, status: :ok, location: @asset }
         else
@@ -116,12 +96,11 @@ module Admin
       redirect_to admin_assets_url, notice: "Files attached successfully."
     end
 
-    def sort
-      Asset.sort_assets(params[:id_list])
-      render body: nil
-    end
-
     private
+
+    def parent_id_via_friendly_id(friendlier_id)
+      Document.find_by_friendlier_id(friendlier_id)&.id
+    end
 
     # Use callbacks to share common setup or constraints between actions.
     def set_asset
@@ -130,7 +109,7 @@ module Admin
 
     # Only allow a list of trusted parameters through.
     def asset_params
-      params.require(:asset)
+      params.require(:asset).permit(:parent_id)
     end
 
     def date_check?(val)
