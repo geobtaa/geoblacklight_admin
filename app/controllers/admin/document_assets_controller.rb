@@ -37,11 +37,11 @@ module Admin
     # PATCH/PUT /works/1
     # PATCH/PUT /works/1.json
     def update
-      @document_asset = DocumentAsset.find_by_friendlier_id!(params[:id])
+      @document_asset = Asset.find_by_friendlier_id!(params[:id])
 
       respond_to do |format|
         if @document_asset.update(document_asset_params)
-          format.html { redirect_to admin_document_document_assets_path(@document, @document_asset.parent), notice: "Asset was successfully updated." }
+          format.html { redirect_to admin_document_document_assets_path(@document_asset.parent), notice: "Asset was successfully updated." }
           format.json { render :show, status: :ok, location: @document_asset }
         else
           format.html { render :edit }
@@ -61,16 +61,6 @@ module Admin
         end
         format.json { head :no_content }
       end
-    end
-
-    def check_fixity
-      @asset = Asset.find_by_friendlier_id!(params[:asset_id])
-      SingleAssetCheckerJob.perform_later(@asset)
-      redirect_to admin_asset_url(@asset), notice: "This file will be checked shortly."
-    end
-
-    def fixity_report
-      @fixity_report = FixityReport.new
     end
 
     def display_attach_form
@@ -113,75 +103,6 @@ module Admin
 
       redirect_to admin_document_document_assets_path(@parent.friendlier_id, anchor: "nav-members")
     end
-
-    def convert_to_child_work
-      @asset = Asset.find_by_friendlier_id!(params[:id])
-
-      parent = @asset.parent
-
-      new_child = Work.new(title: @asset.title)
-
-      # Asking for permission to create a new Work,
-      # which is arguably the main thing going on in this method.
-      # authorize! :create, Work as the first line of the method
-      # would be better, but we currently aren't allowed to do that
-      # see (https://github.com/chaps-io/access-granted/pull/56).
-      authorize! :create, new_child
-
-      new_child.parent = parent
-      # collections
-      new_child.contained_by = parent.contained_by
-      new_child.position = @asset.position
-      new_child.representative = @asset
-      # we can copy _all_ the non-title metadata like this...
-      new_child.json_attributes = parent.json_attributes
-
-      @asset.parent = new_child
-
-      Kithe::Model.transaction do
-        new_child.save!
-        @asset.save! # to get new parent
-
-        if parent.representative_id == @asset.id
-          parent.representative = new_child
-          parent.save!
-        end
-      end
-
-      redirect_to edit_admin_work_path(new_child), notice: "Asset promoted to child work #{new_child.title}"
-    end
-
-    # requires params[:active_encode_status_id]
-    def refresh_active_encode_status
-      status = ActiveEncodeStatus.find(params[:active_encode_status_id])
-
-      RefreshActiveEncodeStatusJob.perform_later(status)
-
-      redirect_to admin_asset_url(status.asset),
-        notice: "Started refresh for ActiveEncode job #{status.active_encode_id}"
-    end
-
-    def work_is_oral_history?
-      (@asset.parent.is_a? Work) && @asset.parent.genre && @asset.parent.genre.include?("Oral histories")
-    end
-    helper_method :work_is_oral_history?
-
-    def asset_is_collection_thumbnail?
-      @asset.parent.is_a? Collection
-    end
-    helper_method :asset_is_collection_thumbnail?
-
-    def edit_path(asset)
-      asset.parent.is_a? Collection ? edit_admin_collection_path(asset.parent) : edit_admin_asset_path(asset)
-    end
-    helper_method :edit_path
-
-    def parent_path(asset)
-      return nil if asset.parent.nil?
-
-      asset.parent.is_a? Collection ? collection_path(asset.parent) : admin_work_path(asset.parent)
-    end
-    helper_method :parent_path
 
     private
 
