@@ -52,8 +52,6 @@ class DocumentTest < ActiveSupport::TestCase
   test "should respond to GBL SolrDocument convience methods" do
     document = documents(:ag)
 
-    debugger
-
     assert_respond_to document, :available?
     assert_equal true, document.available?
 
