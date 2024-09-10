@@ -1,51 +1,78 @@
 # frozen_string_literal: true
 
 require "test_helper"
+require "active_model"
 
 class ImportBtaaTest < ActiveSupport::TestCase
-  def setup
-    @import = ImportBtaa.new
-    @wsen_geom = "-96.6391,40.3754,-90.1401,43.5012"
+  setup do
+    @import_btaa = ImportBtaa.new
   end
 
-  # Parent
-  test "responds to run" do
-    assert_respond_to(@import, :run!)
+  test "mapping_configuration returns importable fields" do
+    expected_fields = GeoblacklightAdmin::Schema.instance.importable_fields
+    assert_equal expected_fields, @import_btaa.mapping_configuration
   end
 
-  test "methods" do
-    assert_respond_to(@import, :default_mappings)
-    assert_respond_to(@import, :assumed_mappings)
-    assert_respond_to(@import, :derived_mappings)
-    assert_respond_to(@import, :required_mappings)
-    assert_respond_to(@import, :derive_dcat_centroid)
+  test "klass_delimiter returns correct delimiter" do
+    assert_equal "|", @import_btaa.klass_delimiter
   end
 
-  test "default_mappings" do
-    assert_instance_of(Array, @import.default_mappings)
-    assert_includes(@import.default_mappings.map(&:keys).flatten, :gbl_mdVersion_s)
+  test "default_mappings returns correct hard value mappings" do
+    expected_mappings = [{ gbl_mdVersion_s: "Aardvark" }]
+    assert_equal expected_mappings, @import_btaa.default_mappings
   end
 
-  test "derived_mappings" do
-    assert_instance_of(Array, @import.derived_mappings)
-    assert_includes @import.derived_mappings.map(&:keys).flatten, :dcat_centroid
+  test "assumed_mappings returns an empty array" do
+    assert_empty @import_btaa.assumed_mappings
   end
 
-  test "derive_dcat_centroid" do
-    solr_geom_hash = {
-      data_hash: {solr_geom: "-18.6,-35.3,52.3,37.17"},
-      field: :solr_geom
-    }
-    assert_instance_of(String, @import.derive_dcat_centroid(solr_geom_hash))
-    assert_equal("0.9350000000000023,16.849999999999998", @import.derive_dcat_centroid(solr_geom_hash))
+  test "derived_mappings returns correct derived mappings" do
+    expected_mappings = [
+      { dcat_centroid: { field: "dcat_bbox", method: "derive_dcat_centroid" } },
+      { b1g_child_record_b: { field: "b1g_child_record_b", method: "derive_boolean" } },
+      { gbl_georeferenced_b: { field: "gbl_georeferenced_b", method: "derive_boolean" } },
+      { gbl_suppressed_b: { field: "gbl_suppressed_b", method: "derive_boolean" } }
+    ]
+    assert_equal expected_mappings, @import_btaa.derived_mappings
   end
 
-  test "derive_boolean" do
-    solr_geom_hash = {
-      data_hash: {gbl_suppressed_b: "False"},
-      field: :gbl_suppressed_b
-    }
+  test "required_mappings returns an empty array" do
+    assert_empty @import_btaa.required_mappings
+  end
 
-    assert_equal(false, @import.derive_boolean(solr_geom_hash))
+  test "derive_dcat_centroid calculates centroid from bbox" do
+    data_hash = { "dcat_bbox" => "10,20,30,40" } # w, s, e, n
+    args = { data_hash: data_hash, field: "dcat_bbox" }
+    expected_centroid = "30.0,20.0" # calculated as ((n + s) / 2, (e + w) / 2)
+    
+    assert_equal expected_centroid, @import_btaa.derive_dcat_centroid(args)
+  end
+
+  test "derive_dcat_centroid returns nil if bbox is blank" do
+    data_hash = { "dcat_bbox" => "" }
+    args = { data_hash: data_hash, field: "dcat_bbox" }
+
+    assert_nil @import_btaa.derive_dcat_centroid(args)
+  end
+
+  test "derive_boolean correctly casts truthy values" do
+    data_hash = { "gbl_georeferenced_b" => "true" }
+    args = { data_hash: data_hash, field: "gbl_georeferenced_b" }
+
+    assert_equal true, @import_btaa.derive_boolean(args)
+  end
+
+  test "derive_boolean correctly casts falsy values" do
+    data_hash = { "gbl_georeferenced_b" => "false" }
+    args = { data_hash: data_hash, field: "gbl_georeferenced_b" }
+
+    assert_equal false, @import_btaa.derive_boolean(args)
+  end
+
+  test "derive_boolean returns false if field is blank" do
+    data_hash = { "gbl_georeferenced_b" => "" }
+    args = { data_hash: data_hash, field: "gbl_georeferenced_b" }
+
+    assert_equal false, @import_btaa.derive_boolean(args)
   end
 end
