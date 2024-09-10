@@ -257,7 +257,7 @@ class Document < Kithe::Work
 
   def local?
     local = send(Settings.FIELDS.PROVIDER) || ""
-    local.casecmp(Settings.INSTITUTION_LOCAL_NAME)&.zero?
+    local.casecmp(Settings.INSTITUTION)&.zero?
   end
 
   def restricted?
