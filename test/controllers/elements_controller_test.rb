@@ -72,8 +72,8 @@ class ElementsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should sort elements" do
-    element_1 = elements(:element_1) # Original order
-    element_2 = elements(:element_2)
+    element_1 = Element.first # Original order
+    element_2 = Element.second
     
     id_list = [element_2.id, element_1.id] # New desired order
 
