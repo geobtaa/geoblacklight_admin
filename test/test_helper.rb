@@ -34,6 +34,10 @@ DatabaseCleaner.strategy = :truncation
 require "minitest/rails"
 require "minitest/reporters"
 
+require "webmock/minitest"
+WebMock.enable!
+WebMock.allow_net_connect!
+
 # DB needs to be clean and seeded
 DatabaseCleaner.clean
 Rails.application.load_seed

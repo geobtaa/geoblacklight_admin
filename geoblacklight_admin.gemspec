@@ -70,4 +70,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "standard", "~> 1.24"
   s.add_development_dependency "webdrivers"
   s.add_development_dependency "web-console"
+  s.add_development_dependency "webmock", "~> 3.23"
 end
