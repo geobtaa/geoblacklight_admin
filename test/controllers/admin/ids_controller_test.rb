@@ -16,7 +16,6 @@ module Admin
     end
 
     test "should get ids" do
-      skip "@TODO - found unpermitted parameter: :id"
       get admin_api_ids_url, as: :json
       assert_response :success
     end
