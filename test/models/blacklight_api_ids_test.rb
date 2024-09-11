@@ -16,18 +16,18 @@ class BlacklightApiIdsTest < ActiveSupport::TestCase
     }
     @blacklight_api_ids = BlacklightApiIds.new(@request, @default_args)
     @response_body = {
-      "data" => [{ "id" => "1" }, { "id" => "2" }],
+      "data" => [{"id" => "1"}, {"id" => "2"}],
       "included" => [
-        { "type" => "facet", "id" => "facet1" },
-        { "type" => "sort", "id" => "sort1" }
+        {"type" => "facet", "id" => "facet1"},
+        {"type" => "sort", "id" => "sort1"}
       ],
-      "meta" => { "total" => 2 },
-      "links" => { "self" => "http://localhost:3000/admin/api?page=1" }
+      "meta" => {"total" => 2},
+      "links" => {"self" => "http://localhost:3000/admin/api?page=1"}
     }.to_json
 
     stub_request(:get, "#{@request}#{BLACKLIGHT_JSON_API_IDS}")
       .with(query: @default_args)
-      .to_return(status: 200, body: @response_body, headers: { 'Content-Type' => 'application/json' })
+      .to_return(status: 200, body: @response_body, headers: {"Content-Type" => "application/json"})
   end
 
   test "fetch makes a request to the API and returns the response" do
@@ -37,23 +37,23 @@ class BlacklightApiIdsTest < ActiveSupport::TestCase
   end
 
   test "results returns the data from the API response" do
-    assert_equal [{ "id" => "1" }, { "id" => "2" }], @blacklight_api_ids.results
+    assert_equal [{"id" => "1"}, {"id" => "2"}], @blacklight_api_ids.results
   end
 
   test "facets returns the facets from the API response" do
-    assert_equal [{ "type" => "facet", "id" => "facet1" }], @blacklight_api_ids.facets
+    assert_equal [{"type" => "facet", "id" => "facet1"}], @blacklight_api_ids.facets
   end
 
   test "sorts returns the sorts from the API response" do
-    assert_equal [{ "type" => "sort", "id" => "sort1" }], @blacklight_api_ids.sorts
+    assert_equal [{"type" => "sort", "id" => "sort1"}], @blacklight_api_ids.sorts
   end
 
   test "meta returns the meta information from the API response" do
-    assert_equal({ "total" => 2 }, @blacklight_api_ids.meta)
+    assert_equal({"total" => 2}, @blacklight_api_ids.meta)
   end
 
   test "links returns the links from the API response" do
-    assert_equal({ "self" => "http://localhost:3000/admin/api?page=1" }, @blacklight_api_ids.links)
+    assert_equal({"self" => "http://localhost:3000/admin/api?page=1"}, @blacklight_api_ids.links)
   end
 
   test "load_all loads documents by friendlier_id" do
@@ -66,15 +66,15 @@ class BlacklightApiIdsTest < ActiveSupport::TestCase
   end
 
   test "append_facets adds facets to options" do
-    options = { q: "*", f: { "genre" => ["Map"] } }
-    result = @blacklight_api_ids.send(:append_facets, { "genre" => ["Map"] }, options)
-    assert_equal({ q: "*", f: { "genre" => ["Map"] } }, result)
+    options = {q: "*", f: {"genre" => ["Map"]}}
+    result = @blacklight_api_ids.send(:append_facets, {"genre" => ["Map"]}, options)
+    assert_equal({q: "*", f: {"genre" => ["Map"]}}, result)
   end
 
   test "append_facets does not change options when facets are nil" do
-    options = { q: "*" }
+    options = {q: "*"}
     result = @blacklight_api_ids.send(:append_facets, nil, options)
-    assert_equal({ q: "*" }, result)
+    assert_equal({q: "*"}, result)
   end
 
   test "prep_daterange converts date range string to solr format" do
@@ -84,7 +84,7 @@ class BlacklightApiIdsTest < ActiveSupport::TestCase
   end
 
   test "append_daterange adds daterange to options" do
-    options = { q: "*", daterange: "01/01/2020 - 12/31/2020" }
+    options = {q: "*", daterange: "01/01/2020 - 12/31/2020"}
     result = @blacklight_api_ids.send(:append_daterange, options[:daterange], options)
     expected_daterange = "[2020-01-01T00:00:00 TO 2020-12-31T23:59:59]"
     assert_equal expected_daterange, result[:f][:date_created_drsim]
@@ -92,8 +92,8 @@ class BlacklightApiIdsTest < ActiveSupport::TestCase
 
   test "append_daterange does nothing if daterange is nil" do
     skip("@TODO: Fix this test")
-    options = { q: "*" }
+    options = {q: "*"}
     result = @blacklight_api_ids.send(:append_daterange, nil, options)
-    assert_equal({ q: "*" }, result)
+    assert_equal({q: "*"}, result)
   end
 end

@@ -16,8 +16,8 @@ class DocumentHelperTest < ActionView::TestCase
   # Test for sort_link method
   test "sort_link" do
     link = {
-      "attributes" => { "label" => "Relevance" },
-      "links" => { "self" => "http://localhost:3000/admin/api.json?page=1&q=water&rows=20&sort=score+desc%2C+dct_title_sort+asc" }
+      "attributes" => {"label" => "Relevance"},
+      "links" => {"self" => "http://localhost:3000/admin/api.json?page=1&q=water&rows=20&sort=score+desc%2C+dct_title_sort+asc"}
     }
     expected_html = '<a class="dropdown-item" href="/admin/documents?page=1&amp;q=water&amp;rows=20&amp;sort=score+desc%2C+dct_title_sort+asc">Relevance</a>'
     assert_dom_equal expected_html, sort_link(link)
@@ -26,7 +26,7 @@ class DocumentHelperTest < ActionView::TestCase
   # Test for link_from_api - facet add link
   test "link_from_api - facet add link" do
     link = {
-      "links" => { "self" => "http://localhost:3000/admin/api.json?f%5Bb1g_genre_sm%5D%5B%5D=Geospatial+data&q=water&rows=20&sort=solr_year_i+desc%2C+dc_title_sort+asc" }
+      "links" => {"self" => "http://localhost:3000/admin/api.json?f%5Bb1g_genre_sm%5D%5B%5D=Geospatial+data&q=water&rows=20&sort=solr_year_i+desc%2C+dc_title_sort+asc"}
     }
     agg = link_from_api(link)
 
@@ -37,7 +37,7 @@ class DocumentHelperTest < ActionView::TestCase
   # Test for link_from_api - facet remove link
   test "link_from_api - facet remove link" do
     link = {
-      "links" => { "remove" => "http://localhost:3000/admin/api.json?f%5Bb1g_genre_sm%5D%5B%5D=Geospatial+data&q=water&rows=20&sort=solr_year_i+desc%2C+dc_title_sort+asc" }
+      "links" => {"remove" => "http://localhost:3000/admin/api.json?f%5Bb1g_genre_sm%5D%5B%5D=Geospatial+data&q=water&rows=20&sort=solr_year_i+desc%2C+dc_title_sort+asc"}
     }
     agg = link_from_api(link)
 

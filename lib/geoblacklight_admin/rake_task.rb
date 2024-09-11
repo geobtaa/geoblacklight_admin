@@ -5,4 +5,3 @@ module GeoblacklightAdmin
   end
 end
 # :nocov:
-

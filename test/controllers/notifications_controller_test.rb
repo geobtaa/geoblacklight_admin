@@ -25,7 +25,7 @@ class NotificationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update notification to mark as read" do
-    patch admin_notification_url(@notification), params: { read: "1" }
+    patch admin_notification_url(@notification), params: {read: "1"}
     assert_redirected_to admin_notifications_url
     follow_redirect!
     @notification.reload
@@ -34,7 +34,7 @@ class NotificationsControllerTest < ActionDispatch::IntegrationTest
 
   test "should update notification to mark as unread" do
     @notification.update(read_at: Time.zone.now) # Mark as read first
-    patch admin_notification_url(@notification), params: { read: "0" }
+    patch admin_notification_url(@notification), params: {read: "0"}
     assert_redirected_to admin_notifications_url
     follow_redirect!
     @notification.reload
@@ -59,7 +59,7 @@ class NotificationsControllerTest < ActionDispatch::IntegrationTest
 
     assert_empty notifications.pluck(&:read_at).compact, "Notifications should initially be unread"
 
-    put batch_admin_notifications_url, params: { read: "all" }
+    put batch_admin_notifications_url, params: {read: "all"}
     assert_redirected_to admin_notifications_url
     follow_redirect!
     assert_equal "All notifications marked as read.", flash[:success]
@@ -70,7 +70,7 @@ class NotificationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should handle invalid update parameters gracefully" do
-    patch admin_notification_url(@notification), params: { read: "invalid" }
+    patch admin_notification_url(@notification), params: {read: "invalid"}
     assert_redirected_to admin_notifications_url
     follow_redirect!
     assert_nil flash[:notice] # No specific flash message expected for invalid params
