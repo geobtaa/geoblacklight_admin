@@ -25,10 +25,10 @@ module Admin
 
       respond_to do |format|
         if @bookmark.save
-          format.html { redirect_to @bookmark, notice: "Bookmark was successfully created." }
+          format.html { redirect_to admin_bookmarks_url, notice: "Bookmark was successfully created." }
           format.js
         else
-          format.html { render :new }
+          format.html { render :index, status: :unprocessable_entity }
           format.json { render json: @bookmark.errors, status: :unprocessable_entity }
         end
       end
@@ -40,7 +40,7 @@ module Admin
       Admin::Bookmark.destroy_by(user: current_user, document: @document)
 
       respond_to do |format|
-        format.html { redirect_to bookmarks_url, notice: "Bookmark was successfully destroyed." }
+        format.html { redirect_to admin_bookmarks_url, notice: "Bookmark was successfully destroyed." }
         format.js
       end
     end
