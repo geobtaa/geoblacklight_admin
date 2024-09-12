@@ -29,7 +29,7 @@ class Admin::BookmarksControllerTest < ActionDispatch::IntegrationTest
 
   test "should create bookmark" do
     assert_difference("Admin::Bookmark.count") do
-      post admin_bookmarks_url, params: { document: @document.friendlier_id }
+      post admin_bookmarks_url, params: {document: @document.friendlier_id}
     end
 
     assert_redirected_to admin_bookmarks_url
@@ -38,7 +38,7 @@ class Admin::BookmarksControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should not create bookmark with invalid data" do
-    post admin_bookmarks_url, params: { document: nil }
+    post admin_bookmarks_url, params: {document: nil}
     assert_response :unprocessable_entity
   end
 
@@ -47,7 +47,7 @@ class Admin::BookmarksControllerTest < ActionDispatch::IntegrationTest
     Admin::Bookmark.create(user: @user, document: @document)
 
     assert_difference("Admin::Bookmark.count", -1) do
-      delete admin_bookmark_url(@bookmark), params: { document: @document.friendlier_id }
+      delete admin_bookmark_url(@bookmark), params: {document: @document.friendlier_id}
     end
 
     assert_redirected_to admin_bookmarks_url
@@ -58,7 +58,7 @@ class Admin::BookmarksControllerTest < ActionDispatch::IntegrationTest
   test "should not destroy non-existent bookmark" do
     skip("Need to fix this test")
     assert_no_difference("Admin::Bookmark.count") do
-      delete admin_bookmark_url(@bookmark), params: { document: "nonexistent_id" }
+      delete admin_bookmark_url(@bookmark), params: {document: "nonexistent_id"}
     end
 
     assert_redirected_to admin_bookmarks_url

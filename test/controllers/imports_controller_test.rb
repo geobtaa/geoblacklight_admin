@@ -53,7 +53,7 @@ class Admin::ImportsControllerTest < ActionDispatch::IntegrationTest
   test "should create import" do
     skip("@TODO: add file upload to test")
     assert_difference("Import.count") do
-      post admin_imports_url, params: { import: @import_params }
+      post admin_imports_url, params: {import: @import_params}
     end
 
     assert_redirected_to admin_import_mappings_path(Import.last)
@@ -62,14 +62,14 @@ class Admin::ImportsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should not create import with invalid data" do
-    post admin_imports_url, params: { import: @import_params.merge(name: "") }
+    post admin_imports_url, params: {import: @import_params.merge(name: "")}
     assert_response :unprocessable_entity
     assert_template :new
   end
 
   test "should update import" do
     skip("@TODO: add file upload to test")
-    patch admin_import_url(@import), params: { import: { name: "Updated Import" } }
+    patch admin_import_url(@import), params: {import: {name: "Updated Import"}}
     assert_redirected_to admin_import_path(@import)
     follow_redirect!
     assert_select "div", text: "Import was successfully updated."
@@ -78,7 +78,7 @@ class Admin::ImportsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should not update import with invalid data" do
-    patch admin_import_url(@import), params: { import: { name: "" } }
+    patch admin_import_url(@import), params: {import: {name: ""}}
     assert_response :unprocessable_entity
     assert_template :edit
   end

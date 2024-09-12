@@ -112,7 +112,7 @@ class DocumentsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create document" do
     assert_difference("Document.count") do
-      post admin_documents_url, params: { document: @document_params }
+      post admin_documents_url, params: {document: @document_params}
     end
 
     assert_redirected_to edit_admin_document_path(Document.where(friendlier_id: "1234567").first)
@@ -121,13 +121,13 @@ class DocumentsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should not create document with invalid data" do
-    post admin_documents_url, params: { document: @document_params.merge(title: "") }
+    post admin_documents_url, params: {document: @document_params.merge(title: "")}
     assert_response :unprocessable_entity
     assert_template :edit
   end
 
   test "should update document" do
-    patch admin_document_url(@document), params: { document: { title: "Updated Title" } }
+    patch admin_document_url(@document), params: {document: {title: "Updated Title"}}
     assert_redirected_to edit_admin_document_path(@document)
     follow_redirect!
     assert_select "div", text: "Document was successfully updated."
@@ -136,7 +136,7 @@ class DocumentsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should not update document with invalid data" do
-    patch admin_document_url(@document), params: { document: { title: "" } }
+    patch admin_document_url(@document), params: {document: {title: ""}}
     assert_response :unprocessable_entity
     assert_template :edit
   end
@@ -152,41 +152,41 @@ class DocumentsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should fetch documents in JSON format" do
-    get fetch_admin_documents_url, params: { ids: [@document.friendlier_id] }, as: :json
+    get fetch_admin_documents_url, params: {ids: [@document.friendlier_id]}, as: :json
     assert_response :success
     assert_not_nil JSON.parse(response.body)
   end
 
   test "should fetch documents in json_btaa_aardvark format" do
-    get fetch_admin_documents_url, params: { ids: [@document.friendlier_id], format: :json_btaa_aardvark }
+    get fetch_admin_documents_url, params: {ids: [@document.friendlier_id], format: :json_btaa_aardvark}
     assert_response :success
   end
 
   test "should fetch documents in json_aardvark format" do
-    get fetch_admin_documents_url, params: { ids: [@document.friendlier_id], format: :json_aardvark }
+    get fetch_admin_documents_url, params: {ids: [@document.friendlier_id], format: :json_aardvark}
     assert_response :success
   end
 
   test "should fetch documents in json_gbl_v1 format" do
-    get fetch_admin_documents_url, params: { ids: [@document.friendlier_id], format: :json_gbl_v1 }
+    get fetch_admin_documents_url, params: {ids: [@document.friendlier_id], format: :json_gbl_v1}
     assert_response :success
   end
 
   test "should fetch documents in csv format" do
-    get fetch_admin_documents_url, params: { ids: [@document.friendlier_id], format: :csv }
+    get fetch_admin_documents_url, params: {ids: [@document.friendlier_id], format: :csv}
     assert_response :success
   end
 
   test "should fetch documents in csv_document_downloads format" do
-    get fetch_admin_documents_url, params: { ids: [@document.friendlier_id], format: :csv_document_downloads }
+    get fetch_admin_documents_url, params: {ids: [@document.friendlier_id], format: :csv_document_downloads}
     assert_response :success
   end
 
   test "should fetch documents in csv_document_access_links format" do
-    get fetch_admin_documents_url, params: { ids: [@document.friendlier_id], format: :csv_document_access_links }
+    get fetch_admin_documents_url, params: {ids: [@document.friendlier_id], format: :csv_document_access_links}
     assert_response :success
   end
-  
+
   test "should get new" do
     get new_admin_document_url
     assert_response :success
