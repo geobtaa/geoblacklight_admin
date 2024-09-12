@@ -152,7 +152,7 @@ module Admin
           format.html { redirect_to edit_admin_document_path(@document), notice: "Document was successfully created." }
           format.json { render :show, status: :created, location: @document }
         else
-          format.html { render :edit }
+          format.html { render :edit, status: :unprocessable_entity }
           format.json { render json: @document.errors, status: :unprocessable_entity }
         end
       end
@@ -166,7 +166,7 @@ module Admin
           format.html { redirect_to edit_admin_document_path(@document), notice: "Document was successfully updated." }
           format.json { render :show, status: :ok, location: @document }
         else
-          format.html { render :edit }
+          format.html { render :edit, status: :unprocessable_entity }
           format.json { render json: @document.errors, status: :unprocessable_entity }
         end
       end
