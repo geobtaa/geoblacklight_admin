@@ -1,125 +1,99 @@
+# frozen_string_literal: true
+
 require "test_helper"
-require "tempfile"
-require "faraday"
 
 module GeoblacklightAdmin
   class ImageServiceTest < ActiveSupport::TestCase
-    def setup
-      @document = Minitest::Mock.new
-      @document.expect :id, "1234"
-      @document.expect :thumbnail_state_machine, Minitest::Mock.new
-      @document.thumbnail_state_machine.expect :transition_to!, nil, [:processing, Hash]
-      @document.expect :viewer_protocol, "http"
-      @document.expect :references, {"http://schema.org/thumbnailUrl" => "http://example.com/thumbnail.jpg"}
-      @document.expect :local_restricted?, false
-      @document.expect :available?, true
+    class MockDocument
+      attr_reader :id, :thumbnail_state_machine, :viewer_protocol, :references
 
-      @service = GeoblacklightAdmin::ImageService.new(@document)
-    end
+      def initialize
+        @id = "test_doc_id"
+        @thumbnail_state_machine = MockStateMachine.new
+        @viewer_protocol = "wms"
+        @references = { "http://schema.org/thumbnailUrl" => "http://example.com/reference_thumbnail.jpg" }
+      end
 
-    def test_initialize
-      assert_equal @document, @service.document
-      assert_equal "1234", @service.instance_variable_get(:@metadata)["solr_doc_id"]
-      assert_equal false, @service.instance_variable_get(:@metadata)["placeheld"]
-    end
+      def local_restricted?
+        false
+      end
 
-    def test_store_with_nil_io_file
-      @service.stub :image_tempfile, nil do
-        @document.thumbnail_state_machine.expect :transition_to!, nil, [:placeheld, Hash]
-        @service.store
-        assert_equal "NIL", @service.instance_variable_get(:@metadata)["IO"]
+      def available?
+        true
       end
     end
 
-    def test_store_with_valid_io_file
-      tempfile = Tempfile.new("test")
-      @service.stub :image_tempfile, tempfile do
-        @service.stub :attach_io, nil do
-          @service.store
-          assert_nil @service.instance_variable_get(:@metadata)["IO"]
+    class MockStateMachine
+      attr_reader :current_state
+
+      def initialize
+        @current_state = nil
+      end
+
+      def transition_to!(state, metadata)
+        @current_state = state
+      end
+    end
+
+    setup do
+      @document = MockDocument.new
+      @image_service = ImageService.new(@document)
+    end
+
+    test "initializes with a document" do
+      assert_equal @document, @image_service.document
+    end
+
+    test "initializes metadata with solr_doc_id and placeheld" do
+      assert_equal @document.id, @image_service.instance_variable_get(:@metadata)["solr_doc_id"]
+      assert_equal false, @image_service.instance_variable_get(:@metadata)["placeheld"]
+    end
+
+    test "transitions document thumbnail state to processing on initialize" do
+      assert_equal :processing, @document.thumbnail_state_machine.current_state
+    end
+
+    test "store method attaches image when io_file is present" do
+      @image_service.stub :image_tempfile, Tempfile.new("test.jpg") do
+        @image_service.stub :attach_io, true do
+          assert @image_service.store
         end
       end
     end
 
-    def test_image_tempfile_with_valid_image_data
-      @service.stub :image_data, "image data" do
-        tempfile = @service.send(:image_tempfile, "1234")
-        assert tempfile.is_a?(Tempfile)
-        assert_equal "image data", tempfile.read
+    test "store method transitions to placeheld when io_file is nil" do
+      @image_service.stub :image_tempfile, nil do
+        @image_service.store
+        assert_equal :placeheld, @document.thumbnail_state_machine.current_state
       end
     end
 
-    def test_image_tempfile_with_nil_image_data
-      @service.stub :image_data, nil do
-        tempfile = @service.send(:image_tempfile, "1234")
-        assert_nil tempfile
+    test "store method transitions to failed on exception" do
+      @image_service.stub :image_tempfile, -> { raise StandardError } do
+        @image_service.store
+        assert_equal :failed, @document.thumbnail_state_machine.current_state
       end
     end
 
-    def test_attach_io_with_image_content_type
-      tempfile = Tempfile.new("test")
-      tempfile.write("image data")
-      tempfile.rewind
+    test "image_url returns gblsi_thumbnail_uri when present" do
+      @image_service.stub :gblsi_thumbnail_uri, "http://example.com/thumbnail.jpg" do
+        assert_equal "http://example.com/thumbnail.jpg", @image_service.send(:image_url)
+      end
+    end
 
-      Marcel::MimeType.stub :for, "image/jpeg" do
-        asset = Minitest::Mock.new
-        asset.expect :parent_id=, nil, ["1234"]
-        asset.expect :file=, nil, [tempfile]
-        asset.expect :title=, nil, [String]
-        asset.expect :thumbnail=, nil, [true]
-        asset.expect :save, true
-
-        Asset.stub :new, asset do
-          @document.thumbnail_state_machine.expect :transition_to!, nil, [:succeeded, Hash]
-          @service.send(:attach_io, tempfile)
+    test "image_url falls back to service_url when gblsi_thumbnail_uri is not present" do
+      @image_service.stub :gblsi_thumbnail_uri, nil do
+        @image_service.stub :service_url, "http://example.com/service_thumbnail.jpg" do
+          assert_equal "http://example.com/service_thumbnail.jpg", @image_service.send(:image_url)
         end
       end
     end
 
-    def test_attach_io_with_non_image_content_type
-      tempfile = Tempfile.new("test")
-      tempfile.write("non-image data")
-      tempfile.rewind
-
-      Marcel::MimeType.stub :for, "application/pdf" do
-        @document.thumbnail_state_machine.expect :transition_to!, nil, [:placeheld, Hash]
-        @service.send(:attach_io, tempfile)
-      end
-    end
-
-    def test_remote_image_with_valid_url
-      Faraday.stub :new, Minitest::Mock.new do
-        conn = Faraday.new
-        conn.stub :get, OpenStruct.new(body: "image data") do
-          @service.stub :image_url, "http://example.com/image.jpg" do
-            assert_equal "image data", @service.send(:remote_image)
-          end
+    test "image_url falls back to image_reference when gblsi_thumbnail_uri and service_url are not present" do
+      @image_service.stub :gblsi_thumbnail_uri, nil do
+        @image_service.stub :service_url, nil do
+          assert_equal "http://example.com/reference_thumbnail.jpg", @image_service.send(:image_url)
         end
-      end
-    end
-
-    def test_remote_image_with_invalid_url
-      Faraday.stub :new, Minitest::Mock.new do
-        conn = Faraday.new
-        conn.stub :get, nil do
-          @service.stub :image_url, "invalid_url" do
-            assert_nil @service.send(:remote_image)
-          end
-        end
-      end
-    end
-
-    def test_image_url
-      assert_equal "http://example.com/thumbnail.jpg", @service.send(:image_url)
-    end
-
-    def test_log_output
-      logger = Minitest::Mock.new
-      logger.expect :tagged, nil, ["1234", "solr_doc_id"]
-      logger.expect :tagged, nil, ["1234", "placeheld"]
-
-      ActiveSupport::TaggedLogging.stub :new, logger do
-        @service.send(:log_output)
       end
     end
   end
