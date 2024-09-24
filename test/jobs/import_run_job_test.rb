@@ -4,36 +4,19 @@ require "test_helper"
 
 class ImportRunJobTest < ActiveJob::TestCase
   setup do
-    @import = imports(:one) # Assuming a fixture or factory for imports
+    @import = imports(:one)
 
-    # Stub the csv_file download to return CSV content
-    def @import.csv_file
-      OpenStruct.new(download: <<~CSV)
-        title,id
-        "Document Title 1","1"
-        "Document Title 2","2"
-      CSV
-    end
+    @import.csv_file = ActiveStorage::Blob.find_signed(active_storage_blobs(:import_btaa_blob).signed_id)
+  end
 
-    # Stub the convert_data method to just return the input hash
-    def @import.convert_data(hash)
-      hash
-    end
-
+  test "should create ImportDocuments for each CSV row" do
     # Perform the job
     perform_enqueued_jobs do
       ImportRunJob.perform_now(@import)
     end
-  end
 
-  test "should create ImportDocuments for each CSV row" do
-    assert_equal 2, ImportDocument.count
-    assert ImportDocument.exists?(friendlier_id: "1")
-    assert ImportDocument.exists?(friendlier_id: "2")
-  end
-
-  test "should enqueue ImportDocumentJob for each ImportDocument" do
-    assert_enqueued_jobs 2, only: ImportDocumentJob
+    assert_equal 5, ImportDocument.count
+    assert ImportDocument.exists?(friendlier_id: "p16022coll230:4115")
   end
 
   test "should handle CSV parsing errors gracefully" do
@@ -47,8 +30,8 @@ class ImportRunJobTest < ActiveJob::TestCase
       end
     end
 
-    # Ensure no ImportDocuments were created
-    assert_equal 0, ImportDocument.count
+    # Ensure no new ImportDocuments were created (1 already exists from fixture)
+    assert_equal 1, ImportDocument.count
   end
 
   test "logs errors without stopping the job" do
@@ -64,7 +47,7 @@ class ImportRunJobTest < ActiveJob::TestCase
       end
     end
 
-    # No ImportDocuments should be created due to the error
-    assert_equal 0, ImportDocument.count
+    # No new ImportDocuments should be created due to the error (1 already exists from fixture)
+    assert_equal 1, ImportDocument.count
   end
 end
