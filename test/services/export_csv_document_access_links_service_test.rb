@@ -1,9 +1,9 @@
-require 'test_helper'
+require "test_helper"
 
 class ExportCsvDocumentAccessLinksServiceTest < ActiveSupport::TestCase
   setup do
-    @document1 = Document.create!(geomg_id_s: 'doc1', friendlier_id: 'doc1', title: 'Document 1', gbl_resourceClass_sm: ['Map'], dct_accessRights_s: "Public")
-    @document2 = Document.create!(geomg_id_s: 'doc2', friendlier_id: 'doc2', title: 'Document 2', gbl_resourceClass_sm: ['Map'], dct_accessRights_s: "Public")
+    @document1 = Document.create!(geomg_id_s: "doc1", friendlier_id: "doc1", title: "Document 1", gbl_resourceClass_sm: ["Map"], dct_accessRights_s: "Public")
+    @document2 = Document.create!(geomg_id_s: "doc2", friendlier_id: "doc2", title: "Document 2", gbl_resourceClass_sm: ["Map"], dct_accessRights_s: "Public")
     @access1 = DocumentAccess.create!(document: @document1, institution_code: 1, access_url: "http://b1g.com/")
     @access2 = DocumentAccess.create!(document: @document1, institution_code: 1, access_url: "https://btaa.org")
     @access3 = DocumentAccess.create!(document: @document2, institution_code: 2, access_url: "https://geo.btaa.org")
@@ -31,12 +31,12 @@ class ExportCsvDocumentAccessLinksServiceTest < ActiveSupport::TestCase
     ids_from_csv = csv_rows[1..-1].map { |row| row[0] }
 
     assert_includes ids_from_csv, @access1.id.to_s, "CSV does not include @access1 id"
-  assert_includes ids_from_csv, @access2.id.to_s, "CSV does not include @access2 id"
-  assert_includes ids_from_csv, @access3.id.to_s, "CSV does not include @access3 id"
+    assert_includes ids_from_csv, @access2.id.to_s, "CSV does not include @access2 id"
+    assert_includes ids_from_csv, @access3.id.to_s, "CSV does not include @access3 id"
   end
 
   test "call handles non-existent documents" do
-    document_ids = [@document1.friendlier_id, 'non_existent_id']
+    document_ids = [@document1.friendlier_id, "non_existent_id"]
     result = ExportCsvDocumentAccessLinksService.call(document_ids)
 
     csv_string = CSV.generate do |csv|
@@ -51,13 +51,13 @@ class ExportCsvDocumentAccessLinksServiceTest < ActiveSupport::TestCase
 
   test "call broadcasts progress" do
     document_ids = [@document1.friendlier_id, @document2.friendlier_id]
-  
+
     broadcast_calls = []
-    
+
     ActionCable.server.stub(:broadcast, ->(channel, data) { broadcast_calls << [channel, data] }) do
       ExportCsvDocumentAccessLinksService.call(document_ids)
     end
-  
+
     assert_equal 2, broadcast_calls.size, "Expected 2 broadcast calls, but got #{broadcast_calls.size}"
     assert_equal ["export_channel", {progress: 0}], broadcast_calls[0], "First broadcast call doesn't match expected"
     assert_equal ["export_channel", {progress: 100}], broadcast_calls[1], "Second broadcast call doesn't match expected"

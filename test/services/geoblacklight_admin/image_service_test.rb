@@ -11,7 +11,7 @@ module GeoblacklightAdmin
         @id = "test_doc_id"
         @thumbnail_state_machine = MockStateMachine.new
         @viewer_protocol = "wms"
-        @references = { "http://schema.org/thumbnailUrl" => "http://example.com/reference_thumbnail.jpg" }
+        @references = {"http://schema.org/thumbnailUrl" => "http://example.com/reference_thumbnail.jpg"}
       end
 
       def local_restricted?
