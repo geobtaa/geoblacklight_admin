@@ -28,7 +28,7 @@ class ExportCsvDocumentAccessLinksServiceTest < ActiveSupport::TestCase
     assert_equal 4, csv_rows.size # Header + 3 document accesses
 
     # Collect IDs from csv_rows
-    ids_from_csv = csv_rows[1..-1].map { |row| row[0] }
+    ids_from_csv = csv_rows[1..].map { |row| row[0] }
 
     assert_includes ids_from_csv, @access1.id.to_s, "CSV does not include @access1 id"
     assert_includes ids_from_csv, @access2.id.to_s, "CSV does not include @access2 id"
