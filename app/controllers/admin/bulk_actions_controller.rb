@@ -93,7 +93,7 @@ module Admin
 
     # Only allow a list of trusted parameters through.
     def bulk_action_params
-      params.require(:bulk_action).permit(:name, :scope)
+      params.require(:bulk_action).permit(:name, :scope, :request, :field_name, :field_value)
     end
   end
 end

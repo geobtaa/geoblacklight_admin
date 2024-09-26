@@ -25,11 +25,7 @@ class BulkActionRunDocumentJob < ApplicationJob
 
     logger.debug("Update PubStatus - #{document.friendlier_id} => #{field_value}")
 
-    if document.update!(publication_state: field_value.to_sym)
-      doc.state_machine.transition_to!(:success)
-    else
-      doc.state_machine.transition_to!(:failed)
-    end
+    document.update!(publication_state: field_value.to_sym)
   end
 
   def update_delete(doc, field_value)
@@ -37,10 +33,6 @@ class BulkActionRunDocumentJob < ApplicationJob
 
     logger.debug("Update Delete - #{document.friendlier_id} => #{field_value}")
 
-    if document.destroy
-      doc.state_machine.transition_to!(:success)
-    else
-      doc.state_machine.transition_to!(:failed)
-    end
+    document.destroy
   end
 end

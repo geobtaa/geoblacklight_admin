@@ -42,6 +42,8 @@ WebMock.allow_net_connect!
 DatabaseCleaner.clean
 Rails.application.load_seed
 
+ActiveJob::Base.queue_adapter = :test
+
 module ActiveSupport
   class TestCase
     # extend ActiveStorageValidations::Matchers
