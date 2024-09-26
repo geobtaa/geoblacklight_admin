@@ -5,10 +5,7 @@ class ImportDocumentJob < ApplicationJob
   queue_as :priority
 
   def perform(import_document)
-    # @TODO: Check for friendlier_id or raise error
-    document = Document.where(
-      friendlier_id: import_document.friendlier_id
-    ).first_or_create
+    document = Document.find_or_create_by(friendlier_id: import_document.friendlier_id)
 
     # Set the geom
     document.set_geometry

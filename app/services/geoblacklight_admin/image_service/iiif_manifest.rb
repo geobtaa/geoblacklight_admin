@@ -54,8 +54,6 @@ module GeoblacklightAdmin
       # @param [Integer] thumbnail size
       # @return [String] iiif thumbnail url
       def self.image_url(document, _size)
-        Rails.logger.debug("\n\nViewer Endpoint: #{document.viewer_endpoint}")
-
         begin
           tempfile = Down.download(document.viewer_endpoint)
           manifest_json = JSON.parse(tempfile.read)

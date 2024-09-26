@@ -6,7 +6,7 @@ class MappingsTest < ApplicationSystemTestCase
   setup do
     sign_in_as users(:user_001)
     @import = imports(:one)
-    @mapping = mappings(:one)
+    @mapping = mappings(:Title)
   end
 
   test "visiting the index" do

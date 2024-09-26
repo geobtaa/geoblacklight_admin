@@ -14,16 +14,12 @@ module GeoblacklightAdmin
       # @param [Integer] thumbnail size
       # @return [String] tms thumbnail url
       def self.image_url(document, size)
-        puts "\nTMS IMAGE URL..."
-        puts "document.viewer_endpoint: #{document.viewer_endpoint.inspect}"
-
         # Begins with:
         # https://cugir.library.cornell.edu/geoserver/gwc/service/tms/1.0.0/cugir%3Acugir007957@EPSG%3A3857@png/{z}/{x}/{y}.png
 
         # Works with:
         # https://cugir.library.cornell.edu/geoserver/wms/reflect?&FORMAT=image%2Fpng&TRANSPARENT=TRUE&LAYERS=cugir007957&WIDTH=1500&HEIGHT=1500
 
-        puts "\nPARSE TMS URL..."
         # Parse the URL using Addressable::URI which handles more complex URIs
         parsed_url = Addressable::URI.parse(document.viewer_endpoint)
 
