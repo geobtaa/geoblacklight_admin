@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class BulkActionCollectDocumentsTest < ActiveJob::TestCase
   test "perform method calls collect_documents on BulkAction" do

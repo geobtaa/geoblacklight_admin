@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 module GeoblacklightAdmin
   class DeleteThumbnailJobTest < ActiveJob::TestCase
@@ -11,7 +11,7 @@ module GeoblacklightAdmin
       perform_enqueued_jobs do
         StoreImageJob.perform_now(@document.friendlier_id)
       end
-      
+
       perform_enqueued_jobs do
         DeleteThumbnailJob.perform_now(@document.friendlier_id)
       end
@@ -26,7 +26,7 @@ module GeoblacklightAdmin
       end
 
       @bad_document.reload
-      assert_equal 'success', @bad_document.state_machine.current_state
+      assert_equal "success", @bad_document.state_machine.current_state
     end
   end
 end

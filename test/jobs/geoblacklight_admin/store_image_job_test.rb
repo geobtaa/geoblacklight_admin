@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 module GeoblacklightAdmin
   class StoreImageJobTest < ActiveJob::TestCase
@@ -19,7 +19,7 @@ module GeoblacklightAdmin
       @document.reload
 
       assert @document.thumbnail.present?
-      assert_equal 'succeeded', @document.thumbnail_state_machine.current_state
+      assert_equal "succeeded", @document.thumbnail_state_machine.current_state
     end
 
     test "should transition bad document state to success" do
@@ -28,7 +28,7 @@ module GeoblacklightAdmin
       end
 
       @bad_document.reload
-      assert_equal 'success', @bad_document.state_machine.current_state
+      assert_equal "success", @bad_document.state_machine.current_state
     end
   end
 end

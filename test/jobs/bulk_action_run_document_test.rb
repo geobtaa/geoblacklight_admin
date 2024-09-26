@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class BulkActionRunDocumentJobTest < ActiveJob::TestCase
   def setup
@@ -7,14 +7,14 @@ class BulkActionRunDocumentJobTest < ActiveJob::TestCase
   end
 
   test "should update publication status" do
-    assert_changes -> { @document.reload.publication_state }, from: 'published', to: 'draft' do
-      @job.perform(:update_publication_status, @document, nil, 'draft')
+    assert_changes -> { @document.reload.publication_state }, from: "published", to: "draft" do
+      @job.perform(:update_publication_status, @document, nil, "draft")
     end
-    assert_equal 'draft', @document.state_machine.current_state
+    assert_equal "draft", @document.state_machine.current_state
   end
 
   test "should update delete" do
-    assert_difference 'Document.count', -1 do
+    assert_difference "Document.count", -1 do
       @job.perform(:update_delete, @document, nil, nil)
     end
   end
