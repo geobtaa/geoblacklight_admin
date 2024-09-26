@@ -54,55 +54,53 @@ module GeoblacklightAdmin
       # @param [Integer] thumbnail size
       # @return [String] iiif thumbnail url
       def self.image_url(document, _size)
-        begin
-          tempfile = Down.download(document.viewer_endpoint)
-          manifest_json = JSON.parse(tempfile.read)
+        tempfile = Down.download(document.viewer_endpoint)
+        manifest_json = JSON.parse(tempfile.read)
 
-          # Sequences - Return the first image if it exists
-          # - best case option
-          if manifest_json.dig("sequences", 0, "canvases", 0, "images", 0, "resource", "@id")
-            Rails.logger.debug("\n Image: sequences \n")
-            if manifest_json.dig("sequences", 0, "canvases", 0, "images", 0, "resource", "@id").include?("osu")
-              Rails.logger.debug("\n Image: sequences - OSU variant \n")
-              manifest_json.dig("sequences", 0, "canvases", 0, "images", 0, "resource", "service", "@id") + "/full/1000,/0/default.jpg"
-            else
-              manifest_json.dig("sequences", 0, "canvases", 0, "images", 0, "resource", "@id")
-            end
-
-          # Items - Return the first item image if it exists
-          # - Northwestern
-          elsif manifest_json.dig("items", 0, "items", 0, "items", 0, "body", "id")
-            Rails.logger.debug("\n Image: items body id \n")
-            manifest_json.dig("items", 0, "items", 0, "items", 0, "body", "id")
-
-          # Items - Return the first item image if it exists
-          # - strange option
-          elsif manifest_json.dig("items", 0, "items", 0, "items", 0, "id")
-            Rails.logger.debug("\n Image: items id \n")
-            manifest_json.dig("items", 0, "items", 0, "items", 0, "id")
-
-          # Thumbnail - Return the "thumbnail" if it exists
-          # - varies in size depending on the provider
-          # - worst case option really
-          # - can be @id or id
-          elsif manifest_json["thumbnail"]
-            Rails.logger.debug("\n Image: thumbnail \n")
-            if manifest_json.dig("thumbnail", "@id")
-              manifest_json.dig("thumbnail", "@id")
-            else
-              manifest_json.dig("thumbnail", "id")
-              manifest_json.dig("thumbnail", "id")
-            end
-
-          # Fail - Gonna fail
+        # Sequences - Return the first image if it exists
+        # - best case option
+        if manifest_json.dig("sequences", 0, "canvases", 0, "images", 0, "resource", "@id")
+          Rails.logger.debug("\n Image: sequences \n")
+          if manifest_json.dig("sequences", 0, "canvases", 0, "images", 0, "resource", "@id").include?("osu")
+            Rails.logger.debug("\n Image: sequences - OSU variant \n")
+            manifest_json.dig("sequences", 0, "canvases", 0, "images", 0, "resource", "service", "@id") + "/full/1000,/0/default.jpg"
           else
-            Rails.logger.debug("\n Image: failed \n")
-            document.viewer_endpoint
+            manifest_json.dig("sequences", 0, "canvases", 0, "images", 0, "resource", "@id")
           end
-        rescue => e
-          Rails.logger.debug("\n Rescued: #{e.inspect} \n")
+
+        # Items - Return the first item image if it exists
+        # - Northwestern
+        elsif manifest_json.dig("items", 0, "items", 0, "items", 0, "body", "id")
+          Rails.logger.debug("\n Image: items body id \n")
+          manifest_json.dig("items", 0, "items", 0, "items", 0, "body", "id")
+
+        # Items - Return the first item image if it exists
+        # - strange option
+        elsif manifest_json.dig("items", 0, "items", 0, "items", 0, "id")
+          Rails.logger.debug("\n Image: items id \n")
+          manifest_json.dig("items", 0, "items", 0, "items", 0, "id")
+
+        # Thumbnail - Return the "thumbnail" if it exists
+        # - varies in size depending on the provider
+        # - worst case option really
+        # - can be @id or id
+        elsif manifest_json["thumbnail"]
+          Rails.logger.debug("\n Image: thumbnail \n")
+          if manifest_json.dig("thumbnail", "@id")
+            manifest_json.dig("thumbnail", "@id")
+          else
+            manifest_json.dig("thumbnail", "id")
+            manifest_json.dig("thumbnail", "id")
+          end
+
+        # Fail - Gonna fail
+        else
+          Rails.logger.debug("\n Image: failed \n")
           document.viewer_endpoint
         end
+      rescue => e
+        Rails.logger.debug("\n Rescued: #{e.inspect} \n")
+        document.viewer_endpoint
       end
     end
   end

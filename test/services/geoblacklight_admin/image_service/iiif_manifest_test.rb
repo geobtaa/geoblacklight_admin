@@ -18,7 +18,7 @@ module GeoblacklightAdmin
             "canvases" => [
               {
                 "images" => [
-                  { "resource" => { "@id" => "https://example.com/image1.jpg" } }
+                  {"resource" => {"@id" => "https://example.com/image1.jpg"}}
                 ]
               }
             ]
@@ -39,7 +39,7 @@ module GeoblacklightAdmin
             "items" => [
               {
                 "items" => [
-                  { "body" => { "id" => "https://example.com/northwestern_image.jpg" } }
+                  {"body" => {"id" => "https://example.com/northwestern_image.jpg"}}
                 ]
               }
             ]
