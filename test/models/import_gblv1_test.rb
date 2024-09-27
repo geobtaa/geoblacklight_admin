@@ -14,7 +14,7 @@ class ImportGblv1Test < ActiveSupport::TestCase
   end
 
   def test_default_mappings
-    expected = [{ geoblacklight_version: "1.0" }]
+    expected = [{geoblacklight_version: "1.0"}]
     assert_equal expected, @import.default_mappings
   end
 
@@ -24,14 +24,14 @@ class ImportGblv1Test < ActiveSupport::TestCase
 
   def test_derived_mappings
     expected = [
-      { dct_references_s: { field: "dct_references_s", method: "geomg_dct_references_s" } },
-      { b1g_date_range_drsim: { field: "b1g_date_range_drsim", method: "geomg_b1g_date_range_drsim" } }
+      {dct_references_s: {field: "dct_references_s", method: "geomg_dct_references_s"}},
+      {b1g_date_range_drsim: {field: "b1g_date_range_drsim", method: "geomg_b1g_date_range_drsim"}}
     ]
     assert_equal expected, @import.derived_mappings
   end
 
   def test_required_mappings
-    expected = [{ b1g_status_s: "Active" }]
+    expected = [{b1g_status_s: "Active"}]
     assert_equal expected, @import.required_mappings
   end
 
@@ -42,15 +42,15 @@ class ImportGblv1Test < ActiveSupport::TestCase
   end
 
   def test_geomg_b1g_date_range_drsim
-    args = { data_hash: { "date_field" => ["[2020 TO 2020]"] }, field: "date_field" }
+    args = {data_hash: {"date_field" => ["[2020 TO 2020]"]}, field: "date_field"}
     expected = "2020-2020"
     assert_equal expected, @import.geomg_b1g_date_range_drsim(args)
   end
 
   def test_geomg_dct_references_s
-    json_data = { "http://www.opengis.net/def/serviceType/ogc/wms" => "http://example.com/wms" }.to_json
-    args = { data_hash: { "dct_references_s" => [{ value: json_data }] }, field: "dct_references_s" }
-    expected = [{ value: "http://example.com/wms", category: GeoblacklightAdmin::FieldMappingsGblv1.uri_2_category_references_mappings["http://www.opengis.net/def/serviceType/ogc/wms"] }]
+    json_data = {"http://www.opengis.net/def/serviceType/ogc/wms" => "http://example.com/wms"}.to_json
+    args = {data_hash: {"dct_references_s" => [{value: json_data}]}, field: "dct_references_s"}
+    expected = [{value: "http://example.com/wms", category: GeoblacklightAdmin::FieldMappingsGblv1.uri_2_category_references_mappings["http://www.opengis.net/def/serviceType/ogc/wms"]}]
     assert_equal expected, @import.geomg_dct_references_s(args)
   end
 end
