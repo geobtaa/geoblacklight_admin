@@ -65,10 +65,6 @@ module GeoblacklightAdmin
       copy_file "config/settings.yml", "config/settings.yml", force: true
     end
 
-    def create_solr_yml
-      copy_file ".solr_wrapper.yml", ".solr_wrapper.yml", force: true
-    end
-
     def copy_json_schema
       copy_file "config/geomg_aardvark_schema.json", "config/geomg_aardvark_schema.json"
     end
