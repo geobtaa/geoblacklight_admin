@@ -40,7 +40,7 @@ module Admin
           end
           format.json { render :show, status: :created, location: @import }
         else
-          format.html { render :new }
+          format.html { render :new, status: :unprocessable_entity }
           format.json { render json: @import.errors, status: :unprocessable_entity }
         end
       end
@@ -54,7 +54,7 @@ module Admin
           format.html { redirect_to admin_import_path(@import), notice: "Import was successfully updated." }
           format.json { render :show, status: :ok, location: @import }
         else
-          format.html { render :edit }
+          format.html { render :edit, status: :unprocessable_entity }
           format.json { render json: @import.errors, status: :unprocessable_entity }
         end
       end

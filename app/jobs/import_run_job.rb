@@ -5,7 +5,7 @@ class ImportRunJob < ApplicationJob
   queue_as :priority
 
   def perform(import)
-    data = CSV.parse(import.csv_file.download.force_encoding("UTF-8"), headers: true)
+    data = CSV.parse(import.csv_file.download, headers: true)
 
     data.each do |doc|
       extract_hash = doc.to_h

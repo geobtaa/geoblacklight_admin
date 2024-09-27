@@ -5,7 +5,7 @@ class ImportGblv1 < Import
   # validations, constants and methods
 
   def mapping_configuration
-    Geomg.field_mappings_gblv1
+    GeoblacklightAdmin::Schema.instance.importable_fields
   end
 
   def klass_delimiter
@@ -81,7 +81,7 @@ class ImportGblv1 < Import
       json_data.each do |key, value|
         reference = {
           value: value,
-          category: Geomg::FieldMappingsGblv1.uri_2_category_references_mappings[key]
+          category: GeoblacklightAdmin::FieldMappingsGblv1.uri_2_category_references_mappings[key]
         }
         references << reference
       end

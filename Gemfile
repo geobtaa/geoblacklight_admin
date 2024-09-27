@@ -71,3 +71,6 @@ else
   end
 end
 # END ENGINE_CART BLOCK
+
+gem "rails-controller-testing", "~> 1.0"
+gem "webmock", "~> 3.23"

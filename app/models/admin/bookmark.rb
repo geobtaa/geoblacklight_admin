@@ -8,7 +8,7 @@ module Admin
     validates :user_id, presence: true
 
     def document_id
-      document_id
+      document.id
     end
 
     def document_type

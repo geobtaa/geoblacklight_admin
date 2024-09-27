@@ -3,7 +3,7 @@
 # BulkActionsHelper
 module BulkActionsHelper
   def bulk_actions_collection
-    attrs = Geomg.field_mappings.collect { |key, _value| key }
+    attrs = GeoblacklightAdmin::Schema.instance.importable_fields.collect { |key, _value| key }
     attrs.prepend("Publication State")
   end
 end
