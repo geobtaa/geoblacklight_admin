@@ -21,18 +21,14 @@ class BulkActionRevertDocumentJob < ApplicationJob
     logger.debug("Revert PubStatus - #{document.friendlier_id}")
 
     versions = document.versions
-    document = versions[doc.version].reify
+    document = versions[doc.current_version].reify
     document&.skip_callbacks = true
 
-    if document&.save
-      doc.state_machine.transition_to!(:success)
-    else
-      doc.state_machine.transition_to!(:failed)
-    end
+    document.save
   end
 
   def revert_delete(doc)
-    document = Document.new(id: doc.document_id)
+    document = Document.find_by!(friendlier_id: doc.friendlier_id)
 
     logger.debug("Revert Delete - #{document.id}")
 
@@ -40,10 +36,6 @@ class BulkActionRevertDocumentJob < ApplicationJob
     document = versions.last.reify
     document.skip_callbacks = true
 
-    if document.save
-      doc.state_machine.transition_to!(:success)
-    else
-      doc.state_machine.transition_to!(:failed)
-    end
+    document.save
   end
 end
