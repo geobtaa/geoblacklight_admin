@@ -37,7 +37,14 @@ end
 task default: :test
 
 desc "Run test suite"
-task ci: ["geoblacklight:generate"] do
+task :ci do
+
+  # Start docker
+  Rake::Task["geoblacklight:docker:start"].invoke
+
+  # Create the test rails app
+  Rake::Task["geoblacklight:generate"].invoke
+
   within_test_app do
     require "simple_form"
     system "RAILS_ENV=test bin/rails db:migrate"
@@ -45,8 +52,11 @@ task ci: ["geoblacklight:generate"] do
     system "RAILS_ENV=test rails webpacker:compile"
   end
 
-  # Run RSpec tests with Coverage
+  # Run Minitest tests with Coverage
   Rake::Task["geoblacklight:coverage"].invoke
+
+  # Stop docker
+  Rake::Task["geoblacklight:docker:stop"].invoke
 end
 
 namespace :geoblacklight do
@@ -79,6 +89,22 @@ namespace :geoblacklight do
       end
     else
       Rake::Task["engine_cart:generate"].invoke
+    end
+  end
+
+  namespace :docker do
+    desc "Start docker and seed with sample data"
+    task :start do
+      system "docker compose up -d"
+      Rake::Task["geoblacklight:internal:seed"].invoke
+      puts "\nSolr server running: http://localhost:8983/solr/#/blacklight-core"
+      puts "\nPostgreSQL server running: http://localhost:5555"
+      puts " "
+    end
+
+    desc "Stop docker"
+    task :stop do
+      system "docker compose down"
     end
   end
 end
