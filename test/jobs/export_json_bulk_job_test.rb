@@ -4,7 +4,7 @@ require "test_helper"
 class ExportJsonBulkJobTest < ActiveJob::TestCase
   def setup
     @request = "http://example.com" # Simplified request
-    @current_user = users(:user_001) # Assuming this fixture exists
+    @current_user = users(:user_001)
     @query_params = {ids: [1, 2, 3]} # Example params
     @export_service = ExportJsonService # Using the actual service class
   end
