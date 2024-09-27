@@ -8,9 +8,9 @@ GeoBlacklight Admin is a [GeoBlacklight](https://github.com/geoblacklight/geobla
 
 ## Requirements
 
-* Rails v7
+* Rails v7 (not v8)
 * Blacklight v7 (not v8)
-* GeoBlacklight v4.4+ (Vite.js)
+* GeoBlacklight v4 (not v5)
 * @geoblacklight/frontend v4 (NPM package)
 * Solr v8.4+
 * PostgreSQL (not MySQL-based DBs)
@@ -55,9 +55,13 @@ For Developer documentation see [doc/developer.md](./docs/development.md)
 ## License
 The gem is available as open source under the terms of the [Apache 2.0 License](https://opensource.org/license/apache-2-0).
 
-
-## TODOs
+## TODOs / Roadmap
 * ~~Send GBLADMIN JavaScript pack to NPM like Blacklight~~
-* DRY up Engine routing
-* Remove legacy GEOMG / B1G everywhere...
-* Likely some more polish to be uncovered...
+* ~~Improve test coverage~~
+* Fix CI test runner
+* Debug Rails 7.2 support
+* Separate dct_references_s support into a separate model
+* Import/Export dct_references_s outside of the main document model
+* Migrate our GBL api controllers to just RSolr-based models
+* DRY up Gem dependencies and Engine routing
+* Remove any remaining GEOMG references
