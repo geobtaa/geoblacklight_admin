@@ -3,3 +3,9 @@ one:
   record_type: 'Import'
   record_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
   blob_id: <%= ActiveRecord::FixtureSet.identify(:csv) %>
+
+
+import_btaa:
+  name: 'csv_file'
+  record: one (Import)
+  blob: import_btaa_blob

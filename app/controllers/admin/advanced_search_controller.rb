@@ -380,5 +380,11 @@ module Admin
         end
       end
     end
+
+    private
+
+    def advanced_search_params
+      params.permit(:advanced_search)
+    end
   end
 end

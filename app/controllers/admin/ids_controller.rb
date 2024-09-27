@@ -397,5 +397,11 @@ module Admin
         end
       end
     end
+
+    private
+
+    def ids_params
+      params.permit(:id)
+    end
   end
 end

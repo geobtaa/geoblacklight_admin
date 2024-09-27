@@ -32,6 +32,8 @@ class Import
       end
 
       duplicate_id
+    rescue ArgumentError, ActiveStorage::FileNotFoundError
+      false
     end
   end
 end

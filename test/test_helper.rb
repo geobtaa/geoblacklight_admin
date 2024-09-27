@@ -6,6 +6,9 @@ require "simplecov"
 SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
 
 SimpleCov.start "rails" do
+  add_filter "app/models/active_storage_attachment.rb"
+  add_filter "app/models/active_storage_blob.rb"
+  add_filter "app/models/application_record.rb"
   add_filter "lib/generators/geoblacklight_admin/install_generator.rb"
   add_filter "lib/geoblacklight_admin/version.rb"
   add_filter "lib/generators"
@@ -34,9 +37,15 @@ DatabaseCleaner.strategy = :truncation
 require "minitest/rails"
 require "minitest/reporters"
 
+require "webmock/minitest"
+WebMock.enable!
+WebMock.allow_net_connect!
+
 # DB needs to be clean and seeded
 DatabaseCleaner.clean
 Rails.application.load_seed
+
+ActiveJob::Base.queue_adapter = :test
 
 module ActiveSupport
   class TestCase

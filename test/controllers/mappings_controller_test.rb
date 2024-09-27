@@ -14,7 +14,7 @@ class MappingsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     @import = imports(:one)
-    @mapping = mappings(:one)
+    @mapping = mappings(:Title)
   end
 
   test "should get index" do

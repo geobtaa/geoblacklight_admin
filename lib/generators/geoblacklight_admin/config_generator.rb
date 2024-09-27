@@ -381,6 +381,11 @@ module GeoblacklightAdmin
       copy_file "frontend/entrypoints/application.js", "app/javascript/entrypoints/application.js", force: true
     end
 
+    # Add test fixture files - Necessary for import background job tests
+    def add_test_fixture_files
+      copy_file "btaa_sample_records.csv", "test/fixtures/files/btaa_sample_records.csv", force: true
+    end
+
     # Run bundle with vite install
     def bundle_install
       Bundler.with_clean_env do
