@@ -46,7 +46,7 @@ Gem::Specification.new do |s|
   s.add_dependency "ruby-progressbar"
   s.add_dependency "simple_form", "~> 5.0"
   s.add_dependency "sprockets", "~> 3.0"
-  s.add_dependency "statesman", "~> 10.0"
+  s.add_dependency "statesman", "~> 11.0"
   s.add_dependency "vite_rails", "~> 3.0"
   s.add_dependency "vite_ruby", ">= 3.5"
 

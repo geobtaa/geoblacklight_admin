@@ -2,6 +2,7 @@
 
 require "rubygems"
 require "rails"
+require "database_cleaner/active_record"
 
 require "bundler/setup"
 
@@ -38,73 +39,104 @@ task default: :test
 
 desc "Run test suite"
 task :ci do
-
-  # Start docker
-  Rake::Task["geoblacklight:docker:start"].invoke
-
-  # Create the test rails app
-  Rake::Task["geoblacklight:generate"].invoke
-
-  within_test_app do
-    require "simple_form"
-    system "RAILS_ENV=test bin/rails db:migrate"
-    system "RAILS_ENV=test rake db:seed"
-    system "RAILS_ENV=test rails webpacker:compile"
+  # Reset the database if the test app exists
+  if File.exist? EngineCart.destination
+    within_test_app do
+      system "bundle exec rake db:reset"
+    end
   end
 
+  # Start docker
+  Rake::Task["geoblacklight:admin:docker:start"].invoke
+
+  # Create the test rails app
+  Rake::Task["geoblacklight:admin:generate"].invoke
+
   # Run Minitest tests with Coverage
-  Rake::Task["geoblacklight:coverage"].invoke
+  Rake::Task["geoblacklight:admin:coverage"].invoke
 
   # Stop docker
-  Rake::Task["geoblacklight:docker:stop"].invoke
+  Rake::Task["geoblacklight:admin:docker:stop"].invoke
 end
 
 namespace :geoblacklight do
-  desc "Run tests with coverage"
-  task :coverage do
-    ENV["COVERAGE"] = "true"
-    # Rake::Task["spec"].invoke
-    Rake::Task["test"].invoke
-  end
+  namespace :admin do
 
-  desc "Create the test rails app"
-  task generate: ["engine_cart:generate"] do
-    # Intentionally Empty Block
-  end
-
-  namespace :internal do
-    task seed: ["engine_cart:generate"] do
-      within_test_app do
-        system "bundle exec rake db:seed"
-        system "bundle exec rake geoblacklight:downloads:mkdir"
+    desc "Run GeoBlacklight Admin and Solr with seed data for interactive development"
+    task :server, [:rails_server_args] do |_t, args|
+      if File.exist? EngineCart.destination
+        within_test_app do
+          system "bundle update"
+        end
+      else
+        Rake::Task["engine_cart:generate"].invoke
       end
-    end
-  end
 
-  desc "Run Solr and seed with sample data"
-  task :solr do
-    if File.exist? EngineCart.destination
-      within_test_app do
-        system "bundle update"
-      end
-    else
-      Rake::Task["engine_cart:generate"].invoke
-    end
-  end
-
-  namespace :docker do
-    desc "Start docker and seed with sample data"
-    task :start do
       system "docker compose up -d"
-      Rake::Task["geoblacklight:internal:seed"].invoke
-      puts "\nSolr server running: http://localhost:8983/solr/#/blacklight-core"
-      puts "\nPostgreSQL server running: http://localhost:5555"
-      puts " "
+      Rake::Task["geoblacklight:admin:internal:seed"].invoke
+
+      begin
+        within_test_app do
+          puts "\nSolr server running: http://localhost:8983/solr/#/blacklight-core"
+          puts "\nPostgreSQL server running: http://localhost:5555"
+          puts " "
+          begin
+            system "bundle exec rails s #{args[:rails_server_args]}"
+          rescue Interrupt
+            puts "Shutting down..."
+          end
+        end
+      ensure
+        system "docker compose down"
+      end
     end
 
-    desc "Stop docker"
-    task :stop do
-      system "docker compose down"
+    desc "Run tests with coverage"
+    task :coverage do
+      ENV["COVERAGE"] = "true"
+      Rake::Task["test"].invoke
+    end
+
+    desc "Create the test rails app"
+    task generate: ["engine_cart:generate"] do
+      # Intentionally Empty Block
+    end
+
+    namespace :internal do
+      task seed: ["engine_cart:generate"] do
+        within_test_app do
+          system "bundle exec rake db:reset"
+          system "bundle exec rake db:seed"
+          system "bundle exec rake geoblacklight:downloads:mkdir"
+        end
+      end
+    end
+
+    desc "Run Solr and seed with sample data"
+    task :solr do
+      if File.exist? EngineCart.destination
+        within_test_app do
+          system "bundle update"
+        end
+      else
+        Rake::Task["engine_cart:generate"].invoke
+      end
+    end
+
+    namespace :docker do
+      desc "Start docker and seed with sample data"
+      task :start do
+        system "docker compose up -d"
+        Rake::Task["geoblacklight:admin:internal:seed"].invoke
+        puts "\nSolr server running: http://localhost:8983/solr/#/blacklight-core"
+        puts "\nPostgreSQL server running: http://localhost:5555"
+        puts " "
+      end
+
+      desc "Stop docker"
+      task :stop do
+        system "docker compose down"
+      end
     end
   end
 end

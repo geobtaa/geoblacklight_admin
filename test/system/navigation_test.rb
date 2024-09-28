@@ -19,8 +19,8 @@ class NavigationTest < ApplicationSystemTestCase
       assert page.has_link?("Access Links", visible: false)
       assert page.has_link?("Bulk Actions", visible: false)
       assert page.has_link?("Users", visible: false)
-      assert page.has_link?("Bookmarks")
-      assert page.has_link?("Sign out")
+      assert page.has_link?("Bookmarks", visible: false)
+      assert page.has_link?("Sign Out", visible: false)
     end
   end
 end

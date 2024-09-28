@@ -370,6 +370,12 @@ module GeoblacklightAdmin
       end
     end
 
+    def add_application_config_for_psych_time_with_zone
+      inject_into_file "config/application.rb", after: "config.generators.system_tests = nil" do
+        "\n    config.active_record.yaml_column_permitted_classes = [Symbol, Date, Time, ActiveSupport::TimeWithZone, ActiveSupport::TimeZone]"
+      end
+    end
+
     def add_vite_rails_config
       copy_file "base.html.erb", "app/views/layouts/blacklight/base.html.erb", force: true
       copy_file "vite.config.ts", "vite.config.ts", force: true
