@@ -61,7 +61,6 @@ end
 
 namespace :geoblacklight do
   namespace :admin do
-
     desc "Run GeoBlacklight Admin and Solr with seed data for interactive development"
     task :server, [:rails_server_args] do |_t, args|
       if File.exist? EngineCart.destination
