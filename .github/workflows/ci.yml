@@ -53,9 +53,6 @@ jobs:
         bundler-cache: true
         cache-version: 2
 
-    - name: Solr - Create container
-      run: docker run -d -p 8983:8983 geoblacklight/solr:8.9-v1.0.0 server/scripts/ci-start.sh
-
     - name: Node - v20
       uses: actions/setup-node@v2
       with:
@@ -63,13 +60,6 @@ jobs:
 
     - name: Yarn - Setup
       run: exec "yarnpkg"
-
-    - name: Solr - Load config into solr
-      run: |
-          cd solr/conf
-          zip -1 -r solr_config.zip ./*
-          curl -H "Content-type:application/octet-stream" --data-binary @solr_config.zip "http://solr:SolrRocks@127.0.0.1:8983/solr/admin/configs?action=UPLOAD&name=blacklight"
-          curl -H 'Content-type: application/json' http://solr:SolrRocks@127.0.0.1:8983/api/collections/  -d '{create: {name: blacklight-core, config: blacklight, numShards: 1}}'
 
     - name: Install dependencies
       run: bundle install
