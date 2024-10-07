@@ -76,7 +76,7 @@ module Admin
       # config.index.record_display_type = 'format'
 
       config.index.title_field = Settings.FIELDS.TITLE
-      config.index.document_presenter_class = Geoblacklight::DocumentPresenter
+      config.index.document_presenter_class = ::Geoblacklight::DocumentPresenter
 
       # solr field configuration for document/show views
 
