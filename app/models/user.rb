@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "devise"
+
 # User
 class User < ApplicationRecord
   include Blacklight::User
