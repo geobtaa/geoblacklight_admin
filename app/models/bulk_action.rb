@@ -2,6 +2,7 @@
 
 require "uri"
 require "cgi"
+require "statesman"
 
 # BulkAction
 class BulkAction < ApplicationRecord
