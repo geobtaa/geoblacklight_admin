@@ -4,6 +4,7 @@ require "devise"
 
 # User
 class User < ApplicationRecord
+  extend Devise::Models
   include Blacklight::User
 
   # Include default devise modules. Others available are:
