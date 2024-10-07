@@ -83,8 +83,10 @@ jobs:
         SOLR_URL: http://solr:SolrRocks@localhost:8983/solr/blacklight-core
 
     - name: Artifacts - Upload coverage
-      uses: actions/upload-artifact@v2
-      if: always()
+      uses: actions/upload-artifact@v4
+      if: always
       with:
         name: coverage
-        path: coverage/
+        path: |
+          coverage/
+          tmp/screenshots/
