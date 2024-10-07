@@ -28,12 +28,12 @@ You need a PostgreSQL database to use this project.
 
 ### Install Template
 
-Use Ruby v3.3 and Rails v7.0.8.1 to bootstrap a new GeoBlacklight + GBL Admin application using the template script:
+Use Ruby v3.3 and Rails v7.1.4 to bootstrap a new GeoBlacklight + GBL Admin application using the template script:
 
 ```bash
-rails _7.0.8.1_ new gbl_admin -m https://raw.githubusercontent.com/geobtaa/geoblacklight_admin/develop/template.rb
+rails _7.1.4_ new gbl_admin -m https://raw.githubusercontent.com/geobtaa/geoblacklight_admin/develop/template.rb
 cd gbl_admin
-bundle exec rake gbl_admin:server
+bundle exec rake geoblacklight:server
 ```
 
 You have now generated the .internal_test_app and populated the Elements / FormElements tables for OMG Aardvark support.
