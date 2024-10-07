@@ -104,6 +104,7 @@ namespace :geoblacklight do
     namespace :internal do
       task seed: ["engine_cart:generate"] do
         within_test_app do
+          system "Settings.reload!"
           system "bundle exec rake db:reset"
           system "bundle exec rake db:seed"
           system "bundle exec rake geoblacklight:downloads:mkdir"
