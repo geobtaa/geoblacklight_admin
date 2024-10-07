@@ -78,6 +78,6 @@ jobs:
       with:
         name: coverage
         path: |
-          ./
+          .internal_test_app/
           coverage/
           tmp/screenshots/
