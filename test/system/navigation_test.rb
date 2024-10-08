@@ -13,7 +13,7 @@ class NavigationTest < ApplicationSystemTestCase
       assert page.has_link?("GBL♦Admin")
       assert page.has_selector?("form")
       assert page.has_selector?("input[name='q']")
-      assert page.has_text?("Admin Tools")
+      assert page.has_link?("Admin Tools")
       assert page.has_link?("Documents", visible: false)
       assert page.has_link?("Imports", visible: false)
       assert page.has_link?("Access Links", visible: false)
