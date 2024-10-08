@@ -58,7 +58,7 @@ The gem is available as open source under the terms of the [Apache 2.0 License](
 ## TODOs / Roadmap
 * ~~Send GBLADMIN JavaScript pack to NPM like Blacklight~~
 * ~~Improve test coverage~~
-* Fix CI test runner
+* ~~Fix CI test runner~~
 * Debug Rails 7.2 support
 * Separate dct_references_s support into a separate model
 * Import/Export dct_references_s outside of the main document model
