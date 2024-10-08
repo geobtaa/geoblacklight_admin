@@ -6,7 +6,7 @@ jobs:
   linter:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
@@ -44,8 +44,7 @@ jobs:
     
     name: Test ${{ matrix.rails_version }}, ruby ${{ matrix.ruby_version }}
     steps:
-    - uses: actions/checkout@v3
-
+    - uses: actions/checkout@v4
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
@@ -76,7 +75,7 @@ jobs:
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: coverage
+        name: Coverage & Screenshots
         path: |
           coverage/
           tmp/screenshots/
