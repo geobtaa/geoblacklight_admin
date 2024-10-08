@@ -6,7 +6,6 @@ class ElementsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    Rails.application.load_seed
     @element = Element.find_by(solr_field: "dct_title_s")
     get "/users/sign_in"
     sign_in_as users(:user_001)
@@ -29,6 +28,8 @@ class ElementsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create element" do
     assert_difference("Element.count") do
+      @element.solr_field = "new_solr_field_sm"
+      @element.label = "New Solr Field Label"
       post admin_elements_url, params: {element: {controlled_vocabulary: @element.controlled_vocabulary, data_entry_hint: @element.data_entry_hint, display_only_on_persisted: @element.display_only_on_persisted, export_transformation_method: @element.export_transformation_method, exportable: @element.exportable, field_definition: @element.field_definition, field_type: @element.field_type, formable: @element.formable, html_attributes: @element.html_attributes, import_deliminated: @element.import_deliminated, import_transformation_method: @element.import_transformation_method, importable: @element.importable, index_transformation_method: @element.index_transformation_method, indexable: @element.indexable, js_behaviors: @element.js_behaviors, label: @element.label, placeholder_text: @element.placeholder_text, repeatable: @element.repeatable, required: @element.required, solr_field: "new_solr_field", test_fixture_example: @element.test_fixture_example, validation_method: @element.validation_method}}
     end
 
