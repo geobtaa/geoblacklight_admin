@@ -19,7 +19,7 @@ module GeoblacklightAdmin
       @document.reload
 
       assert @document.thumbnail.present?
-      
+
       # @TODO: This test passes locally, but fails in CI
       # Thumbnail harvesting is problematic in CI
       # Skipping this state assertion for now
