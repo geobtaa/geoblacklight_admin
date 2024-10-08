@@ -33,5 +33,5 @@ standardrb --fix
 
 ### Test App
 ```bash
-RAILS_ENV=test bundle exec rails test
+RAILS_ENV=test bundle exec rake ci
 ```
