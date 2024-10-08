@@ -2,6 +2,7 @@
 
 require "uri"
 require "cgi"
+require "statesman"
 
 # BulkAction
 class BulkAction < ApplicationRecord
@@ -19,7 +20,7 @@ class BulkAction < ApplicationRecord
   validates :scope, :field_name, :field_value, presence: true
 
   # States
-  include Statesman::Adapters::ActiveRecordQueries[
+  include ::Statesman::Adapters::ActiveRecordQueries[
     transition_class: BulkActionTransition,
     initial_state: :created
   ]

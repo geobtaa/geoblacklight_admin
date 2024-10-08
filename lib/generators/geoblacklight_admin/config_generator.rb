@@ -65,10 +65,6 @@ module GeoblacklightAdmin
       copy_file "config/settings.yml", "config/settings.yml", force: true
     end
 
-    def create_solr_yml
-      copy_file ".solr_wrapper.yml", ".solr_wrapper.yml", force: true
-    end
-
     def copy_json_schema
       copy_file "config/geomg_aardvark_schema.json", "config/geomg_aardvark_schema.json"
     end
@@ -371,6 +367,12 @@ module GeoblacklightAdmin
     def add_import_id_facet
       inject_into_file "app/controllers/catalog_controller.rb", before: "# Item Relationship Facets" do
         "\nconfig.add_facet_field Settings.FIELDS.B1G_IMPORT_ID, label: 'Import ID', show: false\n"
+      end
+    end
+
+    def add_application_config_for_psych_time_with_zone
+      inject_into_file "config/application.rb", after: "config.generators.system_tests = nil" do
+        "\n    config.active_record.yaml_column_permitted_classes = [Symbol, Date, Time, ActiveSupport::TimeWithZone, ActiveSupport::TimeZone]"
       end
     end
 

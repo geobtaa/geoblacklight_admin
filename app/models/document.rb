@@ -96,13 +96,15 @@ class Document < Kithe::Work
   validates_with Document::GeomValidator
 
   # Definte our AttrJSON attributes
-  Element.all.each do |attribute|
-    next if attribute.solr_field == "dct_references_s"
+  if ActiveRecord::Base.connection.table_exists?("elements")
+    Element.all.each do |attribute|
+      next if attribute.solr_field == "dct_references_s"
 
-    if attribute.repeatable?
-      attr_json attribute.solr_field.to_sym, attribute.field_type.to_sym, array: true, default: -> { [] }
-    else
-      attr_json attribute.solr_field.to_sym, attribute.field_type.to_sym, default: ""
+      if attribute.repeatable?
+        attr_json attribute.solr_field.to_sym, attribute.field_type.to_sym, array: true, default: -> { [] }
+      else
+        attr_json attribute.solr_field.to_sym, attribute.field_type.to_sym, default: ""
+      end
     end
   end
 

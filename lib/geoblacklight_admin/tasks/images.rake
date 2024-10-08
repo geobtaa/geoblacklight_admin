@@ -1,3 +1,4 @@
+require "rake"
 require "csv"
 
 namespace :geoblacklight_admin do
