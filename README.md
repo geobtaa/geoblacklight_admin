@@ -59,7 +59,7 @@ The gem is available as open source under the terms of the [Apache 2.0 License](
 * ~~Send GBLADMIN JavaScript pack to NPM like Blacklight~~
 * ~~Improve test coverage~~
 * ~~Fix CI test runner~~
-* Debug Rails 7.2 support (remove devise_invitable, see [#915](https://github.com/scambra/devise_invitable/issues/915))
+* ~~Debug Rails 7.2 support (remove devise_invitable, see [#915](https://github.com/scambra/devise_invitable/issues/915))~~
 * Separate dct_references_s support into a separate model
 * Import/Export dct_references_s outside of the main document model
 * Migrate our GBL api controllers to just RSolr-based models
