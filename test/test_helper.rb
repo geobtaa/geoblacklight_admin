@@ -36,6 +36,7 @@ DatabaseCleaner.strategy = :truncation
 
 require "minitest/rails"
 require "minitest/reporters"
+require "mocha/minitest"
 
 require "webmock/minitest"
 WebMock.enable!
