@@ -47,7 +47,6 @@ else
   gem "awesome_print"
   gem "blacklight_advanced_search"
   gem "devise-bootstrap-views", "~> 1.0"
-  gem "devise_invitable", "~> 2.0.0"
   gem "dotenv-rails"
   gem "haml"
   gem "inline_svg"
