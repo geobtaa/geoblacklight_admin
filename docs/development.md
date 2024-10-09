@@ -1,28 +1,13 @@
 ## Run Project for Local Development
-Drop and recreate databases (or engine_cart:generate will fail)
 
-### Drop/Create application PG database
+### Bundle
 ```bash
-psql postgres
-DROP DATABASE geoblacklight_development;
-CREATE DATABASE geoblacklight_development;
-```
-
-```bash
-cd project root
 bundle install
-bundle exec rake engine_cart:regenerate
 ```
 
-### Run Solr
+### Run Application
 ```bash
-bin/rails geoblacklight:solr
-```
-
-### Run App
-```bash
-cd .internal_test_app
-bin/rails server
+bundle exec rake geoblacklight:admin:server
 ```
 
 ### Lint App
@@ -33,5 +18,5 @@ standardrb --fix
 
 ### Test App
 ```bash
-RAILS_ENV=test bundle exec rake ci
+bundle exec rake ci
 ```

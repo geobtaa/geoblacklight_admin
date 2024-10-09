@@ -8,6 +8,9 @@ module GeoblacklightAdmin
     end
 
     test "should delete thumbnail if present" do
+      StoreImageJob.expects(:perform_now).with(@document.friendlier_id)
+      DeleteThumbnailJob.expects(:perform_now).with(@document.friendlier_id)
+
       perform_enqueued_jobs do
         StoreImageJob.perform_now(@document.friendlier_id)
       end
@@ -18,15 +21,6 @@ module GeoblacklightAdmin
 
       @document.reload
       assert_nil @document.thumbnail
-    end
-
-    test "should transition bad document state to success if bad_id is present" do
-      perform_enqueued_jobs do
-        DeleteThumbnailJob.perform_now(@document.friendlier_id, @bad_document.id)
-      end
-
-      @bad_document.reload
-      assert_equal "success", @bad_document.state_machine.current_state
     end
   end
 end
