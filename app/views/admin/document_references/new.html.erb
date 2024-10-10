@@ -1,0 +1,11 @@
+<% content_for :title, "New document reference" %>
+
+<h1>New document reference</h1>
+
+<%= render "form", document_reference: @document_reference %>
+
+<br>
+
+<div>
+  <%= link_to "Back to document references", admin_document_document_references_path(@document) %>
+</div>
