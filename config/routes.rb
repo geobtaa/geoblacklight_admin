@@ -38,6 +38,11 @@ GeoblacklightAdmin::Engine.routes.draw do
       post :sort, on: :collection
     end
 
+    # References
+    resources :references do
+      post :sort, on: :collection
+    end
+
     # Form Elements
     resources :form_elements do
       post :sort, on: :collection
@@ -86,16 +91,6 @@ GeoblacklightAdmin::Engine.routes.draw do
         end
       end
 
-      resources :document_downloads, path: "downloads" do
-        collection do
-          get "import"
-          post "import"
-
-          get "destroy_all"
-          post "destroy_all"
-        end
-      end
-
       resources :document_assets, path: "assets" do
         collection do
           get "display_attach_form"
@@ -106,8 +101,27 @@ GeoblacklightAdmin::Engine.routes.draw do
         end
       end
 
-      collection do
-        get "fetch"
+      resources :document_downloads, path: "downloads" do
+        collection do
+          get "import"
+          post "import"
+
+          get "destroy_all"
+          post "destroy_all"
+        end
+      end
+
+      resources :document_references, path: "references" do
+        collection do
+          get "display_attach_form"
+          post "attach_files"
+
+          get "import"
+          post "import"
+
+          get "destroy_all"
+          post "destroy_all"
+        end
       end
     end
 
