@@ -127,7 +127,7 @@ namespace :geoblacklight do
       desc "Start docker and seed with sample data"
       task :start do
         system "docker compose up -d"
-        Rake::Task["geoblacklight:admin:internal:seed"].invoke
+        # Rake::Task["geoblacklight:admin:internal:seed"].invoke
         puts "\nSolr server running: http://localhost:8983/solr/#/blacklight-core"
         puts "\nPostgreSQL server running: http://localhost:5555"
         puts " "

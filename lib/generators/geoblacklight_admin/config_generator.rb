@@ -139,6 +139,11 @@ module GeoblacklightAdmin
           resources :form_control, path: :form_elements, controller: :form_elements
           resources :form_feature, path: :form_elements, controller: :form_elements
 
+          # References
+          resources :references do
+            post :sort, on: :collection
+          end
+
           # Notifications
           resources :notifications do
             put "batch", on: :collection
@@ -170,19 +175,12 @@ module GeoblacklightAdmin
             get "admin"
             get "versions"
 
-            # DocumentAccesses
-            resources :document_accesses, path: "access" do
-              collection do
-                get "import"
-                post "import"
-
-                get "destroy_all"
-                post "destroy_all"
-              end
+            collection do
+              get "fetch"
             end
 
-            # DocumentDownloads
-            resources :document_downloads, path: "downloads" do
+            # DocumentAccesses
+            resources :document_accesses, path: "access" do
               collection do
                 get "import"
                 post "import"
@@ -203,11 +201,31 @@ module GeoblacklightAdmin
               end
             end
 
-            collection do
-              get "fetch"
+            # DocumentDownloads
+            resources :document_downloads, path: "downloads" do
+              collection do
+                get "import"
+                post "import"
+
+                get "destroy_all"
+                post "destroy_all"
+              end
+            end
+
+            # Document References
+            resources :document_references, path: "references" do
+              collection do
+                get "display_attach_form"
+                post "attach_files"
+
+                get "import"
+                post "import"
+
+                get "destroy_all"
+                post "destroy_all"
+              end
             end
           end
-
           # Document Accesses
           resources :document_accesses, path: "access" do
             collection do
