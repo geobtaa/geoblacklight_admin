@@ -1,0 +1,12 @@
+<% content_for :title, "Editing document reference" %>
+
+<h1>Editing document reference</h1>
+
+<%= render "form", document_reference: @document_reference %>
+
+<br>
+
+<div>
+  <%= link_to "Show this document reference", @document_reference %> |
+  <%= link_to "Back to document references", document_references_path %>
+</div>

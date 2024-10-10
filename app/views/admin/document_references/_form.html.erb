@@ -1,0 +1,34 @@
+<%= simple_form_for([:admin, @document, @document_reference]) do |f| %>
+  <%= f.error_notification %>
+  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+
+  <div class="form-inputs">
+    <%= f.input :friendlier_id, input_html: { value: @document.friendlier_id, readonly: true } %>
+    <%= f.input :reference_id, as: :select, collection: Reference.all.map { |r| [r.reference_type, r.id] }, label: 'Reference Type' %>
+    <%= f.input :url, label: 'Reference URL' %>
+    <%= f.input :label, autofocus: true, input_html: { disabled: true, id: 'label-input' } %>
+    
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, 'Create Download URL', {class: 'btn btn-primary'} %>
+  </div>
+<% end %>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const referenceSelect = document.querySelector('select[name="document_reference[reference_id]"]');
+  const labelInput = document.getElementById('label-input');
+
+  function toggleLabelInput() {
+    if (referenceSelect.options[referenceSelect.selectedIndex].text === 'Download file') {
+      labelInput.disabled = false;
+    } else {
+      labelInput.disabled = true;
+    }
+  }
+
+  referenceSelect.addEventListener('change', toggleLabelInput);
+    toggleLabelInput(); // Initial check
+  });
+</script>

@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @document_reference %>
+
+<div>
+  <%= link_to "Edit this document reference", edit_document_reference_path(@document_reference) %> |
+  <%= link_to "Back to document references", document_references_path %>
+
+  <%= button_to "Destroy this document reference", @document_reference, method: :delete %>
+</div>
