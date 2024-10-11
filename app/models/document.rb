@@ -34,6 +34,10 @@ class Document < Kithe::Work
   has_many :document_downloads, primary_key: "friendlier_id", foreign_key: "friendlier_id", autosave: false, dependent: :destroy,
     inverse_of: :document
 
+  # - DocumentReferences
+  has_many :document_references, primary_key: "friendlier_id", foreign_key: "friendlier_id", autosave: false, dependent: :destroy,
+    inverse_of: :document
+
   # DocumentAssets - Thumbnails, Attachments, etc
   # @TODO: Redundant? Kithe also includes a members association
   def document_assets
@@ -397,6 +401,7 @@ class Document < Kithe::Work
       elsif value[:destination] == "b1g_publication_state_s"
         send(:current_state)
       else
+        next if send(value[:destination]).blank?
         send(value[:destination])
       end
     end

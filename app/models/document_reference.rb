@@ -9,7 +9,7 @@ class DocumentReference < ApplicationRecord
   after_save :reindex_document
 
   # Validations
-  validates :document_id, :reference_id, presence: true
+  validates :friendlier_id, :reference_id, presence: true
   validates :url, presence: true
 
   def self.import(file)
