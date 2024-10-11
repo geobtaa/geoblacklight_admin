@@ -17,7 +17,7 @@ class DocumentReferencesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create document_reference" do
     assert_difference("DocumentReference.count") do
-      post document_references_url, params: { document_reference: {} }
+      post document_references_url, params: {document_reference: {}}
     end
 
     assert_redirected_to document_reference_url(DocumentReference.last)
@@ -34,7 +34,7 @@ class DocumentReferencesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update document_reference" do
-    patch document_reference_url(@document_reference), params: { document_reference: {} }
+    patch document_reference_url(@document_reference), params: {document_reference: {}}
     assert_redirected_to document_reference_url(@document_reference)
   end
 

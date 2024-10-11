@@ -9,6 +9,11 @@ module Admin
     # GET /admin/document_references or /admin/document_references.json
     def index
       @document_references = DocumentReference.all
+      if params[:document_id]
+        @document_references = DocumentReference.where(friendlier_id: @document.friendlier_id).order(position: :asc)
+      else
+        @pagy, @document_references = pagy(DocumentReference.all.order(friendlier_id: :asc, updated_at: :desc), items: 20)
+      end
     end
 
     # GET /admin/document_references/1 or /admin/document_references/1.json
@@ -63,20 +68,21 @@ module Admin
     end
 
     private
-      # Use callbacks to share common setup or constraints between actions.
-      def set_document
-        return unless params[:document_id] # If not nested
-  
-        @document = Document.includes(:leaf_representative).find_by!(friendlier_id: params[:document_id])
-      end
 
-      def set_document_reference
-        @document_reference = DocumentReference.find(params[:id])
-      end
+    # Use callbacks to share common setup or constraints between actions.
+    def set_document
+      return unless params[:document_id] # If not nested
 
-      # Only allow a list of trusted parameters through.
-      def document_reference_params
-        params.fetch(:document_reference, {})
-      end
+      @document = Document.includes(:leaf_representative).find_by!(friendlier_id: params[:document_id])
+    end
+
+    def set_document_reference
+      @document_reference = DocumentReference.find(params[:id])
+    end
+
+    # Only allow a list of trusted parameters through.
+    def document_reference_params
+      params.fetch(:document_reference, {})
+    end
   end
 end

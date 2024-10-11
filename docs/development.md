@@ -5,6 +5,13 @@
 bundle install
 ```
 
+### Create Database
+```bash
+psql postgres
+DROP DATABASE geoblacklight_development;
+CREATE DATABASE geoblacklight_development;
+```
+
 ### Run Application
 ```bash
 bundle exec rake geoblacklight:admin:server

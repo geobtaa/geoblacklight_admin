@@ -4,10 +4,12 @@
 # It includes validations for presence and uniqueness of reference attributes,
 # and manages the position of references within the system.
 class Reference < ApplicationRecord
+  has_many :document_references, dependent: :destroy
+
   # Validations
   # Ensures that both reference_type and reference_uri are present and unique.
   validates :reference_type, :reference_uri, presence: true
-  validates :reference_type, :reference_uri, uniqueness: true
+  validates :reference_type, uniqueness: true
 
   # Callbacks
   # Sets the position of the reference before it is created.
