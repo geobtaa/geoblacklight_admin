@@ -38,8 +38,8 @@ GeoblacklightAdmin::Engine.routes.draw do
       post :sort, on: :collection
     end
 
-    # References
-    resources :references do
+    # Reference Types
+    resources :reference_types do
       post :sort, on: :collection
     end
 
@@ -136,6 +136,17 @@ GeoblacklightAdmin::Engine.routes.draw do
     end
 
     resources :document_downloads, path: "downloads" do
+      collection do
+        get "import"
+        post "import"
+
+        get "destroy_all"
+        post "destroy_all"
+      end
+    end
+
+    # Document References
+    resources :document_references, path: "references" do
       collection do
         get "import"
         post "import"

@@ -23,9 +23,9 @@ CSV.foreach(File.expand_path('seeds_form_elements.csv', File.dirname(__FILE__)),
   FormElement.create!(row.to_hash)
 end
 
-# References
-CSV.foreach(File.expand_path('seeds_references.csv', File.dirname(__FILE__)), headers: true) do |row|
-  Reference.create!(row.to_hash)
+# Reference Types
+CSV.foreach(File.expand_path('seeds_reference_types.csv', File.dirname(__FILE__)), headers: true) do |row|
+  ReferenceType.create!(row.to_hash)
 end
 
 # Users

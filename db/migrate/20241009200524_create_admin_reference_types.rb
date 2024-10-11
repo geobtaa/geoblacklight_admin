@@ -1,6 +1,6 @@
-class CreateAdminReferences < ActiveRecord::Migration[7.2]
+class CreateAdminReferenceTypes < ActiveRecord::Migration[7.2]
   def change
-    create_table :references do |t|
+    create_table :reference_types do |t|
       t.string :name                    # short name, ex: "cog"
       t.string :reference_type          # human-readable name, ex: "Cloud Optimized GeoTIFF (COG)"
       t.string :reference_uri           # key name, ex: "https://github.com/cogeotiff/cog-spec"

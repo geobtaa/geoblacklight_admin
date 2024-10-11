@@ -139,8 +139,8 @@ module GeoblacklightAdmin
           resources :form_control, path: :form_elements, controller: :form_elements
           resources :form_feature, path: :form_elements, controller: :form_elements
 
-          # References
-          resources :references do
+          # Reference Types
+          resources :reference_types do
             post :sort, on: :collection
           end
 
@@ -226,6 +226,7 @@ module GeoblacklightAdmin
               end
             end
           end
+
           # Document Accesses
           resources :document_accesses, path: "access" do
             collection do
@@ -239,6 +240,17 @@ module GeoblacklightAdmin
 
           # Document Downloads
           resources :document_downloads, path: "downloads" do
+            collection do
+              get "import"
+              post "import"
+
+              get "destroy_all"
+              post "destroy_all"
+            end
+          end
+
+          # Document References
+          resources :document_references, path: "references" do
             collection do
               get "import"
               post "import"

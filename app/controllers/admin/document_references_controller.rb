@@ -35,7 +35,7 @@ module Admin
 
       respond_to do |format|
         if @document_reference.save
-          format.html { redirect_to @document_reference, notice: "Document reference was successfully created." }
+          format.html { redirect_to admin_document_document_references_path(@document), notice: "Document reference was successfully created." }
           format.json { render :show, status: :created, location: @document_reference }
         else
           format.html { render :new, status: :unprocessable_entity }
@@ -48,7 +48,7 @@ module Admin
     def update
       respond_to do |format|
         if @document_reference.update(document_reference_params)
-          format.html { redirect_to @document_reference, notice: "Document reference was successfully updated." }
+          format.html { redirect_to admin_document_document_reference_path(@document, @document_reference), notice: "Document reference was successfully updated." }
           format.json { render :show, status: :ok, location: @document_reference }
         else
           format.html { render :edit, status: :unprocessable_entity }
@@ -62,8 +62,40 @@ module Admin
       @document_reference.destroy!
 
       respond_to do |format|
-        format.html { redirect_to document_references_path, status: :see_other, notice: "Document reference was successfully destroyed." }
+        format.html { redirect_to admin_document_document_references_path(@document), status: :see_other, notice: "Document reference was successfully destroyed." }
         format.json { head :no_content }
+      end
+    end
+
+    def destroy_all
+      logger.debug("Destroy References")
+      return unless params.dig(:document_reference, :references, :file)
+
+      respond_to do |format|
+        if DocumentReference.destroy_all(params.dig(:document_reference, :references, :file))
+          format.html { redirect_to admin_document_references_path, notice: "References were destroyed." }
+        else
+          format.html { redirect_to admin_document_references_path, notice: "References could not be destroyed." }
+        end
+      rescue => e
+        format.html { redirect_to admin_document_references_path, notice: "References could not be destroyed. #{e}" }
+      end
+    end
+
+    # GET   /documents/1/references/import
+    # POST  /documents/1/references/import
+    def import
+      logger.debug("Import References")
+      return unless params.dig(:document_reference, :references, :file)
+
+      respond_to do |format|
+        if DocumentReference.import(params.dig(:document_reference, :references, :file))
+          format.html { redirect_to admin_document_document_references_path(@document), notice: "References were created successfully." }
+        else
+          format.html { redirect_to admin_document_document_references_path(@document), notice: "References could not be created." }
+        end
+      rescue => e
+        format.html { redirect_to admin_document_document_references_path(@document), notice: "References could not be created. #{e}" }
       end
     end
 
@@ -82,7 +114,7 @@ module Admin
 
     # Only allow a list of trusted parameters through.
     def document_reference_params
-      params.fetch(:document_reference, {})
+      params.require(:document_reference).permit(:friendlier_id, :reference_type_id, :url, :label, :position)
     end
   end
 end
