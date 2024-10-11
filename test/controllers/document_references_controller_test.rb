@@ -2,47 +2,59 @@ require "test_helper"
 
 class DocumentReferencesControllerTest < ActionDispatch::IntegrationTest
   setup do
+    @document = documents(:ls)
     @document_reference = document_references(:one)
+
+    get "/users/sign_in"
+    sign_in_as users(:user_001)
+    post user_session_url
+
+    follow_redirect!
+    assert_response :success
   end
 
   test "should get index" do
-    get document_references_url
+    get admin_document_document_references_url(@document)
     assert_response :success
   end
 
   test "should get new" do
-    get new_document_reference_url
+    get new_admin_document_document_reference_url(@document)
     assert_response :success
   end
 
   test "should create document_reference" do
     assert_difference("DocumentReference.count") do
-      post document_references_url, params: {document_reference: {}}
+      post admin_document_document_references_url(@document), params: {document_reference: {
+        friendlier_id: 'test',
+        reference_type_id: ReferenceType.first.id,
+        url: 'https://example.com'
+      }}
     end
 
-    assert_redirected_to document_reference_url(DocumentReference.last)
+    assert_redirected_to admin_document_document_reference_url(@document, DocumentReference.last)
   end
 
   test "should show document_reference" do
-    get document_reference_url(@document_reference)
+    get admin_document_document_reference_url(@document, @document_reference)
     assert_response :success
   end
 
   test "should get edit" do
-    get edit_document_reference_url(@document_reference)
+    get edit_admin_document_document_reference_url(@document, @document_reference)
     assert_response :success
   end
 
   test "should update document_reference" do
-    patch document_reference_url(@document_reference), params: {document_reference: {}}
-    assert_redirected_to document_reference_url(@document_reference)
+    patch admin_document_document_reference_url(@document, @document_reference), params: {document_reference: {}}
+    assert_redirected_to admin_document_document_reference_url(@document, @document_reference)
   end
 
   test "should destroy document_reference" do
     assert_difference("DocumentReference.count", -1) do
-      delete document_reference_url(@document_reference)
+      delete admin_document_document_reference_url(@document, @document_reference)
     end
 
-    assert_redirected_to document_references_url
+    assert_redirected_to admin_document_document_references_url(@document)
   end
 end

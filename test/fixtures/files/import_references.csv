@@ -1,0 +1,4 @@
+friendlier_id,reference_type,reference_url,label
+p16022coll230:4115,iiif_image,http://foo.com,
+p16022coll230:4115,metadata_html,http://bar.com,
+p16022coll230:4115,documentation_download,http://baz.com,

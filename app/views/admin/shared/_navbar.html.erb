@@ -44,20 +44,26 @@
           Admin Tools
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <h6 class="dropdown-header">Data Management</h6>
           <%= link_to "Documents", admin_documents_path, {class: 'dropdown-item'} %>
           <%= link_to "Imports", admin_imports_path, {class: 'dropdown-item'} %>
           <%= link_to "Bulk Actions", admin_bulk_actions_path, {class: 'dropdown-item'} %>
           <div class="dropdown-divider"></div>
+          <h6 class="dropdown-header">Document Relationships</h6>
           <%= link_to "Assets", admin_assets_path, {class: 'dropdown-item'} %>
           <%= link_to "Access Links", admin_document_accesses_path, {class: 'dropdown-item'} %>
           <%= link_to "Download Links", admin_document_downloads_path, {class: 'dropdown-item'} %>
+          <%= link_to "References", admin_document_references_path, {class: 'dropdown-item'} %>
           <div class="dropdown-divider"></div>
+          <h6 class="dropdown-header">Business Intelligence</h6>
           <%= link_to "Blazer", '/admin/blazer', {class: 'dropdown-item', data: { turbolinks: false }} %>
           <div class="dropdown-divider"></div>
+          <h6 class="dropdown-header">Schema Management</h6>
           <%= link_to "Elements", admin_elements_path, {class: 'dropdown-item', data: { turbolinks: false }} %>
           <%= link_to "Form Elements", admin_form_elements_path, {class: 'dropdown-item', data: { turbolinks: false }} %>
-          <%= link_to "References", admin_references_path, {class: 'dropdown-item', data: { turbolinks: false }} %>
+          <%= link_to "Reference Types", admin_reference_types_path, {class: 'dropdown-item', data: { turbolinks: false }} %>
           <div class="dropdown-divider"></div>
+          <h6 class="dropdown-header">User Management</h6>
           <%= link_to "Users", admin_users_index_path, {class: 'dropdown-item'} %>
         </div>
       </li>

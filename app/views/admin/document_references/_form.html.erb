@@ -4,7 +4,7 @@
 
   <div class="form-inputs">
     <%= f.input :friendlier_id, input_html: { value: @document.friendlier_id, readonly: true } %>
-    <%= f.input :reference_id, as: :select, collection: Reference.all.map { |r| [r.reference_type, r.id] }, label: 'Reference Type' %>
+    <%= f.input :reference_type_id, as: :select, collection: ReferenceType.all.map { |r| [r.reference_type, r.id] }, label: 'Reference Type' %>
     <%= f.input :url, label: 'Reference URL' %>
     <%= f.input :label, autofocus: true, input_html: { disabled: true, id: 'label-input' } %>
     
@@ -17,7 +17,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  const referenceSelect = document.querySelector('select[name="document_reference[reference_id]"]');
+  const referenceSelect = document.querySelector('select[name="document_reference[reference_type_id]"]');
   const labelInput = document.getElementById('label-input');
 
   function toggleLabelInput() {

@@ -39,7 +39,6 @@
       <thead class="thead-dark">
         <tr>
           <th class="header">Layer Slug</th>
-          <th class="header">Name</th>
           <th class="header">Type</th>
           <th class="header">URI</th>
           <th class="header">Value</th>
@@ -52,9 +51,8 @@
         <% @document_references.each do |document_reference| %>
           <tr>
             <td><%= link_to document_reference.friendlier_id, admin_document_path(document_reference.document) %></td>
-            <td><%= document_reference.reference.name %></td>
-            <td><%= document_reference.reference.reference_type %></td>
-            <td><%= document_reference.reference.reference_uri %></td>
+            <td><%= document_reference.reference_type.reference_type %></td>
+            <td><%= document_reference.reference_type.reference_uri %></td>
             <td><%= link_to document_reference.url, document_reference.url, target: '_blank' %></td>
             <td><%= document_reference.label %></td>
             <td><%= link_to 'Edit', edit_admin_document_document_reference_path(document_reference.document, document_reference) %></td>
