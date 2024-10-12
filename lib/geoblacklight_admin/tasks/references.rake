@@ -15,8 +15,8 @@ namespace :geoblacklight_admin do
             begin
               DocumentReference.create!(
                 friendlier_id: document.friendlier_id,
-              reference_type_id: reference_type_id,
-              url: reference.value
+                reference_type_id: reference_type_id,
+                url: reference.value
               )
             rescue ActiveRecord::RecordInvalid => e
               puts "Error creating DocumentReference: #{e.message}"
@@ -49,7 +49,6 @@ namespace :geoblacklight_admin do
 
     task audit: :environment do
       # @TODO: Audit DocumentReferences to ensure they are correct
-      
     end
 
     task finalize: :environment do

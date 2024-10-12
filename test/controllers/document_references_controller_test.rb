@@ -26,13 +26,13 @@ class DocumentReferencesControllerTest < ActionDispatch::IntegrationTest
   test "should create document_reference" do
     assert_difference("DocumentReference.count") do
       post admin_document_document_references_url(@document), params: {document_reference: {
-        friendlier_id: 'test',
+        friendlier_id: "35c8a641589c4e13b7aa11e37f3f00a1_0",
         reference_type_id: ReferenceType.first.id,
-        url: 'https://example.com'
+        url: "https://example.com"
       }}
     end
 
-    assert_redirected_to admin_document_document_reference_url(@document, DocumentReference.last)
+    assert_redirected_to admin_document_document_references_url(@document)
   end
 
   test "should show document_reference" do
@@ -46,7 +46,13 @@ class DocumentReferencesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update document_reference" do
-    patch admin_document_document_reference_url(@document, @document_reference), params: {document_reference: {}}
+    patch admin_document_document_reference_url(@document, @document_reference), params: {
+      document_reference: {
+        friendlier_id: "35c8a641589c4e13b7aa11e37f3f00a1_0",
+        reference_type_id: ReferenceType.first.id,
+        url: "https://example2.com"
+      }
+    }
     assert_redirected_to admin_document_document_reference_url(@document, @document_reference)
   end
 

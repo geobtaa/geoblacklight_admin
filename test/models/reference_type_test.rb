@@ -4,7 +4,7 @@ class ReferenceTest < ActiveSupport::TestCase
   def setup
     @reference_type = ReferenceType.new(
       name: "Type1",
-      reference_type: "Type1", 
+      reference_type: "Type1",
       reference_uri: "http://example.com"
     )
   end
@@ -44,9 +44,9 @@ class ReferenceTest < ActiveSupport::TestCase
 
   # Test class methods
   test "should sort elements based on id array" do
-    ref1 = ReferenceType.create(reference_type: "Type1", reference_uri: "http://example1.com")
-    ref2 = ReferenceType.create(reference_type: "Type2", reference_uri: "http://example2.com")
-    ref3 = ReferenceType.create(reference_type: "Type3", reference_uri: "http://example3.com")
+    ref1 = ReferenceType.create(name: "Type1", reference_type: "Type1", reference_uri: "http://example1.com")
+    ref2 = ReferenceType.create(name: "Type2", reference_type: "Type2", reference_uri: "http://example2.com")
+    ref3 = ReferenceType.create(name: "Type3", reference_type: "Type3", reference_uri: "http://example3.com")
 
     ReferenceType.sort_elements([ref3.id, ref1.id, ref2.id])
 
