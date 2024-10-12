@@ -74,6 +74,6 @@ class Admin::ReferenceTypesController < Admin::AdminController
 
   # Only allow a list of trusted parameters through.
   def reference_type_params
-    params.require(:reference_type).permit(:reference_type, :reference_uri, :label, :note, :position)
+    params.require(:reference_type).permit(:name, :reference_type, :reference_uri, :label, :note, :position)
   end
 end

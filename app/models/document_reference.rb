@@ -10,7 +10,7 @@ class DocumentReference < ApplicationRecord
 
   # Validations
   validates :friendlier_id, :reference_type_id, :url, presence: true
-  validates :url, uniqueness: { scope: [:friendlier_id, :reference_type_id] }
+  validates :url, uniqueness: {scope: [:friendlier_id, :reference_type_id]}
 
   def self.import(file)
     logger.debug("CSV Import")

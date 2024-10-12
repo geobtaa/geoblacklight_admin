@@ -24,7 +24,11 @@ class Admin::ReferenceTypesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create reference" do
     assert_difference("ReferenceType.count") do
-      post admin_reference_types_url, params: {reference_type: {reference_type: "New Reference Type"}}
+      post admin_reference_types_url, params: {reference_type: {
+        name: "new_reference_type",
+        reference_type: "New Reference Type",
+        reference_uri: "https://example.com"
+      }}
     end
 
     assert_redirected_to admin_reference_type_url(ReferenceType.last)
