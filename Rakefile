@@ -98,7 +98,7 @@ namespace :geoblacklight do
 
     desc "Create the test rails app"
     task generate: ["engine_cart:generate"] do
-      system "bundle exec rake db:reset"
+      # system "bundle exec rake db:reset"
     end
 
     namespace :internal do
