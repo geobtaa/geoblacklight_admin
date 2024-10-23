@@ -11,7 +11,6 @@ class DocumentReferenceTest < ActiveSupport::TestCase
   end
 
   test "should be valid" do
-
     assert @document_reference.valid?
   end
 
@@ -57,7 +56,7 @@ class DocumentReferenceTest < ActiveSupport::TestCase
   test "should import from CSV" do
     file_path = File.expand_path("../../../test/fixtures/files/import_references.csv", __FILE__)
     file = File.open(file_path)
-    assert_difference 'DocumentReference.count', 3 do
+    assert_difference "DocumentReference.count", 3 do
       DocumentReference.import(file)
     end
   end
@@ -66,7 +65,7 @@ class DocumentReferenceTest < ActiveSupport::TestCase
     file_path = File.expand_path("../../../test/fixtures/files/import_references.csv", __FILE__)
     file = File.open(file_path)
     DocumentReference.import(file)
-    assert_difference 'DocumentReference.count', -3 do
+    assert_difference "DocumentReference.count", -3 do
       DocumentReference.destroy_all(file)
     end
   end
