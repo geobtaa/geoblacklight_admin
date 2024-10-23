@@ -3,11 +3,25 @@
 require "csv"
 
 # ExportCsvDocumentReferencesService
+#
+# This service is responsible for exporting document references to a CSV format.
+# It broadcasts the progress of the export process via ActionCable.
 class ExportCsvDocumentReferencesService
+  # Returns a short name for the service.
+  #
+  # @return [String] the short name of the service.
   def self.short_name
     "Document References"
   end
 
+  # Initiates the CSV export process for the given document IDs.
+  #
+  # @param document_ids [Array] an array of document IDs to export.
+  # @return [Array] the generated CSV file content as an array of rows.
+  #
+  # This method broadcasts the progress of the export process to the "export_channel".
+  # It processes the document IDs in slices and handles any NoMethodError exceptions
+  # that occur during the export process.
   def self.call(document_ids)
     ActionCable.server.broadcast("export_channel", {progress: 0})
 
