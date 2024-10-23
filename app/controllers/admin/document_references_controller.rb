@@ -68,6 +68,8 @@ module Admin
     end
 
     def destroy_all
+      return if request.get?
+      
       logger.debug("Destroy References")
       unless params.dig(:document_reference, :references, :file)
         raise ArgumentError, "File does not exist or is invalid."
@@ -87,21 +89,36 @@ module Admin
     # GET   /documents/1/references/import
     # POST  /documents/1/references/import
     def import
+      return if request.get?
+      
       logger.debug("Import References")
+
       unless params.dig(:document_reference, :references, :file)
         raise ArgumentError, "File does not exist or is invalid."
       end
 
       if DocumentReference.import(params.dig(:document_reference, :references, :file))
         logger.debug("References were created successfully.")
-        redirect_to admin_document_document_references_path(@document), notice: "References were created successfully."
+        if params[:document_id]
+          redirect_to admin_document_document_references_path(@document), notice: "References were created successfully."
+        else
+          redirect_to admin_document_references_path, notice: "References were created successfully."
+        end
       else
         logger.debug("References could not be created.")
-        redirect_to admin_document_document_references_path(@document), notice: "References could not be created."
+        if params[:document_id]
+          redirect_to admin_document_document_references_path(@document), warning: "References could not be created."
+        else
+          redirect_to admin_document_references_path, warning: "References could not be created."
+        end
       end
     rescue => e
       logger.debug("References could not be created. #{e}")
-      redirect_to admin_document_document_references_path(@document), notice: "References could not be created. #{e}"
+      if params[:document_id]
+        redirect_to admin_document_document_references_path(@document), notice: "References could not be created. #{e}"
+      else
+        redirect_to admin_document_references_path, notice: "References could not be created. #{e}"
+      end
     end
 
     private
