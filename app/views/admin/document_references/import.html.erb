@@ -20,7 +20,7 @@
     </p>
 
     <h3 class="h4">Upload a CSV File</h3>
-    <%= simple_form_for DocumentReference.new, url: import_admin_document_document_references_path, method: :post, multipart: true do |f| %>
+    <%= simple_form_for DocumentReference.new, url: import_admin_document_references_path, method: :post, multipart: true do |f| %>
       <div class="form-inputs">
         <%= f.simple_fields_for :references do |reference_fields| %>
           <%= reference_fields.input :file, as: :file, input_html: {} %>

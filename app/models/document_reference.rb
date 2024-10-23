@@ -34,7 +34,7 @@ class DocumentReference < ApplicationRecord
   scope :to_aardvark_references, -> {
     references = where(friendlier_id: pluck(:friendlier_id)).map(&:to_aardvark_reference)
     merged = {}
-    references.each() do |ref|
+    references.each do |ref|
       puts "Ref: #{ref.keys.first}"
       if ref.keys.first == "http://schema.org/downloadUrl"
         merged["http://schema.org/downloadUrl"] ||= []

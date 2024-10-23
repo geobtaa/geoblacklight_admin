@@ -30,12 +30,14 @@
       <li class="nav-item">
         <a class="nav-link active" id="html-tab" data-toggle="tab" href="#html" role="tab" aria-controls="html" aria-selected="true">HTML</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" id="json-tab" data-toggle="tab" href="#json" role="tab" aria-controls="json" aria-selected="false">JSON</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" id="csv-tab" data-toggle="tab" href="#csv" role="tab" aria-controls="csv" aria-selected="false">CSV</a>
-      </li>
+      <% if params[:document_id] %>
+        <li class="nav-item">
+          <a class="nav-link" id="json-tab" data-toggle="tab" href="#json" role="tab" aria-controls="json" aria-selected="false">JSON</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="csv-tab" data-toggle="tab" href="#csv" role="tab" aria-controls="csv" aria-selected="false">CSV</a>
+        </li>
+      <% end %>
     </ul>
 
     <!-- Tab content -->
@@ -102,9 +104,10 @@
         <% end %>
       </div>
 
-      <div class="tab-pane fade" id="json" role="tabpanel" aria-labelledby="json-tab">
-        <br />
-        <!-- JSON content -->
+      <% if params[:document_id] %>
+        <div class="tab-pane fade" id="json" role="tabpanel" aria-labelledby="json-tab">
+          <br />
+          <!-- JSON content -->
         <%= ap(@document_references.to_aardvark_references).html_safe %>
       </div>
 
@@ -128,9 +131,10 @@
                 <% end %>
               </tr>
             <% end %>
-          </tbody>
-        </table>
-      </div>
+            </tbody>
+          </table>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>
