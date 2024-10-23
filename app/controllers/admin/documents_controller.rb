@@ -68,6 +68,12 @@ module Admin
           ExportJob.perform_later(@request, current_user, query_params, ExportCsvDocumentAccessLinksService)
           head :no_content
         end
+
+        # CSV Document References - B1G
+        format.csv_document_references do
+          ExportJob.perform_later(@request, current_user, query_params, ExportCsvDocumentReferencesService)
+          head :no_content
+        end
       end
     end
 
@@ -119,6 +125,13 @@ module Admin
         format.csv_document_access_links do
           ExportJob.perform_later(@request, current_user,
             {ids: @documents.pluck(:friendlier_id), format: "csv_document_access_links"}, ExportCsvDocumentAccessLinksService)
+          head :no_content
+        end
+
+        # CSV Document References - B1G
+        format.csv_document_references do
+          ExportJob.perform_later(@request, current_user,
+            {ids: @documents.pluck(:friendlier_id), format: "csv_document_references"}, ExportCsvDocumentReferencesService)
           head :no_content
         end
       end
