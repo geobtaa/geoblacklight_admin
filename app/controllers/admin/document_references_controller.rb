@@ -69,7 +69,9 @@ module Admin
 
     def destroy_all
       logger.debug("Destroy References")
-      return unless params.dig(:document_reference, :references, :file)
+      unless params.dig(:document_reference, :references, :file)
+        raise ArgumentError, "File does not exist or is invalid."
+      end
 
       respond_to do |format|
         if DocumentReference.destroy_all(params.dig(:document_reference, :references, :file))
@@ -86,17 +88,20 @@ module Admin
     # POST  /documents/1/references/import
     def import
       logger.debug("Import References")
-      return unless params.dig(:document_reference, :references, :file)
-
-      respond_to do |format|
-        if DocumentReference.import(params.dig(:document_reference, :references, :file))
-          format.html { redirect_to admin_document_document_references_path(@document), notice: "References were created successfully." }
-        else
-          format.html { redirect_to admin_document_document_references_path(@document), notice: "References could not be created." }
-        end
-      rescue => e
-        format.html { redirect_to admin_document_document_references_path(@document), notice: "References could not be created. #{e}" }
+      unless params.dig(:document_reference, :references, :file)
+        raise ArgumentError, "File does not exist or is invalid."
       end
+
+      if DocumentReference.import(params.dig(:document_reference, :references, :file))
+        logger.debug("References were created successfully.")
+        redirect_to admin_document_document_references_path(@document), notice: "References were created successfully."
+      else
+        logger.debug("References could not be created.")
+        redirect_to admin_document_document_references_path(@document), notice: "References could not be created."
+      end
+    rescue => e
+      logger.debug("References could not be created. #{e}")
+      redirect_to admin_document_document_references_path(@document), notice: "References could not be created. #{e}"
     end
 
     private

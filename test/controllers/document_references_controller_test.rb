@@ -4,6 +4,7 @@ class DocumentReferencesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @document = documents(:ls)
     @document_reference = document_references(:one)
+    @file = fixture_file_upload("import_references.csv", "text/csv")
 
     get "/users/sign_in"
     sign_in_as users(:user_001)
@@ -62,5 +63,17 @@ class DocumentReferencesControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to admin_document_document_references_url(@document)
+  end
+
+  test "should import references successfully" do
+    post import_admin_document_references_url(@document), params: {document_id: @document.friendlier_id, document_reference: {references: {file: @file}}}
+    assert_redirected_to admin_document_document_references_path(@document)
+    assert_equal "References were created successfully.", flash[:notice]
+  end
+
+  test "should not import references with invalid file" do
+    post import_admin_document_references_url(@document), params: {document_id: @document.friendlier_id, document_reference: {references: {file: nil}}}
+    assert_redirected_to admin_document_document_references_path(@document)
+    assert_equal "References could not be created. File does not exist or is invalid.", flash[:notice]
   end
 end

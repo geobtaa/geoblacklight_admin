@@ -69,18 +69,20 @@ class DocumentReference < ApplicationRecord
     logger.debug("CSV Import")
     ::CSV.foreach(file.path, headers: true) do |row|
       logger.debug("CSV Row: #{row.to_hash}")
-      converted_row = convert_import_row(row)
       document_reference = DocumentReference.find_or_initialize_by(
-        friendlier_id: converted_row[0],
-        reference_type_id: converted_row[1],
-        url: converted_row[2]
+        friendlier_id: row.to_hash["friendlier_id"],
+        reference_type_id: ReferenceType.find_by(name: row.to_hash["reference_type"]).id,
+        url: row.to_hash["reference_url"],
+        label: row.to_hash["label"]
       )
 
+      logger.debug("Document Reference: #{document_reference.inspect}")
+
       document_reference.update!(
-        friendlier_id: converted_row[0],
-        reference_type_id: converted_row[1],
-        url: converted_row[2],
-        label: converted_row[3]
+        friendlier_id: row.to_hash["friendlier_id"],
+        reference_type_id: ReferenceType.find_by(name: row.to_hash["reference_type"]).id,
+        url: row.to_hash["reference_url"],
+        label: row.to_hash["label"]
       )
     end
     true
@@ -141,19 +143,5 @@ class DocumentReference < ApplicationRecord
   # Reindexes the associated document.
   def reindex_document
     document.save
-  end
-
-  # Convert Import Row
-  #
-  # Converts a CSV row to an array of attributes for a document reference.
-  #
-  # @param row [CSV::Row] the CSV row to convert
-  # @return [Array] the converted row data
-  # @raise [RuntimeError] if the reference type is not found
-  def self.convert_import_row(row)
-    reference_type = ReferenceType.find_by(name: row[1])
-    raise "ReferenceType not found" unless reference_type
-
-    [row[0], reference_type.id, row[2], row[3]]
   end
 end
