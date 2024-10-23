@@ -98,11 +98,10 @@ class DocumentReference < ApplicationRecord
     logger.debug("CSV Destroy")
     ::CSV.foreach(file.path, headers: true) do |row|
       logger.debug("CSV Row: #{row.to_hash}")
-      converted_row = convert_import_row(row)
       if DocumentReference.destroy_by(
-        friendlier_id: converted_row[0],
-        reference_type_id: converted_row[1],
-        url: converted_row[2]
+        friendlier_id: row.to_hash["friendlier_id"],
+        reference_type_id: ReferenceType.find_by(name: row.to_hash["reference_type"]).id,
+        url: row.to_hash["reference_url"]
       )
         logger.debug("Destroyed: #{row.to_hash}")
       else
