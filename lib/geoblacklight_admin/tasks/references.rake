@@ -9,13 +9,17 @@ namespace :geoblacklight_admin do
           document.dct_references_s.each do |reference|
             puts "Processing reference: #{reference.inspect}"
 
-            reference_type_id = ReferenceType.find_by(name: reference.category).id
-            puts "Reference type id: #{reference_type_id}"
+            reference_type_pk_id = ReferenceType.find_by(name: reference.category).id
+
+            puts "Creating DocumentReference"
+            puts "Friendlier ID: #{document.friendlier_id}"
+            puts "Reference Type ID: #{reference_type_pk_id}"
+            puts "URL: #{reference.value}"
 
             begin
               DocumentReference.create!(
                 friendlier_id: document.friendlier_id,
-                reference_type_id: reference_type_id,
+                reference_type_id: reference_type_pk_id,
                 url: reference.value
               )
             rescue ActiveRecord::RecordInvalid => e

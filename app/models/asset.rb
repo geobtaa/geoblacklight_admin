@@ -17,6 +17,8 @@ class Asset < Kithe::Asset
     "public" => :kithe_derivatives
   }.freeze
 
+  scope :to_aardvark_references, -> { where(parent_id: pluck(:parent_id)).map(&:to_aardvark_reference) }
+
   def full_file_url
     if Rails.env.development?
       "http://localhost:3000" + file.url
@@ -44,6 +46,13 @@ class Asset < Kithe::Asset
 
   def reindex_parent
     parent.save if parent.present?
+  end
+
+  def to_aardvark_reference
+    hash = {}
+    hash[reference_type.reference_uri.to_s] = full_file_url
+    hash[:label] = label if reference_type.reference_uri.to_s == "http://schema.org/downloadUrl"
+    hash
   end
 end
 
