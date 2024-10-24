@@ -29,12 +29,10 @@ namespace :geoblacklight_admin do
       total_documents_processed = 0
       Document.find_in_batches(batch_size: 1000) do |documents|
         documents.each do |document|
-          begin
-            document.update_index
-          rescue => e
-            puts "Error updating index for document: #{document.friendlier_id}"
-            puts e.message
-          end
+          document.update_index
+        rescue => e
+          puts "Error updating index for document: #{document.friendlier_id}"
+          puts e.message
         end
         total_documents_processed += documents.size
         puts "Processed #{documents.size} documents in this batch, total processed: #{total_documents_processed}"

@@ -3,7 +3,6 @@
 ##
 # Module for GeoblacklightAdmin jobs.
 module GeoblacklightAdmin
-
   ##
   # Job to set the parent DCT references URI for a given asset.
   #
