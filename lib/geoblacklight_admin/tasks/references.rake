@@ -57,8 +57,8 @@ namespace :geoblacklight_admin do
       Document.find_in_batches(batch_size: 1000) do |documents|
         documents.each do |document|
           # dct_references_s
-          dct = document.dct_references_s.collect{|ref| [document.friendlier_id, ref.category, ref.value, nil]}
-          
+          dct = document.dct_references_s.collect { |ref| [document.friendlier_id, ref.category, ref.value, nil] }
+
           # document_references
           dr = document.document_references.to_csv
 
