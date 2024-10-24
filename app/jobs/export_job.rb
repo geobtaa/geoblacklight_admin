@@ -51,7 +51,7 @@ class ExportJob < ApplicationJob
 
     # Create a zip file containing both tempfiles
     zipfile_name = "export-#{Time.zone.today}.zip"
-    tmp_dir = Rails.root.join('tmp')
+    tmp_dir = Rails.root.join("tmp")
     @tempfile_zip = Tempfile.new([zipfile_name, ".zip"], tmp_dir)
 
     Zip::File.open(@tempfile_zip.path, Zip::File::CREATE) do |zipfile|

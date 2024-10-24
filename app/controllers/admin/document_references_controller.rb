@@ -69,7 +69,7 @@ module Admin
 
     def destroy_all
       return if request.get?
-      
+
       logger.debug("Destroy References")
       unless params.dig(:document_reference, :references, :file)
         raise ArgumentError, "File does not exist or is invalid."
@@ -90,7 +90,7 @@ module Admin
     # POST  /documents/1/references/import
     def import
       return if request.get?
-      
+
       logger.debug("Import References")
 
       unless params.dig(:document_reference, :references, :file)
