@@ -54,7 +54,7 @@
           <% if @import.state_machine.current_state == 'mapped' %>
             <%= form_tag run_admin_import_path(@import), method: :patch do -%>
               <%= hidden_field_tag :run, true -%>
-              <%= submit_tag 'Run Import' -%>
+              <%= submit_tag '+ Run Import', class: 'btn btn-primary btn-block' -%>
             <%- end -%>
           <% end %>
           <% if @import.state_machine.current_state == 'imported' %>
