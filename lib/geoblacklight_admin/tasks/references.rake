@@ -52,7 +52,27 @@ namespace :geoblacklight_admin do
     end
 
     task audit: :environment do
-      # @TODO: Audit DocumentReferences to ensure they are correct
+      total_documents_processed = 0
+      puts "\n--- Audit Start ---"
+      Document.find_in_batches(batch_size: 1000) do |documents|
+        documents.each do |document|
+          # dct_references_s
+          dct = document.dct_references_s.collect{|ref| [document.friendlier_id, ref.category, ref.value, nil]}
+          
+          # document_references
+          dr = document.document_references.to_csv
+
+          if dct != dr
+            puts "Document: #{document.friendlier_id}"
+            puts "DCT References: #{dct.inspect}"
+            puts "Document References: #{dr.inspect}"
+            puts "NO MATCH"
+          end
+        end
+        total_documents_processed += documents.size
+        puts "--- Audit End ---\n"
+        puts "Processed #{documents.size} documents in this batch, total processed: #{total_documents_processed}"
+      end
     end
 
     task finalize: :environment do
