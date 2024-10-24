@@ -1,6 +1,24 @@
 # frozen_string_literal: true
 
 # Solr indexing for our document class. Still a work in progress.
+#
+# The DocumentIndexer class is responsible for configuring how documents
+# are indexed into Solr. It uses the Kithe::Indexer framework to map
+# document attributes to Solr fields.
+#
+# The configuration block defines various fields that are indexed, including
+# fields specific to GeoBlacklight and custom fields defined via the Element model.
+#
+# Fields:
+# - model_pk_ssi: The primary key of the model, extracted from the object's ID.
+# - gbl_mdVersion_s: A static version string for GeoBlacklight.
+# - gbl_mdModified_dt: The modification date of the metadata.
+# - date_created_dtsi: The creation date of the record, in UTC ISO8601 format.
+# - date_modified_dtsi: The last modification date of the record, in UTC ISO8601 format.
+# - b1g_geom_import_id_ssi: The import ID for GeoBlacklight administration.
+#
+# If the "elements" table exists, additional fields are indexed based on
+# the Element model's configuration.
 class DocumentIndexer < Kithe::Indexer
   configure do
     # Kithe
