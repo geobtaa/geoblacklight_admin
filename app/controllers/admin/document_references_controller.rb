@@ -1,12 +1,20 @@
 # frozen_string_literal: true
 
 # Admin::DocumentReferencesController
+#
+# This controller manages the CRUD operations for Document References within the Admin namespace.
+# It includes actions for listing, showing, creating, updating, and deleting document references.
+# Additionally, it provides functionality for importing and destroying all references.
 module Admin
   class DocumentReferencesController < Admin::AdminController
     before_action :set_document
     before_action :set_document_reference, only: %i[show edit update destroy]
 
     # GET /admin/document_references or /admin/document_references.json
+    #
+    # Lists all document references. If a document_id is provided, it lists references
+    # associated with that document, ordered by position. Otherwise, it paginates all
+    # document references.
     def index
       @document_references = DocumentReference.all
       if params[:document_id]
@@ -17,19 +25,28 @@ module Admin
     end
 
     # GET /admin/document_references/1 or /admin/document_references/1.json
+    #
+    # Shows a specific document reference.
     def show
     end
 
     # GET /admin/document_references/new
+    #
+    # Initializes a new document reference.
     def new
       @document_reference = DocumentReference.new
     end
 
     # GET /admin/document_references/1/edit
+    #
+    # Edits an existing document reference.
     def edit
     end
 
     # POST /admin/document_references or /admin/document_references.json
+    #
+    # Creates a new document reference. If successful, redirects to the document references
+    # list with a success notice. Otherwise, renders the new form with errors.
     def create
       @document_reference = DocumentReference.new(document_reference_params)
 
@@ -45,6 +62,9 @@ module Admin
     end
 
     # PATCH/PUT /admin/document_references/1 or /admin/document_references/1.json
+    #
+    # Updates an existing document reference. If successful, redirects to the document reference
+    # with a success notice. Otherwise, renders the edit form with errors.
     def update
       respond_to do |format|
         if @document_reference.update(document_reference_params)
@@ -58,6 +78,8 @@ module Admin
     end
 
     # DELETE /admin/document_references/1 or /admin/document_references/1.json
+    #
+    # Deletes a document reference. Redirects to the document references list with a success notice.
     def destroy
       @document_reference.destroy!
 
@@ -67,6 +89,10 @@ module Admin
       end
     end
 
+    # DELETE /admin/document_references/destroy_all
+    #
+    # Destroys all document references provided in the file parameter. If successful, redirects
+    # with a success notice. Otherwise, redirects with an error notice.
     def destroy_all
       return if request.get?
 
@@ -86,8 +112,10 @@ module Admin
       end
     end
 
-    # GET   /documents/1/references/import
-    # POST  /documents/1/references/import
+    # GET/POST /documents/1/references/import
+    #
+    # Imports document references from a file. If successful, redirects with a success notice.
+    # Otherwise, redirects with an error notice.
     def import
       return if request.get?
 
@@ -123,18 +151,20 @@ module Admin
 
     private
 
-    # Use callbacks to share common setup or constraints between actions.
+    # Sets the document based on the document_id parameter.
+    # If not nested, it does nothing.
     def set_document
       return unless params[:document_id] # If not nested
 
       @document = Document.includes(:leaf_representative).find_by!(friendlier_id: params[:document_id])
     end
 
+    # Sets the document reference based on the id parameter.
     def set_document_reference
       @document_reference = DocumentReference.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
+    # Permits only the trusted parameters for document references.
     def document_reference_params
       params.require(:document_reference).permit(:friendlier_id, :reference_type_id, :url, :label, :position)
     end
