@@ -9,7 +9,7 @@ namespace :geoblacklight_admin do
       puts "Deleted: #{deleted_orphans.inspect}"
     end
 
-    desc 'Reindex all Documents'
+    desc "Reindex all Documents"
     task reindex: :environment do
       Kithe::Indexable.index_with(batching: true) do
         progress_bar = ProgressBar.create(total: Document.count, format: Kithe::STANDARD_PROGRESS_BAR_FORMAT)
