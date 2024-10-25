@@ -55,7 +55,7 @@ class DocumentGeomValidatorTest < ActiveSupport::TestCase
   end
 
   test "rejects coplanar points" do
-    @document.locn_geometry = "POLYGON((-180 90, 180 90, 180 -90, -180 -90, -180 90))"
+    @document.locn_geometry = "POLYGON((-180.0 90.0, 180.0 90.0, 180.0 -90.0, -180.0 -90.0, -180.0 90.0))"
 
     validator = Document::GeomValidator.new
     valid = validator.validate(@document)
