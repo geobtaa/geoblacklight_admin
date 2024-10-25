@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "rgeo"
+require 'rgeo/wkrep/wkt_parser'
 
 # GEOM Validation
 #
@@ -65,6 +66,13 @@ class Document
           "Invalid polygon: all points are coplanar input, Solr will not index")
       end
 
+      # Check for coplanar points
+      if coplanar_points?(geom)
+        valid_geom = false
+        record.errors.add(GeoblacklightAdmin::Schema.instance.solr_fields[:geometry],
+          "Invalid polygon: all points are coplanar input, Solr will not index")
+      end
+
       valid_geom
     end
 
@@ -114,6 +122,45 @@ class Document
       end
 
       [valid_envelope, error_message]
+    end
+
+    def coplanar_points?(geom)
+      # Parse the WKT to extract points
+      factory = RGeo::Cartesian.factory
+      wkt_parser = RGeo::WKRep::WKTParser.new(factory)
+      parsed_geom = wkt_parser.parse(geom)
+
+      # Ensure the geometry is a polygon
+      return false unless parsed_geom.is_a?(RGeo::Feature::Polygon)
+
+      # Extract the exterior ring of the polygon
+      exterior_ring = parsed_geom.exterior_ring
+
+      # Get the points from the exterior ring
+      points = exterior_ring.points
+
+      # Check if all points are collinear
+      collinear?(points)
+    end
+
+    def collinear?(points)
+      return true if points.size < 3
+
+      # Calculate the slope between the first two points
+      x0, y0 = points[0].x, points[0].y
+      x1, y1 = points[1].x, points[1].y
+      initial_slope = slope(x0, y0, x1, y1)
+
+      # Check if all subsequent points have the same slope with the first point
+      points[2..-1].all? do |point|
+        x, y = point.x, point.y
+        slope(x0, y0, x, y) == initial_slope
+      end
+    end
+
+    def slope(x0, y0, x1, y1)
+      return Float::INFINITY if x1 == x0 # Vertical line
+      (y1 - y0).to_f / (x1 - x0)
     end
   end
 end
