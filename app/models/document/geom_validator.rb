@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "rgeo"
-require 'rgeo/wkrep/wkt_parser'
+require "rgeo/wkrep/wkt_parser"
 
 # GEOM Validation
 #
@@ -128,7 +128,13 @@ class Document
       # Parse the WKT to extract points
       factory = RGeo::Cartesian.factory
       wkt_parser = RGeo::WKRep::WKTParser.new(factory)
-      parsed_geom = wkt_parser.parse(geom)
+
+      # Parse the WKT
+      begin
+        parsed_geom = wkt_parser.parse(geom)
+      rescue => e
+        return false
+      end
 
       # Ensure the geometry is a polygon
       return false unless parsed_geom.is_a?(RGeo::Feature::Polygon)
@@ -152,7 +158,7 @@ class Document
       initial_slope = slope(x0, y0, x1, y1)
 
       # Check if all subsequent points have the same slope with the first point
-      points[2..-1].all? do |point|
+      points[2..].all? do |point|
         x, y = point.x, point.y
         slope(x0, y0, x, y) == initial_slope
       end
