@@ -51,6 +51,7 @@ namespace :geoblacklight_admin do
       end
     end
 
+    desc "Audit the references migration"
     task audit: :environment do
       total_documents_processed = 0
       puts "\n--- Audit Start ---"
