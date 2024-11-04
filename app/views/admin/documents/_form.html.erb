@@ -8,11 +8,9 @@
           <h1 class="h5">
             <% if @document.persisted? %>
               <div class="row">
-                <% if @document.thumbnail.present? %>
+                <% if thumb_to_render?(@document) %>
                   <div class="thumbnail col-2">
-                    <% unless @document&.thumbnail&.file_url(:thumb_mini).nil? %>
-                      <%= image_tag @document&.thumbnail&.file_url(:thumb_mini) %>
-                    <% end %>
+                    <%= image_tag thumbnail_to_render(@document), class: "thumbnail" %>
                   </div>
                 <% end %>
                 <div class="col">
