@@ -183,8 +183,6 @@ module GeoblacklightAdminHelper
       document.document_assets.find do |asset|
         asset.file_derivatives&.key?(:thumb_standard_2X)
       end&.file_url(:thumb_standard_2X)
-    else
-      nil
     end
   end
 end

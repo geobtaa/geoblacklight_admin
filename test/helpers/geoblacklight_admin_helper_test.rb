@@ -11,8 +11,8 @@ class GeoblacklightAdminHelperTest < ActionView::TestCase
 
     @document_with_thumbnail = OpenStruct.new(
       thumbnail: OpenStruct.new(
-        file_url: 'http://example.com/thumbnail.jpg',
-        file_derivatives: { thumb_standard_2X: 'http://example.com/thumbnail_2x.jpg' }
+        file_url: "http://example.com/thumbnail.jpg",
+        file_derivatives: {thumb_standard_2X: "http://example.com/thumbnail_2x.jpg"}
       ),
       document_assets: []
     )
@@ -20,7 +20,7 @@ class GeoblacklightAdminHelperTest < ActionView::TestCase
     @document_with_assets = OpenStruct.new(
       thumbnail: nil,
       document_assets: [
-        OpenStruct.new(file_derivatives: { thumb_standard_2X: 'http://example.com/asset_thumbnail_2x.jpg' })
+        OpenStruct.new(file_derivatives: {thumb_standard_2X: "http://example.com/asset_thumbnail_2x.jpg"})
       ]
     )
 
