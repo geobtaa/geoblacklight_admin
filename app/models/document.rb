@@ -38,9 +38,7 @@ class Document < Kithe::Work
   # @TODO: Redundant? Kithe also includes a members association
   def document_assets
     scope = Kithe::Asset
-    scope = scope.where(parent_id: id)
-
-    # scope = scope.page(params[:page]).per(20).order(created_at: :desc)
+    scope = scope.where(parent_id: id).order(position: :asc)
     scope.includes(:parent)
   end
 

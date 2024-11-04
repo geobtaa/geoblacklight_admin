@@ -155,4 +155,36 @@ module GeoblacklightAdminHelper
   def assets_dct_references_options
     escape_javascript(options_for_select(I18n.t("activemodel.enum_values.document/reference.category").invert.sort.insert(0, ["Choose Reference Type", nil]))).to_s
   end
+
+  # Determines if a document's thumbnail should be rendered.
+  #
+  # @param document [Object] the document object
+  # @return [Boolean] true if the thumbnail should be rendered, false otherwise
+  def thumb_to_render?(document)
+    if document&.thumbnail&.file_url&.present? && document&.thumbnail&.file_derivatives&.present?
+      true
+    elsif document&.document_assets&.any?
+      document.document_assets.any? do |asset|
+        asset.file_derivatives&.key?(:thumb_standard_2X)
+      end
+    else
+      false
+    end
+  end
+
+  # Returns the URL of the thumbnail to render for a document.
+  #
+  # @param document [Object] the document object
+  # @return [String] the URL of the thumbnail to render
+  def thumbnail_to_render(document)
+    if document&.thumbnail&.file_url&.present? && document&.thumbnail&.file_derivatives&.present?
+      document.thumbnail.file_url(:thumb_standard_2X)
+    elsif document&.document_assets&.any?
+      document.document_assets.find do |asset|
+        asset.file_derivatives&.key?(:thumb_standard_2X)
+      end&.file_url(:thumb_standard_2X)
+    else
+      nil
+    end
+  end
 end

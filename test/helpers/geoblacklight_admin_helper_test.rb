@@ -3,10 +3,31 @@
 require "test_helper"
 
 class GeoblacklightAdminHelperTest < ActionView::TestCase
+  include GeoblacklightAdminHelper
   attr_reader :current_user
 
   setup do
     @current_user = users(:user_001)
+
+    @document_with_thumbnail = OpenStruct.new(
+      thumbnail: OpenStruct.new(
+        file_url: 'http://example.com/thumbnail.jpg',
+        file_derivatives: { thumb_standard_2X: 'http://example.com/thumbnail_2x.jpg' }
+      ),
+      document_assets: []
+    )
+
+    @document_with_assets = OpenStruct.new(
+      thumbnail: nil,
+      document_assets: [
+        OpenStruct.new(file_derivatives: { thumb_standard_2X: 'http://example.com/asset_thumbnail_2x.jpg' })
+      ]
+    )
+
+    @document_without_thumbnail = OpenStruct.new(
+      thumbnail: nil,
+      document_assets: []
+    )
   end
 
   test "diff_class" do
@@ -71,5 +92,21 @@ class GeoblacklightAdminHelperTest < ActionView::TestCase
 
   test "params_as_hidden_fields" do
     assert_equal "<input type=\"hidden\" name=\"q\" value=\"foo\" autocomplete=\"off\" />", params_as_hidden_fields({"q" => "foo"})
+  end
+
+  test "thumb_to_render_with_thumbnail" do
+    assert thumb_to_render?(@document_with_thumbnail)
+  end
+
+  test "thumb_to_render_with_assets" do
+    assert thumb_to_render?(@document_with_assets)
+  end
+
+  test "thumb_to_render_without_thumbnail_or_assets" do
+    refute thumb_to_render?(@document_without_thumbnail)
+  end
+
+  test "thumbnail_to_render_without_thumbnail_or_assets" do
+    assert_nil thumbnail_to_render(@document_without_thumbnail)
   end
 end
