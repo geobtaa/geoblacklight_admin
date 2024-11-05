@@ -43,8 +43,8 @@ namespace :geoblacklight_admin do
 
           if dr_csv != doc_refs
             puts "Document: #{document.friendlier_id}"
-            puts "DCT References: #{dct.inspect}"
-            puts "Document References: #{dr.inspect}"
+            puts "CSV References: #{dr_csv.inspect}"
+            puts "Document References: #{doc_refs.inspect}"
             puts "NO MATCH"
           end
         end
