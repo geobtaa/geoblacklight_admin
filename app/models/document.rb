@@ -159,10 +159,10 @@ class Document < Kithe::Work
     references.each do |key, value|
       if key == "http://schema.org/downloadUrl"
         value.each do |download|
-          csv << [self.friendlier_id, ReferenceType.find_by(reference_uri: key).name, download["url"], download["label"]]
+          csv << [friendlier_id, ReferenceType.find_by(reference_uri: key).name, download["url"], download["label"]]
         end
       else
-        csv << [self.friendlier_id, ReferenceType.find_by(reference_uri: key).name, value, nil]
+        csv << [friendlier_id, ReferenceType.find_by(reference_uri: key).name, value, nil]
       end
     end
     csv

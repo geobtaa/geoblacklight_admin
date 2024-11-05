@@ -35,12 +35,11 @@ namespace :geoblacklight_admin do
       puts "\n--- Audit Start ---"
       Document.find_in_batches(batch_size: 1000) do |documents|
         documents.each do |document|
-          
           # Document > References as CSV
           dr_csv = document.references_csv
 
           # document_references
-          doc_refs = document.document_references.collect{|dr| dr.to_csv }
+          doc_refs = document.document_references.collect { |dr| dr.to_csv }
 
           if dr_csv != doc_refs
             puts "Document: #{document.friendlier_id}"
