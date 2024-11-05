@@ -29,7 +29,7 @@
       <% end %>
       <%= link_to admin_document_document_references_url(@document), class: "ml-2" do %>
         References
-        <span class="badge badge-light"><%= @document.document_references.count %></span>
+        <span class="badge badge-light"><%= @document.references_csv.size %></span>
       <% end %>
     <% end %>
   </nav>

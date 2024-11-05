@@ -4,9 +4,9 @@ arcgis_feature_layer,ArcGIS FeatureLayer,urn:x-esri:serviceType:ArcGIS#FeatureLa
 arcgis_image_map_layer,ArcGIS ImageMapLayer,urn:x-esri:serviceType:ArcGIS#ImageMapLayer,FALSE,-,3
 arcgis_tiled_map_layer,ArcGIS TiledMapLayer,urn:x-esri:serviceType:ArcGIS#TiledMapLayer,FALSE,-,4
 cog,Cloud Optimized GeoTIFF (COG),https://github.com/cogeotiff/cog-spec,FALSE,-,5
-documentation_download,Data dictionary / supplemental documentation,http://lccn.loc.gov/sh85035852,FALSE,Functions as a link to download documentation (not a viewer),6
+documentation_download,Data Dictionary / documentation,http://lccn.loc.gov/sh85035852,FALSE,Functions as a link to download documentation (not a viewer),6
 documentation_external,Documentation (External),http://schema.org/url,FALSE,-,7
-download,Download file,http://schema.org/downloadUrl,TRUE,Link to download file (for multiple files see the multiple downloads guidelines),8
+download,Download,http://schema.org/downloadUrl,TRUE,Link to download file (for multiple files see the multiple downloads guidelines),8
 geo_json,GeoJSON,http://geojson.org/geojson-spec.html,FALSE,-,9
 full_layer_description,Full layer description,http://schema.org/url,FALSE,To view further descriptive information about the layer or a link to its landing page,10
 iiif_image,International Image Interoperability Framework (IIIF) Image API,http://iiif.io/api/image,FALSE,Load the image viewer using Leaflet-IIIF,11

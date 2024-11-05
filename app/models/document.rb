@@ -151,6 +151,23 @@ class Document < Kithe::Work
     references.to_json
   end
 
+  def references_csv
+    # Initialize CSV
+    # - [document_id, category, value, label]
+    csv = []
+
+    references.each do |key, value|
+      if key == "http://schema.org/downloadUrl"
+        value.each do |download|
+          csv << [self.friendlier_id, ReferenceType.find_by(reference_uri: key).name, download["url"], download["label"]]
+        end
+      else
+        csv << [self.friendlier_id, ReferenceType.find_by(reference_uri: key).name, value, nil]
+      end
+    end
+    csv
+  end
+
   def asset_label(asset)
     if asset.label.present?
       asset.label
@@ -184,7 +201,9 @@ class Document < Kithe::Work
     # Multiple Document Download Links
     # - Via DocumentDownloads
     if document_downloads.present?
-      multiple_downloads << multiple_downloads_array
+      multiple_downloads_array.each do |download|
+        multiple_downloads << download
+      end
     end
 
     logger.debug("Document#dct_downloads > document_downloads: #{multiple_downloads.inspect}\n\n")

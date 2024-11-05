@@ -203,7 +203,7 @@ module GeoblacklightAdminHelper
   #
   # @return [String] the escaped JavaScript string of options
   def assets_dct_references_options
-    escape_javascript(options_for_select(I18n.t("activemodel.enum_values.document/reference.category").invert.sort.insert(0, ["Choose Reference Type", nil]))).to_s
+    escape_javascript(options_for_select(I18n.t("activemodel.asset_enum_values.document/reference.category").invert.sort.insert(0, ["Choose Reference Type", nil]))).to_s
   end
 
   # Determines if a document's thumbnail should be rendered.

@@ -1,4 +1,6 @@
 class Asset < Kithe::Asset
+  belongs_to :parent, class_name: "Document", optional: true
+
   include AttrJson::Record::QueryScopes
   include Rails.application.routes.url_helpers
 

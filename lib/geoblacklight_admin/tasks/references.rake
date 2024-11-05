@@ -6,37 +6,15 @@ namespace :geoblacklight_admin do
       Document.find_in_batches(batch_size: 1000) do |documents|
         documents.each do |document|
           # Move AttrJson dct_references_s into DocumentReferences
-          document.dct_references_s.each do |reference|
+          document.references_csv.each do |reference|
             puts "Processing reference: #{reference.inspect}"
 
-            reference_type_pk_id = ReferenceType.find_by(name: reference.category).id
-
-            puts "Creating DocumentReference"
-            puts "Friendlier ID: #{document.friendlier_id}"
-            puts "Reference Type ID: #{reference_type_pk_id}"
-            puts "URL: #{reference.value}"
-
             begin
-              DocumentReference.create!(
-                friendlier_id: document.friendlier_id,
-                reference_type_id: reference_type_pk_id,
-                url: reference.value
-              )
-            rescue ActiveRecord::RecordInvalid => e
-              puts "Error creating DocumentReference: #{e.message}"
-            end
-          end
-
-          # Migrate multiple download links into DocumentReferences
-          document.document_downloads.each do |download|
-            puts "Processing multiple download link: #{download.inspect}"
-
-            begin
-              DocumentReference.create!(
-                friendlier_id: document.friendlier_id,
-                reference_type_id: ReferenceType.find_by(name: "download").id,
-                url: download.value,
-                label: download.label
+              DocumentReference.find_or_create_by!(
+                friendlier_id: reference[0],
+                reference_type_id: ReferenceType.find_by(name: reference[1]).id,
+                url: reference[2],
+                label: reference[3]
               )
             rescue ActiveRecord::RecordInvalid => e
               puts "Error creating DocumentReference: #{e.message}"
@@ -57,13 +35,14 @@ namespace :geoblacklight_admin do
       puts "\n--- Audit Start ---"
       Document.find_in_batches(batch_size: 1000) do |documents|
         documents.each do |document|
-          # dct_references_s
-          dct = document.dct_references_s.collect { |ref| [document.friendlier_id, ref.category, ref.value, nil] }
+          
+          # Document > References as CSV
+          dr_csv = document.references_csv
 
           # document_references
-          dr = document.document_references.to_csv
+          doc_refs = document.document_references.collect{|dr| dr.to_csv }
 
-          if dct != dr
+          if dr_csv != doc_refs
             puts "Document: #{document.friendlier_id}"
             puts "DCT References: #{dct.inspect}"
             puts "Document References: #{dr.inspect}"

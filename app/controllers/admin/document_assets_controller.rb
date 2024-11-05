@@ -63,7 +63,7 @@ module Admin
 
       respond_to do |format|
         if @document_asset.update(document_asset_params)
-          format.html { redirect_to admin_document_document_assets_path(@document_asset.parent), notice: "Asset was successfully updated." }
+          format.html { redirect_to admin_document_document_assets_path(@document), notice: "Asset was successfully updated." }
           format.json { render :show, status: :ok, location: @document_asset }
         else
           format.html { render :edit }
@@ -163,7 +163,7 @@ module Admin
     #
     # Returns a list of permitted parameters for document asset update.
     def document_asset_params
-      params.require(:asset).permit(:title, :label, :dct_references_uri_key, :thumbnail)
+      params.require(:asset).permit(:parent_id, :title, :label, :dct_references_uri_key, :thumbnail)
     end
   end
 end

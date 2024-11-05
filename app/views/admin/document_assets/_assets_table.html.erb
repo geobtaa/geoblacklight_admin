@@ -14,9 +14,10 @@
   <tbody>
     <% document_assets.each do |document_asset| %>
       <tr>
-        <td>
-          <% if document_asset.respond_to?(:thumbnail) %>
-            <%= document_asset.thumbnail %> 
+      <td>
+        <%= form_with model: document_asset, url: admin_document_document_asset_path(document_asset.parent, document_asset), method: :put, remote: true, class: 'thumbnail-form' do |f| %>
+          <%= f.check_box :thumbnail, class: 'thumbnail-toggle', onchange: "this.form.submit()" %>
+            <%= f.submit 'Save', class: 'btn btn-sm btn-primary d-none' %>
           <% end %>
         </td>
         <td>
