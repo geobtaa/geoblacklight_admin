@@ -20,3 +20,11 @@ standardrb --fix
 ```bash
 bundle exec rake ci
 ```
+
+### Build Node Module
+Bump the package version in `package.json` and run the following commands to build and publish the node module.
+
+```bash
+bundle exec vite build
+npm publish
+```

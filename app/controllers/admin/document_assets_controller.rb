@@ -126,7 +126,7 @@ module Admin
 
     # Only allow a list of trusted parameters through.
     def document_asset_params
-      params.require(:asset).permit(:title, :label, :dct_references_uri_key)
+      params.require(:asset).permit(:title, :label, :dct_references_uri_key, :thumbnail)
     end
   end
 end

@@ -109,7 +109,7 @@ module Admin
 
     # Only allow a list of trusted parameters through.
     def asset_params
-      params.require(:asset).permit(:parent_id)
+      params.require(:asset).permit(:parent_id, :thumbnail)
     end
 
     def date_check?(val)
