@@ -56,9 +56,10 @@ namespace :geoblacklight_admin do
 
     task finalize: :environment do
       # @TODO: Finalize DocumentReferences to ensure they are correct
-      # Remove dct_references_s from Documents
+      # Remove dct_references_s from FormElements
+      # Remove AttrJson dct_references_s from Documents
+      # Remove dct_references_s from Elements (maybe not?)
       # Remove multiple download links from Documents
-      # Remove assets from Documents
     end
   end
 end

@@ -118,13 +118,17 @@ class Document < Kithe::Work
 
     # Prep value arrays
     send(GeoblacklightAdmin::Schema.instance.solr_fields[:reference]).each do |ref|
-      references[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] = []
+      if ref.category.present?
+        references[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] = []
+      end
     end
 
     # Seed value arrays
     send(GeoblacklightAdmin::Schema.instance.solr_fields[:reference]).each do |ref|
       # @TODO: Need to support multiple entries per key here
-      references[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] << ref.value
+      if ref.category.present?
+        references[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] << ref.value
+      end
     end
 
     logger.debug("\n\nDocument#references > seeded: #{references}")
