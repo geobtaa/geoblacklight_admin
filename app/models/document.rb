@@ -228,6 +228,8 @@ class Document < Kithe::Work
 
     logger.debug("Document#dct_downloads > downloadable_assets: #{multiple_downloads.inspect}\n\n")
 
+    multiple_downloads = multiple_downloads.uniq { |d| [d[:label], d[:url]] } unless multiple_downloads.empty?
+
     references[:"http://schema.org/downloadUrl"] = multiple_downloads.flatten unless multiple_downloads.empty?
     references
   end
