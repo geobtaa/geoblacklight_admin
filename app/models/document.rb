@@ -253,14 +253,9 @@ class Document < Kithe::Work
   #
   def download_text(format)
     download_format = proper_case_format(format)
-    prefix = "Original "
-    begin
-      format = download_format
-    rescue
-      # Need to rescue if format doesn't exist
-    end
-    value = prefix + format.to_s
-    value.html_safe
+    download_format.to_s.html_safe
+  rescue
+    format.to_s.html_safe
   end
 
   ##
