@@ -5,7 +5,7 @@ namespace :geoblacklight_admin do
       total_documents_processed = 0
       Document.find_in_batches(batch_size: 1000) do |documents|
         documents.each do |document|
-          # Move AttrJson dct_references_s into DocumentReferences
+          # Moves AttrJson-based dct_references_s and Multiple Downloads into DocumentReferences
           document.references_csv.each do |reference|
             puts "Processing reference: #{reference.inspect}"
 
@@ -42,16 +42,16 @@ namespace :geoblacklight_admin do
           doc_refs = document.document_references.collect { |dr| dr.to_csv }.sort
 
           if dr_csv != doc_refs
+            puts "\nNO MATCH"
             puts "Document: #{document.friendlier_id}"
             puts "CSV References Sorted: #{dr_csv.sort.inspect}"
-            puts "Document References Sorted: #{doc_refs.sort.inspect}"
-            puts "NO MATCH"
+            puts "Document References Sorted: #{doc_refs.sort.inspect}\n"
           end
         end
         total_documents_processed += documents.size
-        puts "--- Audit End ---\n"
         puts "Processed #{documents.size} documents in this batch, total processed: #{total_documents_processed}"
       end
+      puts "--- Audit End ---\n"
     end
 
     task finalize: :environment do
