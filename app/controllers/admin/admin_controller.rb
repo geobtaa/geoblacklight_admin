@@ -14,6 +14,7 @@ module Admin
 
     # Before any action, ensure the user is authenticated as an admin.
     before_action :authenticate_admin!
+    before_action :set_action_cable_identifier
 
     protected
 
@@ -22,6 +23,12 @@ module Admin
     def authenticate_admin!
       authenticate_user!
       redirect_to :somewhere, status: :forbidden unless current_user.admin?
+    end
+
+    private
+
+    def set_action_cable_identifier
+      cookies.encrypted[:user_id] = current_user&.id
     end
   end
 end
