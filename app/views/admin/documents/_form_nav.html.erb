@@ -1,7 +1,7 @@
 <div class="make-me-sticky mt-4 ml-4">
   <nav class="nav flex-column ml-4 mt-6">
     <% if @document.persisted? %>
-      <strong class="mb-4"><%= link_to "GBL♦Admin | View in GeoBlacklight", solr_document_url(@document), { class: 'btn btn-warning' } %></strong>
+      <strong class="mb-4"><%= link_to "GBL♦Admin | View in GeoBlacklight", solr_document_url(@document), { class: 'btn btn-gbl-admin btn-warning' } %></strong>
     <% end %>
 
     <%- form_elements = FormElement.all.order(position: :asc) %>
