@@ -47,6 +47,7 @@ footer.gbl-admin {
 
 main#gbl-admin {
   min-height: 75vh;
+  margin-top: 0rem;
 }
 
 main.container-fluid {
@@ -59,4 +60,10 @@ main.container-fluid {
 
 kbd {
   background-color:aliceblue;
+}
+
+.btn-gbl-admin {
+  color: black;
+  border-color: black;
+  margin: 1rem 0;
 }
