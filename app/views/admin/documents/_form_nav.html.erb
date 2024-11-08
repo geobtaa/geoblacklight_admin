@@ -19,17 +19,22 @@
         Institutional Access Links
         <span class="badge badge-light"><%= @document.document_accesses.count %></span>
       <% end %>
-      <%= link_to admin_document_document_downloads_url(@document), class: "ml-2" do %>
-        Multiple Download Links
-        <span class="badge badge-light"><%= @document.document_downloads.count %></span>
+      
+      <% if ENV["GBL_ADMIN_REFERENCES_MIGRATED"] == "false" %>
+        <%= Rails.logger.warn("Deprecation warning: Multiple Download Links will not be supported soon.") %>
+        <%= link_to admin_document_document_downloads_url(@document), class: "ml-2" do %>
+          Multiple Download Links
+          <span class="badge badge-light"><%= @document.document_downloads.count %></span>
+        <% end %>
       <% end %>
+      
       <%= link_to admin_document_document_assets_url(@document), class: "ml-2" do %>
         Additional Assets 
         <span class="badge badge-light"><%= @document.document_assets.count %></span>
       <% end %>
       <%= link_to admin_document_document_references_url(@document), class: "ml-2" do %>
         References
-        <span class="badge badge-light"><%= @document.references_csv.size %></span>
+        <span class="badge badge-light"><%= @document.document_references.size %></span>
       <% end %>
     <% end %>
   </nav>

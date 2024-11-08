@@ -152,7 +152,14 @@ class Document < Kithe::Work
   end
 
   def references_json
-    references.to_json
+    if ENV["GBL_ADMIN_REFERENCES_MIGRATED"] == "true"
+      logger.debug("Document#references_json > using document_references")
+      document_references.to_aardvark_references.to_json
+    else
+      logger.debug("Document#references_json > using references")
+      logger.warn("Deprecation warning: AttrJSON-based dct_references_s will not be supported soon.")
+      references.to_json
+    end
   end
 
   def references_csv
