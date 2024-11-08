@@ -3,6 +3,7 @@ namespace :geoblacklight_admin do
     desc "Migrate references into DocumentReferences"
     task migrate: :environment do
       total_documents_processed = 0
+      puts "\n--- Migration Start ---"
       Document.find_in_batches(batch_size: 1000) do |documents|
         documents.each do |document|
           # Moves AttrJson-based dct_references_s and Multiple Downloads into DocumentReferences
@@ -22,6 +23,7 @@ namespace :geoblacklight_admin do
         total_documents_processed += documents.size
         puts "Processed #{documents.size} documents in this batch, total processed: #{total_documents_processed}"
       end
+      puts "--- Migration End ---\n"
     end
 
     desc "Audit the references migration"
