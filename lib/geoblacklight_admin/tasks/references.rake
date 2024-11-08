@@ -53,16 +53,14 @@ namespace :geoblacklight_admin do
     end
 
     task finalize: :environment do
-      # Step 1 - Feature flag
+      # Step 1 - After migrate, flip the ENV var feature flag
       # Done: Remove multiple download links from Documents
       # Done: Remove multiple download links from FormElements (it's a feature there)
       # Done: Remove multiple download links from FormNav (link)
       # Done: Add DocumentReferences to the FormElements (as a feature - manual)
 
-      # Step 2
-      # @TODO: Finalize DocumentReferences to ensure they are correct
-      # Remove AttrJson dct_references_s from Documents (redundant)
-      # Remove dct_references_s from Elements (maybe not, as it is used in the indexer)
+      # Step 2 - Finalize
+      # Remove AttrJson dct_references_s values from Documents (data is redundant and/or incorrect)
     end
   end
 end
