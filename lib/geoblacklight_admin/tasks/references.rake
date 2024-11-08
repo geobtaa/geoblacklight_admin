@@ -6,23 +6,18 @@ namespace :geoblacklight_admin do
       Document.find_in_batches(batch_size: 1000) do |documents|
         documents.each do |document|
           # Moves AttrJson-based dct_references_s and Multiple Downloads into DocumentReferences
-          document.references_csv.each do |reference|
-            puts "Processing reference: #{reference.inspect}"
-
-            begin
+          begin
+            document.references_csv.each do |reference|      
               DocumentReference.find_or_create_by!(
                 friendlier_id: reference[0],
                 reference_type_id: ReferenceType.find_by(name: reference[1]).id,
                 url: reference[2],
                 label: reference[3]
               )
-            rescue ActiveRecord::RecordInvalid => e
-              puts "Error creating DocumentReference: #{e.message}"
             end
+          rescue => e
+            puts "\nError processing references for document: #{document.friendlier_id} - #{e.inspect}\n"
           end
-
-          # @TODO: Move Relationships into DocumentReferences
-          # ex. should assets like thumbnails be included in DocumentReferences?
         end
         total_documents_processed += documents.size
         puts "Processed #{documents.size} documents in this batch, total processed: #{total_documents_processed}"
@@ -35,17 +30,21 @@ namespace :geoblacklight_admin do
       puts "\n--- Audit Start ---"
       Document.find_in_batches(batch_size: 1000) do |documents|
         documents.each do |document|
-          # Document > References as CSV
-          dr_csv = document.references_csv.sort
-
-          # document_references
-          doc_refs = document.document_references.collect { |dr| dr.to_csv }.sort
-
-          if dr_csv != doc_refs
-            puts "\nNO MATCH"
-            puts "Document: #{document.friendlier_id}"
-            puts "CSV References Sorted: #{dr_csv.sort.inspect}"
-            puts "Document References Sorted: #{doc_refs.sort.inspect}\n"
+          begin
+            # Document > References as CSV
+            dr_csv = document.references_csv.sort
+      
+            # document_references
+            doc_refs = document.document_references.collect { |dr| dr.to_csv }.sort
+      
+            if dr_csv != doc_refs
+              puts "\nNO MATCH"
+              puts "Document: #{document.friendlier_id}"
+              puts "CSV References Sorted: #{dr_csv.sort.inspect}"
+              puts "Document References Sorted: #{doc_refs.sort.inspect}\n"
+            end
+          rescue => e
+            puts "\nError auditing references for document: #{document.friendlier_id} - #{e.inspect}\n"
           end
         end
         total_documents_processed += documents.size
