@@ -1,23 +1,23 @@
 namespace :geoblacklight_admin do
-  namespace :references do
-    desc "Migrate references into DocumentReferences"
+  namespace :distributions do
+    desc "Migrate distributions into DocumentDistributions"
     task migrate: :environment do
       total_documents_processed = 0
       puts "\n--- Migration Start ---"
       Document.find_in_batches(batch_size: 1000) do |documents|
         documents.each do |document|
-          # Moves AttrJson-based dct_references_s and Multiple Downloads into DocumentReferences
+          # Moves AttrJson-based dct_references_s and Multiple Downloads into DocumentDistributions
 
-          document.references_csv.each do |reference|
-            DocumentReference.find_or_create_by!(
-              friendlier_id: reference[0],
-              reference_type_id: ReferenceType.find_by(name: reference[1]).id,
-              url: reference[2],
-              label: reference[3]
+          document.distributions_csv.each do |distribution|
+            DocumentDistribution.find_or_create_by!(
+              friendlier_id: distribution[0],
+              reference_type_id: ReferenceType.find_by(name: distribution[1]).id,
+              url: distribution[2],
+              label: distribution[3]
             )
           end
         rescue => e
-          puts "\nError processing references for document: #{document.friendlier_id} - #{e.inspect}\n"
+          puts "\nError processing distributions for document: #{document.friendlier_id} - #{e.inspect}\n"
         end
         total_documents_processed += documents.size
         puts "Processed #{documents.size} documents in this batch, total processed: #{total_documents_processed}"
@@ -25,26 +25,26 @@ namespace :geoblacklight_admin do
       puts "--- Migration End ---\n"
     end
 
-    desc "Audit the references migration"
+    desc "Audit the distributions migration"
     task audit: :environment do
       total_documents_processed = 0
       puts "\n--- Audit Start ---"
       Document.find_in_batches(batch_size: 1000) do |documents|
         documents.each do |document|
-          # Document > References as CSV
+          # Document > Distributions as CSV
           dr_csv = document.references_csv.sort
 
-          # document_references
-          doc_refs = document.document_references.collect { |dr| dr.to_csv }.sort
+          # document_distributions
+          doc_dists = document.document_distributions.collect { |dr| dr.to_csv }.sort
 
-          if dr_csv != doc_refs
+          if dr_csv != doc_dists
             puts "\nNO MATCH"
             puts "Document: #{document.friendlier_id}"
-            puts "CSV References Sorted: #{dr_csv.sort.inspect}"
-            puts "Document References Sorted: #{doc_refs.sort.inspect}\n"
+            puts "CSV Distributions Sorted: #{dr_csv.sort.inspect}"
+            puts "Document Distributions Sorted: #{doc_dists.sort.inspect}\n"
           end
         rescue => e
-          puts "\nError auditing references for document: #{document.friendlier_id} - #{e.inspect}\n"
+          puts "\nError auditing distributions for document: #{document.friendlier_id} - #{e.inspect}\n"
         end
         total_documents_processed += documents.size
         puts "Processed #{documents.size} documents in this batch, total processed: #{total_documents_processed}"
@@ -57,7 +57,7 @@ namespace :geoblacklight_admin do
       # Done: Remove multiple download links from Documents
       # Done: Remove multiple download links from FormElements (it's a feature there)
       # Done: Remove multiple download links from FormNav (link)
-      # Done: Add DocumentReferences to the FormElements (as a feature - manual)
+      # Done: Add DocumentDistributions to the FormElements (as a feature - manual)
 
       # Step 2 - Finalize
       # Remove AttrJson dct_references_s values from Documents (data is redundant and/or incorrect)

@@ -2,16 +2,16 @@
 
 require "csv"
 
-# ExportCsvDocumentReferencesService
+# ExportCsvDocumentDistributionsService
 #
-# This service is responsible for exporting document references to a CSV format.
+# This service is responsible for exporting document distributions to a CSV format.
 # It broadcasts the progress of the export process via ActionCable.
-class ExportCsvDocumentReferencesService
+class ExportCsvDocumentDistributionsService
   # Returns a short name for the service.
   #
   # @return [String] the short name of the service.
   def self.short_name
-    "Document References"
+    "Document Distributions"
   end
 
   # Initiates the CSV export process for the given document IDs.
@@ -31,10 +31,10 @@ class ExportCsvDocumentReferencesService
     slice_count = 100
     csv_file = []
 
-    Rails.logger.debug { "\n\nExportCsvDocumentReferencesService: #{document_ids.inspect}\n\n" }
+    Rails.logger.debug { "\n\nExportCsvDocumentDistributionsService: #{document_ids.inspect}\n\n" }
 
     CSV.generate(headers: true) do |_csv|
-      csv_file << DocumentReference.csv_column_names
+      csv_file << DocumentDistribution.csv_column_names
       document_ids.each_slice(slice_count) do |slice|
         # Broadcast progress percentage
         count += slice_count
@@ -45,10 +45,10 @@ class ExportCsvDocumentReferencesService
         slice.each do |doc_id|
           doc = Document.find_by(friendlier_id: doc_id)
 
-          Rails.logger.debug { "\n\nDocReferences: #{doc.document_references.size}\n\n" }
+          Rails.logger.debug { "\n\nDocDistributions: #{doc.document_distributions.size}\n\n" }
 
-          doc.document_references.each do |reference|
-            csv_file << reference.to_csv
+          doc.document_distributions.each do |distribution|
+            csv_file << distribution.to_csv
           end
         rescue NoMethodError
           Rails.logger.debug { "\n\nExport Failed: #{doc_id.inspect}\n\n" }

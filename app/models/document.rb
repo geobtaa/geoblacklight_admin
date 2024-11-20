@@ -9,7 +9,7 @@ class Document < Kithe::Work
   delegate :viewer_endpoint, to: :item_viewer
 
   def item_viewer
-    GeoblacklightAdmin::ItemViewer.new(references)
+    GeoblacklightAdmin::ItemViewer.new(distributions)
   end
 
   attr_accessor :skip_callbacks
@@ -34,8 +34,8 @@ class Document < Kithe::Work
   has_many :document_downloads, primary_key: "friendlier_id", foreign_key: "friendlier_id", autosave: false, dependent: :destroy,
     inverse_of: :document
 
-  # - DocumentReferences
-  has_many :document_references, primary_key: "friendlier_id", foreign_key: "friendlier_id", autosave: false, dependent: :destroy,
+  # - DocumentDistributions
+  has_many :document_distributions, primary_key: "friendlier_id", foreign_key: "friendlier_id", autosave: false, dependent: :destroy,
     inverse_of: :document
 
   # DocumentAssets - Thumbnails, Attachments, etc
@@ -89,7 +89,7 @@ class Document < Kithe::Work
 
   # Downloadable Resouce
   def a_downloadable_resource?
-    references_json.include?("downloadUrl")
+    distributions_json.include?("downloadUrl")
   end
 
   validates_with Document::DateValidator
@@ -113,70 +113,70 @@ class Document < Kithe::Work
   attr_json :dct_references_s, Document::Reference.to_type, array: true, default: -> { [] }
 
   # Index Transformations - *_json functions
-  def references
-    references = ActiveSupport::HashWithIndifferentAccess.new
+  def distributions
+    distributions = ActiveSupport::HashWithIndifferentAccess.new
 
-    # Add DocumentReferences to references
+    # Add DocumentDistributions to distributions
     if ENV["GBL_ADMIN_REFERENCES_MIGRATED"] == "true"
-      references = document_references.to_aardvark_references
+      distributions = document_distributions.to_aardvark_distributions
     end
 
     # Prep value arrays
     send(GeoblacklightAdmin::Schema.instance.solr_fields[:reference]).each do |ref|
       if ref.category.present?
-        references[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] = []
+        distributions[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] = []
       end
     end
 
     # Seed value arrays
     send(GeoblacklightAdmin::Schema.instance.solr_fields[:reference]).each do |ref|
       if ref.category.present?
-        references[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] << ref.value
+        distributions[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] << ref.value
       end
     end
 
-    logger.debug("\n\nDocument#references > seeded: #{references}")
+    logger.debug("\n\nDocument#distributions > seeded: #{distributions}")
 
     # Apply Downloads
-    references = apply_downloads(references)
+    distributions = apply_downloads(distributions)
 
-    logger.debug("Document#references > downloads: #{references}\n\n")
+    logger.debug("Document#distributions > downloads: #{distributions}\n\n")
 
     # Need to flatten the arrays here to avoid the following potential error:
     # - ArgumentError: Please use symbols for polymorphic route arguments.
     # - Via: app/helpers/geoblacklight_helper.rb:224:in `render_references_url'
-    references.each do |key, value|
+    distributions.each do |key, value|
       next if key == "http://schema.org/downloadUrl"
       if value.is_a?(Array) && value.length == 1
-        references[key] = value.first
+        distributions[key] = value.first
       end
     end
 
-    references
+    distributions
   end
 
-  # References JSON
-  # - Indexes to Solr as dct_references_s
-  def references_json
+  # Distributions JSON
+  # - Indexes to Solr as dct_distributions_s
+  def distributions_json
     if ENV["GBL_ADMIN_REFERENCES_MIGRATED"] == "true"
-      logger.debug("Document#references_json > using document_references")
-      references = document_references.to_aardvark_references
-      references = apply_downloads(references)
-      references.to_json
+      logger.debug("Document#distributions_json > using document_distributions")
+      distributions = document_distributions.to_aardvark_distributions
+      distributions = apply_downloads(distributions)
+      distributions.to_json
     else
-      logger.debug("Document#references > #{references.inspect}")
-      logger.debug("Document#references_json > using references")
+      logger.debug("Document#distributions > #{distributions.inspect}")
+      logger.debug("Document#distributions_json > using distributions")
       logger.warn("Deprecation warning: AttrJSON-based dct_references_s will not be supported soon.")
-      self.references.to_json
+      distributions.to_json
     end
   end
 
-  def references_csv
+  def distributions_csv
     # Initialize CSV
     # - [document_id, category, value, label]
     csv = []
 
-    references.each do |key, value|
+    distributions.each do |key, value|
       if key == "http://schema.org/downloadUrl"
         value.each do |download|
           csv << [friendlier_id, ReferenceType.find_by(reference_uri: key).name, download["url"], download["label"]]
@@ -200,10 +200,10 @@ class Document < Kithe::Work
   # 1. Native Aardvark Downloads
   # 2. Multiple Document Download Links
   # 3. Downloadable Document Assets
-  def apply_downloads(references)
+  def apply_downloads(distributions)
     multiple_downloads = []
 
-    dct_downloads = references["http://schema.org/downloadUrl"]
+    dct_downloads = distributions["http://schema.org/downloadUrl"]
 
     logger.debug("Document#dct_downloads > init: #{dct_downloads}\n\n")
 
@@ -250,8 +250,8 @@ class Document < Kithe::Work
 
     multiple_downloads = multiple_downloads.uniq { |d| [d[:label], d[:url]] } unless multiple_downloads.empty?
 
-    references[:"http://schema.org/downloadUrl"] = multiple_downloads.flatten unless multiple_downloads.empty?
-    references
+    distributions[:"http://schema.org/downloadUrl"] = multiple_downloads.flatten unless multiple_downloads.empty?
+    distributions
   end
 
   def multiple_downloads_array
@@ -313,7 +313,7 @@ class Document < Kithe::Work
   end
 
   def direct_download
-    references.download.to_hash if references.download.present?
+    distributions.download.to_hash if distributions.download.present?
   end
 
   def display_note
@@ -321,11 +321,11 @@ class Document < Kithe::Work
   end
 
   def hgl_download
-    references.hgl.to_hash if references.hgl.present?
+    distributions.hgl.to_hash if distributions.hgl.present?
   end
 
   def oembed
-    references.oembed.endpoint if references.oembed.present?
+    distributions.oembed.endpoint if distributions.oembed.present?
   end
 
   def same_institution?
@@ -334,15 +334,15 @@ class Document < Kithe::Work
   end
 
   def iiif_download
-    references.iiif.to_hash if references.iiif.present?
+    distributions.iiif.to_hash if distributions.iiif.present?
   end
 
   def data_dictionary_download
-    references.data_dictionary.to_hash if references.data_dictionary.present?
+    distributions.data_dictionary.to_hash if distributions.data_dictionary.present?
   end
 
   def external_url
-    references.url&.endpoint
+    distributions.url&.endpoint
   end
 
   def itemtype
@@ -372,7 +372,7 @@ class Document < Kithe::Work
   # :type => a string which if its a Geoblacklight::Constants::URI key
   #          will return a coresponding Geoblacklight::Reference
   def checked_endpoint(type)
-    type = references.send(type)
+    type = distributions.send(type)
     type.endpoint if type.present?
   end
 

@@ -250,14 +250,14 @@ export default class extends Controller {
     }
   }
 
-  exportCsvDocumentReferences() {
-    console.log('Export - CsvDocumentReferences')
+  exportCsvDocumentDistributions() {
+    console.log('Export - CsvDocumentDistributions')
     var scope = this.checkSelectionScope();
     var el = document.querySelector('#result-selected-options');
     if(scope === 'pageset') {
-      window.location = el.dataset.pageset + "&format=csv_document_references"
+      window.location = el.dataset.pageset + "&format=csv_document_distributions"
     } else {
-      window.location = el.dataset.resultset + "&format=csv_document_references"
+      window.location = el.dataset.resultset + "&format=csv_document_distributions"
     }
   }
 
