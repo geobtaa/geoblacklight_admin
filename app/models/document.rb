@@ -46,8 +46,8 @@ class Document < Kithe::Work
     scope.includes(:parent)
   end
 
-  def downloadable_assets
-    document_assets.select { |a| a.dct_references_uri_key == "download" }
+  def distributable_assets
+    document_assets.select { |a| a.dct_references_uri_key.present? }
   end
 
   include Statesman::Adapters::ActiveRecordQueries[
@@ -116,6 +116,11 @@ class Document < Kithe::Work
   def references
     references = ActiveSupport::HashWithIndifferentAccess.new
 
+    # Add DocumentReferences to references
+    if ENV["GBL_ADMIN_REFERENCES_MIGRATED"] == "true"
+      references = document_references.to_aardvark_references
+    end
+
     # Prep value arrays
     send(GeoblacklightAdmin::Schema.instance.solr_fields[:reference]).each do |ref|
       if ref.category.present?
@@ -125,7 +130,6 @@ class Document < Kithe::Work
 
     # Seed value arrays
     send(GeoblacklightAdmin::Schema.instance.solr_fields[:reference]).each do |ref|
-      # @TODO: Need to support multiple entries per key here
       if ref.category.present?
         references[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] << ref.value
       end
@@ -154,7 +158,9 @@ class Document < Kithe::Work
   def references_json
     if ENV["GBL_ADMIN_REFERENCES_MIGRATED"] == "true"
       logger.debug("Document#references_json > using document_references")
-      document_references.to_aardvark_references.to_json
+      references = document_references.to_aardvark_references
+      references = apply_downloads(references)
+      references.to_json
     else
       logger.debug("Document#references_json > using references")
       logger.warn("Deprecation warning: AttrJSON-based dct_references_s will not be supported soon.")
@@ -219,11 +225,11 @@ class Document < Kithe::Work
 
     logger.debug("Document#dct_downloads > document_downloads: #{multiple_downloads.inspect}\n\n")
 
-    # Downloadable Document Assets
+    # Distributable Document Assets
     # - Via DocumentAssets (Assets)
     # - With Downloadable URI
-    if downloadable_assets.present?
-      downloadable_assets.each do |asset|
+    if distributable_assets.present?
+      distributable_assets.each do |asset|
         logger.debug("\n\n Document#dct_downloads > dupe?: #{multiple_downloads.detect { |d| d[:url].include?(asset.file.url) }}\n\n")
 
         if multiple_downloads.detect { |d| d[:url].include?(asset.file.url) }
@@ -237,7 +243,7 @@ class Document < Kithe::Work
       end
     end
 
-    logger.debug("Document#dct_downloads > downloadable_assets: #{multiple_downloads.inspect}\n\n")
+    logger.debug("Document#dct_downloads > distributable_assets: #{multiple_downloads.inspect}\n\n")
 
     multiple_downloads = multiple_downloads.uniq { |d| [d[:label], d[:url]] } unless multiple_downloads.empty?
 
