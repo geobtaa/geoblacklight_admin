@@ -43,8 +43,9 @@
     <!-- Tab content -->
     <div class="tab-content" id="documentTabContent">
       <div class="tab-pane fade show active" id="html" role="tabpanel" aria-labelledby="html-tab">
-        <!-- HTML content -->
         <br />
+        <!-- HTML content -->
+
         <% if @pagy %>
           <h6>
             <span class='float-left mt-3'>
@@ -98,8 +99,8 @@
           </h6>
         <% end %>
 
-        <% if @document && @document.downloadable_assets.any? %>
-          <h3>Internal – Downloadable Assets</h3>
+        <% if @document && @document.distributable_assets.any? %>
+          <h3>Internal – Distributable Assets</h3>
           <%= render partial: 'admin/document_assets/assets_table', locals: { document_assets: @document.document_assets } %>
         <% end %>
       </div>
@@ -109,11 +110,12 @@
           <h3 class="mt-4">Ruby Hash</h3>
           <%= ap(@document.references).html_safe %>
           <h3 class="mt-4">JSON</h3>
-          <%= ap(@document.references_json).html_safe %>
+          <%= ap(@document.references.to_json).html_safe %>
         </div>
 
         <div class="tab-pane fade" id="csv" role="tabpanel" aria-labelledby="csv-tab">
           <br />
+
           <!-- CSV content -->
           <table class="table table-striped table-bordered sortable">
           <thead class="thead-dark">
