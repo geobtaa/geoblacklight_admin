@@ -155,6 +155,8 @@ class Document < Kithe::Work
     references
   end
 
+  # References JSON
+  # - Indexes to Solr as dct_references_s
   def references_json
     if ENV["GBL_ADMIN_REFERENCES_MIGRATED"] == "true"
       logger.debug("Document#references_json > using document_references")
@@ -162,9 +164,10 @@ class Document < Kithe::Work
       references = apply_downloads(references)
       references.to_json
     else
+      logger.debug("Document#references > #{references.inspect}")
       logger.debug("Document#references_json > using references")
       logger.warn("Deprecation warning: AttrJSON-based dct_references_s will not be supported soon.")
-      references.to_json
+      self.references.to_json
     end
   end
 
