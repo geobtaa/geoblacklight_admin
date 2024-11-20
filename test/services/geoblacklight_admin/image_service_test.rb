@@ -5,13 +5,13 @@ require "test_helper"
 module GeoblacklightAdmin
   class ImageServiceTest < ActiveSupport::TestCase
     class MockDocument
-      attr_reader :id, :thumbnail_state_machine, :viewer_protocol, :references
+      attr_reader :id, :thumbnail_state_machine, :viewer_protocol, :distributions
 
       def initialize
         @id = "test_doc_id"
         @thumbnail_state_machine = MockStateMachine.new
         @viewer_protocol = "wms"
-        @references = {"http://schema.org/thumbnailUrl" => "http://example.com/reference_thumbnail.jpg"}
+        @distributions = {"http://schema.org/thumbnailUrl" => "http://example.com/distribution_thumbnail.jpg"}
       end
 
       def local_restricted?
@@ -89,10 +89,10 @@ module GeoblacklightAdmin
       end
     end
 
-    test "image_url falls back to image_reference when gblsi_thumbnail_uri and service_url are not present" do
+    test "image_url falls back to image_distribution when gblsi_thumbnail_uri and service_url are not present" do
       @image_service.stub :gblsi_thumbnail_uri, nil do
         @image_service.stub :service_url, nil do
-          assert_equal "http://example.com/reference_thumbnail.jpg", @image_service.send(:image_url)
+          assert_equal "http://example.com/distribution_thumbnail.jpg", @image_service.send(:image_url)
         end
       end
     end

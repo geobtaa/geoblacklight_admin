@@ -1,9 +1,9 @@
 <p id="notice"><%= notice %></p>
 
 <h1 style="width:100%; border-bottom:dotted;" class="mb-4">
-  Document &middot; References
+  Document &middot; Destroy Distributions
   <% if params[:document_id] %>
-    <%= link_to '+ New Reference', new_admin_document_document_reference_path(@document), { class: 'btn btn-primary float-right' } %>
+    <%= link_to '+ New Distribution', new_document_document_distribution_path(@document), { class: 'btn btn-primary float-right' } %>
   <% end %>
 </h1>
 
@@ -12,23 +12,25 @@
     <% if params[:document_id] %>
       <h2 class='h3'><%= @document.title %></h2>
     <% else %>
-      <h2 class='h3'>Import for Multiple Documents</h2>
+      <h2 class='h3'>Destroy Multiple Distributions</h2>
     <% end %>
 
-    <p class="alert alert-info" role="alert">
-      <strong>Note:</strong> New References will be created. Existing References will be updated per the CSV file.
+    <p class="alert alert-danger" role="alert">
+      <strong>Warning:</strong> All matching Distributions will be destroyed. There is <strong>NO UNDO</strong> here.
     </p>
+    <h3 class='h4'>Upload a CSV File</h3>
 
-    <h3 class="h4">Upload a CSV File</h3>
-    <%= simple_form_for DocumentReference.new, url: import_admin_document_references_path, method: :post, multipart: true do |f| %>
-      <div class="form-inputs">
-        <%= f.simple_fields_for :references do |reference_fields| %>
-          <%= reference_fields.input :file, as: :file, input_html: {} %>
-        <%- end %>
-      </div>
+    <%= simple_form_for DocumentDistribution.new, url: destroy_all_admin_document_distributions_path, method: :post, multipart: true do |f| %>
+      <div class="form-group">
+        <div class="form-inputs">
+          <%= f.simple_fields_for :distributions do |distribution_fields| %>
+            <%= reference_fields.input :file, as: :file, input_html: {} %>
+          <%- end %>
+        </div>
 
-      <div class="form-actions">
-        <%= submit_tag "+ Import CSV", {class: 'btn btn-primary'} %>
+        <div class="form-actions">
+          <%= submit_tag "- Destroy All", {class: 'btn btn-danger'} %>
+        </div>
       </div>
     <% end %>
   </div>
@@ -39,7 +41,7 @@
         <tr>
           <th>friendlier_id</th>
           <th>reference_type</th>
-          <th>reference_url</th>
+          <th>distribution_url</th>
           <th>label</th>
         </tr>
       </thead>
@@ -71,10 +73,10 @@
       <dd>The associated document's friendlier id</dd>
       <dt>reference_type</dt>
       <dd>The name of the reference type</dd>
-      <dt>reference_url</dt>
-      <dd>The URL for the reference</dd>
+      <dt>distribution_url</dt>
+      <dd>The URL for the distribution</dd>
       <dt>label</dt>
-      <dd>The label for the reference, if the reference type is labeled</dd>
+      <dd>The label for the distribution, if the reference type is labeled</dd>
     </dl>
   </div>
 </div>

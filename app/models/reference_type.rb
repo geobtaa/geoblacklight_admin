@@ -4,7 +4,7 @@
 # It includes validations for presence and uniqueness of reference attributes,
 # and manages the position of references within the system.
 class ReferenceType < ApplicationRecord
-  has_many :document_references, dependent: :destroy
+  has_many :document_distributions, dependent: :destroy
 
   # Validations
   # Ensures that both reference_type and reference_uri are present and unique.

@@ -32,9 +32,9 @@
         Additional Assets 
         <span class="badge badge-light"><%= @document.document_assets.count %></span>
       <% end %>
-      <%= link_to admin_document_document_references_url(@document), class: "ml-2" do %>
-        References
-        <span class="badge badge-light"><%= @document.document_references.size %></span>
+      <%= link_to admin_document_document_distributions_url(@document), class: "ml-2" do %>
+        Distributions
+        <span class="badge badge-light"><%= @document.distributions.size %></span>
       <% end %>
     <% end %>
   </nav>

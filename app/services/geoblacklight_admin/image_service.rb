@@ -191,7 +191,7 @@ module GeoblacklightAdmin
 
     # Retreives a url to a static thumbnail from the document's dct_references field, if it exists.
     def image_reference
-      @document.references["http://schema.org/thumbnailUrl"]
+      @document.distributions["http://schema.org/thumbnailUrl"]
     end
 
     # Default image size.

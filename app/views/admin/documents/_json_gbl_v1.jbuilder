@@ -18,7 +18,7 @@ json.dc_creator_sm no_json_blanks document.send(GeoblacklightAdmin::Schema.insta
 json.dc_description_s no_json_blanks document.send(GeoblacklightAdmin::Schema.instance.solr_fields[:description]).join("|")
 json.dc_format_s no_json_blanks document.send(GeoblacklightAdmin::Schema.instance.solr_fields[:format])
 json.dc_subject_sm no_json_blanks document.send(GeoblacklightAdmin::Schema.instance.solr_fields[:subject])
-json.dct_references_s no_json_blanks document.references_json
+json.dct_references_s no_json_blanks document.distributions_json
 json.dct_spatial_sm no_json_blanks document.send(GeoblacklightAdmin::Schema.instance.solr_fields[:spatial_coverage])
 json.layer_modified_dt no_json_blanks document.send(GeoblacklightAdmin::Schema.instance.solr_fields[:updated_at])
 

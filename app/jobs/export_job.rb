@@ -25,7 +25,7 @@ class ExportJob < ApplicationJob
 
     # Send progress
     file_content_documents = export_service.call(document_ids)
-    file_content_document_references = ExportCsvDocumentReferencesService.call(document_ids)
+    file_content_document_distributions = ExportCsvDocumentDistributionsService.call(document_ids)
 
     # Write Documents into tempfile
     @tempfile_documents = Tempfile.new(["documents-#{Time.zone.today}", ".csv"]).tap do |file|
@@ -38,15 +38,15 @@ class ExportJob < ApplicationJob
       logger.debug("Tempfile Documents Size: #{File.size(file.path)} bytes")
     end
 
-    # Write DocumentReferences into tempfile
-    @tempfile_document_references = Tempfile.new(["document-references-#{Time.zone.today}", ".csv"]).tap do |file|
+    # Write DocumentDistributions into tempfile
+    @tempfile_document_distributions = Tempfile.new(["document-distributions-#{Time.zone.today}", ".csv"]).tap do |file|
       CSV.open(file, "wb") do |csv|
-        file_content_document_references.each do |row|
+        file_content_document_distributions.each do |row|
           csv << row
         end
       end
-      logger.debug("Tempfile Document References Path: #{file.path}")
-      logger.debug("Tempfile Document References Size: #{File.size(file.path)} bytes")
+      logger.debug("Tempfile Document Distributions Path: #{file.path}")
+      logger.debug("Tempfile Document Distributions Size: #{File.size(file.path)} bytes")
     end
 
     # Create a zip file containing both tempfiles
@@ -56,7 +56,7 @@ class ExportJob < ApplicationJob
 
     Zip::File.open(@tempfile_zip.path, Zip::File::CREATE) do |zipfile|
       zipfile.add("documents.csv", @tempfile_documents.path)
-      zipfile.add("document-references.csv", @tempfile_document_references.path)
+      zipfile.add("document-distributions.csv", @tempfile_document_distributions.path)
     end
     logger.debug("Zipfile Path: #{@tempfile_zip.path}")
     logger.debug("Zipfile Size: #{File.size(@tempfile_zip.path)} bytes")

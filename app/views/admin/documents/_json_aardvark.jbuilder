@@ -38,7 +38,7 @@ json.dct_accessRights_s no_json_blanks document.send(GeoblacklightAdmin::Schema.
 json.dct_format_s no_json_blanks document.send(GeoblacklightAdmin::Schema.instance.solr_fields[:format])
 json.gbl_fileSize_s no_json_blanks document.send(GeoblacklightAdmin::Schema.instance.solr_fields[:file_size])
 json.gbl_wxsIdentifier_s no_json_blanks document.send(GeoblacklightAdmin::Schema.instance.solr_fields[:wxs_identifier])
-json.dct_references_s no_json_blanks document.references_json
+json.dct_references_s no_json_blanks document.distributions_json
 json.id no_json_blanks document.send(GeoblacklightAdmin::Schema.instance.solr_fields[:id])
 json.dct_identifier_sm no_json_blanks document.send(GeoblacklightAdmin::Schema.instance.solr_fields[:identifier])
 json.gbl_mdModified_dt no_json_blanks document.send(GeoblacklightAdmin::Schema.instance.solr_fields[:updated_at])

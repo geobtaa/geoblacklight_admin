@@ -37,7 +37,7 @@ License,dct_license_sm,https://opengeometadata.org/ogm-aardvark/#license,string,
 Access Rights,dct_accessRights_s,https://opengeometadata.org/ogm-aardvark/#access-rights,string,TRUE,FALSE,TRUE,,,access-rights1|access-rights2,access_rights,,,FALSE,TRUE,FALSE,,TRUE,,TRUE,,presence,36
 Format,dct_format_s,https://opengeometadata.org/ogm-aardvark/#format,string,FALSE,FALSE,TRUE,,,format,formats,autocomplete,,FALSE,TRUE,FALSE,,TRUE,,TRUE,,,37
 File Size,gbl_fileSize_s,https://opengeometadata.org/ogm-aardvark/#file-size,string,FALSE,FALSE,TRUE,,,60mb,,,,FALSE,TRUE,FALSE,,TRUE,,TRUE,,,38
-Reference,dct_references_s,https://opengeometadata.org/ogm-aardvark/#references,text,FALSE,TRUE,TRUE,,URIs and Values,,reference_values,,,FALSE,TRUE,FALSE,build_dct_references,TRUE,references_json,TRUE,references_json,,39
+Reference,dct_references_s,https://opengeometadata.org/ogm-aardvark/#references,text,FALSE,TRUE,TRUE,,URIs and Values,,reference_values,,,FALSE,TRUE,FALSE,build_dct_references,TRUE,distributions_json,TRUE,distributions_json,,39
 WxS Identifier,gbl_wxsIdentifier_s,https://opengeometadata.org/ogm-aardvark/#wxs-identifier,string,FALSE,FALSE,TRUE,,,wxs-identifier,,,,FALSE,TRUE,FALSE,,TRUE,,TRUE,,,40
 B1G Image URL,b1g_image_ss,https://geobtaa.github.io/metadata/b1g-custom-elements/#image,string,FALSE,FALSE,TRUE,,,image,,,,FALSE,TRUE,FALSE,,TRUE,,TRUE,,,41
 ID,geomg_id_s,https://opengeometadata.org/ogm-aardvark/#id,string,TRUE,FALSE,TRUE,,,slug,,disable_if_persisted,,FALSE,TRUE,FALSE,,TRUE,,TRUE,,presence,42
