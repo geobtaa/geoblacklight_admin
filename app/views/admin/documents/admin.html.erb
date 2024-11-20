@@ -132,12 +132,12 @@
       </div>
 
       <div class="card">
-        <div class="card-header" id="references">
-          <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#references-content" aria-controls="references-content">
-            <h3 class="mb-0">References</h3>
+        <div class="card-header" id="distributions">
+          <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#distributions-content" aria-controls="distributions-content">
+            <h3 class="mb-0">Distributions</h3>
           </button>
         </div>
-        <div id="references-content" class="collapse" aria-labelledby="references-content" data-parent="#references">
+        <div id="distributions-content" class="collapse" aria-labelledby="distributions-content" data-parent="#distributions">
           <div class="card-body">
             <table class="table responsive">
               <thead>
@@ -147,7 +147,7 @@
                 </tr>
               </thead>
               <tbody>
-                <% @document.references.each do |entry| %>
+                <% @document.distributions.each do |entry| %>
                   <tr>
                     <td><%= entry[0] %></td>
                     <td>
