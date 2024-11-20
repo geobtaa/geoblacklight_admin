@@ -1,3 +1,6 @@
+require "rake"
+require "csv"
+
 namespace :geoblacklight_admin do
   namespace :distributions do
     desc "Migrate distributions into DocumentDistributions"
