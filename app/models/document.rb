@@ -167,7 +167,7 @@ class Document < Kithe::Work
       logger.debug("Document#distributions > #{distributions.inspect}")
       logger.debug("Document#distributions_json > using distributions")
       logger.warn("Deprecation warning: AttrJSON-based dct_references_s will not be supported soon.")
-      distributions.to_json
+      self.distributions.to_json
     end
   end
 
