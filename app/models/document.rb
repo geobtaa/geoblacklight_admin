@@ -134,13 +134,15 @@ class Document < Kithe::Work
         distributions[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] << ref.value
       end
     end
-
     logger.debug("\n\nDocument#distributions > seeded: #{distributions}")
 
-    # Apply Downloads
+    # Apply Multiple Downloads
     distributions = apply_downloads(distributions)
-
-    logger.debug("Document#distributions > downloads: #{distributions}\n\n")
+    logger.debug("Document#distributions > downloads: #{distributions}")
+    
+    # Apply Distributable Assets
+    distributions = apply_assets(distributions)
+    logger.debug("Document#distributions > assets: #{distributions}")
 
     # Need to flatten the arrays here to avoid the following potential error:
     # - ArgumentError: Please use symbols for polymorphic route arguments.
@@ -196,6 +198,25 @@ class Document < Kithe::Work
     end
   end
 
+  def apply_assets(distributions)
+    # Distributable Document Assets
+    # - Via DocumentAssets (Assets)
+    # - With Downloadable URI
+    if distributable_assets.present?
+      
+      distributable_assets.each do |asset|
+        if asset.dct_references_uri_key == "download"
+          distributions["http://schema.org/downloadUrl"] ||= []
+          distributions["http://schema.org/downloadUrl"] << asset.to_aardvark_reference
+        else
+          distributions.merge!(asset.to_aardvark_reference)
+        end
+      end
+    end
+
+    distributions
+  end
+
   # Apply Downloads
   # 1. Native Aardvark Downloads
   # 2. Multiple Document Download Links
@@ -227,26 +248,6 @@ class Document < Kithe::Work
     end
 
     logger.debug("Document#dct_downloads > document_downloads: #{multiple_downloads.inspect}\n\n")
-
-    # Distributable Document Assets
-    # - Via DocumentAssets (Assets)
-    # - With Downloadable URI
-    if distributable_assets.present?
-      distributable_assets.each do |asset|
-        logger.debug("\n\n Document#dct_downloads > dupe?: #{multiple_downloads.detect { |d| d[:url].include?(asset.file.url) }}\n\n")
-
-        if multiple_downloads.detect { |d| d[:url].include?(asset.file.url) }
-          logger.debug("\n\n Detected duplicate download URL: #{asset.file.url}\n\n")
-          index = multiple_downloads.index { |d| d[:url].include?(asset.file.url) }
-          multiple_downloads[index] = {label: asset_label(asset), url: asset.file.url}
-        else
-          logger.debug("\n\n No duplicate found - Adding downloadable asset: #{asset.file.url}\n\n")
-          multiple_downloads << {label: asset_label(asset), url: asset.file.url}
-        end
-      end
-    end
-
-    logger.debug("Document#dct_downloads > distributable_assets: #{multiple_downloads.inspect}\n\n")
 
     multiple_downloads = multiple_downloads.uniq { |d| [d[:label], d[:url]] } unless multiple_downloads.empty?
 

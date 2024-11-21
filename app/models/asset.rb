@@ -52,8 +52,11 @@ class Asset < Kithe::Asset
 
   def to_aardvark_reference
     hash = {}
-    hash[reference_type.reference_uri.to_s] = full_file_url
-    hash[:label] = label if reference_type.reference_uri.to_s == "http://schema.org/downloadUrl"
+    if dct_references_uri_key.present?
+      reference_type = ReferenceType.find_by_name(dct_references_uri_key)
+      hash[reference_type.reference_uri.to_s] = full_file_url
+      hash[:label] = label if reference_type.reference_uri.to_s == "http://schema.org/downloadUrl"
+    end
     hash
   end
 end
