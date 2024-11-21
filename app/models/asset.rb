@@ -54,8 +54,14 @@ class Asset < Kithe::Asset
     hash = {}
     if dct_references_uri_key.present?
       reference_type = ReferenceType.find_by_name(dct_references_uri_key)
-      hash[:url] = full_file_url
-      hash[:label] = label if reference_type.reference_uri.to_s == "http://schema.org/downloadUrl"
+      hash[reference_type.reference_uri.to_s] = if reference_type.reference_uri.to_s == "http://schema.org/downloadUrl"
+        {
+          "url" => full_file_url,
+          "label" => label
+        }
+      else
+        full_file_url
+      end
     end
     hash
   end

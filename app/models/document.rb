@@ -184,7 +184,7 @@ class Document < Kithe::Work
           csv << [friendlier_id, ReferenceType.find_by(reference_uri: key).name, download["url"], download["label"]]
         end
       else
-        csv << [friendlier_id, ReferenceType.find_by(reference_uri: key).name, value, nil]
+        csv << [friendlier_id, ReferenceType.find_by(reference_uri: key)&.name, value, nil]
       end
     end
     csv
@@ -203,11 +203,10 @@ class Document < Kithe::Work
     # - Via DocumentAssets (Assets)
     # - With Downloadable URI
     if distributable_assets.present?
-
       distributable_assets.each do |asset|
         if asset.dct_references_uri_key == "download"
           distributions["http://schema.org/downloadUrl"] ||= []
-          distributions["http://schema.org/downloadUrl"] << asset.to_aardvark_reference
+          distributions["http://schema.org/downloadUrl"] << asset.to_aardvark_reference["http://schema.org/downloadUrl"]
         else
           distributions.merge!(asset.to_aardvark_reference)
         end
