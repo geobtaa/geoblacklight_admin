@@ -57,7 +57,7 @@ class Asset < Kithe::Asset
       hash[reference_type.reference_uri.to_s] = if reference_type.reference_uri.to_s == "http://schema.org/downloadUrl"
         {
           "url" => full_file_url,
-          "label" => label
+          "label" => label.present? ? label : file.metadata["filename"]
         }
       else
         full_file_url
