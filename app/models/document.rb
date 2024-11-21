@@ -139,7 +139,7 @@ class Document < Kithe::Work
     # Apply Multiple Downloads
     distributions = apply_downloads(distributions)
     logger.debug("Document#distributions > downloads: #{distributions}")
-    
+
     # Apply Distributable Assets
     distributions = apply_assets(distributions)
     logger.debug("Document#distributions > assets: #{distributions}")
@@ -203,7 +203,7 @@ class Document < Kithe::Work
     # - Via DocumentAssets (Assets)
     # - With Downloadable URI
     if distributable_assets.present?
-      
+
       distributable_assets.each do |asset|
         if asset.dct_references_uri_key == "download"
           distributions["http://schema.org/downloadUrl"] ||= []
