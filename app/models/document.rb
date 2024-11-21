@@ -163,7 +163,7 @@ class Document < Kithe::Work
     if ENV["GBL_ADMIN_REFERENCES_MIGRATED"] == "true"
       logger.debug("Document#distributions_json > using document_distributions")
       distributions = document_distributions.to_aardvark_distributions
-      distributions = apply_downloads(distributions)
+      distributions = apply_assets(distributions)
       distributions.to_json
     else
       logger.debug("Document#distributions > #{distributions.inspect}")
