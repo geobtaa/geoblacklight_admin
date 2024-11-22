@@ -112,23 +112,33 @@ class Document < Kithe::Work
 
   attr_json :dct_references_s, Document::Reference.to_type, array: true, default: -> { [] }
 
-  # Index Transformations - *_json functions
+  # Distributions
+  # - BEFORE DocumentDistributions
+  #   - Use dct_references_s
+  #   - Use multiple downloads
+  #   - Use distributable assets
+  # - AFTER DocumentDistributions
+  #   - Use document_distributions
+  #   - Use distributable assets
+  # @TODO: Remove BEFORE path once we've migrated to DocumentDistributions
   def distributions
     distributions = ActiveSupport::HashWithIndifferentAccess.new
 
-    # Add DocumentDistributions to distributions
+    # AFTER - Add DocumentDistributions to distributions
     if ENV["GBL_ADMIN_REFERENCES_MIGRATED"] == "true"
       distributions = document_distributions.to_aardvark_distributions
     end
 
-    # Prep value arrays
+    # BEFORE - Prep value arrays
+    # @TODO: Remove this once we've migrated to DocumentDistributions
     send(GeoblacklightAdmin::Schema.instance.solr_fields[:reference]).each do |ref|
       if ref.category.present?
         distributions[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] = []
       end
     end
 
-    # Seed value arrays
+    # BEFORE - Seed value arrays
+    # @TODO: Remove this once we've migrated to DocumentDistributions
     send(GeoblacklightAdmin::Schema.instance.solr_fields[:reference]).each do |ref|
       if ref.category.present?
         distributions[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] << ref.value
@@ -136,11 +146,14 @@ class Document < Kithe::Work
     end
     logger.debug("\n\nDocument#distributions > seeded: #{distributions}")
 
-    # Apply Multiple Downloads
-    distributions = apply_downloads(distributions)
-    logger.debug("Document#distributions > downloads: #{distributions}")
+    # BEFORE - Apply Multiple Downloads
+    # @TODO: Remove this once we've migrated to DocumentDistributions
+    if ENV["GBL_ADMIN_REFERENCES_MIGRATED"] == "false"
+      distributions = apply_downloads(distributions)
+      logger.debug("Document#distributions > downloads: #{distributions}")
+    end
 
-    # Apply Distributable Assets
+    # BEFORE & AFTER - Apply Distributable Assets
     distributions = apply_assets(distributions)
     logger.debug("Document#distributions > assets: #{distributions}")
 
@@ -216,7 +229,8 @@ class Document < Kithe::Work
     distributions
   end
 
-  # Apply Downloads
+  # BEFORE - Apply Downloads
+  # @TODO: Remove this once we've migrated to DocumentDistributions
   # 1. Native Aardvark Downloads
   # 2. Multiple Document Download Links
   # 3. Downloadable Document Assets
@@ -254,6 +268,8 @@ class Document < Kithe::Work
     distributions
   end
 
+  # BEFORE - Multiple Downloads Array
+  # @TODO: Remove this once we've migrated to DocumentDistributions
   def multiple_downloads_array
     document_downloads.collect { |d| {label: d.label, url: d.value} }
   end
