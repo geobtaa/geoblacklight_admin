@@ -43,7 +43,7 @@
           <% if @bulk_action.state_machine.current_state == 'created' %>
             <%= form_tag run_admin_bulk_action_path(@bulk_action), method: :patch do -%>
               <%= hidden_field_tag :run, true -%>
-              <%= submit_tag 'Run Bulk Action' -%>
+              <%= submit_tag '+ Run Bulk Action', class: 'btn btn-primary btn-block' -%>
             <%- end -%>
           <% else %>
             <%= @bulk_action.state_machine.current_state %>

@@ -48,5 +48,13 @@ module GeoblacklightAdmin
       run "yarn add @geoblacklight/frontend@^4.4.6"
       run "yarn install"
     end
+
+    def add_rsolr_gem
+      gem "rsolr", ">= 1.0", "< 3"
+    end
+
+    def docker_compose
+      copy_file "../../../../compose.yml", "compose.yml"
+    end
   end
 end

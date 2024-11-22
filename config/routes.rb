@@ -8,7 +8,7 @@ GeoblacklightAdmin::Engine.routes.draw do
   end
 
   # @TODO - Users
-  # devise_for :users, controllers: {invitations: "devise/invitations"}, skip: [:registrations]
+  # devise_for :users, skip: [:registrations]
   # as :user do
   #  get "/sign_in" => "devise/sessions#new" # custom path to login/sign_in
   #  get "/sign_up" => "devise/registrations#new", :as => "new_user_registration" # custom path to sign_up/registration
@@ -35,6 +35,11 @@ GeoblacklightAdmin::Engine.routes.draw do
 
     # Elements
     resources :elements do
+      post :sort, on: :collection
+    end
+
+    # Reference Types
+    resources :reference_types do
       post :sort, on: :collection
     end
 
@@ -86,16 +91,6 @@ GeoblacklightAdmin::Engine.routes.draw do
         end
       end
 
-      resources :document_downloads, path: "downloads" do
-        collection do
-          get "import"
-          post "import"
-
-          get "destroy_all"
-          post "destroy_all"
-        end
-      end
-
       resources :document_assets, path: "assets" do
         collection do
           get "display_attach_form"
@@ -106,8 +101,27 @@ GeoblacklightAdmin::Engine.routes.draw do
         end
       end
 
-      collection do
-        get "fetch"
+      resources :document_downloads, path: "downloads" do
+        collection do
+          get "import"
+          post "import"
+
+          get "destroy_all"
+          post "destroy_all"
+        end
+      end
+
+      resources :document_references, path: "references" do
+        collection do
+          get "display_attach_form"
+          post "attach_files"
+
+          get "import"
+          post "import"
+
+          get "destroy_all"
+          post "destroy_all"
+        end
       end
     end
 
@@ -122,6 +136,17 @@ GeoblacklightAdmin::Engine.routes.draw do
     end
 
     resources :document_downloads, path: "downloads" do
+      collection do
+        get "import"
+        post "import"
+
+        get "destroy_all"
+        post "destroy_all"
+      end
+    end
+
+    # Document References
+    resources :document_references, path: "references" do
       collection do
         get "import"
         post "import"

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "rgeo"
+require "rgeo/wkrep/wkt_parser"
 
 # GEOM Validation
 #
@@ -60,6 +61,13 @@ class Document
 
       # Guard against a whole world polygons
       if geom == "POLYGON((-180 90, 180 90, 180 -90, -180 -90, -180 90))"
+        valid_geom = false
+        record.errors.add(GeoblacklightAdmin::Schema.instance.solr_fields[:geometry],
+          "Invalid polygon: all points are coplanar input, Solr will not index")
+      end
+
+      # Guard against coplanar points
+      if geom == "POLYGON((-180.0 90.0, 180.0 90.0, 180.0 -90.0, -180.0 -90.0, -180.0 90.0))"
         valid_geom = false
         record.errors.add(GeoblacklightAdmin::Schema.instance.solr_fields[:geometry],
           "Invalid polygon: all points are coplanar input, Solr will not index")

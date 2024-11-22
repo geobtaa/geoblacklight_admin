@@ -1,7 +1,7 @@
 <div class="make-me-sticky mt-4 ml-4">
   <nav class="nav flex-column ml-4 mt-6">
     <% if @document.persisted? %>
-      <strong class="mb-4"><%= link_to "GBL♦Admin | View in GeoBlacklight", solr_document_url(@document), { class: 'btn btn-warning' } %></strong>
+      <strong class="mb-4"><%= link_to "GBL♦Admin | View in GeoBlacklight", solr_document_url(@document), { class: 'btn btn-gbl-admin btn-warning' } %></strong>
     <% end %>
 
     <%- form_elements = FormElement.all.order(position: :asc) %>
@@ -14,18 +14,27 @@
       <% end %>
     <% end %>
 
-    <% if @document.persisted? %>
+    <%- if @document.persisted? %>
       <%= link_to admin_document_document_accesses_url(@document), class: "ml-2" do %>
         Institutional Access Links
         <span class="badge badge-light"><%= @document.document_accesses.count %></span>
       <% end %>
-      <%= link_to admin_document_document_downloads_url(@document), class: "ml-2" do %>
-        Multiple Download Links
-        <span class="badge badge-light"><%= @document.document_downloads.count %></span>
+      
+      <%- if ENV["GBL_ADMIN_REFERENCES_MIGRATED"] == "false" %>
+        <%- Rails.logger.warn("Deprecation warning: Multiple Download Links will not be supported soon.") %>
+        <%= link_to admin_document_document_downloads_url(@document), class: "ml-2" do %>
+          Multiple Download Links
+          <span class="badge badge-light"><%= @document.document_downloads.count %></span>
+        <% end %>
       <% end %>
+      
       <%= link_to admin_document_document_assets_url(@document), class: "ml-2" do %>
         Additional Assets 
         <span class="badge badge-light"><%= @document.document_assets.count %></span>
+      <% end %>
+      <%= link_to admin_document_document_distributions_url(@document), class: "ml-2" do %>
+        Distributions
+        <span class="badge badge-light"><%= @document.distributions.size %></span>
       <% end %>
     <% end %>
   </nav>

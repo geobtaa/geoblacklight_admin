@@ -22,6 +22,8 @@ class Element < ApplicationRecord
 
   # Validations
   validates :label, :solr_field, :field_type, presence: true
+  validates :label, uniqueness: true
+  validates :solr_field, uniqueness: true
 
   FIELD_TYPES = %w[
     string

@@ -23,15 +23,11 @@ module GeoblacklightAdmin
         # Parse the URL using Addressable::URI which handles more complex URIs
         parsed_url = Addressable::URI.parse(document.viewer_endpoint)
 
-        puts "Parsed URL: #{parsed_url.inspect}"
-
         # Build a hash to store the extracted components
         parsed_data = {
           base_url: "#{parsed_url.scheme}://#{parsed_url.host}#{parsed_url.port ? ":" + parsed_url.port.to_s : ""}",
           path_pattern: parsed_url.path
         }
-
-        puts "Parsed Data: #{parsed_data.inspect}"
 
         endpoint = parsed_data[:base_url]
         "#{endpoint}/geoserver/wms/reflect?" \

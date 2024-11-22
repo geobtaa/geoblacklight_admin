@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+require "devise"
+require "blacklight"
+require "geoblacklight"
+
 module GeoblacklightAdmin
   class Engine < ::Rails::Engine
     isolate_namespace GeoblacklightAdmin

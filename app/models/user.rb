@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
+require "devise"
+
 # User
 class User < ApplicationRecord
+  extend Devise::Models
   include Blacklight::User
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :invitable, :database_authenticatable,
-    :recoverable, :rememberable, :validatable
+  devise :database_authenticatable, :recoverable, :rememberable, :validatable
 
   has_many :bookmarks, dependent: :destroy, as: :user
   has_many :notifications, dependent: :destroy, as: :recipient

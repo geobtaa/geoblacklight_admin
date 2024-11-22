@@ -1,28 +1,20 @@
 ## Run Project for Local Development
-Drop and recreate databases (or engine_cart:generate will fail)
 
-### Drop/Create application PG database
+### Bundle
+```bash
+bundle install
+```
+
+### Create Database
 ```bash
 psql postgres
 DROP DATABASE geoblacklight_development;
 CREATE DATABASE geoblacklight_development;
 ```
 
+### Run Application
 ```bash
-cd project root
-bundle install
-bundle exec rake engine_cart:regenerate
-```
-
-### Run Solr
-```bash
-bin/rails geoblacklight:solr
-```
-
-### Run App
-```bash
-cd .internal_test_app
-bin/rails server
+bundle exec rake geoblacklight:admin:server
 ```
 
 ### Lint App
@@ -33,5 +25,13 @@ standardrb --fix
 
 ### Test App
 ```bash
-RAILS_ENV=test bundle exec rails test
+bundle exec rake ci
+```
+
+### Build Node Module
+Bump the package version in `package.json` and run the following commands to build and publish the node module.
+
+```bash
+bundle exec vite build
+npm publish
 ```

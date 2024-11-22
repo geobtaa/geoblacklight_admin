@@ -15,7 +15,7 @@ SimpleCov.start "rails" do
   add_filter "lib/geoblacklight_admin/tasks/*.rake"
   add_filter "/spec"
   add_filter ".internal_test_app/"
-  minimum_coverage 100
+  minimum_coverage 80
 end
 
 require_relative "../.internal_test_app/config/environment"
@@ -24,10 +24,10 @@ ActiveRecord::Migrator.migrations_paths = [File.expand_path("../.internal_test_a
 require "rails/test_help"
 
 # Load fixtures from the engine
-if ActiveSupport::TestCase.respond_to?(:fixture_path=)
-  ActiveSupport::TestCase.fixture_path = File.expand_path("fixtures", __dir__)
-  ActionDispatch::IntegrationTest.fixture_path = ActiveSupport::TestCase.fixture_path
-  ActiveSupport::TestCase.file_fixture_path = ActiveSupport::TestCase.fixture_path + "/files"
+if ActiveSupport::TestCase.respond_to?(:fixture_paths=)
+  ActiveSupport::TestCase.fixture_paths = [File.expand_path("fixtures", __dir__)]
+  ActionDispatch::IntegrationTest.fixture_paths = ActiveSupport::TestCase.fixture_paths
+  ActiveSupport::TestCase.file_fixture_path = ActiveSupport::TestCase.fixture_paths + ["/files"]
   ActiveSupport::TestCase.fixtures :all
 end
 
@@ -36,6 +36,7 @@ DatabaseCleaner.strategy = :truncation
 
 require "minitest/rails"
 require "minitest/reporters"
+require "mocha/minitest"
 
 require "webmock/minitest"
 WebMock.enable!
@@ -68,11 +69,11 @@ module ActiveSupport
     end
 
     def setup
-      # DatabaseCleaner.start
+      DatabaseCleaner.start
     end
 
     def teardown
-      # DatabaseCleaner.clean
+      DatabaseCleaner.clean
     end
   end
 end

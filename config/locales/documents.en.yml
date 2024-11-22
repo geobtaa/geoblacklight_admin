@@ -191,6 +191,20 @@ en:
           wmts: Web Map Tile Service (WMTS)
           tile_json: TileJSON
           tile_map_service: Tile Map Service (TMS)
+    asset_enum_values:
+      document/reference:
+        category:
+          cog: Cloud Optimized GeoTIFF (COG)
+          documentation_download: Data Dictionary / documentation
+          download: Download
+          metadata_iso: Metadata in ISO 19139
+          metadata_fgdc: Metadata in FGDC
+          metadata_html: Metadata in HTML
+          metadata_iso: Metadata in ISO 19139
+          metadata_mods: Metadata in MODS
+          open_index_map: OpenIndexMap
+          pmtiles: PMTiles
+          image: Image file
 
   simple_form:
     hints:

@@ -13,7 +13,7 @@ module GeoblacklightAdmin
        3. Copies sidekiq.yml connection to host config
        5. Copies .env.development and .env.test to host
        4. Copies settings.yml to host config
-       create_solr_yml
+       5. Copies .solr_wrapper.yml to host config
        6. Copies JSON Schema to host
        7. Copies solr/* to host
        8. Sets Routes
@@ -56,6 +56,10 @@ module GeoblacklightAdmin
       copy_file "config/sidekiq.yml", "config/sidekiq.yml", force: true
     end
 
+    def create_solr_wrapper_yml
+      copy_file ".solr_wrapper.yml", ".solr_wrapper.yml", force: true
+    end
+
     def create_dotenv
       copy_file ".env.development.example", ".env.development"
       copy_file ".env.development.example", ".env.test"
@@ -63,10 +67,6 @@ module GeoblacklightAdmin
 
     def create_settings_yml
       copy_file "config/settings.yml", "config/settings.yml", force: true
-    end
-
-    def create_solr_yml
-      copy_file ".solr_wrapper.yml", ".solr_wrapper.yml", force: true
     end
 
     def copy_json_schema
@@ -89,7 +89,7 @@ module GeoblacklightAdmin
         end
 
         # Users
-        devise_for :users, controllers: {invitations: "devise/invitations"}, skip: [:registrations]
+        devise_for :users, skip: [:registrations]
         as :user do
           get "/sign_in" => "devise/sessions#new" # custom path to login/sign_in
           get "/sign_up" => "devise/registrations#new", :as => "new_user_registration" # custom path to sign_up/registration
@@ -143,6 +143,11 @@ module GeoblacklightAdmin
           resources :form_control, path: :form_elements, controller: :form_elements
           resources :form_feature, path: :form_elements, controller: :form_elements
 
+          # Reference Types
+          resources :reference_types do
+            post :sort, on: :collection
+          end
+
           # Notifications
           resources :notifications do
             put "batch", on: :collection
@@ -174,19 +179,12 @@ module GeoblacklightAdmin
             get "admin"
             get "versions"
 
-            # DocumentAccesses
-            resources :document_accesses, path: "access" do
-              collection do
-                get "import"
-                post "import"
-
-                get "destroy_all"
-                post "destroy_all"
-              end
+            collection do
+              get "fetch"
             end
 
-            # DocumentDownloads
-            resources :document_downloads, path: "downloads" do
+            # DocumentAccesses
+            resources :document_accesses, path: "access" do
               collection do
                 get "import"
                 post "import"
@@ -207,8 +205,29 @@ module GeoblacklightAdmin
               end
             end
 
-            collection do
-              get "fetch"
+            # DocumentDownloads
+            resources :document_downloads, path: "downloads" do
+              collection do
+                get "import"
+                post "import"
+
+                get "destroy_all"
+                post "destroy_all"
+              end
+            end
+
+            # Document References
+            resources :document_distributions, path: "distributions" do
+              collection do
+                get "display_attach_form"
+                post "attach_files"
+
+                get "import"
+                post "import"
+
+                get "destroy_all"
+                post "destroy_all"
+              end
             end
           end
 
@@ -225,6 +244,17 @@ module GeoblacklightAdmin
 
           # Document Downloads
           resources :document_downloads, path: "downloads" do
+            collection do
+              get "import"
+              post "import"
+
+              get "destroy_all"
+              post "destroy_all"
+            end
+          end
+
+          # Document Distributions
+          resources :document_distributions, path: "distributions" do
             collection do
               get "import"
               post "import"
@@ -371,6 +401,12 @@ module GeoblacklightAdmin
     def add_import_id_facet
       inject_into_file "app/controllers/catalog_controller.rb", before: "# Item Relationship Facets" do
         "\nconfig.add_facet_field Settings.FIELDS.B1G_IMPORT_ID, label: 'Import ID', show: false\n"
+      end
+    end
+
+    def add_application_config_for_psych_time_with_zone
+      inject_into_file "config/application.rb", after: "config.generators.system_tests = nil" do
+        "\n    config.active_record.yaml_column_permitted_classes = [Symbol, Date, Time, ActiveSupport::TimeWithZone, ActiveSupport::TimeZone]"
       end
     end
 

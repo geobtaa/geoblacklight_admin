@@ -1,13 +1,16 @@
 # frozen_string_literal: true
 
 # Admin::BookmarksController
+# This controller handles the management of bookmarks for the admin interface.
+# It allows for listing, creating, and destroying bookmarks associated with the current user.
 module Admin
   class BookmarksController < Admin::AdminController
-    before_action :set_document,
-      only: %i[create destroy]
+    before_action :set_document, only: %i[create destroy]
 
     # GET /bookmarks
     # GET /bookmarks.json
+    # Lists all bookmarks for the current user, filtered by document type "Kithe::Model".
+    # Responds with HTML or CSV format.
     def index
       @pagy, @bookmarks = pagy(current_user.bookmarks.where(document_type: "Kithe::Model"))
 
@@ -20,6 +23,9 @@ module Admin
 
     # POST /bookmarks
     # POST /bookmarks.json
+    # Creates a new bookmark for the current user and the specified document.
+    # If successful, redirects to the bookmarks index with a success notice.
+    # Otherwise, renders the index with an error status.
     def create
       @bookmark = Admin::Bookmark.find_or_create_by(user: current_user, document: @document)
 
@@ -36,6 +42,8 @@ module Admin
 
     # DELETE /bookmarks/1
     # DELETE /bookmarks/1.json
+    # Destroys the bookmark for the current user and the specified document.
+    # Redirects to the bookmarks index with a success notice.
     def destroy
       Admin::Bookmark.destroy_by(user: current_user, document: @document)
 
@@ -47,6 +55,7 @@ module Admin
 
     private
 
+    # Sets the document based on the friendlier_id parameter.
     def set_document
       @document = Document.find_by(friendlier_id: params["document"])
     end
@@ -56,6 +65,9 @@ module Admin
       params.fetch(:bookmark, {})
     end
 
+    # Collects bookmarks into a CSV format.
+    # @param bookmarks [Array<Bookmark>] the bookmarks to be converted to CSV
+    # @return [String] the generated CSV data
     def collect_csv(bookmarks)
       CSV.generate(headers: true) do |csv|
         csv << GeoblacklightAdmin::Schema.instance.importable_fields.map { |k, _v| k.to_s }

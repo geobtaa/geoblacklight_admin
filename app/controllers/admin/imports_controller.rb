@@ -1,34 +1,60 @@
 # frozen_string_literal: true
 
 # Admin::ImportsController
+#
+# This controller handles the CRUD operations for Import objects within the admin namespace.
+# It provides actions to list, show, create, update, and delete imports, as well as run an import.
+#
+# Before Actions:
+# - set_import: Sets the @import instance variable for actions that require an import ID.
+#
+# Actions:
+# - index: Lists all imports with pagination.
+# - show: Displays a specific import and its associated documents, with pagination for success and failed states.
+# - new: Initializes a new Import object.
+# - edit: Prepares an existing Import object for editing.
+# - create: Creates a new Import object and redirects to import mappings if successful.
+# - update: Updates an existing Import object and redirects to the import if successful.
+# - destroy: Deletes an Import object and redirects to the imports list.
+# - run: Executes the import process and redirects to the import show page.
+#
+# Private Methods:
+# - set_import: Finds and sets the import based on the provided ID.
+# - permittable_params: Returns an array of permitted parameters for import.
+# - import_params: Permits parameters for creating or updating an import, including nested attributes.
 module Admin
   class ImportsController < Admin::AdminController
     before_action :set_import, only: %i[show edit update destroy run]
 
     # GET /imports
     # GET /imports.json
+    # Lists all imports with pagination.
     def index
       @pagy, @imports = pagy(Import.all.order("created_at DESC"), items: 20)
     end
 
     # GET /imports/1
     # GET /imports/1.json
+    # Displays a specific import and its associated documents, with pagination for success and failed states.
     def show
       @pagy_failed, @import_failed_documents = pagy(@import.import_documents.not_in_state(:success), items: 50, page_param: :failed_page)
       @pagy_success, @import_success_documents = pagy(@import.import_documents.in_state(:success), items: 50, page_param: :success_page)
     end
 
     # GET /imports/new
+    # Initializes a new Import object.
     def new
       @import = Import.new
     end
 
     # GET /imports/1/edit
+    # Prepares an existing Import object for editing.
     def edit
     end
 
     # POST /imports
     # POST /imports.json
+    # Creates a new Import object and redirects to import mappings if successful.
     def create
       @import = Import.new(import_params)
 
@@ -48,6 +74,7 @@ module Admin
 
     # PATCH/PUT /imports/1
     # PATCH/PUT /imports/1.json
+    # Updates an existing Import object and redirects to the import if successful.
     def update
       respond_to do |format|
         if @import.update(import_params)
@@ -62,6 +89,7 @@ module Admin
 
     # DELETE /imports/1
     # DELETE /imports/1.json
+    # Deletes an Import object and redirects to the imports list.
     def destroy
       @import.destroy
       respond_to do |format|
@@ -70,6 +98,7 @@ module Admin
       end
     end
 
+    # Runs the import process and redirects to the import show page.
     def run
       @import.run!
       redirect_to admin_import_url(@import), notice: "Import is running. Check back soon for results."
@@ -78,17 +107,18 @@ module Admin
     private
 
     # Use callbacks to share common setup or constraints between actions.
+    # Finds and sets the import based on the provided ID.
     def set_import
       @import = Import.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-
+    # Returns an array of permitted parameters for import.
     def permittable_params
       %i[type name filename source description row_count encoding content_type extension validity validation_result
         csv_file run]
     end
 
+    # Permits parameters for creating or updating an import, including nested attributes.
     def import_params
       # Handle STI key
       key = (params.keys & %w[import import_btaa import_btaa_aardvark import_gblv1])[0]
