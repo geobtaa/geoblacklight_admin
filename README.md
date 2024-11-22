@@ -28,10 +28,10 @@ You need a PostgreSQL database to use this project.
 
 ### Install Template
 
-Use Ruby v3.3 and Rails v7.1.4 to bootstrap a new GeoBlacklight + GBL Admin application using the template script:
+Use Ruby v3.5 and Rails v7.2.2 to bootstrap a new GeoBlacklight + GBL Admin application using the template script:
 
 ```bash
-rails _7.1.4_ new gbl_admin -m https://raw.githubusercontent.com/geobtaa/geoblacklight_admin/develop/template.rb
+rails _7.2.2_ new gbl_admin -m https://raw.githubusercontent.com/geobtaa/geoblacklight_admin/develop/template.rb
 cd gbl_admin
 bundle exec rake geoblacklight:server
 ```
@@ -60,8 +60,10 @@ The gem is available as open source under the terms of the [Apache 2.0 License](
 * ~~Improve test coverage~~
 * ~~Fix CI test runner~~
 * ~~Debug Rails 7.2 support (remove devise_invitable, see [#915](https://github.com/scambra/devise_invitable/issues/915))~~
-* Separate dct_references_s support into a separate model
-* Import/Export dct_references_s outside of the main document model
-* Migrate our GBL api controllers to just RSolr-based models
+* ~~Separate dct_references_s support into a separate model~~
+* ~~Import/Export dct_references_s outside of the main document model~~
+* Migrate our GBL API controllers to just RSolr-based models
 * DRY up Gem dependencies and Engine routing
+* Gazetteer: Add GeoNames support
+* Gazetteer: Add Who's On First support
 * Remove any remaining GEOMG references

@@ -13,7 +13,7 @@ module GeoblacklightAdmin
        3. Copies sidekiq.yml connection to host config
        5. Copies .env.development and .env.test to host
        4. Copies settings.yml to host config
-       create_solr_yml
+       5. Copies .solr_wrapper.yml to host config
        6. Copies JSON Schema to host
        7. Copies solr/* to host
        8. Sets Routes
@@ -54,6 +54,10 @@ module GeoblacklightAdmin
 
     def create_sidekiq_yml
       copy_file "config/sidekiq.yml", "config/sidekiq.yml", force: true
+    end
+
+    def create_solr_wrapper_yml
+      copy_file ".solr_wrapper.yml", ".solr_wrapper.yml", force: true
     end
 
     def create_dotenv
