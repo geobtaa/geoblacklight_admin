@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 # Admin::MappingsController
+# This controller manages the CRUD operations for Mappings within an Import context.
+# It provides actions to list, show, create, update, and destroy mappings.
 module Admin
   class MappingsController < Admin::AdminController
     before_action :set_import
@@ -8,6 +10,7 @@ module Admin
 
     # GET /import/:id/mappings
     # GET /import/:id/mappings.json
+    # Lists all mappings for a specific import. If no mappings exist, it initializes a new one.
     def index
       @mappings = Mapping.where(import_id: @import)
 
@@ -17,21 +20,26 @@ module Admin
 
     # GET /mappings/1
     # GET /mappings/1.json
+    # Shows a specific mapping.
     def show
       @import = Import.find(params[:import_id])
     end
 
     # GET /mappings/new
+    # Initializes a new mapping object.
     def new
       @mapping = Mapping.new
     end
 
     # GET /mappings/1/edit
+    # Prepares a mapping for editing.
     def edit
     end
 
     # POST /mappings
     # POST /mappings.json
+    # Creates a new mapping. If successful, redirects to the mapping's show page.
+    # Otherwise, re-renders the new form.
     def create
       @mapping = Mapping.new(mapping_params)
 
@@ -50,6 +58,8 @@ module Admin
 
     # PATCH/PUT /mappings/1
     # PATCH/PUT /mappings/1.json
+    # Updates an existing mapping. If successful, redirects to the mappings index.
+    # Otherwise, re-renders the edit form.
     def update
       respond_to do |format|
         if @mapping.update(mapping_params)
@@ -64,6 +74,7 @@ module Admin
 
     # DELETE /mappings/1
     # DELETE /mappings/1.json
+    # Deletes a mapping and redirects to the mappings index.
     def destroy
       @mapping.destroy
       respond_to do |format|
@@ -75,15 +86,19 @@ module Admin
     private
 
     # Use callbacks to share common setup or constraints between actions.
+
+    # Sets the import based on the import_id parameter.
     def set_import
       @import = Import.find(params[:import_id])
     end
 
+    # Sets the mapping based on the id parameter.
     def set_mapping
       @mapping = Mapping.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
+    # Permits the parameters required for creating or updating a mapping.
     def mapping_params
       params.require(:mapping).permit(
         :source_header,

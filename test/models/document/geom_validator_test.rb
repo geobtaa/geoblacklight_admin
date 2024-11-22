@@ -53,4 +53,14 @@ class DocumentGeomValidatorTest < ActiveSupport::TestCase
     assert_not valid, "Expected invalid POLYGON to be rejected"
     assert_includes @document.errors["locn_geometry"].join, "Invalid geometry"
   end
+
+  test "rejects coplanar points" do
+    @document.locn_geometry = "POLYGON((-180.0 90.0, 180.0 90.0, 180.0 -90.0, -180.0 -90.0, -180.0 90.0))"
+
+    validator = Document::GeomValidator.new
+    valid = validator.validate(@document)
+
+    assert_not valid, "Expected coplanar points to be rejected"
+    assert_includes @document.errors["locn_geometry"].join, "Invalid polygon: all points are coplanar input, Solr will not index"
+  end
 end

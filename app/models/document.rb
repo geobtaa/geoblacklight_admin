@@ -9,7 +9,7 @@ class Document < Kithe::Work
   delegate :viewer_endpoint, to: :item_viewer
 
   def item_viewer
-    GeoblacklightAdmin::ItemViewer.new(references)
+    GeoblacklightAdmin::ItemViewer.new(distributions)
   end
 
   attr_accessor :skip_callbacks
@@ -34,6 +34,10 @@ class Document < Kithe::Work
   has_many :document_downloads, primary_key: "friendlier_id", foreign_key: "friendlier_id", autosave: false, dependent: :destroy,
     inverse_of: :document
 
+  # - DocumentDistributions
+  has_many :document_distributions, primary_key: "friendlier_id", foreign_key: "friendlier_id", autosave: false, dependent: :destroy,
+    inverse_of: :document
+
   # DocumentAssets - Thumbnails, Attachments, etc
   # @TODO: Redundant? Kithe also includes a members association
   def document_assets
@@ -42,8 +46,8 @@ class Document < Kithe::Work
     scope.includes(:parent)
   end
 
-  def downloadable_assets
-    document_assets.select { |a| a.dct_references_uri_key == "download" }
+  def distributable_assets
+    document_assets.select { |a| a.dct_references_uri_key.present? }
   end
 
   include Statesman::Adapters::ActiveRecordQueries[
@@ -85,7 +89,7 @@ class Document < Kithe::Work
 
   # Downloadable Resouce
   def a_downloadable_resource?
-    references_json.include?("downloadUrl")
+    distributions_json.include?("downloadUrl")
   end
 
   validates_with Document::DateValidator
@@ -108,43 +112,95 @@ class Document < Kithe::Work
 
   attr_json :dct_references_s, Document::Reference.to_type, array: true, default: -> { [] }
 
-  # Index Transformations - *_json functions
-  def references
-    references = ActiveSupport::HashWithIndifferentAccess.new
+  # Distributions
+  # - BEFORE DocumentDistributions
+  #   - Use dct_references_s
+  #   - Use multiple downloads
+  #   - Use distributable assets
+  # - AFTER DocumentDistributions
+  #   - Use document_distributions
+  #   - Use distributable assets
+  # @TODO: Remove BEFORE path once we've migrated to DocumentDistributions
+  def distributions
+    distributions = ActiveSupport::HashWithIndifferentAccess.new
 
-    # Prep value arrays
-    send(GeoblacklightAdmin::Schema.instance.solr_fields[:reference]).each do |ref|
-      references[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] = []
+    # AFTER - Add DocumentDistributions to distributions
+    if ENV["GBL_ADMIN_REFERENCES_MIGRATED"] == "true"
+      distributions = document_distributions.to_aardvark_distributions
     end
 
-    # Seed value arrays
+    # BEFORE - Prep value arrays
+    # @TODO: Remove this once we've migrated to DocumentDistributions
     send(GeoblacklightAdmin::Schema.instance.solr_fields[:reference]).each do |ref|
-      # @TODO: Need to support multiple entries per key here
-      references[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] << ref.value
+      if ref.category.present?
+        distributions[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] = []
+      end
     end
 
-    logger.debug("\n\nDocument#references > seeded: #{references}")
+    # BEFORE - Seed value arrays
+    # @TODO: Remove this once we've migrated to DocumentDistributions
+    send(GeoblacklightAdmin::Schema.instance.solr_fields[:reference]).each do |ref|
+      if ref.category.present?
+        distributions[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] << ref.value
+      end
+    end
+    logger.debug("\n\nDocument#distributions > seeded: #{distributions}")
 
-    # Apply Downloads
-    references = apply_downloads(references)
+    # BEFORE - Apply Multiple Downloads
+    # @TODO: Remove this once we've migrated to DocumentDistributions
+    if ENV["GBL_ADMIN_REFERENCES_MIGRATED"] == "false"
+      distributions = apply_downloads(distributions)
+      logger.debug("Document#distributions > downloads: #{distributions}")
+    end
 
-    logger.debug("Document#references > downloads: #{references}\n\n")
+    # BEFORE & AFTER - Apply Distributable Assets
+    distributions = apply_assets(distributions)
+    logger.debug("Document#distributions > assets: #{distributions}")
 
     # Need to flatten the arrays here to avoid the following potential error:
     # - ArgumentError: Please use symbols for polymorphic route arguments.
     # - Via: app/helpers/geoblacklight_helper.rb:224:in `render_references_url'
-    references.each do |key, value|
+    distributions.each do |key, value|
       next if key == "http://schema.org/downloadUrl"
       if value.is_a?(Array) && value.length == 1
-        references[key] = value.first
+        distributions[key] = value.first
       end
     end
 
-    references
+    distributions
   end
 
-  def references_json
-    references.to_json
+  # Distributions JSON
+  # - Indexes to Solr as dct_distributions_s
+  def distributions_json
+    if ENV["GBL_ADMIN_REFERENCES_MIGRATED"] == "true"
+      logger.debug("Document#distributions_json > using document_distributions")
+      distributions = document_distributions.to_aardvark_distributions
+      distributions = apply_assets(distributions)
+      distributions.to_json
+    else
+      logger.debug("Document#distributions > #{distributions.inspect}")
+      logger.debug("Document#distributions_json > using distributions")
+      logger.warn("Deprecation warning: AttrJSON-based dct_references_s will not be supported soon.")
+      self.distributions.to_json
+    end
+  end
+
+  def distributions_csv
+    # Initialize CSV
+    # - [document_id, category, value, label]
+    csv = []
+
+    distributions.each do |key, value|
+      if key == "http://schema.org/downloadUrl"
+        value.each do |download|
+          csv << [friendlier_id, ReferenceType.find_by(reference_uri: key).name, download["url"], download["label"]]
+        end
+      else
+        csv << [friendlier_id, ReferenceType.find_by(reference_uri: key)&.name, value, nil]
+      end
+    end
+    csv
   end
 
   def asset_label(asset)
@@ -155,14 +211,33 @@ class Document < Kithe::Work
     end
   end
 
-  # Apply Downloads
+  def apply_assets(distributions)
+    # Distributable Document Assets
+    # - Via DocumentAssets (Assets)
+    # - With Downloadable URI
+    if distributable_assets.present?
+      distributable_assets.each do |asset|
+        if asset.dct_references_uri_key == "download"
+          distributions["http://schema.org/downloadUrl"] ||= []
+          distributions["http://schema.org/downloadUrl"] << asset.to_aardvark_reference["http://schema.org/downloadUrl"]
+        else
+          distributions.merge!(asset.to_aardvark_reference)
+        end
+      end
+    end
+
+    distributions
+  end
+
+  # BEFORE - Apply Downloads
+  # @TODO: Remove this once we've migrated to DocumentDistributions
   # 1. Native Aardvark Downloads
   # 2. Multiple Document Download Links
   # 3. Downloadable Document Assets
-  def apply_downloads(references)
+  def apply_downloads(distributions)
     multiple_downloads = []
 
-    dct_downloads = references["http://schema.org/downloadUrl"]
+    dct_downloads = distributions["http://schema.org/downloadUrl"]
 
     logger.debug("Document#dct_downloads > init: #{dct_downloads}\n\n")
 
@@ -180,35 +255,21 @@ class Document < Kithe::Work
     # Multiple Document Download Links
     # - Via DocumentDownloads
     if document_downloads.present?
-      multiple_downloads << multiple_downloads_array
+      multiple_downloads_array.each do |download|
+        multiple_downloads << download
+      end
     end
 
     logger.debug("Document#dct_downloads > document_downloads: #{multiple_downloads.inspect}\n\n")
 
-    # Downloadable Document Assets
-    # - Via DocumentAssets (Assets)
-    # - With Downloadable URI
-    if downloadable_assets.present?
-      downloadable_assets.each do |asset|
-        logger.debug("\n\n Document#dct_downloads > dupe?: #{multiple_downloads.detect { |d| d[:url].include?(asset.file.url) }}\n\n")
+    multiple_downloads = multiple_downloads.uniq { |d| [d[:label], d[:url]] } unless multiple_downloads.empty?
 
-        if multiple_downloads.detect { |d| d[:url].include?(asset.file.url) }
-          logger.debug("\n\n Detected duplicate download URL: #{asset.file.url}\n\n")
-          index = multiple_downloads.index { |d| d[:url].include?(asset.file.url) }
-          multiple_downloads[index] = {label: asset_label(asset), url: asset.file.url}
-        else
-          logger.debug("\n\n No duplicate found - Adding downloadable asset: #{asset.file.url}\n\n")
-          multiple_downloads << {label: asset_label(asset), url: asset.file.url}
-        end
-      end
-    end
-
-    logger.debug("Document#dct_downloads > downloadable_assets: #{multiple_downloads.inspect}\n\n")
-
-    references[:"http://schema.org/downloadUrl"] = multiple_downloads.flatten unless multiple_downloads.empty?
-    references
+    distributions[:"http://schema.org/downloadUrl"] = multiple_downloads.flatten unless multiple_downloads.empty?
+    distributions
   end
 
+  # BEFORE - Multiple Downloads Array
+  # @TODO: Remove this once we've migrated to DocumentDistributions
   def multiple_downloads_array
     document_downloads.collect { |d| {label: d.label, url: d.value} }
   end
@@ -230,14 +291,9 @@ class Document < Kithe::Work
   #
   def download_text(format)
     download_format = proper_case_format(format)
-    prefix = "Original "
-    begin
-      format = download_format
-    rescue
-      # Need to rescue if format doesn't exist
-    end
-    value = prefix + format.to_s
-    value.html_safe
+    download_format.to_s.html_safe
+  rescue
+    format.to_s.html_safe
   end
 
   ##
@@ -273,7 +329,7 @@ class Document < Kithe::Work
   end
 
   def direct_download
-    references.download.to_hash if references.download.present?
+    distributions.download.to_hash if distributions.download.present?
   end
 
   def display_note
@@ -281,11 +337,11 @@ class Document < Kithe::Work
   end
 
   def hgl_download
-    references.hgl.to_hash if references.hgl.present?
+    distributions.hgl.to_hash if distributions.hgl.present?
   end
 
   def oembed
-    references.oembed.endpoint if references.oembed.present?
+    distributions.oembed.endpoint if distributions.oembed.present?
   end
 
   def same_institution?
@@ -294,15 +350,15 @@ class Document < Kithe::Work
   end
 
   def iiif_download
-    references.iiif.to_hash if references.iiif.present?
+    distributions.iiif.to_hash if distributions.iiif.present?
   end
 
   def data_dictionary_download
-    references.data_dictionary.to_hash if references.data_dictionary.present?
+    distributions.data_dictionary.to_hash if distributions.data_dictionary.present?
   end
 
   def external_url
-    references.url&.endpoint
+    distributions.url&.endpoint
   end
 
   def itemtype
@@ -332,7 +388,7 @@ class Document < Kithe::Work
   # :type => a string which if its a Geoblacklight::Constants::URI key
   #          will return a coresponding Geoblacklight::Reference
   def checked_endpoint(type)
-    type = references.send(type)
+    type = distributions.send(type)
     type.endpoint if type.present?
   end
 
@@ -397,6 +453,7 @@ class Document < Kithe::Work
       elsif value[:destination] == "b1g_publication_state_s"
         send(:current_state)
       else
+        next if send(value[:destination]).blank?
         send(value[:destination])
       end
     end

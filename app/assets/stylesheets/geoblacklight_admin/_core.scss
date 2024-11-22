@@ -45,10 +45,34 @@ footer.gbl-admin {
   box-shadow: inset 0 0 0 50vw rgba(0, 0, 0, 0.8);
 }
 
+main#gbl-admin {
+  min-height: 75vh;
+  margin-top: 0rem;
+}
+
 main.container-fluid {
   margin-top: 5rem;
 }
 
 .navbar-brand.gbl-admin {
   background: none;
+}
+
+kbd {
+  background-color:aliceblue;
+}
+
+a.btn.btn-gbl-admin {
+  color: black;
+  border-color: #ffc107;
+  margin: 1rem 0;
+
+  &:visited {
+    color: black;
+    background-color: #ffc107;
+  }
+}
+
+div.dropdown-menu.show {
+  z-index: 2000;
 }

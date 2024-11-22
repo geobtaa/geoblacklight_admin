@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "csv"
+require "zip"
 
 # ExportJob
 class ExportJob < ApplicationJob
@@ -23,27 +24,53 @@ class ExportJob < ApplicationJob
     logger.debug("Document Ids: #{document_ids}")
 
     # Send progress
-    file_content = export_service.call(document_ids)
+    file_content_documents = export_service.call(document_ids)
+    file_content_document_distributions = ExportCsvDocumentDistributionsService.call(document_ids)
 
-    # Write into tempfile
-    @tempfile = Tempfile.new(["export-#{Time.zone.today}", ".csv"]).tap do |file|
+    # Write Documents into tempfile
+    @tempfile_documents = Tempfile.new(["documents-#{Time.zone.today}", ".csv"]).tap do |file|
       CSV.open(file, "wb") do |csv|
-        file_content.each do |row|
+        file_content_documents.each do |row|
           csv << row
         end
       end
+      logger.debug("Tempfile Documents Path: #{file.path}")
+      logger.debug("Tempfile Documents Size: #{File.size(file.path)} bytes")
     end
+
+    # Write DocumentDistributions into tempfile
+    @tempfile_document_distributions = Tempfile.new(["document-distributions-#{Time.zone.today}", ".csv"]).tap do |file|
+      CSV.open(file, "wb") do |csv|
+        file_content_document_distributions.each do |row|
+          csv << row
+        end
+      end
+      logger.debug("Tempfile Document Distributions Path: #{file.path}")
+      logger.debug("Tempfile Document Distributions Size: #{File.size(file.path)} bytes")
+    end
+
+    # Create a zip file containing both tempfiles
+    zipfile_name = "export-#{Time.zone.today}.zip"
+    tmp_dir = Rails.root.join("tmp")
+    @tempfile_zip = Tempfile.new([zipfile_name, ".zip"], tmp_dir)
+
+    Zip::File.open(@tempfile_zip.path, Zip::File::CREATE) do |zipfile|
+      zipfile.add("documents.csv", @tempfile_documents.path)
+      zipfile.add("document-distributions.csv", @tempfile_document_distributions.path)
+    end
+    logger.debug("Zipfile Path: #{@tempfile_zip.path}")
+    logger.debug("Zipfile Size: #{File.size(@tempfile_zip.path)} bytes")
 
     # Create notification
     # Message: "Download Type|Row Count|Button Label"
-    notification = ExportNotification.with(message: "CSV (#{export_service.short_name})|#{ActionController::Base.helpers.number_with_delimiter(file_content.size - 1)} rows|CSV")
+    notification = ExportNotification.with(message: "ZIP (#{export_service.short_name})|#{ActionController::Base.helpers.number_with_delimiter(file_content_documents.size - 1)} rows|ZIP")
 
     # Deliver notification
     notification.deliver(current_user)
 
-    # Attach CSV file (can only attach after persisted)
-    notification.record.file.attach(io: @tempfile, filename: "geomg-export-#{Time.zone.today}.csv",
-      content_type: "text/csv")
+    # Attach ZIP file (can only attach after persisted)
+    notification.record.file.attach(io: File.open(@tempfile_zip), filename: zipfile_name,
+      content_type: "application/zip")
 
     # Update UI
     ActionCable.server.broadcast("export_channel", {

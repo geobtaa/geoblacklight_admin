@@ -229,6 +229,7 @@ export default class extends Controller {
   }
 
   exportCsvDocumentDownloads() {
+    console.log('Export - CsvDocumentDownloads')
     var scope = this.checkSelectionScope();
     var el = document.querySelector('#result-selected-options');
     if(scope === 'pageset') {
@@ -239,12 +240,24 @@ export default class extends Controller {
   }
 
   exportCsvDocumentAccessLinks() {
+    console.log('Export - CsvDocumentAccessLinks')
     var scope = this.checkSelectionScope();
     var el = document.querySelector('#result-selected-options');
     if(scope === 'pageset') {
       window.location = el.dataset.pageset + "&format=csv_document_access_links"
     } else {
       window.location = el.dataset.resultset + "&format=csv_document_access_links"
+    }
+  }
+
+  exportCsvDocumentDistributions() {
+    console.log('Export - CsvDocumentDistributions')
+    var scope = this.checkSelectionScope();
+    var el = document.querySelector('#result-selected-options');
+    if(scope === 'pageset') {
+      window.location = el.dataset.pageset + "&format=csv_document_distributions"
+    } else {
+      window.location = el.dataset.resultset + "&format=csv_document_distributions"
     }
   }
 

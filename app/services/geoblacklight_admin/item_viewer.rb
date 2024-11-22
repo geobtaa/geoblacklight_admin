@@ -2,9 +2,9 @@
 
 module GeoblacklightAdmin
   class ItemViewer
-    def initialize(references)
-      @references = references
-      @keys = references.keys.collect { |k| reference_uri_2_key(k) }
+    def initialize(distributions)
+      @distributions = distributions
+      @keys = distributions.keys.collect { |k| reference_uri_2_key(k) }
     end
 
     def viewer_protocol
@@ -12,7 +12,7 @@ module GeoblacklightAdmin
     end
 
     def viewer_endpoint
-      @references[viewer_protocol_2_endpoint]
+      @distributions[viewer_protocol_2_endpoint]
     end
 
     def reference_uri_2_key(value)

@@ -1,4 +1,6 @@
 class Asset < Kithe::Asset
+  belongs_to :parent, class_name: "Document", optional: true
+
   include AttrJson::Record::QueryScopes
   include Rails.application.routes.url_helpers
 
@@ -16,6 +18,8 @@ class Asset < Kithe::Asset
   DERIVATIVE_STORAGE_TYPE_LOCATIONS = {
     "public" => :kithe_derivatives
   }.freeze
+
+  scope :to_aardvark_references, -> { where(parent_id: pluck(:parent_id)).map(&:to_aardvark_reference) }
 
   def full_file_url
     if Rails.env.development?
@@ -44,6 +48,22 @@ class Asset < Kithe::Asset
 
   def reindex_parent
     parent.save if parent.present?
+  end
+
+  def to_aardvark_reference
+    hash = {}
+    if dct_references_uri_key.present?
+      reference_type = ReferenceType.find_by_name(dct_references_uri_key)
+      hash[reference_type.reference_uri.to_s] = if reference_type.reference_uri.to_s == "http://schema.org/downloadUrl"
+        {
+          "url" => full_file_url,
+          "label" => label.present? ? label : file.metadata["filename"]
+        }
+      else
+        full_file_url
+      end
+    end
+    hash
   end
 end
 

@@ -31,7 +31,11 @@ module GeoblacklightAdmin
         }
       end
 
-      @fields = @fields.merge(dct_references_import_mappings)
+      unless ENV["GBL_ADMIN_REFERENCES_MIGRATED"] == "true"
+        Rails.logger.warn("Deprecation warning: AttrJSON-based dct_references_s will not be supported soon.")
+        @fields = @fields.merge(dct_references_import_mappings)
+      end
+
       @fields
     end
 
@@ -63,7 +67,11 @@ module GeoblacklightAdmin
         }
       }
 
-      @fields = @fields.merge(dct_references_import_mappings)
+      unless ENV["GBL_ADMIN_REFERENCES_MIGRATED"] == "true"
+        Rails.logger.warn("Deprecation warning: AttrJSON-based dct_references_s will not be supported soon.")
+        @fields = @fields.merge(dct_references_import_mappings)
+      end
+
       @fields = @fields.merge(object_metadata)
       @fields
     end
