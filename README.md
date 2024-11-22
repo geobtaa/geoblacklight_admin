@@ -28,7 +28,14 @@ You need a PostgreSQL database to use this project.
 
 ### Install Template
 
-Use Ruby v3.5 and Rails v7.2.2 to bootstrap a new GeoBlacklight + GBL Admin application using the template script:
+#### 1. Create your geoblacklight_admin_development PostgreSQL database
+
+```bash
+psql postgres
+CREATE DATABASE geoblacklight_admin_development;
+```
+
+#### 2. Bootstrap a new GeoBlacklight + GBL Admin application using the template script:
 
 ```bash
 rails _7.2.2_ new gbl_admin -m https://raw.githubusercontent.com/geobtaa/geoblacklight_admin/develop/template.rb
@@ -44,7 +51,7 @@ You have now generated the .internal_test_app and populated the Elements / FormE
 2. Click on the "Sign in" link
 3. Enter email: admin@geoblacklight.org and password: 123456
 4. Click on the "GBL Admin" link
-5. Import some CSV (test/fixtures/files/btaa_sample_records.csv)
+5. Import some CSV data (test/fixtures/files/btaa_sample_records.csv)
 
 -----
 

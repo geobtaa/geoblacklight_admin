@@ -9,7 +9,7 @@
 #
 # 2. Run these lines below to stand up a new GBL + GBL Admin instance:
 #
-# $> rails _7.2.2_ new gbl_admin -m https://raw.githubusercontent.com/geobtaa/geoblacklight_admin/feature/template-install-debug/template.rb
+# $> rails _7.2.2_ new gbl_admin -m https://raw.githubusercontent.com/geobtaa/geoblacklight_admin/feature/develop/template.rb
 # $> cd gbl_admin
 # $> bundle exec rake geoblacklight:server
 #
@@ -17,7 +17,7 @@
 gem "devise"
 gem "blacklight", ">= 7.0", "< 8.0"
 gem "geoblacklight", ">= 4.0"
-gem "geoblacklight_admin", git: "git@github.com:geobtaa/geoblacklight_admin.git", branch: "feature/template-install-debug"
+gem "geoblacklight_admin", git: "git@github.com:geobtaa/geoblacklight_admin.git", branch: "develop"
 
 # GBL‡ADMIN
 gem "active_storage_validations"
