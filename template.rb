@@ -9,7 +9,7 @@
 #
 # 2. Run these lines below to stand up a new GBL + GBL Admin instance:
 #
-# $> rails _7.2.2_ new gbl_admin -m https://raw.githubusercontent.com/geobtaa/geoblacklight_admin/feature/develop/template.rb
+# $> rails _7.2.2_ new gbl_admin -m https://raw.githubusercontent.com/geobtaa/geoblacklight_admin/develop/template.rb
 # $> cd gbl_admin
 # $> bundle exec rake geoblacklight:server
 #
