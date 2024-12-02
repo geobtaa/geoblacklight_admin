@@ -8,8 +8,8 @@ bundle install
 ### Create Database
 ```bash
 psql postgres
-DROP DATABASE geoblacklight_development;
-CREATE DATABASE geoblacklight_development;
+DROP DATABASE geoblacklight_admin_development;
+CREATE DATABASE geoblacklight_admin_development;
 ```
 
 ### Run Application
