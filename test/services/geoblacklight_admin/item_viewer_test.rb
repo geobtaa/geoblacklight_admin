@@ -7,17 +7,17 @@ module GeoblacklightAdmin
     setup do
       @document = documents(:ag) # Assuming you have a fixture or factory for documents
       @item_viewer = GeoblacklightAdmin::ItemViewer.new(@document.distributions)
-      @distributions = {"http://schema.org/url" => "https://open-iowa.opendata.arcgis.com/datasets/35c8a641589c4e13b7aa11e37f3f00a1_0", "http://schema.org/downloadUrl" => [{"label" => "Shapefile", "url" => "https://open-iowa.opendata.arcgis.com/datasets/35c8a641589c4e13b7aa11e37f3f00a1_0.zip"}, {"label" => "Foo", "url" => "http://foo.com"}, {"label" => "Bar", "url" => "http://bar.com"}, {"label" => "Asset Label", "url" => "/uploads/asset/73245320-b305-405e-b4f2-ba3a2726cc23/fdafe052348f6599d47c54a26676bb86.png"}], "urn:x-esri:serviceType:ArcGIS#FeatureLayer" => "https://services2.arcgis.com/KhKjlwEBlPJd6v51/arcgis/rest/services/AgDistricts/FeatureServer/0"}
+      @distributions = {"urn:x-esri:serviceType:ArcGIS#ImageMapLayer" => "https://services2.arcgis.com/KhKjlwEBlPJd6v51/arcgis/rest/services/AgDistricts/FeatureServer/0", "http://schema.org/downloadUrl" => [{"url" => "https://open-iowa.opendata.arcgis.com/datasets/35c8a641589c4e13b7aa11e37f3f00a1_0", "label" => "https://open-iowa.opendata.arcgis.com/datasets/35c8a641589c4e13b7aa11e37f3f00a1_0"}, {"url" => "https://open-iowa.opendata.arcgis.com/datasets/35c8a641589c4e13b7aa11e37f3f00a1_0.zip", "label" => "https://open-iowa.opendata.arcgis.com/datasets/35c8a641589c4e13b7aa11e37f3f00a1_0.zip"}], "http://schema.org/image" => "/uploads/asset/73245320-b305-405e-b4f2-ba3a2726cc23/fdafe052348f6599d47c54a26676bb86.png"}
     end
 
     test "should initialize with distributions and keys" do
       assert_equal @distributions, @item_viewer.instance_variable_get(:@distributions)
-      assert_equal [:url, :download, :feature_layer], @item_viewer.instance_variable_get(:@keys)
+      assert_equal [:image_map_layer, :download, nil], @item_viewer.instance_variable_get(:@keys)
     end
 
     test "should return correct viewer protocol based on preference order" do
       # Testing viewer protocol based on preference
-      assert_equal :feature_layer, @item_viewer.viewer_protocol
+      assert_equal :image_map_layer, @item_viewer.viewer_protocol
 
       # Modify preference and ensure the protocol changes accordingly
       @item_viewer.stub(:viewer_preference, [:iiif, :tilejson, :wms]) do
@@ -30,8 +30,8 @@ module GeoblacklightAdmin
       assert_equal "https://services2.arcgis.com/KhKjlwEBlPJd6v51/arcgis/rest/services/AgDistricts/FeatureServer/0", @item_viewer.viewer_endpoint
 
       # Modify preference to change the protocol and corresponding endpoint
-      @item_viewer.stub(:viewer_preference, [:url, :download, :feature_layer]) do
-        assert_equal "https://open-iowa.opendata.arcgis.com/datasets/35c8a641589c4e13b7aa11e37f3f00a1_0", @item_viewer.viewer_endpoint
+      @item_viewer.stub(:viewer_preference, [:image_map_layer, :download, nil]) do
+        assert_equal "https://services2.arcgis.com/KhKjlwEBlPJd6v51/arcgis/rest/services/AgDistricts/FeatureServer/0", @item_viewer.viewer_endpoint
       end
     end
 
