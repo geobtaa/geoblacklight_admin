@@ -4,7 +4,7 @@ class ExportJobTest < ActiveJob::TestCase
   setup do
     @request = "http://localhost:3000"
     @current_user = users(:user_001) # Assuming you have a fixture for users
-    @query_params = { ids: [1, 2, 3] }
+    @query_params = {ids: [1, 2, 3]}
     @export_service = ExportCsvService
   end
 
