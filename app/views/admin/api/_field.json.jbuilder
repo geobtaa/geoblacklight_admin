@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 json.set!(field_name) do
   json.id "#{document_url}##{field_name}"
   json.type "document_value"

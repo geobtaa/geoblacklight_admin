@@ -69,8 +69,11 @@ The gem is available as open source under the terms of the [Apache 2.0 License](
 * ~~Debug Rails 7.2 support (remove devise_invitable, see [#915](https://github.com/scambra/devise_invitable/issues/915))~~
 * ~~Separate dct_references_s support into a separate model~~
 * ~~Import/Export dct_references_s outside of the main document model~~
-* Migrate our GBL API controllers to just RSolr-based models
-* DRY up Gem dependencies and Engine routing
+* Data Dictionary: Add support for `document_data_dictionary`
 * Gazetteer: Add GeoNames support
 * Gazetteer: Add Who's On First support
+* Gazetteer: Add Ollama support
+* Gazetteer: Add BTAA spatial file support
+* Migrate our GBL API controllers to just RSolr-based models
+* DRY up Gem dependencies and Engine routing
 * Remove any remaining GEOMG references

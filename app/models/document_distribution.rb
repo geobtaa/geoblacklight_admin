@@ -39,7 +39,7 @@ class DocumentDistribution < ApplicationRecord
         merged["http://schema.org/downloadUrl"] ||= []
         merged["http://schema.org/downloadUrl"] << {
           "url" => dist.values.first,
-          "label" => dist[:label]
+          "label" => dist[:label].present? ? dist[:label] : dist.values.first
         }
       else
         merged[dist.keys.first] = dist.values.first

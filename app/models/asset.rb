@@ -55,6 +55,8 @@ class Asset < Kithe::Asset
     if dct_references_uri_key.present?
       reference_type = ReferenceType.find_by_name(dct_references_uri_key)
       hash[reference_type.reference_uri.to_s] = if reference_type.reference_uri.to_s == "http://schema.org/downloadUrl"
+        logger.debug("Asset#to_aardvark_reference > downloadUrl: #{full_file_url} > #{label.present? ? label : file.metadata["filename"]}")
+
         {
           "url" => full_file_url,
           "label" => label.present? ? label : file.metadata["filename"]
