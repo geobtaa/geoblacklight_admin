@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 json.ignore_nil!
 
 json.array! @documents.map do |document|

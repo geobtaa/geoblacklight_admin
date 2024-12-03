@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # See OpenGeoMetadata Legacy Versions
 # https://opengeometadata.org/docs/gbl-1.0
 
