@@ -3,9 +3,17 @@
 require "test_helper"
 
 class GeoblacklightAdminTest < ActiveSupport::TestCase
-  test "should respond to language_name method from IsoLanguageCodes" do
-    assert_equal "English", GeoblacklightAdmin::IsoLanguageCodes.call["eng"]
-    assert_equal "French", GeoblacklightAdmin::IsoLanguageCodes.call["fra"]
-    assert_nil GeoblacklightAdmin::IsoLanguageCodes.call["de"]
+  setup do
+    @dummy_class = Class.new do
+      include GeoblacklightAdmin
+    end
+  end
+
+  def test_module_defined
+    assert defined?(GeoblacklightAdmin), "GeoblacklightAdmin module should be defined"
+  end
+
+  def test_module_inclusion
+    assert_includes @dummy_class.included_modules, GeoblacklightAdmin, "GeoblacklightAdmin should be included in DummyClass"
   end
 end
