@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 json.data do
   json.array! @presenter.documents do |document|
     document_url = polymorphic_url(url_for_document(document))
