@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 json.links do
   json.self url_for(search_state.to_h.merge(only_path: false))
   json.prev url_for(search_state.to_h.merge(only_path: false, page: @response.prev_page.to_s)) if @response.prev_page
