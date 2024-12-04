@@ -18,8 +18,6 @@
     <% if params[:document_id] %>
     <h2 class='h3'>
       <%= link_to(@document.title, admin_document_path(@document)) %>
-      &middot;
-      <%= @document_distributions.count %> distributions
     </h2>
     <% else %>
       <h2 class='h3'>Distributions</h2>

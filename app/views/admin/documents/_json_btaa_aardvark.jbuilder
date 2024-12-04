@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Required
 json.set! :gbl_mdVersion_s, "BTAA Aardvark"
 

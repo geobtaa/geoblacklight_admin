@@ -3,7 +3,7 @@ require "test_helper"
 class DocumentReferencesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @document = documents(:ls)
-    @document_distribution = document_distributions(:one)
+    @document_distribution = document_distributions(:ag_1)
     @file = fixture_file_upload("import_distributions.csv", "text/csv")
 
     get "/users/sign_in"

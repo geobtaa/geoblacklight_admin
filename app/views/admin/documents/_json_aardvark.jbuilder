@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # See GBL Aardvark Schema
 # https://docs.google.com/spreadsheets/d/1QQjUzRe8YdPGKK4h0GYoNPTow2zZ1f0KFA0zzZyHAsk/edit?ts=602d52f2#gid=252925024
 

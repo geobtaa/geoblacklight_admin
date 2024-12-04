@@ -122,35 +122,35 @@ class Document < Kithe::Work
   #   - Use distributable assets
   # @TODO: Remove BEFORE path once we've migrated to DocumentDistributions
   def distributions
-    distributions = ActiveSupport::HashWithIndifferentAccess.new
+    distributions = {}
 
     # AFTER - Add DocumentDistributions to distributions
     if ENV["GBL_ADMIN_REFERENCES_MIGRATED"] == "true"
       distributions = document_distributions.to_aardvark_distributions
-    end
-
-    # BEFORE - Prep value arrays
-    # @TODO: Remove this once we've migrated to DocumentDistributions
-    send(GeoblacklightAdmin::Schema.instance.solr_fields[:reference]).each do |ref|
-      if ref.category.present?
-        distributions[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] = []
+    else
+      # BEFORE - Prep value arrays
+      # @TODO: Remove this once we've migrated to DocumentDistributions
+      send(GeoblacklightAdmin::Schema.instance.solr_fields[:reference]).each do |ref|
+        if ref.category.present?
+          distributions[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] = []
+        end
       end
-    end
 
-    # BEFORE - Seed value arrays
-    # @TODO: Remove this once we've migrated to DocumentDistributions
-    send(GeoblacklightAdmin::Schema.instance.solr_fields[:reference]).each do |ref|
-      if ref.category.present?
-        distributions[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] << ref.value
+      # BEFORE - Seed value arrays
+      # @TODO: Remove this once we've migrated to DocumentDistributions
+      send(GeoblacklightAdmin::Schema.instance.solr_fields[:reference]).each do |ref|
+        if ref.category.present?
+          distributions[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] << ref.value
+        end
       end
-    end
-    logger.debug("\n\nDocument#distributions > seeded: #{distributions}")
+      logger.debug("\n\nDocument#distributions > seeded: #{distributions}")
 
-    # BEFORE - Apply Multiple Downloads
-    # @TODO: Remove this once we've migrated to DocumentDistributions
-    if ENV["GBL_ADMIN_REFERENCES_MIGRATED"] == "false"
-      distributions = apply_downloads(distributions)
-      logger.debug("Document#distributions > downloads: #{distributions}")
+      # BEFORE - Apply Multiple Downloads
+      # @TODO: Remove this once we've migrated to DocumentDistributions
+      if ENV["GBL_ADMIN_REFERENCES_MIGRATED"] == "false"
+        distributions = apply_downloads(distributions)
+        logger.debug("Document#distributions > downloads: #{distributions}")
+      end
     end
 
     # BEFORE & AFTER - Apply Distributable Assets
