@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Document data dictionaries" %>
+
+<h1>Document data dictionaries</h1>
+
+<div id="document_data_dictionaries">
+  <% @document_data_dictionaries.each do |document_data_dictionary| %>
+    <%= render document_data_dictionary %>
+    <p>
+      <%= link_to "Show this document data dictionary", document_data_dictionary %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New document data dictionary", new_admin_document_document_data_dictionary_path(@document) %>

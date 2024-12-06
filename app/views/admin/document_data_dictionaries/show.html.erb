@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @document_data_dictionary %>
+
+<div>
+  <%= link_to "Edit this document data dictionary", edit_document_data_dictionary_path(@document_data_dictionary) %> |
+  <%= link_to "Back to document data dictionaries", document_data_dictionaries_path %>
+
+  <%= button_to "Destroy this document data dictionary", @document_data_dictionary, method: :delete %>
+</div>
