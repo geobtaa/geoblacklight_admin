@@ -1,0 +1,2 @@
+class DocumentDataDictionary < ApplicationRecord
+end

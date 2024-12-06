@@ -211,6 +211,17 @@ module GeoblacklightAdmin
               end
             end
 
+            # Data Dictionaries
+            resources :document_data_dictionaries, path: "data_dictionaries" do
+              collection do
+                get "import"
+                post "import"
+
+                get "destroy_all"
+                post "destroy_all"
+              end
+            end
+
             # DocumentDownloads
             resources :document_downloads, path: "downloads" do
               collection do
