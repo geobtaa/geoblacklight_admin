@@ -19,17 +19,28 @@ namespace :geoblacklight_admin do
                 url: distribution[2],
                 label: distribution[3]
               )
+            rescue ActiveRecord::RecordInvalid => e
+              if distribution[2].is_empty?
+                puts "Distribution rescued and skipped: #{distribution.inspect}"
+              else
+                puts "RecordInvalid processing distribution: #{distribution[0]} - #{e.inspect}"
+              end
             rescue TypeError => e
               puts "TypeError processing distribution: #{distribution[0]} - #{e.inspect}"
               # Fix for #<TypeError: can't cast Hash>
               # These are download links that are not already in an array
               # ex. "{\"http://schema.org/url\":\"https://datacore.iu.edu/concern/data_sets/hx11xf65s\",\"http://schema.org/downloadUrl\":{\"label\":\"PDF\",\"url\":\"https://datacore.iu.edu/downloads/ms35t9074\"}}"
-              DocumentDistribution.find_or_create_by!(
-                friendlier_id: distribution[0],
-                reference_type_id: ReferenceType.find_by(name: distribution[1]).id,
-                url: distribution[2][:url],
-                label: distribution[2][:label]
-              )
+              if distribution[2].is_a?(Hash)
+                DocumentDistribution.find_or_create_by!(
+                  friendlier_id: distribution[0],
+                  reference_type_id: ReferenceType.find_by(name: distribution[1]).id,
+                  url: distribution[2][:url],
+                  label: distribution[2][:label]
+                )
+                puts "Distribution rescued and migrated: #{distribution.inspect}"
+              else
+                puts "Distribution not migrated: #{distribution.inspect}"
+              end
             rescue => e
               puts "Error processing distribution: #{distribution[0]} - #{e.inspect}"
               puts "Distribution: #{distribution.inspect}"
