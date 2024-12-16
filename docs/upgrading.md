@@ -32,9 +32,9 @@ This is a list of manual changes that need to be made to the parent Rails applic
 
 #### DATA MIGRATION
 
-* Migrate existing AttrJson `dct_reference_s` values to the new `document_reference` table
-  * `rake geoblacklight_admin:references:migrate`
-* Audit the references migration
-  * `rake geoblacklight_admin:references:audit`
-* Set environment variable for `GBL_ADMIN_REFERENCES_MIGRATED` to `true`
+* Migrate existing AttrJson `dct_reference_s` values to the new `document_distributions` table
+  * `rake geoblacklight_admin:distributions:migrate`
+* Audit the distributions migration
+  * `rake geoblacklight_admin:distributions:audit`
+* Set environment variable for `GBL_ADMIN_DISTRIBUTIONS_MIGRATED` to `true`
 * In the Elements table, update the "References" element's import and export functions to distributions_json (from `references_json`)

@@ -12,16 +12,27 @@ namespace :geoblacklight_admin do
           # Moves AttrJson-based dct_references_s and Multiple Downloads into DocumentDistributions
 
           document.distributions_csv.each do |distribution|
-            DocumentDistribution.find_or_create_by!(
-              friendlier_id: distribution[0],
-              reference_type_id: ReferenceType.find_by(name: distribution[1]).id,
-              url: distribution[2],
-              label: distribution[3]
-            )
+            begin
+              DocumentDistribution.find_or_create_by!(
+                friendlier_id: distribution[0],
+                reference_type_id: ReferenceType.find_by(name: distribution[1]).id,
+                url: distribution[2],
+                label: distribution[3]
+              )
+            rescue TypeError=> e
+              # Fix for #<TypeError: can't cast Hash>
+              # These are download links that are not already in an array
+              # ex. "{\"http://schema.org/url\":\"https://datacore.iu.edu/concern/data_sets/hx11xf65s\",\"http://schema.org/downloadUrl\":{\"label\":\"PDF\",\"url\":\"https://datacore.iu.edu/downloads/ms35t9074\"}}"
+              DocumentDistribution.find_or_create_by!(
+                friendlier_id: distribution[0],
+                reference_type_id: ReferenceType.find_by(name: distribution[1]).id,
+                url: distribution[2][:url],
+                label: distribution[2][:label]
+              )
+            else
+              puts "Error processing distribution: #{distribution[0]} - #{e.inspect}"
+            end
           end
-        rescue => e
-          puts "\nError processing distributions for document: #{document.friendlier_id} - #{e.inspect}\n"
-        end
         total_documents_processed += documents.size
         puts "Processed #{documents.size} documents in this batch, total processed: #{total_documents_processed}"
       end
