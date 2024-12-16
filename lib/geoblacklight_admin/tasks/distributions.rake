@@ -40,6 +40,18 @@ namespace :geoblacklight_admin do
                   label: distribution[2][:label]
                 )
                 puts "Distribution rescued and migrated: #{distribution.inspect}"
+              elsif distribution[2].nil? && distribution[2].is_a?(Array)
+                distribution[2].each do |download|
+                  if download.is_a?(Hash) && download[:url].present? && download[:label].present?
+                    DocumentDistribution.find_or_create_by!(
+                      friendlier_id: distribution[0],
+                      reference_type_id: ReferenceType.find_by(name: distribution[1]).id,
+                      url: download[:url],
+                      label: download[:label]
+                    )
+                  end
+                end
+                puts "Distribution array rescued and migrated: #{distribution.inspect}"
               else
                 puts "Distribution not migrated: #{distribution.inspect}"
               end
