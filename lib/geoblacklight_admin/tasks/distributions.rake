@@ -31,6 +31,7 @@ namespace :geoblacklight_admin do
               )
             else
               puts "Error processing distribution: #{distribution[0]} - #{e.inspect}"
+              puts "Distribution: #{distribution.inspect}"
             end
           end
         total_documents_processed += documents.size
