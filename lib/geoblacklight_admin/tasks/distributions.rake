@@ -29,11 +29,12 @@ namespace :geoblacklight_admin do
                 url: distribution[2][:url],
                 label: distribution[2][:label]
               )
-            else
+            rescue => e
               puts "Error processing distribution: #{distribution[0]} - #{e.inspect}"
               puts "Distribution: #{distribution.inspect}"
             end
           end
+        end
         total_documents_processed += documents.size
         puts "Processed #{documents.size} documents in this batch, total processed: #{total_documents_processed}"
       end
