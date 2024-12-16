@@ -19,7 +19,8 @@ namespace :geoblacklight_admin do
                 url: distribution[2],
                 label: distribution[3]
               )
-            rescue TypeError=> e
+            rescue TypeError => e
+              puts "TypeError processing distribution: #{distribution[0]} - #{e.inspect}"
               # Fix for #<TypeError: can't cast Hash>
               # These are download links that are not already in an array
               # ex. "{\"http://schema.org/url\":\"https://datacore.iu.edu/concern/data_sets/hx11xf65s\",\"http://schema.org/downloadUrl\":{\"label\":\"PDF\",\"url\":\"https://datacore.iu.edu/downloads/ms35t9074\"}}"
