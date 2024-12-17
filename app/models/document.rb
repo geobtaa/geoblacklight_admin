@@ -192,10 +192,20 @@ class Document < Kithe::Work
     distributions.each do |key, value|
       if key == "http://schema.org/downloadUrl" || key == :"http://schema.org/downloadUrl"
         value.each do |download|
-          csv << [friendlier_id, ReferenceType.find_by(reference_uri: key).name, download["url"], download["label"]]
+          csv << [
+            friendlier_id,
+            ReferenceType.find_by(reference_uri: key).name,
+            download[:url],
+            download[:label]
+          ]
         end
       else
-        csv << [friendlier_id, ReferenceType.find_by(reference_uri: key)&.name, value, nil]
+        csv << [
+          friendlier_id,
+          ReferenceType.find_by(reference_uri: key)&.name,
+          value,
+          nil
+        ]
       end
     end
     csv
@@ -243,8 +253,8 @@ class Document < Kithe::Work
     # - Via CSV Import or via the webform
     if dct_downloads.present?
       dct_downloads.each do |download|
-        multiple_downloads << { "label": download_text(send(GeoblacklightAdmin::Schema.instance.solr_fields[:format])),
-                              "url": download}
+        multiple_downloads << {label: download_text(send(GeoblacklightAdmin::Schema.instance.solr_fields[:format])),
+                              url: download}
       end
     end
 
