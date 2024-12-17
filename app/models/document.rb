@@ -243,8 +243,8 @@ class Document < Kithe::Work
     # - Via CSV Import or via the webform
     if dct_downloads.present?
       dct_downloads.each do |download|
-        multiple_downloads << {label: download_text(send(GeoblacklightAdmin::Schema.instance.solr_fields[:format])),
-                              url: download}
+        multiple_downloads << { "label": download_text(send(GeoblacklightAdmin::Schema.instance.solr_fields[:format])),
+                              "url": download}
       end
     end
 
