@@ -147,10 +147,8 @@ class Document < Kithe::Work
 
       # BEFORE - Apply Multiple Downloads
       # @TODO: Remove this once we've migrated to DocumentDistributions
-      if ENV["GBL_ADMIN_REFERENCES_MIGRATED"] == "false"
-        distributions = apply_downloads(distributions)
-        logger.debug("Document#distributions > downloads: #{distributions}")
-      end
+      distributions = apply_downloads(distributions)
+      logger.debug("Document#distributions > downloads: #{distributions}")
     end
 
     # BEFORE & AFTER - Apply Distributable Assets
@@ -192,7 +190,7 @@ class Document < Kithe::Work
     csv = []
 
     distributions.each do |key, value|
-      if key == "http://schema.org/downloadUrl"
+      if key == "http://schema.org/downloadUrl" || key == :"http://schema.org/downloadUrl"
         value.each do |download|
           csv << [friendlier_id, ReferenceType.find_by(reference_uri: key).name, download["url"], download["label"]]
         end
@@ -264,7 +262,7 @@ class Document < Kithe::Work
 
     multiple_downloads = multiple_downloads.uniq { |d| [d[:label], d[:url]] } unless multiple_downloads.empty?
 
-    distributions[:"http://schema.org/downloadUrl"] = multiple_downloads.flatten unless multiple_downloads.empty?
+    distributions["http://schema.org/downloadUrl"] = multiple_downloads.flatten unless multiple_downloads.empty?
     distributions
   end
 
