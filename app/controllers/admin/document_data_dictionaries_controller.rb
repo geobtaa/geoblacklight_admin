@@ -1,5 +1,11 @@
+# frozen_string_literal: true
+
+# Admin::DocumentDataDictionariesController
+#
+# This controller manages the document data dictionaries within the admin namespace.
+# It provides actions to list, show, edit, update, destroy, and import data dictionaries.
 module Admin
-  class DocumentDataDictionariesController < ApplicationController
+  class DocumentDataDictionariesController < Admin::AdminController
     before_action :set_document
     before_action :set_document_data_dictionary, only: %i[ show edit update destroy ]
 
@@ -141,7 +147,14 @@ module Admin
 
       # Only allow a list of trusted parameters through.
     def document_data_dictionary_params
-      params.require(:document_data_dictionary).permit(:friendlier_id, :label, :type, :values, :definition, :definition_source, :parent_friendlier_id, :position)
+      params.require(:document_data_dictionary).permit(
+        :friendlier_id,
+        :name,
+        :description,
+        :staff_notes,
+        :tags,
+        :position
+      )
     end
   end
 end

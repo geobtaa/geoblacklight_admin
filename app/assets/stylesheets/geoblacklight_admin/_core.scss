@@ -14,7 +14,8 @@
 @import "settings/variables";
 
 // Vendors
-@import 'bootstrap';
+@import "bootstrap";
+@import "tom-select/dist/css/tom-select.bootstrap5.css";
 
 // Modules
 @import "modules/autocomplete";

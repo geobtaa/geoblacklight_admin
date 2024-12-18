@@ -1,19 +1,17 @@
 
-<%= simple_form_for(@document_data_dictionary) do |f| %>
+<%= simple_form_for([:admin, @document, @document_data_dictionary]) do |f| %>
   <%= f.error_notification %>
   <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
 
   <div class="form-inputs">
-    <%= f.input :friendlier_id %>
-    <%= f.input :label %>
-    <%= f.input :type %>
-    <%= f.input :values %>
-    <%= f.input :definition %>
-    <%= f.input :definition_source %>
-    <%= f.input :parent_friendlier_id %>
+    <%= f.input :friendlier_id, input_html: { value: @document.friendlier_id, readonly: true } %>
+    <%= f.input :name, input_html: { class: 'form-control', autofocus: true } %>
+    <%= f.input :description, input_html: { class: 'form-control' } %>
+    <%= f.input :staff_notes, input_html: { class: 'form-control' } %>
+    <%= f.input :tags, input_html: { class: "form-control mb-2", placeholder: "Optional", data: { controller: "taginput" } } %>
   </div>
 
-  <div class="form-actions">
-    <%= f.button :submit %>
+  <div class="form-group">
+    <%= f.submit class: 'btn btn-primary' %>
   </div>
 <% end %>
