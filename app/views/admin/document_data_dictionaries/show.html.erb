@@ -3,8 +3,9 @@
 <%= render @document_data_dictionary %>
 
 <div>
-  <%= link_to "Edit this document data dictionary", edit_document_data_dictionary_path(@document_data_dictionary) %> |
-  <%= link_to "Back to document data dictionaries", document_data_dictionaries_path %>
+  <%= link_to "Edit this document data dictionary", edit_admin_document_document_data_dictionary_path(@document, @document_data_dictionary) %> |
+  <%= link_to "Back to document data dictionaries", admin_document_document_data_dictionaries_path(@document) %>
 
-  <%= button_to "Destroy this document data dictionary", @document_data_dictionary, method: :delete %>
+  <br>
+  <%= button_to "Destroy this document data dictionary", admin_document_document_data_dictionary_path(@document, @document_data_dictionary), method: :delete %>
 </div>
