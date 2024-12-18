@@ -12,53 +12,51 @@ namespace :geoblacklight_admin do
           # Moves AttrJson-based dct_references_s and Multiple Downloads into DocumentDistributions
 
           document.distributions_csv.each do |distribution|
-            begin
+            DocumentDistribution.find_or_create_by!(
+              friendlier_id: distribution[0],
+              reference_type_id: ReferenceType.find_by(name: distribution[1]).id,
+              url: distribution[2],
+              label: distribution[3]
+            )
+          rescue ActiveRecord::RecordInvalid => e
+            if !distribution[2].nil? && distribution[2].is_a?(Hash)
+              puts "Distribution rescued and skipped: #{distribution.inspect}"
+            else
+              puts "RecordInvalid processing distribution: #{distribution[0]} - #{e.inspect}"
+            end
+          rescue TypeError => e
+            puts "TypeError processing distribution: #{distribution[0]} - #{e.inspect}"
+            puts "Distribution: #{distribution.inspect}"
+
+            # Fix for #<TypeError: can't cast Hash>
+            # These are download links that are not already in an array
+            # ex. "{\"http://schema.org/url\":\"https://datacore.iu.edu/concern/data_sets/hx11xf65s\",\"http://schema.org/downloadUrl\":{\"label\":\"PDF\",\"url\":\"https://datacore.iu.edu/downloads/ms35t9074\"}}"
+            if !distribution[2].nil? && distribution[2].is_a?(Hash)
               DocumentDistribution.find_or_create_by!(
                 friendlier_id: distribution[0],
                 reference_type_id: ReferenceType.find_by(name: distribution[1]).id,
-                url: distribution[2],
-                label: distribution[3]
+                url: distribution[2][:url],
+                label: distribution[2][:label]
               )
-            rescue ActiveRecord::RecordInvalid => e
-              if !distribution[2].nil? && distribution[2].is_a?(Hash)
-                puts "Distribution rescued and skipped: #{distribution.inspect}"
-              else
-                puts "RecordInvalid processing distribution: #{distribution[0]} - #{e.inspect}"
-              end
-            rescue TypeError => e
-              puts "TypeError processing distribution: #{distribution[0]} - #{e.inspect}"
-              puts "Distribution: #{distribution.inspect}"
-
-              # Fix for #<TypeError: can't cast Hash>
-              # These are download links that are not already in an array
-              # ex. "{\"http://schema.org/url\":\"https://datacore.iu.edu/concern/data_sets/hx11xf65s\",\"http://schema.org/downloadUrl\":{\"label\":\"PDF\",\"url\":\"https://datacore.iu.edu/downloads/ms35t9074\"}}"
-              if !distribution[2].nil? && distribution[2].is_a?(Hash)
-                DocumentDistribution.find_or_create_by!(
-                  friendlier_id: distribution[0],
-                  reference_type_id: ReferenceType.find_by(name: distribution[1]).id,
-                  url: distribution[2][:url],
-                  label: distribution[2][:label]
-                )
-                puts "Distribution rescued and migrated: #{distribution.inspect}"
-              elsif distribution[2].nil? && distribution[2].is_a?(Array)
-                distribution[2].each do |download|
-                  if download.is_a?(Hash) && download[:url].present? && download[:label].present?
-                    DocumentDistribution.find_or_create_by!(
-                      friendlier_id: distribution[0],
-                      reference_type_id: ReferenceType.find_by(name: distribution[1]).id,
-                      url: download[:url],
-                      label: download[:label]
-                    )
-                  end
+              puts "Distribution rescued and migrated: #{distribution.inspect}"
+            elsif distribution[2].nil? && distribution[2].is_a?(Array)
+              distribution[2].each do |download|
+                if download.is_a?(Hash) && download[:url].present? && download[:label].present?
+                  DocumentDistribution.find_or_create_by!(
+                    friendlier_id: distribution[0],
+                    reference_type_id: ReferenceType.find_by(name: distribution[1]).id,
+                    url: download[:url],
+                    label: download[:label]
+                  )
                 end
-                puts "Distribution array rescued and migrated: #{distribution.inspect}"
-              else
-                puts "Distribution not migrated: #{distribution.inspect}"
               end
-            rescue => e
-              puts "Error processing distribution: #{distribution[0]} - #{e.inspect}"
-              puts "Distribution: #{distribution.inspect}"
+              puts "Distribution array rescued and migrated: #{distribution.inspect}"
+            else
+              puts "Distribution not migrated: #{distribution.inspect}"
             end
+          rescue => e
+            puts "Error processing distribution: #{distribution[0]} - #{e.inspect}"
+            puts "Distribution: #{distribution.inspect}"
           end
         end
         total_documents_processed += documents.size
