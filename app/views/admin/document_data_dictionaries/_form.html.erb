@@ -9,6 +9,7 @@
     <%= f.input :description, input_html: { class: 'form-control' } %>
     <%= f.input :staff_notes, input_html: { class: 'form-control' } %>
     <%= f.input :tags, input_html: { class: "form-control mb-2", placeholder: "Optional", data: { controller: "taginput" } } %>
+    <%= f.file_field :csv_file, direct_upload: true %>
   </div>
 
   <div class="form-group">

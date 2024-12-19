@@ -2,6 +2,36 @@
 
 <%= render @document_data_dictionary %>
 
+<div class="col-6">
+  <h3>Data Dictionary Entries</h3>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>friendlier_id</th>
+        <th>field_name</th>
+        <th>field_type</th>
+        <th>values</th>
+        <th>definition</th>
+        <th>definition_source</th>
+        <th>parent_field_name</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @document_data_dictionary.document_data_dictionary_entries.each do |entry| %>
+      <tr>
+        <td><%= entry.friendlier_id %></td>
+        <td><%= entry.field_name %></td>
+        <td><%= entry.field_type %></td>
+        <td><%= entry.values %></td>
+        <td><%= entry.definition %></td>
+        <td><%= entry.definition_source %></td>
+        <td><%= entry.parent_field_name %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
 <div>
   <%= link_to "Edit this document data dictionary", edit_admin_document_document_data_dictionary_path(@document, @document_data_dictionary) %> |
   <%= link_to "Back to document data dictionaries", admin_document_document_data_dictionaries_path(@document) %>
