@@ -1,37 +1,60 @@
-<p style="color: green"><%= notice %></p>
+<%- @page_title = "GBL♦Admin - Document - Data Dictionaries" %>
 
-<%= render @document_data_dictionary %>
-
-<div class="col-6">
-  <h3>Data Dictionary Entries</h3>
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th>friendlier_id</th>
-        <th>field_name</th>
-        <th>field_type</th>
-        <th>values</th>
-        <th>definition</th>
-        <th>definition_source</th>
-        <th>parent_field_name</th>
-      </tr>
-    </thead>
-    <tbody>
-    <% @document_data_dictionary.document_data_dictionary_entries.each do |entry| %>
-      <tr>
-        <td><%= entry.friendlier_id %></td>
-        <td><%= entry.field_name %></td>
-        <td><%= entry.field_type %></td>
-        <td><%= entry.values %></td>
-        <td><%= entry.definition %></td>
-        <td><%= entry.definition_source %></td>
-        <td><%= entry.parent_field_name %></td>
-      </tr>
-      <% end %>
-    </tbody>
-  </table>
+<div class="row mb-2">
+  <div class="col">
+    <h1 style="width:100%;">
+      <%= @document.title %> &middot; Data Dictionaries &middot; <%= @document_data_dictionary.name %>
+    </h1>
+  </div>
 </div>
 
+<div class="row">
+  <div class="col-12">
+    <%= render @document_data_dictionary %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <h3>
+      Data Dictionary Entries
+      <%= link_to '+ New Entry', new_admin_document_document_data_dictionary_document_data_dictionary_entry_path(@document, @document_data_dictionary), { class: 'btn btn-primary float-right' } %>
+    </h3>
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered sortable">
+      <thead class="thead-dark">
+          <tr>
+            <th>field_name</th>
+            <th>field_type</th>
+            <th>values</th>
+            <th>definition</th>
+            <th>definition_source</th>
+            <th>parent_field_name</th>
+            <th colspan="2">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+        <% @document_data_dictionary.document_data_dictionary_entries.each do |entry| %>
+          <tr>
+            <td><%= entry.field_name %></td>
+            <td><%= entry.field_type %></td>
+            <td><%= entry.values %></td>
+            <td><%= entry.definition %></td>
+            <td><%= entry.definition_source %></td>
+            <td><%= entry.parent_field_name %></td>
+            <td>
+              <%= link_to 'Edit', edit_admin_document_document_data_dictionary_document_data_dictionary_entry_path(@document, @document_data_dictionary, entry.id) %>
+            </td>
+            <td>
+              <%= link_to 'Destroy', admin_document_document_data_dictionary_document_data_dictionary_entry_path(@document, @document_data_dictionary, entry.id), method: :delete, data: { confirm: 'Are you sure?' } %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 <div>
   <%= link_to "Edit this document data dictionary", edit_admin_document_document_data_dictionary_path(@document, @document_data_dictionary) %> |
   <%= link_to "Back to document data dictionaries", admin_document_document_data_dictionaries_path(@document) %>
