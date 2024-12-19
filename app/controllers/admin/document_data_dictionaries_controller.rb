@@ -41,6 +41,7 @@ module Admin
           format.html { redirect_to admin_document_document_data_dictionaries_path(@document), notice: "Document data dictionary was successfully created." }
           format.json { render :show, status: :created, location: @document_data_dictionary }
         else
+          logger.debug("Document data dictionary could not be created. #{@document_data_dictionary.errors.full_messages}")
           format.html { render :new, status: :unprocessable_entity }
           format.json { render json: @document_data_dictionary.errors, status: :unprocessable_entity }
         end
@@ -153,6 +154,7 @@ module Admin
         :description,
         :staff_notes,
         :tags,
+        :csv_file,
         :position
       )
     end
