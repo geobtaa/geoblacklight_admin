@@ -11,7 +11,7 @@ class DocumentDataDictionary
       unless valid_csv_headers?(record&.csv_file)
         valid_csv_header = false
         record.errors.add(:csv_file,
-        "Missing the required CSV header. friendlier_id, field_name, field_type, values, definition, definition_source, and parent_field_name are required.")
+          "Missing the required CSV header. friendlier_id, field_name, field_type, values, definition, definition_source, and parent_field_name are required.")
       end
 
       valid_csv_header

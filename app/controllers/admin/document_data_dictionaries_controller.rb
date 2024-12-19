@@ -7,7 +7,7 @@
 module Admin
   class DocumentDataDictionariesController < Admin::AdminController
     before_action :set_document
-    before_action :set_document_data_dictionary, only: %i[ show edit update destroy ]
+    before_action :set_document_data_dictionary, only: %i[show edit update destroy]
 
     # GET /document_data_dictionaries or /document_data_dictionaries.json
     def index
@@ -21,6 +21,7 @@ module Admin
 
     # GET /document_data_dictionaries/1 or /document_data_dictionaries/1.json
     def show
+      @pagy, @document_data_dictionary_entries = pagy(@document_data_dictionary.document_data_dictionary_entries.order(position: :asc), items: 100)
     end
 
     # GET /document_data_dictionaries/new
@@ -146,7 +147,7 @@ module Admin
       @document_data_dictionary = DocumentDataDictionary.find(params[:id])
     end
 
-      # Only allow a list of trusted parameters through.
+    # Only allow a list of trusted parameters through.
     def document_data_dictionary_params
       params.require(:document_data_dictionary).permit(
         :friendlier_id,
