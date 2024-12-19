@@ -214,6 +214,13 @@ module GeoblacklightAdmin
                 get "destroy_all"
                 post "destroy_all"
               end
+
+              resources :document_data_dictionary_entries, path: "entries" do
+                collection do
+                  get "destroy_all"
+                  post "destroy_all"
+                end
+              end
             end
 
             # DocumentDownloads
