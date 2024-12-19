@@ -21,7 +21,7 @@ class Document < Kithe::Work
   # - Publication State
   has_many :document_transitions, foreign_key: "kithe_model_id", autosave: false, dependent: :destroy,
     inverse_of: :document
-    
+
   # - Thumbnail State
   has_many :document_thumbnail_transitions, foreign_key: "kithe_model_id", autosave: false, dependent: :destroy,
     inverse_of: :document

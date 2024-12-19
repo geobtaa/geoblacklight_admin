@@ -5,10 +5,10 @@
 # This controller manages the document data dictionary entries within the admin namespace.
 # It provides actions to list, show, edit, update, destroy, and import data dictionaries.
 module Admin
-    class DocumentDataDictionaryEntriesController < Admin::AdminController
+  class DocumentDataDictionaryEntriesController < Admin::AdminController
     before_action :set_document
     before_action :set_document_data_dictionary
-    before_action :set_document_data_dictionary_entry, only: %i[ show edit update destroy ]
+    before_action :set_document_data_dictionary_entry, only: %i[show edit update destroy]
 
     # GET /document_data_dictionaries/1/entries or /document_data_dictionaries/1/entries.json
     def index
@@ -49,7 +49,7 @@ module Admin
       respond_to do |format|
         if @document_data_dictionary_entry.update(document_data_dictionary_entry_params)
           format.html { redirect_to admin_document_document_data_dictionary_path(@document, @document_data_dictionary), notice: "Document data dictionary entry was successfully updated." }
-          format.json { render :show, status: :ok, location: @document_data_dictionary_entry } 
+          format.json { render :show, status: :ok, location: @document_data_dictionary_entry }
         else
           format.html { render :edit, status: :unprocessable_entity }
           format.json { render json: @document_data_dictionary_entry.errors, status: :unprocessable_entity }
@@ -87,6 +87,14 @@ module Admin
       end
     end
 
+    # POST /document_data_dictionaries/1/entries/sort
+    # Sorts document data dictionary entries based on the provided list of IDs.
+    # Renders an empty response body.
+    def sort
+      DocumentDataDictionary.sort_entries(params[:id_list])
+      render body: nil
+    end
+
     private
 
     # Sets the document based on the document_id parameter.
@@ -106,7 +114,7 @@ module Admin
       @document_data_dictionary_entry = DocumentDataDictionaryEntry.find(params[:id])
     end
 
-      # Only allow a list of trusted parameters through.
+    # Only allow a list of trusted parameters through.
     def document_data_dictionary_entry_params
       params.require(:document_data_dictionary_entry).permit(
         :friendlier_id,

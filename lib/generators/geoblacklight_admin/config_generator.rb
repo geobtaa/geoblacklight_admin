@@ -223,6 +223,7 @@ module GeoblacklightAdmin
 
               resources :document_data_dictionary_entries, path: "entries" do
                 collection do
+                  post "sort"
                   get "destroy_all"
                   post "destroy_all"
                 end
