@@ -134,11 +134,11 @@ module Admin
           redirect_to admin_document_distributions_path, notice: "Distributions were created successfully."
         end
       else
-        logger.debug("Some distributions could not be created. #{errors.join(', ')}")
+        logger.debug("Some distributions could not be created. #{errors.join(", ")}")
         if params[:document_id]
-          redirect_to admin_document_document_distributions_path(@document), notice: "Some distributions could not be created. #{errors.join(', ')}"
+          redirect_to admin_document_document_distributions_path(@document), notice: "Some distributions could not be created. #{errors.join(", ")}"
         else
-          redirect_to admin_document_distributions_path, notice: "Some distributions could not be created. #{errors.join(', ')}"
+          redirect_to admin_document_distributions_path, notice: "Some distributions could not be created. #{errors.join(", ")}"
         end
       end
     rescue => e

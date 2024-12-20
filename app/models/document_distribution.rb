@@ -69,7 +69,6 @@ class DocumentDistribution < ApplicationRecord
 
     logger.debug("CSV Import")
     ::CSV.foreach(file.path, headers: true) do |row|
-
       logger.debug("CSV Row: #{row.to_hash}")
 
       unless Document.exists?(friendlier_id: row.to_hash["friendlier_id"])
