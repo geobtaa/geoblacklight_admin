@@ -29,12 +29,12 @@ jobs:
         image: postgres:latest
         env:
           POSTGRES_HOST: 127.0.0.1
-          POSTGRES_PORT: 5555
+          POSTGRES_PORT: 5432
           POSTGRES_DB: geoblacklight_admin_development
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
         ports:
-          - 5555:5432
+          - 5432:5432
         # Set health checks to wait until postgres has started
         options:
           --health-cmd pg_isready
