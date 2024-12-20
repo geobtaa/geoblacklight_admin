@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
   s.executables = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
 
   s.add_dependency "active_storage_validations", "~> 1.0"
+  s.add_dependency "activerecord-import", "~> 2.0"
   s.add_dependency "amazing_print"
   s.add_dependency "blacklight", "~> 7.33"
   s.add_dependency "blacklight_advanced_search"
