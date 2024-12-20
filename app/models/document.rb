@@ -192,11 +192,13 @@ class Document < Kithe::Work
     distributions.each do |key, value|
       if key == "http://schema.org/downloadUrl" || key == :"http://schema.org/downloadUrl"
         value.each do |download|
+          logger.debug("Document#distributions_csv > download: #{download.inspect}")
+
           csv << [
             friendlier_id,
             ReferenceType.find_by(reference_uri: key).name,
-            download[:url],
-            download[:label]
+            download["url"],
+            download["label"]
           ]
         end
       else

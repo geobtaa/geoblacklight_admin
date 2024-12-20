@@ -130,14 +130,14 @@ module Admin
         if params[:document_id]
           redirect_to admin_document_document_distributions_path(@document), notice: "Distributions were created successfully."
         else
-          redirect_to admin_document_document_distributions_path, notice: "Distributions were created successfully."
+          redirect_to admin_document_distributions_path, notice: "Distributions were created successfully."
         end
       else
         logger.debug("Distributions could not be created.")
         if params[:document_id]
           redirect_to admin_document_document_distributions_path(@document), warning: "Distributions could not be created."
         else
-          redirect_to admin_document_document_distributions_path, warning: "Distributions could not be created."
+          redirect_to admin_document_distributions_path, warning: "Distributions could not be created."
         end
       end
     rescue => e
@@ -145,7 +145,7 @@ module Admin
       if params[:document_id]
         redirect_to admin_document_document_distributions_path(@document), notice: "Distributions could not be created. #{e}"
       else
-        redirect_to admin_document_document_distributions_path, notice: "Distributions could not be created. #{e}"
+        redirect_to admin_document_distributions_path, notice: "Distributions could not be created. #{e}"
       end
     end
 
