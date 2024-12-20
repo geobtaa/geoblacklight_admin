@@ -20,7 +20,10 @@
     </p>
 
     <h3 class="h4">Upload a CSV File</h3>
-    <%= simple_form_for DocumentDistribution.new, url: import_admin_document_distributions_path, method: :post, multipart: true do |f| %>
+    <%= simple_form_for DocumentDistribution.new, 
+        url: @document || params[:document_id] ? import_admin_document_document_distributions_path(@document) : import_admin_document_distributions_path, 
+        method: :post, 
+        multipart: true do |f| %>
       <div class="form-inputs">
         <%= f.simple_fields_for :distributions do |distribution_fields| %>
           <%= distribution_fields.input :file, as: :file, input_html: {} %>

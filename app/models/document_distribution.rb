@@ -132,7 +132,7 @@ class DocumentDistribution < ApplicationRecord
   def to_aardvark_distribution
     hash = {}
     hash[reference_type.reference_uri.to_s] = url
-    hash[:label] = label if reference_type.reference_uri.to_s == "http://schema.org/downloadUrl"
+    hash["label"] = label if reference_type.reference_uri.to_s == "http://schema.org/downloadUrl"
     hash
   end
 
