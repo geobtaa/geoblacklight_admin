@@ -71,8 +71,7 @@ class DocumentDistribution < ApplicationRecord
       document_distribution = DocumentDistribution.find_or_initialize_by(
         friendlier_id: row.to_hash["friendlier_id"],
         reference_type_id: ReferenceType.find_by(name: row.to_hash["reference_type"]).id,
-        url: row.to_hash["distribution_url"],
-        label: row.to_hash["label"]
+        url: row.to_hash["distribution_url"]
       )
 
       logger.debug("Document Distribution: #{document_distribution.inspect}")
