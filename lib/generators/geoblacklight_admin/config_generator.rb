@@ -216,7 +216,7 @@ module GeoblacklightAdmin
               end
             end
 
-            # Document References
+            # Document Distributions
             resources :document_distributions, path: "distributions" do
               collection do
                 get "display_attach_form"

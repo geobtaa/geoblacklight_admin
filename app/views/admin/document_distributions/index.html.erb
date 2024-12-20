@@ -59,32 +59,34 @@
           <h3>External – Document Distributions</h3>
         <% end %>
 
-        <table class="table table-striped table-bordered sortable">
-          <thead class="thead-dark">
-            <tr>
-              <th class="header">Layer Slug</th>
-              <th class="header">Type</th>
-              <th class="header">URI</th>
-              <th class="header">Value</th>
-              <th class="header">Label</th>
-              <th class="header" colspan="2">Actions</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <% @document_distributions.each do |document_distribution| %>
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered sortable">
+            <thead class="thead-dark">
               <tr>
-                <td><%= link_to document_distribution.friendlier_id, admin_document_path(document_distribution.document) %></td>
-                <td><%= document_distribution.reference_type.reference_type %></td>
-                <td><%= document_distribution.reference_type.reference_uri %></td>
-                <td><%= link_to document_distribution.url, document_distribution.url, target: '_blank' %></td>
-                <td><%= document_distribution.label %></td>
-                <td><%= link_to 'Edit', edit_admin_document_document_distribution_path(document_distribution.document, document_distribution) %></td>
-                <td><%= link_to 'Destroy', admin_document_document_distribution_path(document_distribution.document, document_distribution), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                <th class="header">Layer Slug</th>
+                <th class="header">Type</th>
+                <th class="header">URI</th>
+                <th class="header">Value</th>
+                <th class="header">Label</th>
+                <th class="header" colspan="2">Actions</th>
               </tr>
-            <% end %>
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              <% @document_distributions.each do |document_distribution| %>
+                <tr>
+                  <td><%= link_to document_distribution.friendlier_id, admin_document_path(document_distribution.document) %></td>
+                  <td><%= document_distribution.reference_type.reference_type %></td>
+                  <td><%= document_distribution.reference_type.reference_uri %></td>
+                  <td><%= link_to document_distribution.url, document_distribution.url, target: '_blank' %></td>
+                  <td><%= document_distribution.label %></td>
+                  <td><%= link_to 'Edit', edit_admin_document_document_distribution_path(document_distribution.document, document_distribution) %></td>
+                  <td><%= link_to 'Destroy', admin_document_document_distribution_path(document_distribution.document, document_distribution), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
 
         <% if @pagy %>
           <h6>

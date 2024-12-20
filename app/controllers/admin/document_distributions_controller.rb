@@ -125,19 +125,20 @@ module Admin
         raise ArgumentError, "File does not exist or is invalid."
       end
 
-      if DocumentDistribution.import(params.dig(:document_distribution, :distributions, :file))
+      success, errors = DocumentDistribution.import(params.dig(:document_distribution, :distributions, :file))
+      if success == true
         logger.debug("Distributions were created successfully.")
         if params[:document_id]
           redirect_to admin_document_document_distributions_path(@document), notice: "Distributions were created successfully."
         else
-          redirect_to admin_document_document_distributions_path, notice: "Distributions were created successfully."
+          redirect_to admin_document_distributions_path, notice: "Distributions were created successfully."
         end
       else
-        logger.debug("Distributions could not be created.")
+        logger.debug("Some distributions could not be created. #{errors.join(", ")}")
         if params[:document_id]
-          redirect_to admin_document_document_distributions_path(@document), warning: "Distributions could not be created."
+          redirect_to admin_document_document_distributions_path(@document), notice: "Some distributions could not be created. #{errors.join(", ")}"
         else
-          redirect_to admin_document_document_distributions_path, warning: "Distributions could not be created."
+          redirect_to admin_document_distributions_path, notice: "Some distributions could not be created. #{errors.join(", ")}"
         end
       end
     rescue => e
@@ -145,7 +146,7 @@ module Admin
       if params[:document_id]
         redirect_to admin_document_document_distributions_path(@document), notice: "Distributions could not be created. #{e}"
       else
-        redirect_to admin_document_document_distributions_path, notice: "Distributions could not be created. #{e}"
+        redirect_to admin_document_distributions_path, notice: "Distributions could not be created. #{e}"
       end
     end
 

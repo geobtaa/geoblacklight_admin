@@ -65,14 +65,22 @@ class DocumentDistribution < ApplicationRecord
   # @param file [File] the CSV file to import
   # @return [Boolean] true if import is successful
   def self.import(file)
+    @errors = []
+
     logger.debug("CSV Import")
     ::CSV.foreach(file.path, headers: true) do |row|
       logger.debug("CSV Row: #{row.to_hash}")
+
+      unless Document.exists?(friendlier_id: row.to_hash["friendlier_id"])
+        logger.debug("Document not found: #{row.to_hash["friendlier_id"]}")
+        @errors << "Document not found: #{row.to_hash["friendlier_id"]}"
+        next
+      end
+
       document_distribution = DocumentDistribution.find_or_initialize_by(
         friendlier_id: row.to_hash["friendlier_id"],
         reference_type_id: ReferenceType.find_by(name: row.to_hash["reference_type"]).id,
-        url: row.to_hash["distribution_url"],
-        label: row.to_hash["label"]
+        url: row.to_hash["distribution_url"]
       )
 
       logger.debug("Document Distribution: #{document_distribution.inspect}")
@@ -84,7 +92,7 @@ class DocumentDistribution < ApplicationRecord
         label: row.to_hash["label"]
       )
     end
-    true
+    [@errors.empty?, @errors]
   end
 
   # Destroy All
@@ -132,7 +140,7 @@ class DocumentDistribution < ApplicationRecord
   def to_aardvark_distribution
     hash = {}
     hash[reference_type.reference_uri.to_s] = url
-    hash[:label] = label if reference_type.reference_uri.to_s == "http://schema.org/downloadUrl"
+    hash["label"] = label if reference_type.reference_uri.to_s == "http://schema.org/downloadUrl"
     hash
   end
 
