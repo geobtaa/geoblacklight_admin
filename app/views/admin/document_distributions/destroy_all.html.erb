@@ -24,7 +24,7 @@
       <div class="form-group">
         <div class="form-inputs">
           <%= f.simple_fields_for :distributions do |distribution_fields| %>
-            <%= reference_fields.input :file, as: :file, input_html: {} %>
+            <%= distribution_fields.input :file, as: :file, input_html: {} %>
           <%- end %>
         </div>
 
