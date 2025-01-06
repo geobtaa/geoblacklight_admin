@@ -131,8 +131,8 @@
 
     <nav>
       <div class="nav nav-tabs" id="import-state-tabs" role="tablist">
-        <a class="nav-item nav-link active" id="import-success-tab" data-toggle="tab" href="#import-state-success" role="tab" aria-controls="import-state-success" aria-selected="true">Success <span class="badge badge-success"><%= @import_success_documents.count %></span></a>
-        <a class="nav-item nav-link" id="import-failed-tab" data-toggle="tab" href="#import-state-failed" role="tab" aria-controls="import-state-failed" aria-selected="false">Failed <span class="badge badge-danger"><%= @import_failed_documents.count %></span> </a>
+        <a class="nav-item nav-link active" id="import-success-tab" data-toggle="tab" href="#import-state-success" role="tab" aria-controls="import-state-success" aria-selected="true">Success <span class="badge badge-success"><%= @pagy_success.count %></span></a>
+        <a class="nav-item nav-link" id="import-failed-tab" data-toggle="tab" href="#import-state-failed" role="tab" aria-controls="import-state-failed" aria-selected="false">Failed <span class="badge badge-danger"><%= @pagy_failed.count %></span> </a>
       </div>
     </nav>
 
@@ -147,3 +147,5 @@
     </div>
   </div>
 </div>
+
+<% console %>
