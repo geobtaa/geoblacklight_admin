@@ -124,9 +124,13 @@ class Document < Kithe::Work
   def distributions
     distributions = {}
 
+    logger.debug("Document#distributions > ENV['GBL_ADMIN_REFERENCES_MIGRATED']: #{ENV['GBL_ADMIN_REFERENCES_MIGRATED']}")
+
     # AFTER - Add DocumentDistributions to distributions
     if ENV["GBL_ADMIN_REFERENCES_MIGRATED"] == "true"
       distributions = document_distributions.to_aardvark_distributions
+
+      logger.debug("Document#distributions > document_distributions: #{distributions}")
     else
       # BEFORE - Prep value arrays
       # @TODO: Remove this once we've migrated to DocumentDistributions
