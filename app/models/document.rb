@@ -124,7 +124,7 @@ class Document < Kithe::Work
   def distributions
     distributions = {}
 
-    logger.debug("Document#distributions > ENV['GBL_ADMIN_REFERENCES_MIGRATED']: #{ENV['GBL_ADMIN_REFERENCES_MIGRATED']}")
+    logger.debug("Document#distributions > ENV['GBL_ADMIN_REFERENCES_MIGRATED']: #{ENV["GBL_ADMIN_REFERENCES_MIGRATED"]}")
 
     # AFTER - Add DocumentDistributions to distributions
     if ENV["GBL_ADMIN_REFERENCES_MIGRATED"] == "true"
