@@ -129,6 +129,12 @@ module GeoblacklightAdmin
             patch :run, on: :member
           end
 
+          # Import Distributions
+          resources :import_distributions do
+            resources :import_document_distributions, only: [:show]
+            patch :run, on: :member
+          end 
+
           # Elements
           resources :elements do
             post :sort, on: :collection
@@ -221,9 +227,6 @@ module GeoblacklightAdmin
               collection do
                 get "display_attach_form"
                 post "attach_files"
-
-                get "import"
-                post "import"
 
                 get "destroy_all"
                 post "destroy_all"
@@ -420,6 +423,7 @@ module GeoblacklightAdmin
     # Add test fixture files - Necessary for import background job tests
     def add_test_fixture_files
       copy_file "btaa_sample_records.csv", "test/fixtures/files/btaa_sample_records.csv", force: true
+      copy_file "btaa_sample_document_distributions.csv", "test/fixtures/files/btaa_sample_document_distributions.csv", force: true
     end
 
     # Run bundle with vite install

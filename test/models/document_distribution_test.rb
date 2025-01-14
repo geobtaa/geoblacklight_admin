@@ -53,14 +53,6 @@ class DocumentDistributionTest < ActiveSupport::TestCase
     assert_equal expected_aardvark, @document_distribution.to_aardvark_distribution
   end
 
-  test "should import from CSV" do
-    file_path = File.expand_path("../../../test/fixtures/files/import_distributions.csv", __FILE__)
-    file = File.open(file_path)
-    assert_difference "DocumentDistribution.count", 3 do
-      DocumentDistribution.import(file)
-    end
-  end
-
   test "should destroy all from CSV" do
     file_path = File.expand_path("../../../test/fixtures/files/import_distributions.csv", __FILE__)
     file = File.open(file_path)

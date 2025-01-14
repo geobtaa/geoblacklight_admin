@@ -15,12 +15,17 @@ class NavigationTest < ApplicationSystemTestCase
       assert page.has_selector?("input[name='q']")
       assert page.has_link?("Admin Tools")
       assert page.has_link?("Documents", visible: false)
-      assert page.has_link?("Imports", visible: false)
-      assert page.has_link?("Access Links", visible: false)
+      assert page.has_link?("Import Documents", visible: false)
+      assert page.has_link?("Import Distributions", visible: false)
       assert page.has_link?("Bulk Actions", visible: false)
+      assert page.has_link?("Access Links", visible: false)
+      assert page.has_link?("Assets", visible: false)
+      assert page.has_link?("Distributions", visible: false)
+      assert page.has_link?("Blazer", visible: false)
+      assert page.has_link?("Elements", visible: false)
+      assert page.has_link?("Form Elements", visible: false)
+      assert page.has_link?("Reference Types", visible: false)
       assert page.has_link?("Users", visible: false)
-      assert page.has_link?("Bookmarks", visible: false)
-      assert page.has_link?("Sign Out", visible: false)
     end
   end
 end

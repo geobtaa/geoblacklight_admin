@@ -1,10 +1,10 @@
-<%- @page_title = "GBL♦Admin - Imports" %>
+<%- @page_title = "GBL♦Admin - Import Distributions" %>
 
 <div class="row mb-2">
   <div class="col">
     <h1 style="width:100%;">
-      Import Documents
-      <%= link_to '+ New Documents Import', new_admin_import_path, { class: 'btn btn-primary float-right' } %>
+      Import Distributions
+      <%= link_to '+ New Distributions Import', new_admin_import_distribution_path, { class: 'btn btn-primary float-right' } %>
     </h1>
 
     <h6>
@@ -30,17 +30,17 @@
       </thead>
 
       <tbody>
-        <% @imports.each do |import| %>
+        <% @import_distributions.each do |import_distribution| %>
           <tr>
-            <td><%= import.name %></td>
-            <td><%= import.filename %></td>
-            <td><%= import.source %></td>
-            <td><%= import.description %></td>
-            <td><%= import.row_count %></td>
-            <td><%= import.created_at %></td>
-            <td><%= link_to 'Show', admin_import_path(import) %></td>
-            <td><%= link_to 'Edit', edit_admin_import_path(import) %></td>
-            <td><%= link_to 'Destroy', admin_import_path(import), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <td><%= import_distribution.name %></td>
+            <td><%= import_distribution.filename %></td>
+            <td><%= import_distribution.source %></td>
+            <td><%= import_distribution.description %></td>
+            <td><%= import_distribution.row_count %></td>
+            <td><%= import_distribution.created_at %></td>
+            <td><%= link_to 'Show', admin_import_distribution_path(import_distribution) %></td>
+            <td><%= link_to 'Edit', edit_admin_import_distribution_path(import_distribution) %></td>
+            <td><%= link_to 'Destroy', admin_import_distribution_path(import_distribution), method: :delete, data: { confirm: 'Are you sure?' } %></td>
           </tr>
         <% end %>
       </tbody>
