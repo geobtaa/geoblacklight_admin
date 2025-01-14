@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class ImportDistributionsControllerTest < ActionDispatch::IntegrationTest
   setup do
@@ -20,8 +20,8 @@ class ImportDistributionsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create import_distribution" do
     skip("@TODO: add file upload to test")
-    assert_difference('ImportDistribution.count') do
-      post admin_import_distributions_url, params: { import_distribution: { name: 'New Import', filename: 'file.csv' } }
+    assert_difference("ImportDistribution.count") do
+      post admin_import_distributions_url, params: {import_distribution: {name: "New Import", filename: "file.csv"}}
     end
 
     assert_redirected_to admin_import_distribution_url(ImportDistribution.last)
@@ -40,12 +40,12 @@ class ImportDistributionsControllerTest < ActionDispatch::IntegrationTest
 
   test "should update import_distribution" do
     skip("@TODO: add file upload to test")
-    patch admin_import_distribution_url(@import_distribution), params: { import_distribution: { name: 'Updated Import' } }
+    patch admin_import_distribution_url(@import_distribution), params: {import_distribution: {name: "Updated Import"}}
     assert_redirected_to admin_import_distribution_url(@import_distribution)
   end
 
   test "should destroy import_distribution" do
-    assert_difference('ImportDistribution.count', -1) do
+    assert_difference("ImportDistribution.count", -1) do
       delete admin_import_distribution_url(@import_distribution)
     end
 
