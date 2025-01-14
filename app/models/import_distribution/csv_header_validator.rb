@@ -7,6 +7,11 @@ class ImportDistribution
   # CsvHeaderValidator
   class CsvHeaderValidator < ActiveModel::Validator
     def validate(record)
+      if record.csv_file.nil?
+        record.errors.add(:csv_file, "Missing a required CSV header. friendlier_id, reference_type, distribution_url, and label are required.")
+        return false
+      end
+
       valid_csv_header = true
       unless valid_csv_headers?(record&.csv_file)
         valid_csv_header = false
