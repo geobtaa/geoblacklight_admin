@@ -4,6 +4,6 @@ require "test_helper"
 
 class ImportDistributionStateMachineTest < ActiveSupport::TestCase
   test "states" do
-    assert_equal(ImportDistributionStateMachine.states, %w[created mapped imported success failed])
+    assert_equal(ImportDistributionStateMachine.states, %w[created imported success failed])
   end
 end
