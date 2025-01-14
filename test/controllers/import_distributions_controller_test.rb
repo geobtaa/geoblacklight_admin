@@ -28,7 +28,6 @@ class ImportDistributionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should show import_distribution" do
-    skip("@TODO: add file upload to test")
     get admin_import_distribution_url(@import_distribution)
     assert_response :success
   end
