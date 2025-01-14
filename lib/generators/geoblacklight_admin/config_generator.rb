@@ -423,6 +423,7 @@ module GeoblacklightAdmin
     # Add test fixture files - Necessary for import background job tests
     def add_test_fixture_files
       copy_file "btaa_sample_records.csv", "test/fixtures/files/btaa_sample_records.csv", force: true
+      copy_file "btaa_sample_document_distributions.csv", "test/fixtures/files/btaa_sample_document_distributions.csv", force: true
     end
 
     # Run bundle with vite install
