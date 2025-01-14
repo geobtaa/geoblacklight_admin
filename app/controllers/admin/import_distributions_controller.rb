@@ -54,7 +54,7 @@ module Admin
 
     # POST /import_distributions
     # POST /import_distributions.json
-    # Creates a new ImportDistribution object and redirects to import mappings if successful.
+    # Creates a new ImportDistribution object
     def create
       @import_distribution = ImportDistribution.new(import_distribution_params)
 
@@ -62,7 +62,7 @@ module Admin
         if @import_distribution.save
           format.html do
             redirect_to admin_import_distribution_path(@import_distribution),
-              notice: "Import distribution was successful. Please set your import distribution mapping rules."
+              notice: "Import distribution was successful."
           end
           format.json { render :show, status: :created, location: @import_distribution }
         else

@@ -51,10 +51,12 @@
       </div>
       <ul class="list-group list-group-flush">
         <li class="list-group-item">
-          <%= form_tag run_admin_import_distribution_path(@import_distribution), method: :patch do -%>
-            <%= hidden_field_tag :run, true -%>
-            <%= submit_tag '+ Run Distribution Import', class: 'btn btn-primary btn-block' -%>
-          <%- end -%>
+          <% if @import_distribution.state_machine.current_state == 'created' %>
+            <%= form_tag run_admin_import_distribution_path(@import_distribution), method: :patch do -%>
+              <%= hidden_field_tag :run, true -%>
+              <%= submit_tag '+ Run Distribution Import', class: 'btn btn-primary btn-block' -%>
+            <%- end -%>
+          <% end %>
           <% if @import_distribution.state_machine.current_state == 'imported' %>
             <table class="table table-sm table-bordered import-documents">
               <thead>
@@ -65,23 +67,19 @@
               </thead>
               <tbody>
               <tr>
-                <td><%= link_to_gbl_import('Published', @import_distribution, 'published') %></td>
-                <td><%= @import_distribution.documents.where(publication_state: 'published').size %></td>
+                <td>Success</td>
+                <td><%= @pagy_success.count %></td>
               </tr>
               <tr>
-                <td><%= link_to_gbl_import('Unpublished', @import_distribution, 'unpublished') %></td>
-                <td><%= @import_distribution.documents.where(publication_state: 'unpublished').size %></td>
-              </tr>
-              <tr>
-                <td><%= link_to_gbl_import('Draft', @import_distribution, 'draft') %></td>
-                <td><%= @import_distribution.documents.where(publication_state: 'draft').size %></td>
+                <td>Failed</td>
+                <td><%= @pagy_failed.count %></td>
               </tr>
               </tbody>
               <tfoot>
                 <tr>
-                  <th><%= link_to_gbl_import('Total', @import_distribution) %></th>
-                  <td><%= @import_distribution.documents.size %></td>
-              </tr>
+                  <th>Total</th>
+                  <td><%= @pagy_success.count + @pagy_failed.count %></td>
+                </tr>
               </tfoot>
             </table>
           <% end %>
