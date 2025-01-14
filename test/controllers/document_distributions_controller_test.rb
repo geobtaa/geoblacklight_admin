@@ -1,6 +1,6 @@
 require "test_helper"
 
-class DocumentReferencesControllerTest < ActionDispatch::IntegrationTest
+class DocumentDistributionsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @document = documents(:ls)
     @document_distribution = document_distributions(:ag_1)
@@ -63,17 +63,5 @@ class DocumentReferencesControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to admin_document_document_distributions_url(@document)
-  end
-
-  test "should import distributions successfully" do
-    post import_admin_document_distributions_url(@document), params: {document_id: @document.friendlier_id, document_distribution: {distributions: {file: @file}}}
-    assert_redirected_to admin_document_document_distributions_path(@document)
-    assert_equal "Distributions were created successfully.", flash[:notice]
-  end
-
-  test "should not import distributions with invalid file" do
-    post import_admin_document_distributions_url(@document), params: {document_id: @document.friendlier_id, document_distribution: {distributions: {file: nil}}}
-    assert_redirected_to admin_document_document_distributions_path(@document)
-    assert_equal "Distributions could not be created. File does not exist or is invalid.", flash[:notice]
   end
 end

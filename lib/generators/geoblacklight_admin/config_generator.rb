@@ -129,6 +129,12 @@ module GeoblacklightAdmin
             patch :run, on: :member
           end
 
+          # Import Distributions
+          resources :import_distributions do
+            resources :import_document_distributions, only: [:show]
+            patch :run, on: :member
+          end 
+
           # Elements
           resources :elements do
             post :sort, on: :collection
@@ -221,9 +227,6 @@ module GeoblacklightAdmin
               collection do
                 get "display_attach_form"
                 post "attach_files"
-
-                get "import"
-                post "import"
 
                 get "destroy_all"
                 post "destroy_all"
