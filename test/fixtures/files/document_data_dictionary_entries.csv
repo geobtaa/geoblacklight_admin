@@ -1,6 +1,0 @@
-friendlier_id,field_name,field_type,values,definition,definition_source,parent_field_name
-test,AREA,Real,6,Area of polygon,Software generated,
-test,PERIMETER,Real,6,Perimeter of polygon,Software generated,
-test,NAME_U,String,10,County names in upper case letters,USGS 7.5-minute quadrangles,
-test,NAME_L,String,10,County names in upper and lower case letters,IGS standard,
-test,NCAPC,Integer,2,Numeric county alphabetic prefix code,Indiana Bureau of Motor Vehicles,
