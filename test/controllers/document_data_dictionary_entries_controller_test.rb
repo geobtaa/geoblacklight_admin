@@ -14,7 +14,7 @@ module Admin
       get "/users/sign_in"
       sign_in_as users(:user_001)
       post user_session_url
-  
+
       follow_redirect!
       assert_response :success
     end
@@ -101,13 +101,13 @@ module Admin
     test "should sort entries" do
       entry1 = document_data_dictionary_entries(:one)
       entry2 = document_data_dictionary_entries(:two)
-      
+
       post sort_admin_document_document_data_dictionary_document_data_dictionary_entries_url(
         @document,
         @document_data_dictionary
-      ), params: { id_list: [entry2.id, entry1.id] }
-      
+      ), params: {id_list: [entry2.id, entry1.id]}
+
       assert_response :success
     end
   end
-end 
+end
