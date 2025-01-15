@@ -8,16 +8,7 @@ module Admin
   class DocumentDataDictionaryEntriesController < Admin::AdminController
     before_action :set_document
     before_action :set_document_data_dictionary
-    before_action :set_document_data_dictionary_entry, only: %i[show edit update destroy]
-
-    # GET /document_data_dictionaries/1/entries or /document_data_dictionaries/1/entries.json
-    def index
-      redirect_to admin_document_document_data_dictionary_path(@document, @document_data_dictionary)
-    end
-
-    # GET /document_data_dictionaries/1/entries/1 or /document_data_dictionaries/1/entries/1.json
-    def show
-    end
+    before_action :set_document_data_dictionary_entry, only: %i[edit update destroy]
 
     # GET /document_data_dictionaries/1/entries/new
     def new
@@ -51,6 +42,7 @@ module Admin
           format.html { redirect_to admin_document_document_data_dictionary_path(@document, @document_data_dictionary), notice: "Document data dictionary entry was successfully updated." }
           format.json { render :show, status: :ok, location: @document_data_dictionary_entry }
         else
+          logger.debug("Document data dictionary entry could not be updated. #{@document_data_dictionary_entry.errors.full_messages}")
           format.html { render :edit, status: :unprocessable_entity }
           format.json { render json: @document_data_dictionary_entry.errors, status: :unprocessable_entity }
         end
