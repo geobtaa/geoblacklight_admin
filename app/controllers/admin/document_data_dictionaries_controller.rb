@@ -3,7 +3,7 @@
 # Admin::DocumentDataDictionariesController
 #
 # This controller manages the document data dictionaries within the admin namespace.
-# It provides actions to list, show, edit, update, destroy, and import data dictionaries.
+# It provides actions to list, show, edit, update, and destroy data dictionaries.
 module Admin
   class DocumentDataDictionariesController < Admin::AdminController
     before_action :set_document
@@ -92,43 +92,6 @@ module Admin
         end
       rescue => e
         format.html { redirect_to admin_document_document_data_dictionaries_path, notice: "Data dictionaries could not be destroyed. #{e}" }
-      end
-    end
-
-    # GET/POST /documents/1/data_dictionaries/import
-    #
-    # Imports document data dictionaries from a file. If successful, redirects with a success notice.
-    # Otherwise, redirects with an error notice.
-    def import
-      return if request.get?
-
-      logger.debug("Import Data Dictionaries")
-
-      unless params.dig(:document_data_dictionary, :data_dictionaries, :file)
-        raise ArgumentError, "File does not exist or is invalid."
-      end
-
-      if DocumentDataDictionary.import(params.dig(:document_data_dictionary, :data_dictionaries, :file))
-        logger.debug("Data dictionaries were created successfully.")
-        if params[:document_id]
-          redirect_to admin_document_document_data_dictionaries_path(@document), notice: "Data dictionaries were created successfully."
-        else
-          redirect_to admin_document_document_data_dictionaries_path, notice: "Data dictionaries were created successfully."
-        end
-      else
-        logger.debug("Data dictionaries could not be created.")
-        if params[:document_id]
-          redirect_to admin_document_document_data_dictionaries_path(@document), warning: "Data dictionaries could not be created."
-        else
-          redirect_to admin_document_document_data_dictionaries_path, warning: "Data dictionaries could not be created."
-        end
-      end
-    rescue => e
-      logger.debug("Data dictionaries could not be created. #{e}")
-      if params[:document_id]
-        redirect_to admin_document_document_data_dictionaries_path(@document), notice: "Data dictionaries could not be created. #{e}"
-      else
-        redirect_to admin_document_document_data_dictionaries_path, notice: "Data dictionaries could not be created. #{e}"
       end
     end
 
