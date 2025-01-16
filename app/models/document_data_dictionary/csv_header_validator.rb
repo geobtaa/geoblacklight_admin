@@ -12,7 +12,7 @@ class DocumentDataDictionary
         valid_csv_header = false
         record.errors.add(:csv_file,
           "Missing a required CSV header. friendlier_id, field_name, field_type, values, definition, definition_source, and parent_field_name are required.")
-        
+
         # Log the CSV file content
         Rails.logger.error("CSV validation failed. CSV content: #{record.csv_file.download}")
       end
