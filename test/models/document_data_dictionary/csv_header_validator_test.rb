@@ -22,7 +22,8 @@ class DocumentDataDictionary::CsvHeaderValidatorTest < ActiveSupport::TestCase
   def test_invalid_csv_headers
     csv_content = "friendlier_id,field_name\n"
     file_mock = Minitest::Mock.new
-    file_mock.expect :download, StringIO.new(csv_content)
+    file_mock.expect :download, StringIO.new(csv_content), []
+    file_mock.expect :download, StringIO.new(csv_content), []
     file_mock.expect :nil?, false
     @record.csv_file = file_mock
 
