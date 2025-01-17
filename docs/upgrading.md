@@ -8,6 +8,8 @@ This release moves document distribution imports to the background queue. It als
 
 This is a list of manual changes that need to be made to the parent Rails application to successfully upgrade from v0.6.0 to v0.7.0.
 
+For reference, see the changes in the BTAA Geoportal for our [v5.13.0](https://github.com/geobtaa/geoportal/commit/597fbe33627cbce3706b8a3b4da706069d55146b) and [v5.13.1](https://github.com/geobtaa/geoportal/commit/cd638442af6a52b3b4ba17d3b040f7dc9c9d87b2) releases.
+
 #### RUBYGEMS
 
 * Update `geoblacklight_admin` gem to v0.7.0
