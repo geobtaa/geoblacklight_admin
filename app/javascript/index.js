@@ -11,4 +11,4 @@ window.Stimulus = Application.start()
 Stimulus.register("results", ResultsController)
 
 // Import channels
-import '../channels';
+import './channels';

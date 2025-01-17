@@ -21,6 +21,7 @@ class Document < Kithe::Work
   # - Publication State
   has_many :document_transitions, foreign_key: "kithe_model_id", autosave: false, dependent: :destroy,
     inverse_of: :document
+
   # - Thumbnail State
   has_many :document_thumbnail_transitions, foreign_key: "kithe_model_id", autosave: false, dependent: :destroy,
     inverse_of: :document
@@ -32,6 +33,10 @@ class Document < Kithe::Work
 
   # - DocumentDownloads
   has_many :document_downloads, primary_key: "friendlier_id", foreign_key: "friendlier_id", autosave: false, dependent: :destroy,
+    inverse_of: :document
+
+  # - DocumentDataDictionaries
+  has_many :document_data_dictionaries, primary_key: "friendlier_id", foreign_key: "friendlier_id", autosave: false, dependent: :destroy,
     inverse_of: :document
 
   # - DocumentDistributions
