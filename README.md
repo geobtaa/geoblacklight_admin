@@ -69,8 +69,8 @@ The gem is available as open source under the terms of the [Apache 2.0 License](
 * ~~Debug Rails 7.2 support (remove devise_invitable, see [#915](https://github.com/scambra/devise_invitable/issues/915))~~
 * ~~Separate dct_references_s support into a separate model~~
 * ~~Import/Export dct_references_s outside of the main document model~~
-* Distributions: Move import to background queue
-* Data Dictionary: Add support for `document_data_dictionary`
+* ~~Distributions: Move import to background queue~~
+* ~~Data Dictionary: Add support for `document_data_dictionary`~~
 * Gazetteer: Add GeoNames support
 * Gazetteer: Add Who's On First support
 * Gazetteer: Add Ollama support
