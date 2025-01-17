@@ -7,3 +7,4 @@ csv:
   service_name: 'local'
 
 import_btaa_blob: <%= ActiveStorage::FixtureSet.blob filename: "btaa_sample_records.csv", service_name: "test" %>
+import_distribution_blob: <%= ActiveStorage::FixtureSet.blob filename: "btaa_sample_document_distributions.csv", service_name: "test" %>

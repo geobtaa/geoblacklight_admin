@@ -32,6 +32,10 @@
         Additional Assets 
         <span class="badge badge-light"><%= @document.document_assets.count %></span>
       <% end %>
+      <%= link_to admin_document_document_data_dictionaries_url(@document), class: "ml-2" do %>
+        Data Dictionaries 
+        <span class="badge badge-light"><%= @document.document_data_dictionaries.count %></span>
+      <% end %>
       <%= link_to admin_document_document_distributions_url(@document), class: "ml-2" do %>
         Distributions
       <% end %>

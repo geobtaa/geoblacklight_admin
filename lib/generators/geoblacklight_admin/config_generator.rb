@@ -129,6 +129,12 @@ module GeoblacklightAdmin
             patch :run, on: :member
           end
 
+          # Import Distributions
+          resources :import_distributions do
+            resources :import_document_distributions, only: [:show]
+            patch :run, on: :member
+          end
+
           # Elements
           resources :elements do
             post :sort, on: :collection
@@ -205,6 +211,25 @@ module GeoblacklightAdmin
               end
             end
 
+            # Data Dictionaries
+            resources :document_data_dictionaries, path: "data_dictionaries" do
+              collection do
+                get "import"
+                post "import"
+
+                get "destroy_all"
+                post "destroy_all"
+              end
+
+              resources :document_data_dictionary_entries, path: "entries" do
+                collection do
+                  post "sort"
+                  get "destroy_all"
+                  post "destroy_all"
+                end
+              end
+            end
+
             # DocumentDownloads
             resources :document_downloads, path: "downloads" do
               collection do
@@ -221,9 +246,6 @@ module GeoblacklightAdmin
               collection do
                 get "display_attach_form"
                 post "attach_files"
-
-                get "import"
-                post "import"
 
                 get "destroy_all"
                 post "destroy_all"
@@ -310,6 +332,16 @@ module GeoblacklightAdmin
       inject_into_file "config/routes.rb", gbl_admin_routes, before: /^end/
     end
 
+    def add_gbl_admin_data_dictionariesable
+      inject_into_file "config/routes.rb", before: /^end/ do
+        "\n        concern :gbl_admin_data_dictionariesable, GeoblacklightAdmin::Routes::DataDictionariesable.new
+        resources :solr_documents, only: [:show], path: '/catalog', controller: 'catalog' do
+          concerns :gbl_admin_data_dictionariesable
+        end
+        \n\n"
+      end
+    end
+
     def set_development_mailer_host
       mailer_host = "\n  config.action_mailer.default_url_options = { :host => 'localhost:3000' }\n"
       inject_into_file "config/environments/development.rb", mailer_host, after: "config.action_mailer.perform_caching = false"
@@ -386,9 +418,32 @@ module GeoblacklightAdmin
       end
     end
 
+    def add_show_gbl_admin_data_dictionaries
+      inject_into_file "app/controllers/catalog_controller.rb", after: "# Custom tools for GeoBlacklight" do
+        "\n  config.add_show_tools_partial :gbl_admin_data_dictionaries, partial: 'gbl_admin_data_dictionaries'"
+      end
+    end
+
+    def add_data_dictionaries_action
+      inject_into_file "app/controllers/catalog_controller.rb", before: "\nend" do
+        "\n  def data_dictionaries
+          \n    @response, @documents = action_documents
+          \n    respond_to do |format|
+          \n      format.html do
+          \n        return render layout: false if request.xhr?
+          \n        # Otherwise draw the full page
+          \n      end
+          \n    end
+          \n  end"
+      end
+    end
+
     def add_kithe_model_to_solr_document
       inject_into_file "app/models/solr_document.rb", after: "include Geoblacklight::SolrDocument" do
-        "\n\nattr_accessor :model"
+        "\n\nattr_accessor :model
+        \n def kithe_model
+          Kithe::Model.find_by_friendlier_id(self.id)
+        end\n\n"
       end
     end
 
@@ -420,6 +475,8 @@ module GeoblacklightAdmin
     # Add test fixture files - Necessary for import background job tests
     def add_test_fixture_files
       copy_file "btaa_sample_records.csv", "test/fixtures/files/btaa_sample_records.csv", force: true
+      copy_file "btaa_sample_document_distributions.csv", "test/fixtures/files/btaa_sample_document_distributions.csv", force: true
+      copy_file "btaa_sample_document_data_dictionary_entries.csv", "test/fixtures/files/btaa_sample_document_data_dictionary_entries.csv", force: true
     end
 
     # Run bundle with vite install

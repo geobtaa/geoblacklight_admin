@@ -10,7 +10,7 @@ class ImportsTest < ApplicationSystemTestCase
 
   test "visiting the index" do
     visit admin_imports_url
-    assert_selector "h1", text: "Imports"
+    assert_selector "h1", text: "Import Documents"
   end
 
   test "creating a Import" do
