@@ -564,6 +564,25 @@ class Document < Kithe::Work
     mapping
   end
 
+  def relationship_fields
+    [
+      :pcdm_memberOf_sm,
+      :dct_isPartOf_sm,
+      :dct_isReplacedBy_sm,
+      :dct_relation_sm,
+      :dct_replaces_sm,
+      :dct_source_sm,
+      :dct_isVersionOf_sm
+    ]
+  end
+
+  # @TODO: This needs to be refactored to be more efficient
+  # - Requires at least 14 individual SQL queries
+  # - Needs to be normalized and refactored
+  def relations(field = nil)
+    DocumentRelations.new(self).call(field)
+  end
+
   private
 
   def transition_publication_state
