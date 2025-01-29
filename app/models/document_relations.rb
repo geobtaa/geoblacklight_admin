@@ -30,7 +30,7 @@ class DocumentRelations
   # For each relationship field, initialize a structure in @relations
   def build_empty_relations
     @document.relationship_fields.each do |relationship_field|
-      @relations[relationship_field] ||= { ancestors: [], descendants: [] }
+      @relations[relationship_field] ||= {ancestors: [], descendants: []}
     end
   end
 
