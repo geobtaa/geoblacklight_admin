@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Blacklight::Catalog
   include Pagy::Backend
   extend ActiveSupport::Concern
@@ -37,7 +38,7 @@ module Blacklight::Catalog
 
     @document_list = ActiveSupport::Deprecation::DeprecatedObjectProxy.new(
       deprecated_document_list,
-      'The @document_list instance variable is deprecated; use @response.documents instead.',
+      "The @document_list instance variable is deprecated; use @response.documents instead.",
       ActiveSupport::Deprecation.new("8.0", "blacklight")
     )
 
@@ -49,11 +50,11 @@ module Blacklight::Catalog
 
     respond_to do |format|
       format.html { store_preferred_view }
-      format.rss  { render layout: false }
+      format.rss { render layout: false }
       format.atom { render layout: false }
       format.json do
         @presenter = Blacklight::JsonPresenter.new(@response,
-                                                   blacklight_config)
+          blacklight_config)
       end
       additional_response_formats(format)
       document_export_formats(format)
@@ -66,7 +67,7 @@ module Blacklight::Catalog
     deprecated_response, @document = search_service.fetch(params[:id])
     @response = ActiveSupport::Deprecation::DeprecatedObjectProxy.new(
       deprecated_response,
-      'The @response instance variable is deprecated; use @document.response instead.',
+      "The @response instance variable is deprecated; use @document.response instead.",
       ActiveSupport::Deprecation.new("8.0", "blacklight")
     )
 
@@ -83,7 +84,7 @@ module Blacklight::Catalog
 
   # get a single document from the index
   def raw
-    raise(ActionController::RoutingError, 'Not Found') unless blacklight_config.raw_endpoint.enabled
+    raise(ActionController::RoutingError, "Not Found") unless blacklight_config.raw_endpoint.enabled
 
     _, @document = search_service.fetch(params[:id])
     render json: @document
@@ -91,24 +92,24 @@ module Blacklight::Catalog
 
   # updates the search counter (allows the show view to paginate)
   def track
-    search_session['counter'] = params[:counter]
-    search_session['id'] = params[:search_id]
-    search_session['per_page'] = params[:per_page]
-    search_session['document_id'] = params[:document_id]
+    search_session["counter"] = params[:counter]
+    search_session["id"] = params[:search_id]
+    search_session["per_page"] = params[:per_page]
+    search_session["document_id"] = params[:document_id]
 
-    if params[:redirect] && (params[:redirect].starts_with?('/') || params[:redirect] =~ URI::DEFAULT_PARSER.make_regexp)
+    if params[:redirect] && (params[:redirect].starts_with?("/") || params[:redirect] =~ URI::DEFAULT_PARSER.make_regexp)
       uri = URI.parse(params[:redirect])
       path = uri.query ? "#{uri.path}?#{uri.query}" : uri.path
       redirect_to path, status: :see_other
     else
-      redirect_to({ action: :show, id: params[:id] }, status: :see_other)
+      redirect_to({action: :show, id: params[:id]}, status: :see_other)
     end
   end
 
   # displays values and pagination links for a single facet field
   def facet
     @facet = blacklight_config.facet_fields[params[:id]]
-    raise ActionController::RoutingError, 'Not Found' unless @facet
+    raise ActionController::RoutingError, "Not Found" unless @facet
 
     @response = search_service.facet_field_response(@facet.key)
     @display_facet = @response.aggregations[@facet.field]
@@ -118,8 +119,8 @@ module Blacklight::Catalog
 
     @pagy = Pagy.new(
       count: @response.total_count,
-      page_param: 'facet.page',
-      page: params['facet.page'],
+      page_param: "facet.page",
+      page: params["facet.page"],
       limit: 20
     )
 
@@ -193,10 +194,10 @@ module Blacklight::Catalog
         limit.to_i - 1 # we added 1 to find out if we needed to paginate
       end
     elsif facet.limit
-      facet.limit == true ? DEFAULT_FACET_LIMIT : facet.limit
+      (facet.limit == true) ? DEFAULT_FACET_LIMIT : facet.limit
     end
   end
-  deprecation_deprecate facet_limit_for: 'moving to private logic in Blacklight::FacetFieldPresenter'
+  deprecation_deprecate facet_limit_for: "moving to private logic in Blacklight::FacetFieldPresenter"
 
   private
 
@@ -229,7 +230,7 @@ module Blacklight::Catalog
       format.send key do
         case config
         when false
-          raise ActionController::RoutingError, 'Not Found'
+          raise ActionController::RoutingError, "Not Found"
         when Hash
           render config
         when Proc
@@ -256,7 +257,7 @@ module Blacklight::Catalog
   # Try to render a response from the document export formats available
   def document_export_formats(format)
     format.any do
-      format_name = params.fetch(:format, '').to_sym
+      format_name = params.fetch(:format, "").to_sym
       if @response.export_formats.include? format_name
         render_document_export_format format_name
       else
@@ -280,12 +281,12 @@ module Blacklight::Catalog
   # should use the current controller when constructing the route.
   def search_action_url options = {}
     options = options.to_h if options.is_a? Blacklight::SearchState
-    url_for(options.reverse_merge(action: 'index'))
+    url_for(options.reverse_merge(action: "index"))
   end
 
   # Email Action (this will render the appropriate view on GET requests and process the form and send the email on POST requests)
   def email_action documents
-    mail = RecordMailer.email_record(documents, { to: params[:to], message: params[:message], config: blacklight_config }, url_options)
+    mail = RecordMailer.email_record(documents, {to: params[:to], message: params[:message], config: blacklight_config}, url_options)
     if mail.respond_to? :deliver_now
       mail.deliver_now
     else
@@ -295,8 +296,8 @@ module Blacklight::Catalog
 
   # SMS action (this will render the appropriate view on GET requests and process the form and send the email on POST requests)
   def sms_action documents
-    to = "#{params[:to].gsub(/[^\d]/, '')}@#{params[:carrier]}"
-    mail = RecordMailer.sms_record(documents, { to: to, config: blacklight_config }, url_options)
+    to = "#{params[:to].gsub(/[^\d]/, "")}@#{params[:carrier]}"
+    mail = RecordMailer.sms_record(documents, {to: to, config: blacklight_config}, url_options)
     if mail.respond_to? :deliver_now
       mail.deliver_now
     else
@@ -306,13 +307,13 @@ module Blacklight::Catalog
 
   def validate_sms_params
     if params[:to].blank?
-      flash[:error] = I18n.t('blacklight.sms.errors.to.blank')
+      flash[:error] = I18n.t("blacklight.sms.errors.to.blank")
     elsif params[:carrier].blank?
-      flash[:error] = I18n.t('blacklight.sms.errors.carrier.blank')
-    elsif params[:to].gsub(/[^\d]/, '').length != 10
-      flash[:error] = I18n.t('blacklight.sms.errors.to.invalid', to: params[:to])
+      flash[:error] = I18n.t("blacklight.sms.errors.carrier.blank")
+    elsif params[:to].gsub(/[^\d]/, "").length != 10
+      flash[:error] = I18n.t("blacklight.sms.errors.to.invalid", to: params[:to])
     elsif !sms_mappings.value?(params[:carrier])
-      flash[:error] = I18n.t('blacklight.sms.errors.carrier.invalid')
+      flash[:error] = I18n.t("blacklight.sms.errors.carrier.invalid")
     end
 
     flash[:error].blank?
@@ -324,9 +325,9 @@ module Blacklight::Catalog
 
   def validate_email_params
     if params[:to].blank?
-      flash[:error] = I18n.t('blacklight.email.errors.to.blank')
+      flash[:error] = I18n.t("blacklight.email.errors.to.blank")
     elsif !params[:to].match(Blacklight::Engine.config.blacklight.email_regexp)
-      flash[:error] = I18n.t('blacklight.email.errors.to.invalid', to: params[:to])
+      flash[:error] = I18n.t("blacklight.email.errors.to.invalid", to: params[:to])
     end
 
     flash[:error].blank?
@@ -337,7 +338,7 @@ module Blacklight::Catalog
   end
 
   def determine_layout
-    action_name == 'show' ? 'catalog_result' : super
+    (action_name == "show") ? "catalog_result" : super
   end
 
   # when a method throws a Blacklight::Exceptions::InvalidRequest, this method is executed.
@@ -345,7 +346,7 @@ module Blacklight::Catalog
     # Rails own code will catch and give usual Rails error page with stack trace
     raise exception if Rails.env.development? || Rails.env.test?
 
-    flash_notice = I18n.t('blacklight.search.errors.request_error')
+    flash_notice = I18n.t("blacklight.search.errors.request_error")
 
     # If there are errors coming from the index page, we want to trap those sensibly
 
