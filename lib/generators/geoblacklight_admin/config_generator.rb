@@ -420,7 +420,7 @@ module GeoblacklightAdmin
 
     def add_show_gbl_admin_data_dictionaries
       inject_into_file "app/controllers/catalog_controller.rb", after: "# Custom tools for GeoBlacklight" do
-        "\n  config.add_show_tools_partial :gbl_admin_data_dictionaries, partial: 'gbl_admin_data_dictionaries'"
+        "\n   config.add_show_tools_partial :gbl_admin_data_dictionaries, partial: 'gbl_admin_data_dictionaries', if: proc { |_context, _config, options| options[:document] && options[:document]&.kithe_model&.document_data_dictionaries&.present? }"
       end
     end
 
