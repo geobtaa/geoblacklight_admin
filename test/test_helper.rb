@@ -8,6 +8,8 @@ SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
 SimpleCov.start "rails" do
   add_filter "/spec"
   add_filter ".internal_test_app/"
+  add_filter "app/controllers/concerns/blacklight/catalog.rb"
+  add_filter "app/helpers/form_input_helper.rb"
   add_filter "app/models/active_storage_attachment.rb"
   add_filter "app/models/active_storage_blob.rb"
   add_filter "app/models/application_record.rb"
