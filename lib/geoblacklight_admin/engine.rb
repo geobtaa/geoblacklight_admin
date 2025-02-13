@@ -18,6 +18,7 @@ module GeoblacklightAdmin
         ActionView::Base.include DocumentHelper
         ActionView::Base.include FormInputHelper
         ActionView::Base.include MappingsHelper
+        ActionView::Base.include FacetsHelper
       end
     end
   end
