@@ -1,6 +1,7 @@
 <% if document&.kithe_model&.document_data_dictionaries.present? %>
   <% document.kithe_model.document_data_dictionaries.each do |dictionary| %>
     <h3><%= dictionary.name %></h3>
+    <p><%= dictionary.description %></p>
     <table class="table table-striped table-bordered">
       <thead class="thead-dark">
         <tr>
