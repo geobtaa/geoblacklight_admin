@@ -20,9 +20,9 @@ class DocumentDataDictionary < ApplicationRecord
 
   def to_csv
     CSV.generate do |csv|
-      csv << DocumentDataDictionaryEntry.column_names
+      csv << DocumentDataDictionaryEntry.column_names.excluding("id", "created_at", "updated_at")
       document_data_dictionary_entries.each do |entry|
-        csv << entry.attributes.values_at(*DocumentDataDictionaryEntry.column_names)
+        csv << entry.attributes.values_at(*DocumentDataDictionaryEntry.column_names.excluding("id", "created_at", "updated_at"))
       end
     end
   end
