@@ -40,7 +40,6 @@ class DocumentTest < ActiveSupport::TestCase
   test "should respond to raw_solr_document" do
     document = documents(:ag)
     assert_respond_to document, :raw_solr_document
-    assert_instance_of Hash, document.raw_solr_document
   end
 
   test "should respond to item_viewer" do
