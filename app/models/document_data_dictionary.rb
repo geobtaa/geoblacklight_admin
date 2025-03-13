@@ -18,11 +18,24 @@ class DocumentDataDictionary < ApplicationRecord
   validates :csv_file, content_type: {in: "text/csv", message: "is not a CSV file"}, if: -> { csv_file.attached? }
   validates_with DocumentDataDictionary::CsvHeaderValidator, if: -> { csv_file.attached? }
 
+  def to_csv
+    CSV.generate do |csv|
+      csv << DocumentDataDictionaryEntry.column_names
+      document_data_dictionary_entries.each do |entry|
+        csv << entry.attributes.values_at(*DocumentDataDictionaryEntry.column_names)
+      end
+    end
+  end
+
   def parse_csv_file
     if csv_file.attached?
       csv_data = CSV.parse(csv_file.download, headers: true)
       csv_data.each do |row|
-        document_data_dictionary_entries.create!(row.to_h)
+        entry = document_data_dictionary_entries.find_or_initialize_by(
+          friendlier_id: row["friendlier_id"],
+          field_name: row["field_name"]
+        )
+        entry.update(row.to_h)
       end
     end
   end

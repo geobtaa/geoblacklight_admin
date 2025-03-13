@@ -7,6 +7,7 @@
         <th>Staff Notes</th>
         <th>Tags</th>
         <th>Entries</th>
+        <th>Export</th>
         <th colspan="2">Actions</th>
       </tr>
     </thead>
@@ -26,6 +27,9 @@
           </td>
           <td>
             <%= link_to "#{document_data_dictionary.document_data_dictionary_entries.count} entries", admin_document_document_data_dictionary_path(document_data_dictionary.friendlier_id, document_data_dictionary) %>
+          </td>
+          <td>
+            <%= link_to 'Export to CSV', admin_document_document_data_dictionary_path(document_data_dictionary.friendlier_id, document_data_dictionary, format: :csv), class: 'btn btn-outline-primary btn-block' %>
           </td>
           <td>
             <%= link_to 'Edit', edit_admin_document_document_data_dictionary_path(document_data_dictionary.friendlier_id, document_data_dictionary) %>

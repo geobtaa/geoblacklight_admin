@@ -22,6 +22,11 @@ module Admin
     # GET /document_data_dictionaries/1 or /document_data_dictionaries/1.json
     def show
       @pagy, @document_data_dictionary_entries = pagy(@document_data_dictionary.document_data_dictionary_entries.order(position: :asc), items: 100)
+
+      respond_to do |format|
+        format.html
+        format.csv { render plain: @document_data_dictionary.to_csv }
+      end
     end
 
     # GET /document_data_dictionaries/new
