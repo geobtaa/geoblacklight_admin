@@ -58,7 +58,7 @@ class DocumentDataDictionariesControllerTest < ActionDispatch::IntegrationTest
   test "should show document data dictionary in CSV format" do
     get admin_document_document_data_dictionary_url(@document, @document_data_dictionary, format: :csv)
     assert_response :success
-    assert_equal "text/csv", @response.content_type
+    assert_equal "text/csv; charset=utf-8", @response.content_type
   end
 
   test "should get edit" do
