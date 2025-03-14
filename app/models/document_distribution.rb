@@ -13,6 +13,7 @@ require "csv"
 #
 # Callbacks:
 # - after_save :reindex_document
+# - after_destroy :reindex_document
 #
 # Validations:
 # - Validates presence of :friendlier_id, :reference_type_id, :url
@@ -25,6 +26,7 @@ class DocumentDistribution < ApplicationRecord
   belongs_to :document, foreign_key: :friendlier_id, primary_key: :friendlier_id
   belongs_to :reference_type
   after_save :reindex_document
+  after_destroy :reindex_document
 
   # Validations
   validates :friendlier_id, :reference_type_id, :url, presence: true
