@@ -6,4 +6,5 @@ class DocumentDataDictionaryEntry < ApplicationRecord
 
   # Validations
   validates :friendlier_id, :field_name, presence: true
+  validates :friendlier_id, uniqueness: {scope: :field_name, message: "and field_name combination must be unique"}
 end
