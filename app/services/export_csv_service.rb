@@ -8,6 +8,10 @@ class ExportCsvService
     "Documents"
   end
 
+  def self.include_distributions?
+    true
+  end
+
   def self.call(document_ids)
     ActionCable.server.broadcast("export_channel", {progress: 0})
 

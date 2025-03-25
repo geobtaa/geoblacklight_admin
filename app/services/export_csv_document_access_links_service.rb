@@ -8,6 +8,10 @@ class ExportCsvDocumentAccessLinksService
     "Document Access Links"
   end
 
+  def self.include_distributions?
+    false
+  end
+
   def self.call(document_ids)
     ActionCable.server.broadcast("export_channel", {progress: 0})
 
