@@ -14,6 +14,10 @@ class ExportCsvDocumentDistributionsService
     "Document Distributions"
   end
 
+  def self.include_distributions?
+    false
+  end
+
   # Initiates the CSV export process for the given document IDs.
   #
   # @param document_ids [Array] an array of document IDs to export.

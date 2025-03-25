@@ -27,6 +27,12 @@ class ExportJob < ApplicationJob
     file_content_documents = export_service.call(document_ids)
     file_content_document_distributions = ExportCsvDocumentDistributionsService.call(document_ids)
 
+    # Filename
+    filename = export_service.short_name.parameterize(separator: "_")
+
+    # Include Distributions?
+    include_distributions = export_service&.include_distributions? || false
+
     # Write Documents into tempfile
     @tempfile_documents = Tempfile.new(["documents-#{Time.zone.today}", ".csv"]).tap do |file|
       CSV.open(file, "wb") do |csv|
@@ -38,25 +44,27 @@ class ExportJob < ApplicationJob
       logger.debug("Tempfile Documents Size: #{File.size(file.path)} bytes")
     end
 
-    # Write DocumentDistributions into tempfile
-    @tempfile_document_distributions = Tempfile.new(["document-distributions-#{Time.zone.today}", ".csv"]).tap do |file|
-      CSV.open(file, "wb") do |csv|
-        file_content_document_distributions.each do |row|
-          csv << row
+    if include_distributions
+      # Write DocumentDistributions into tempfile
+      @tempfile_document_distributions = Tempfile.new(["document-distributions-#{Time.zone.today}", ".csv"]).tap do |file|
+        CSV.open(file, "wb") do |csv|
+          file_content_document_distributions.each do |row|
+            csv << row
+          end
         end
+        logger.debug("Tempfile Document Distributions Path: #{file.path}")
+        logger.debug("Tempfile Document Distributions Size: #{File.size(file.path)} bytes")
       end
-      logger.debug("Tempfile Document Distributions Path: #{file.path}")
-      logger.debug("Tempfile Document Distributions Size: #{File.size(file.path)} bytes")
     end
 
     # Create a zip file containing both tempfiles
-    zipfile_name = "export-#{Time.zone.today}.zip"
+    zipfile_name = "export-#{filename}-#{Time.zone.today}.zip"
     tmp_dir = Rails.root.join("tmp")
     @tempfile_zip = Tempfile.new([zipfile_name, ".zip"], tmp_dir)
 
     Zip::File.open(@tempfile_zip.path, Zip::File::CREATE) do |zipfile|
-      zipfile.add("documents.csv", @tempfile_documents.path)
-      zipfile.add("document-distributions.csv", @tempfile_document_distributions.path)
+      zipfile.add("#{filename}.csv", @tempfile_documents.path)
+      zipfile.add("document-distributions.csv", @tempfile_document_distributions.path) if include_distributions
     end
     logger.debug("Zipfile Path: #{@tempfile_zip.path}")
     logger.debug("Zipfile Size: #{File.size(@tempfile_zip.path)} bytes")
