@@ -1,5 +1,4 @@
-
-<%= simple_form_for [:admin, @document, @document_access] do |f| %>
+<%= simple_form_for [:admin, @document, @document_licensed_access] do |f| %>
   <%= f.error_notification %>
   <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
 
@@ -8,10 +7,10 @@
 
     <%= f.input :institution_code, collection: b1g_institution_codes,  label_method: ->(obj){ "#{obj[0]} - #{obj[1]}" }, value_method: :first, include_blank: true, input_html: { autofocus: true } %>
 
-    <%= f.input :access_url %>
+    <%= f.input :access_url, label: 'Licensed Access URL' %>
   </div>
 
   <div class="form-actions">
-    <%= f.button :submit, 'Create Access URL', {class: 'btn btn-primary'} %>
+    <%= f.button :submit, 'Create Licensed Access', {class: 'btn btn-primary'} %>
   </div>
 <% end %>

@@ -189,6 +189,14 @@ module Admin
       end
     end
 
+    def export
+      case params[:format]
+      when "csv_document_licensed_access_links"
+        ExportJob.perform_later(@request, current_user, query_params, ExportCsvDocumentLicensedAccessLinksService)
+        redirect_to admin_documents_path, notice: "Export job started. You will receive a notification when it is complete."
+      end
+    end
+
     private
 
     # Use callbacks to share common setup or constraints between actions.

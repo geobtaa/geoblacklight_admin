@@ -27,8 +27,8 @@ class Document < Kithe::Work
     inverse_of: :document
 
   # Document Collections
-  # - DocumentAccesses
-  has_many :document_accesses, primary_key: "friendlier_id", foreign_key: "friendlier_id", autosave: false, dependent: :destroy,
+  # - DocumentLicensedAccesses
+  has_many :document_licensed_accesses, primary_key: "friendlier_id", foreign_key: "friendlier_id", autosave: false, dependent: :destroy,
     inverse_of: :document
 
   # - DocumentDownloads
@@ -497,7 +497,7 @@ class Document < Kithe::Work
 
   # Institutional Access URLs
   def access_urls
-    DocumentAccess.where(friendlier_id: friendlier_id).order(institution_code: :asc)
+    DocumentLicensedAccess.where(friendlier_id: friendlier_id).order(institution_code: :asc)
   end
 
   def derive_locn_geometry

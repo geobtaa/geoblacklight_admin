@@ -239,14 +239,14 @@ export default class extends Controller {
     }
   }
 
-  exportCsvDocumentAccessLinks() {
-    console.log('Export - CsvDocumentAccessLinks')
+  exportCsvDocumentLicensedAccessLinks() {
+    console.log('Export - CsvDocumentLicensedAccessLinks')
     var scope = this.checkSelectionScope();
     var el = document.querySelector('#result-selected-options');
     if(scope === 'pageset') {
-      window.location = el.dataset.pageset + "&format=csv_document_access_links"
+      window.location = el.dataset.pageset + "&format=csv_document_licensed_access_links"
     } else {
-      window.location = el.dataset.resultset + "&format=csv_document_access_links"
+      window.location = el.dataset.resultset + "&format=csv_document_licensed_access_links"
     }
   }
 
