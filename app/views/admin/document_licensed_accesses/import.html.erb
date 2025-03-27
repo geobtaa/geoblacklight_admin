@@ -1,9 +1,9 @@
 <p id="notice"><%= notice %></p>
 
 <h1 style="width:100%; border-bottom:dotted;" class="mb-4">
-  Document &middot; Institutional Access
+  Document &middot; Licensed Access
   <% if params[:document_id] %>
-    <%= link_to '+ New Access URL', new_admin_document_document_access_path(@document), { class: 'btn btn-primary float-right' } %>
+    <%= link_to '+ New Licensed Access', new_admin_document_document_licensed_access_path(@document), { class: 'btn btn-primary float-right' } %>
   <% end %>
 </h1>
 
@@ -16,11 +16,11 @@
     <% end %>
 
     <p class="alert alert-info" role="alert">
-      <strong>Note:</strong> New Institutional Access URLs will be created. Existing Institutional Access URLs will be updated per the CSV file.
+      <strong>Note:</strong> New Licensed Access URLs will be created. Existing Licensed Access URLs will be updated per the CSV file.
     </p>
 
     <h3 class='h4'>Upload a CSV File</h3>
-    <%= simple_form_for DocumentAccess.new, url: import_admin_document_accesses_path, method: :post, multipart: true do |f| %>
+    <%= simple_form_for DocumentLicensedAccess.new, url: import_admin_document_licensed_accesses_path, method: :post, multipart: true do |f| %>
       <div class="form-inputs">
         <%= f.simple_fields_for :assets do |asset_fields| %>
           <%= asset_fields.input :file, as: :file, input_html: {} %>
@@ -64,11 +64,11 @@
     <h5>CSV File Column Definitions</h5>
     <dl>
       <dt>friendlier_id</dt>
-      <dd>The associated GEOMG document's friendlier id</dd>
+      <dd>The associated GBL ADMIN document's friendlier id</dd>
       <dt>institution_code</dt>
       <dd>The <a target="_blank" href="https://github.com/geobtaa/geomg/blob/be1b6ac6628bd8f537ab10ecb88e5f4804540e2b/app/helpers/application_helper.rb#L28-L44">code</a> for the institution</dd>
       <dt>access_url</dt>
-      <dd>The URL for the Access link</dd>
+      <dd>The URL for the Licensed Access link</dd>
     </dl>
   </div>
 </div>

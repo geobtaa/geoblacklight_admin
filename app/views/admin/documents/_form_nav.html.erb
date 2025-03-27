@@ -15,9 +15,9 @@
     <% end %>
 
     <%- if @document.persisted? %>
-      <%= link_to admin_document_document_accesses_url(@document), class: "ml-2" do %>
-        Institutional Access Links
-        <span class="badge badge-light"><%= @document.document_accesses.count %></span>
+      <%= link_to admin_document_document_licensed_accesses_url(@document), class: "ml-2" do %>
+        Licensed Access
+        <span class="badge badge-light"><%= @document.document_licensed_accesses.count %></span>
       <% end %>
       
       <%- if ENV["GBL_ADMIN_REFERENCES_MIGRATED"] == "false" %>

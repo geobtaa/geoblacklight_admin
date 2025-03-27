@@ -2,20 +2,22 @@
 
 require "csv"
 
-# DocumentAccess
-class DocumentAccess < ApplicationRecord
+# DocumentLicensedAccess
+class DocumentLicensedAccess < ApplicationRecord
   belongs_to :document, foreign_key: :friendlier_id, primary_key: :friendlier_id
   after_save :reindex_document
 
   # Validations
-  validates :institution_code, :access_url, presence: true
+  validates :access_url, presence: true
+  validates :institution_code, presence: true
+  validates :institution_code, uniqueness: {scope: :friendlier_id}
 
   def self.import(file)
     logger.debug("CSV Import")
     ::CSV.foreach(file.path, headers: true) do |row|
       logger.debug("CSV Row: #{row.to_hash}")
-      document_access = DocumentAccess.find_or_initialize_by(friendlier_id: row[0], institution_code: row[1])
-      document_access.update!(row.to_hash)
+      document_licensed_access = DocumentLicensedAccess.find_or_initialize_by(friendlier_id: row[0], institution_code: row[1])
+      document_licensed_access.update!(row.to_hash)
     end
     true
   end
@@ -24,7 +26,7 @@ class DocumentAccess < ApplicationRecord
     logger.debug("CSV Destroy")
     ::CSV.foreach(file.path, headers: true) do |row|
       logger.debug("CSV Row: #{row.to_hash}")
-      DocumentAccess.destroy_by(id: row[0], friendlier_id: row[1])
+      DocumentLicensedAccess.destroy_by(id: row[0], friendlier_id: row[1])
     end
     true
   end
