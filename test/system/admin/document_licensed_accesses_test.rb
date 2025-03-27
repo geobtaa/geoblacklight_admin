@@ -30,7 +30,7 @@ module Admin
 
     test "updating a Document Licensed Access" do
       visit edit_admin_document_document_licensed_access_path(@document, @document_licensed_access)
-      
+
       find("#document_licensed_access_institution_code").find("option[value='02']").select_option
       fill_in "Licensed Access URL", with: "https://updated-example.com"
       click_on "Update Licensed Access"
@@ -40,7 +40,7 @@ module Admin
 
     test "destroying a Document Licensed Access" do
       visit admin_document_licensed_accesses_url
-      
+
       page.accept_confirm do
         click_on "Destroy", match: :first
       end

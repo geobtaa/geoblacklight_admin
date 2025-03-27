@@ -10,7 +10,7 @@ class DocumentLicensedAccess < ApplicationRecord
   # Validations
   validates :access_url, presence: true
   validates :institution_code, presence: true
-  validates :institution_code, uniqueness: { scope: :friendlier_id }
+  validates :institution_code, uniqueness: {scope: :friendlier_id}
 
   def self.import(file)
     logger.debug("CSV Import")

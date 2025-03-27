@@ -4,25 +4,25 @@ class ExportCsvDocumentLicensedAccessLinksServiceTest < ActiveSupport::TestCase
   setup do
     @document1 = documents(:ag)
     @document2 = documents(:ls)
-    
+
     # Add some debug output to verify creation
     puts "Creating test records..."
-    @access1 = DocumentLicensedAccess.create!( 
+    @access1 = DocumentLicensedAccess.create!(
       document: @document1,
-      institution_code: "01", 
+      institution_code: "01",
       access_url: "http://b1g.com/"
     )
     @access2 = DocumentLicensedAccess.create!(
       document: @document1,
-      institution_code: "02", 
+      institution_code: "02",
       access_url: "https://btaa.org"
     )
     @access3 = DocumentLicensedAccess.create!(
       document: @document2,
-      institution_code: "03", 
+      institution_code: "03",
       access_url: "https://geo.btaa.org"
     )
-    
+
     # Verify records were created
     puts "Created #{DocumentLicensedAccess.count} records"
   end
