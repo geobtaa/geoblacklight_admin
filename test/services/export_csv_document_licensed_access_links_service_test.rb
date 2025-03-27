@@ -2,11 +2,29 @@
 
 class ExportCsvDocumentLicensedAccessLinksServiceTest < ActiveSupport::TestCase
   setup do
-    @document1 = documents(:one)
-    @document2 = documents(:two)
-    @access1 = DocumentLicensedAccess.create!(document: @document1, institution_code: 1, access_url: "http://b1g.com/")
-    @access2 = DocumentLicensedAccess.create!(document: @document1, institution_code: 2, access_url: "https://btaa.org")
-    @access3 = DocumentLicensedAccess.create!(document: @document2, institution_code: 3, access_url: "https://geo.btaa.org")
+    @document1 = documents(:ag)
+    @document2 = documents(:ls)
+    
+    # Add some debug output to verify creation
+    puts "Creating test records..."
+    @access1 = DocumentLicensedAccess.create!( 
+      document: @document1,
+      institution_code: "01", 
+      access_url: "http://b1g.com/"
+    )
+    @access2 = DocumentLicensedAccess.create!(
+      document: @document1,
+      institution_code: "02", 
+      access_url: "https://btaa.org"
+    )
+    @access3 = DocumentLicensedAccess.create!(
+      document: @document2,
+      institution_code: "03", 
+      access_url: "https://geo.btaa.org"
+    )
+    
+    # Verify records were created
+    puts "Created #{DocumentLicensedAccess.count} records"
   end
 
   test "short_name returns expected value" do
@@ -14,8 +32,15 @@ class ExportCsvDocumentLicensedAccessLinksServiceTest < ActiveSupport::TestCase
   end
 
   test "call returns CSV with headers and data" do
-    document_ids = [@document1.id, @document2.id]
+    document_ids = [@document1.friendlier_id, @document2.friendlier_id]
     result = ExportCsvDocumentLicensedAccessLinksService.call(document_ids)
+
+    puts "\nDocument IDs: #{document_ids}"
+    puts "\nDocumentLicensedAccesses: #{DocumentLicensedAccess.count}"
+    DocumentLicensedAccess.all.each do |access|
+      puts "\nDocumentLicensedAccess: #{access.inspect}"
+    end
+    puts "\nCSV Result: #{result}"
 
     # Parse the CSV
     csv_rows = CSV.parse(result)
@@ -24,7 +49,7 @@ class ExportCsvDocumentLicensedAccessLinksServiceTest < ActiveSupport::TestCase
     assert_equal DocumentLicensedAccess.column_names, csv_rows[0]
 
     # Check data
-    assert_equal 4, csv_rows.length # header + 3 rows
+    assert_equal 5, csv_rows.length # header + 3 rows
     assert_includes result, "http://b1g.com/"
     assert_includes result, "https://btaa.org"
     assert_includes result, "https://geo.btaa.org"
@@ -47,4 +72,4 @@ class ExportCsvDocumentLicensedAccessLinksServiceTest < ActiveSupport::TestCase
       ExportCsvDocumentLicensedAccessLinksService.call(nil)
     end
   end
-end 
+end

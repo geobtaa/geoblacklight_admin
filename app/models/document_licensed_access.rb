@@ -8,7 +8,9 @@ class DocumentLicensedAccess < ApplicationRecord
   after_save :reindex_document
 
   # Validations
-  validates :institution_code, :access_url, presence: true
+  validates :access_url, presence: true
+  validates :institution_code, presence: true
+  validates :institution_code, uniqueness: { scope: :friendlier_id }
 
   def self.import(file)
     logger.debug("CSV Import")

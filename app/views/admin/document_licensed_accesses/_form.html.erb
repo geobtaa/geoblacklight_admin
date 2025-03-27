@@ -11,6 +11,6 @@
   </div>
 
   <div class="form-actions">
-    <%= f.button :submit, 'Create Licensed Access', {class: 'btn btn-primary'} %>
+    <%= f.button :submit, @document_licensed_access.new_record? ? 'Create Licensed Access' : 'Update Licensed Access', class: 'btn btn-primary' %>
   </div>
 <% end %>

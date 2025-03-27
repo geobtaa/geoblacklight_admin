@@ -18,7 +18,7 @@ class NavigationTest < ApplicationSystemTestCase
       assert page.has_link?("Import Documents", visible: false)
       assert page.has_link?("Import Distributions", visible: false)
       assert page.has_link?("Bulk Actions", visible: false)
-      assert page.has_link?("Access Links", visible: false)
+      assert page.has_link?("Licensed Access", visible: false)
       assert page.has_link?("Assets", visible: false)
       assert page.has_link?("Distributions", visible: false)
       assert page.has_link?("Blazer", visible: false)

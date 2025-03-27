@@ -6,9 +6,9 @@ class DocumentLicensedAccessTest < ActiveSupport::TestCase
   end
 
   test "should be valid with required attributes" do
-    document = documents(:one)
+    document = documents(:ag)
     @document_licensed_access.friendlier_id = document.friendlier_id
-    @document_licensed_access.institution_code = "1"
+    @document_licensed_access.institution_code = "01"
     @document_licensed_access.access_url = "https://example.com"
     assert @document_licensed_access.valid?
   end
@@ -43,4 +43,4 @@ class DocumentLicensedAccessTest < ActiveSupport::TestCase
   test "should respond to import" do
     assert_respond_to DocumentLicensedAccess, :import
   end
-end 
+end
