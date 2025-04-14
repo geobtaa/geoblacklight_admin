@@ -12,7 +12,7 @@ module Admin
     # Lists all elements, ordered by position in ascending order.
     # Uses pagination to limit the number of elements displayed per page.
     def index
-      @pagy, @elements = pagy(Element.all.order(position: :asc), items: 100)
+      @elements = Element.all.order(position: :asc)
     end
 
     # GET /elements/1 or /elements/1.json
