@@ -4,7 +4,7 @@ require "csv"
 
 class ExportCsvDocumentLicensedAccessLinksService
   def self.short_name
-    "Document Licensed Access Links"
+    "Licensed Access"
   end
 
   def self.call(document_ids)

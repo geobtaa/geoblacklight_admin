@@ -34,7 +34,7 @@ class ExportJob < ApplicationJob
     include_distributions = export_service&.include_distributions? || false
 
     # Write Documents into tempfile
-    @tempfile_documents = Tempfile.new(["documents-#{Time.zone.today}", ".csv"]).tap do |file|
+    @tempfile_documents = Tempfile.new(["primary-#{Time.zone.today}", ".csv"]).tap do |file|
       CSV.open(file, "wb") do |csv|
         file_content_documents.each do |row|
           csv << row
@@ -46,7 +46,7 @@ class ExportJob < ApplicationJob
 
     if include_distributions
       # Write DocumentDistributions into tempfile
-      @tempfile_document_distributions = Tempfile.new(["document-distributions-#{Time.zone.today}", ".csv"]).tap do |file|
+      @tempfile_document_distributions = Tempfile.new(["distributions-#{Time.zone.today}", ".csv"]).tap do |file|
         CSV.open(file, "wb") do |csv|
           file_content_document_distributions.each do |row|
             csv << row
@@ -64,14 +64,14 @@ class ExportJob < ApplicationJob
 
     Zip::File.open(@tempfile_zip.path, Zip::File::CREATE) do |zipfile|
       zipfile.add("#{filename}.csv", @tempfile_documents.path)
-      zipfile.add("document-distributions.csv", @tempfile_document_distributions.path) if include_distributions
+      zipfile.add("distributions.csv", @tempfile_document_distributions.path) if include_distributions
     end
     logger.debug("Zipfile Path: #{@tempfile_zip.path}")
     logger.debug("Zipfile Size: #{File.size(@tempfile_zip.path)} bytes")
 
     # Create notification
     # Message: "Download Type|Row Count|Button Label"
-    notification = ExportNotification.with(message: "ZIP (#{export_service.short_name})|#{ActionController::Base.helpers.number_with_delimiter(file_content_documents.size - 1)} rows|ZIP")
+    notification = ExportNotification.with(message: "#{export_service.short_name}|#{ActionController::Base.helpers.number_with_delimiter(file_content_documents.size - 1)} rows|ZIP")
 
     # Deliver notification
     notification.deliver(current_user)
