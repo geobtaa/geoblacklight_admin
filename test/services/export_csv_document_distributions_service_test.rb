@@ -10,7 +10,7 @@ class ExportCsvDocumentDistributionsServiceTest < ActiveSupport::TestCase
   end
 
   test "short_name returns correct value" do
-    assert_equal "Document Distributions", ExportCsvDocumentDistributionsService.short_name
+    assert_equal "Distributions", ExportCsvDocumentDistributionsService.short_name
   end
 
   test "call generates CSV with correct headers and data" do
