@@ -8,7 +8,7 @@ class BulkActionRunDocumentJobTest < ActiveJob::TestCase
 
   test "should update publication status" do
     assert_changes -> { @document.reload.publication_state }, from: "published", to: "draft" do
-      @job.perform(:update_publication_status, @document, nil, "draft")
+      @job.perform(:update_publication_status, @document, nil, "set as draft")
     end
     assert_equal "draft", @document.state_machine.current_state
   end
