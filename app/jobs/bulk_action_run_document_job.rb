@@ -25,15 +25,15 @@ class BulkActionRunDocumentJob < ApplicationJob
 
     # Map field value to publication state
     pub_state = case field_value
-    when "Publish"
-      "Published"
-    when "Unpublish"
-      "Unpublished"
-    when "Set as Draft"
-      "Draft"
+    when "publish"
+      "published"
+    when "unpublish"
+      "unpublished"
+    when "set as draft"
+      "draft"
     end
 
-    logger.debug("Update PubStatus - #{document.friendlier_id} => #{pub_state}")
+    logger.debug("Update PubStatus - #{document.friendlier_id} - #{pub_state} - #{field_value}")
 
     document.update!(publication_state: pub_state)
   end
