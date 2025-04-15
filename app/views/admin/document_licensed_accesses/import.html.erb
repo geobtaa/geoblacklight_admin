@@ -1,7 +1,10 @@
+<%- @page_title = "GBL♦Admin - New Licensed Access Import" %>
+
 <p id="notice"><%= notice %></p>
 
 <h1 style="width:100%; border-bottom:dotted;" class="mb-4">
-  Document &middot; Licensed Access
+  New Licensed Access Import
+
   <% if params[:document_id] %>
     <%= link_to '+ New Licensed Access', new_admin_document_document_licensed_access_path(@document), { class: 'btn btn-primary float-right' } %>
   <% end %>
@@ -12,7 +15,7 @@
     <% if params[:document_id] %>
       <h2 class='h3'><%= @document.title %></h2>
     <% else %>
-      <h2 class='h3'>Import for Multiple Documents</h2>
+      <h2 class='h3'>Import for Multiple Items</h2>
     <% end %>
 
     <p class="alert alert-info" role="alert">
@@ -28,7 +31,7 @@
       </div>
 
       <div class="form-actions">
-        <%= submit_tag "+ Import CSV", {class: 'btn btn-primary'} %>
+        <%= submit_tag "+ Create Licensed Access Import", {class: 'btn btn-primary'} %>
       </div>
     <% end %>
   </div>
