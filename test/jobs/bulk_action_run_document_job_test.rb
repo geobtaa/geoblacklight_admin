@@ -46,4 +46,4 @@ class BulkActionRunDocumentJobTest < ActiveJob::TestCase
       @job.perform(:delete_thumbnails, @document, nil, nil)
     end
   end
-end 
+end
