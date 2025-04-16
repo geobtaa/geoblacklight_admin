@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
+# DEPRECATED - Use ExportCsvDocumentDistributionsService instead
 require "csv"
 
 # ExportCsvDocumentDownloadsService
 class ExportCsvDocumentDownloadsService
   def self.short_name
-    "Document Downloads"
+    "Downloads"
   end
 
   def self.include_distributions?

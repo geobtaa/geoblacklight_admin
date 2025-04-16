@@ -28,7 +28,7 @@ class ExportCsvDocumentLicensedAccessLinksServiceTest < ActiveSupport::TestCase
   end
 
   test "short_name returns expected value" do
-    assert_equal "Document Licensed Access Links", ExportCsvDocumentLicensedAccessLinksService.short_name
+    assert_equal "Licensed Access", ExportCsvDocumentLicensedAccessLinksService.short_name
   end
 
   test "call returns CSV with headers and data" do

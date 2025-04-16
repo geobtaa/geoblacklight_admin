@@ -23,9 +23,19 @@ class BulkActionRunDocumentJob < ApplicationJob
   def update_publication_status(doc, field_value)
     document = Document.find_by!(friendlier_id: doc.friendlier_id)
 
-    logger.debug("Update PubStatus - #{document.friendlier_id} => #{field_value}")
+    # Map field value to publication state
+    pub_state = case field_value
+    when "publish"
+      "published"
+    when "unpublish"
+      "unpublished"
+    when "set as draft"
+      "draft"
+    end
 
-    document.update!(publication_state: field_value.to_sym)
+    logger.debug("Update PubStatus - #{document.friendlier_id} - #{pub_state} - #{field_value}")
+
+    document.update!(publication_state: pub_state)
   end
 
   def update_delete(doc, field_value)

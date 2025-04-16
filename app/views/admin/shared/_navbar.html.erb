@@ -35,7 +35,7 @@
       <% if user_signed_in? %>
         <li class="nav-item">
           <%= link_to admin_notifications_url, { class: 'nav-link' } do %>
-            <%= "Notifications #{notifications_badge}".html_safe %>
+            <%= "Exports #{notifications_badge}".html_safe %>
           <% end %>
         </li>
       <% end %>
@@ -45,15 +45,16 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <h6 class="dropdown-header">Data Management</h6>
-          <%= link_to "Documents", admin_documents_path, {class: 'dropdown-item'} %>
-          <%= link_to "Import Documents", admin_imports_path, {class: 'dropdown-item'} %>
-          <%= link_to "Import Distributions", admin_import_distributions_path, {class: 'dropdown-item'} %>
-          <%= link_to "Bulk Actions", admin_bulk_actions_path, {class: 'dropdown-item'} %>
+          <%= link_to "Import Primary", new_admin_import_path, {class: 'dropdown-item'} %>
+          <%= link_to "Import Distributions", new_admin_import_distribution_path, {class: 'dropdown-item'} %>
+          <%= link_to "Import Licensed Accesses", import_admin_document_licensed_accesses_path, {class: 'dropdown-item'} %>
           <div class="dropdown-divider"></div>
-          <h6 class="dropdown-header">Document Relationships</h6>
-          <%= link_to "Licensed Access", admin_document_licensed_accesses_path, {class: 'dropdown-item'} %>
-          <%= link_to "Assets", admin_assets_path, {class: 'dropdown-item'} %>
+          <h6 class="dropdown-header">View Results</h6>
+          <%= link_to "Primary Imports", admin_imports_path, {class: 'dropdown-item'} %>
+          <%= link_to "Distribution Imports", admin_import_distributions_path, {class: 'dropdown-item'} %>
           <%= link_to "Distributions", admin_document_distributions_path, {class: 'dropdown-item'} %>
+          <%= link_to "Licensed Accesses", admin_document_licensed_accesses_path, {class: 'dropdown-item'} %>
+          <%= link_to "Assets", admin_assets_path, {class: 'dropdown-item'} %>
           <div class="dropdown-divider"></div>
           <h6 class="dropdown-header">Business Intelligence</h6>
           <%= link_to "Blazer", '/admin/blazer', {class: 'dropdown-item', data: { turbolinks: false }} %>

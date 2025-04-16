@@ -17,7 +17,7 @@ class ExportCsvDocumentDownloadsServiceTest < ActiveSupport::TestCase
   end
 
   def test_short_name
-    assert_equal "Document Downloads", ExportCsvDocumentDownloadsService.short_name
+    assert_equal "Downloads", ExportCsvDocumentDownloadsService.short_name
   end
 
   def test_call

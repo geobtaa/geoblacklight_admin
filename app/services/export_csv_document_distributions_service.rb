@@ -11,7 +11,7 @@ class ExportCsvDocumentDistributionsService
   #
   # @return [String] the short name of the service.
   def self.short_name
-    "Document Distributions"
+    "Distributions"
   end
 
   def self.include_distributions?
@@ -49,10 +49,10 @@ class ExportCsvDocumentDistributionsService
         slice.each do |doc_id|
           doc = Document.find_by(friendlier_id: doc_id)
 
-          Rails.logger.debug { "\n\nDocDistributions: #{doc.document_distributions.size}\n\n" }
+          Rails.logger.debug { "\n\nDocDistributions: #{doc.distributions_csv.size}\n\n" }
 
-          doc.document_distributions.each do |distribution|
-            csv_file << distribution.to_csv
+          doc.distributions_csv.each do |distribution|
+            csv_file << distribution
           end
         rescue NoMethodError
           Rails.logger.debug { "\n\nExport Failed: #{doc_id.inspect}\n\n" }
