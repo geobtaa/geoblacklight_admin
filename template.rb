@@ -14,22 +14,40 @@
 # $> bundle exec rake geoblacklight:server
 #
 
+# Core dependencies
 gem "devise"
 gem "blacklight", ">= 7.0", "< 8.0"
 gem "geoblacklight", ">= 4.0"
 gem "geoblacklight_admin", git: "git@github.com:geobtaa/geoblacklight_admin.git", branch: "develop"
 
 # GBL‡ADMIN
-gem "active_storage_validations"
-gem "awesome_print"
-gem "blacklight_advanced_search"
-gem "dotenv-rails"
-gem "haml"
-gem "inline_svg"
-gem "kithe", "~> 2.0"
-gem "noticed"
-gem "paper_trail"
-gem "pagy", "~> 9.0"
+# Inject geoblacklight_admin dependencies
+def inject_geoblacklight_admin_dependencies
+  require 'bundler'
+  gemspec_path = File.join(File.dirname(__FILE__), 'geoblacklight_admin.gemspec')
+  if File.exist?(gemspec_path)
+    gemspec = Bundler.load_gemspec(gemspec_path)
+    gemspec.runtime_dependencies.each do |dep|
+      # Skip if the dependency is already declared
+      next if gem_already_declared?(dep.name)
+      
+      if dep.requirements_list.any?
+        gem dep.name, *dep.requirements_list
+      else
+        gem dep.name
+      end
+    end
+  else
+    say "Warning: Could not find geoblacklight_admin.gemspec", :yellow
+  end
+end
+
+def gem_already_declared?(name)
+  # Check if gem is already declared in template
+  File.readlines(__FILE__).any? { |line| line.match?(/^\s*gem\s+["']#{name}["']/) }
+end
+
+inject_geoblacklight_admin_dependencies
 
 run "bundle install"
 
