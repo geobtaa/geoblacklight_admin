@@ -22,35 +22,33 @@ gem "geoblacklight_admin", git: "git@github.com:geobtaa/geoblacklight_admin.git"
 
 # Inject geoblacklight_admin dependencies
 def inject_geoblacklight_admin_dependencies
-  require 'bundler'
   require 'open-uri'
   
   gemspec_url = "https://raw.githubusercontent.com/geobtaa/geoblacklight_admin/develop/geoblacklight_admin.gemspec"
   
   begin
     gemspec_content = URI.open(gemspec_url).read
-    # Create a temporary file to evaluate the gemspec
-    tempfile = Tempfile.new(['geoblacklight_admin', '.gemspec'])
-    tempfile.write(gemspec_content)
-    tempfile.close
     
-    gemspec = Bundler.load_gemspec(tempfile.path)
-    gemspec.runtime_dependencies.each do |dep|
-      # Skip if the dependency is already declared
-      next if gem_already_declared?(dep.name)
+    # Extract dependencies using regex instead of evaluating the gemspec
+    dependencies = gemspec_content.scan(/^\s*s\.add_dependency\s*["']([^"']+)["'](,\s*["'][^"']+["'])?/)
+    
+    dependencies.each do |dep|
+      name = dep[0]
+      version = dep[1]&.gsub(/[",\s]/, '') # Clean up version constraint
       
-      if dep.requirements_list.any?
-        gem dep.name, *dep.requirements_list
+      # Skip if the dependency is already declared
+      next if gem_already_declared?(name)
+      
+      if version
+        gem name, version
       else
-        gem dep.name
+        gem name
       end
     end
   rescue OpenURI::HTTPError => e
     say "Warning: Could not fetch gemspec from #{gemspec_url}: #{e.message}", :yellow
   rescue StandardError => e
     say "Warning: Error processing gemspec: #{e.message}", :yellow
-  ensure
-    tempfile&.unlink
   end
 end
 
