@@ -29,26 +29,30 @@ def inject_geoblacklight_admin_dependencies
   begin
     gemspec_content = URI.open(gemspec_url).read
     
-    # Extract dependencies using regex instead of evaluating the gemspec
-    dependencies = gemspec_content.scan(/^\s*s\.add_dependency\s*["']([^"']+)["'](,\s*["'][^"']+["'])?/)
+    # Match lines like: s.add_dependency "gem_name", "~> 1.0"
+    dependency_pattern = /^\s*s\.add_dependency\s*["']([^"']+)["'](,\s*["'][^"']+["'])?/
     
-    dependencies.each do |dep|
-      name = dep[0]
-      version = dep[1]&.gsub(/[",\s]/, '') # Clean up version constraint
-      
-      # Skip if the dependency is already declared
-      next if gem_already_declared?(name)
-      
-      if version
-        gem name, version
-      else
-        gem name
+    gemspec_content.each_line do |line|
+      if match = line.match(dependency_pattern)
+        name = match[1]
+        version = match[2]&.gsub(/[",\s]/, '') # Clean up version constraint
+        
+        # Skip if the dependency is already declared
+        next if gem_already_declared?(name)
+        
+        if version
+          say "Adding dependency: #{name} (#{version})", :green
+          gem name, version
+        else
+          say "Adding dependency: #{name}", :green
+          gem name
+        end
       end
     end
   rescue OpenURI::HTTPError => e
-    say "Warning: Could not fetch gemspec from #{gemspec_url}: #{e.message}", :yellow
+    say "Warning: Could not fetch gemspec from #{gemspec_url}: #{e.message}", :red
   rescue StandardError => e
-    say "Warning: Error processing gemspec: #{e.message}", :yellow
+    say "Warning: Error processing gemspec: #{e.message}", :red
   end
 end
 
