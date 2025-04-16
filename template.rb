@@ -20,13 +20,21 @@ gem "blacklight", ">= 7.0", "< 8.0"
 gem "geoblacklight", ">= 4.0"
 gem "geoblacklight_admin", git: "git@github.com:geobtaa/geoblacklight_admin.git", branch: "develop"
 
-# GBL‡ADMIN
 # Inject geoblacklight_admin dependencies
 def inject_geoblacklight_admin_dependencies
   require 'bundler'
-  gemspec_path = File.join(File.dirname(__FILE__), 'geoblacklight_admin.gemspec')
-  if File.exist?(gemspec_path)
-    gemspec = Bundler.load_gemspec(gemspec_path)
+  require 'open-uri'
+  
+  gemspec_url = "https://raw.githubusercontent.com/geobtaa/geoblacklight_admin/develop/geoblacklight_admin.gemspec"
+  
+  begin
+    gemspec_content = URI.open(gemspec_url).read
+    # Create a temporary file to evaluate the gemspec
+    tempfile = Tempfile.new(['geoblacklight_admin', '.gemspec'])
+    tempfile.write(gemspec_content)
+    tempfile.close
+    
+    gemspec = Bundler.load_gemspec(tempfile.path)
     gemspec.runtime_dependencies.each do |dep|
       # Skip if the dependency is already declared
       next if gem_already_declared?(dep.name)
@@ -37,8 +45,12 @@ def inject_geoblacklight_admin_dependencies
         gem dep.name
       end
     end
-  else
-    say "Warning: Could not find geoblacklight_admin.gemspec", :yellow
+  rescue OpenURI::HTTPError => e
+    say "Warning: Could not fetch gemspec from #{gemspec_url}: #{e.message}", :yellow
+  rescue StandardError => e
+    say "Warning: Error processing gemspec: #{e.message}", :yellow
+  ensure
+    tempfile&.unlink
   end
 end
 
