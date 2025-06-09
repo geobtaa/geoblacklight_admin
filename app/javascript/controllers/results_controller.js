@@ -103,6 +103,7 @@ export default class extends Controller {
     this.setResultSelectionVisibility('hide');
     this.setResultActionsVisibility('hide')
     this.removeResultSet();
+    this.setPagesetURL();
 
     // Set selection scope
     var el = document.querySelector('div#result-selection-options');
