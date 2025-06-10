@@ -49,11 +49,13 @@ class Asset < Kithe::Asset
   def reindex_parent
     # Set the "file size" on the parent document
     file_size = 0
-    parent.document_assets.each do |document_asset|
-      file_size += document_asset.file_data["metadata"]["size"]
+    if parent.present?
+      parent.document_assets.each do |document_asset|
+        file_size += document_asset.file_data["metadata"]["size"]
+      end
+      parent.gbl_fileSize_s = ApplicationController.helpers.number_to_human_size(file_size)
+      parent.save
     end
-    parent.gbl_fileSize_s = ApplicationController.helpers.number_to_human_size(file_size)
-    parent.save if parent.present?
   end
 
   def to_aardvark_reference
