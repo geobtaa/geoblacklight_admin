@@ -1,4 +1,4 @@
-<span id="result-selected-options" class="hidden" data-scope="pageset" data-controller="results" data-resultset="<%= admin_documents_path( params.to_unsafe_h.merge({rows: '1000'})) %>" data-pageset="/fetch?">
+<span id="result-selected-options" class="hidden" data-scope="resultset" data-controller="results" data-resultset="<%= admin_documents_path( params.to_unsafe_h.merge({rows: '1000'})) %>" data-pageset="/fetch?">
 
   <%= form_with(model: BulkAction.new, html: { id: 'result-action-form', data: { type: "html", action: "submit->results#setPubState" }, style: 'display:inline'}, url: admin_bulk_actions_path) do |form| -%>
     <%= form.hidden_field :request, value: "#{request.protocol}#{request.host}:#{request.port}" %>

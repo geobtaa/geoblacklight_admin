@@ -41,11 +41,11 @@ class DocumentIndexer < Kithe::Indexer
     # May want to switch to or add a 'date published' instead, right
     # now we only have date added to DB, which is what we had in sufia.
     to_field "date_created_dtsi" do |rec, _acc|
-      rec.created_at.utc.iso8601 if rec&.created_at
+      rec&.created_at&.utc&.iso8601
     end
 
     to_field "date_modified_dtsi" do |rec, _acc|
-      rec.updated_at.utc.iso8601 if rec&.updated_at
+      rec&.updated_at&.utc&.iso8601
     end
 
     # - GBL ADMIN

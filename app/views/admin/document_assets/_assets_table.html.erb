@@ -6,6 +6,7 @@
         <th>Preview</th>
         <th>Title</th>
         <th>Label</th>
+        <th>File Size</th>
         <th>MimeType</th>
         <th>Reference URI Type</th>
         <th colspan="2">Actions</th>
@@ -29,6 +30,9 @@
           </td>
           <td><%= link_to(document_asset.title, document_asset.file.url) %></td>
           <td><%= document_asset.label %></td>
+          <td>
+            <%= number_to_human_size(document_asset.file_data["metadata"]["size"]) %>
+          </td>
           <td>
             <%= document_asset.file_data["metadata"]["mime_type"] %>
             <span class="sr-only"><%= document_asset.inspect %></span>
