@@ -54,10 +54,6 @@ module Admin
           ExportJob.perform_later(@request, current_user, query_params, ExportCsvService)
           head :no_content
         end
-        format.csv_document_downloads do
-          ExportJob.perform_later(@request, current_user, query_params, ExportCsvDocumentDownloadsService)
-          head :no_content
-        end
         format.csv_document_access_links do
           ExportJob.perform_later(@request, current_user, query_params, ExportCsvDocumentLicensedAccessLinksService)
           head :no_content
@@ -92,10 +88,6 @@ module Admin
         end
         format.csv do
           ExportJob.perform_later(@request, current_user, {ids: @documents.pluck(:friendlier_id), format: "csv"}, ExportCsvService)
-          head :no_content
-        end
-        format.csv_document_downloads do
-          ExportJob.perform_later(@request, current_user, {ids: @documents.pluck(:friendlier_id), format: "csv_document_downloads"}, ExportCsvDocumentDownloadsService)
           head :no_content
         end
         format.csv_document_access_links do

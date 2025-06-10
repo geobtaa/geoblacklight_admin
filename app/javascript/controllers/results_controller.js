@@ -229,17 +229,6 @@ export default class extends Controller {
     }
   }
 
-  exportCsvDocumentDownloads() {
-    console.log('Export - CsvDocumentDownloads')
-    var scope = this.checkSelectionScope();
-    var el = document.querySelector('#result-selected-options');
-    if(scope === 'pageset') {
-      window.location = el.dataset.pageset + "&format=csv_document_downloads"
-    } else {
-      window.location = el.dataset.resultset + "&format=csv_document_downloads"
-    }
-  }
-
   exportCsvDocumentLicensedAccessLinks() {
     console.log('Export - CsvDocumentLicensedAccessLinks')
     var scope = this.checkSelectionScope();
