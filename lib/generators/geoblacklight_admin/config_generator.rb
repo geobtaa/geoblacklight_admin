@@ -230,17 +230,6 @@ module GeoblacklightAdmin
               end
             end
 
-            # DocumentDownloads
-            resources :document_downloads, path: "downloads" do
-              collection do
-                get "import"
-                post "import"
-
-                get "destroy_all"
-                post "destroy_all"
-              end
-            end
-
             # Document Distributions
             resources :document_distributions, path: "distributions" do
               collection do
@@ -255,17 +244,6 @@ module GeoblacklightAdmin
 
           # Document Licensed Accesses
           resources :document_licensed_accesses, path: "licensed_access" do
-            collection do
-              get "import"
-              post "import"
-
-              get "destroy_all"
-              post "destroy_all"
-            end
-          end
-
-          # Document Downloads
-          resources :document_downloads, path: "downloads" do
             collection do
               get "import"
               post "import"
