@@ -35,17 +35,7 @@
     <%= f.hidden_field :publication_state %>
   <% end %>
 
-<% # References are a special, special case %>
-<% elsif element.solr_field == 'dct_references_s' %>
-  <% unless ENV["GBL_ADMIN_REFERENCES_MIGRATED"] == "true" %>
-    <%- Rails.logger.warn("Deprecation warning: AttrJSON-based dct_references_s will not be supported soon.") %>
-    <%= f.repeatable_attr_input(element.solr_field.to_sym, build: :at_least_one, html_attributes: options[:html_attributes], simple_form_input_args: { label: element.label }) do |sub_form| %>
-        <%= category_and_value(sub_form, category_list: Document::Reference::REFERENCE_VALUES.keys) %>
-    <% end %>
-  <% end %>
-
 <% elsif element.repeatable? %>
-
   <% # Text Fields %>
   <% if element.field_type == 'text' %>
     <%= f.repeatable_attr_input(element.solr_field.to_sym, build: :at_least_one, html_attributes: options[:html_attributes], simple_form_input_args: { label: element.label }) do |input_name, value| %>

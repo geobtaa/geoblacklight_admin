@@ -117,13 +117,9 @@ class Document < Kithe::Work
   def distributions
     distributions = {}
 
-    logger.debug("Document#distributions > ENV['GBL_ADMIN_REFERENCES_MIGRATED']: #{ENV["GBL_ADMIN_REFERENCES_MIGRATED"]}")
-
     # Add DocumentDistributions to distributions
-    if ENV["GBL_ADMIN_REFERENCES_MIGRATED"] == "true"
-      distributions = document_distributions.to_aardvark_distributions
-      logger.debug("Document#distributions > document_distributions: #{distributions}")
-    end
+    distributions = document_distributions.to_aardvark_distributions
+    logger.debug("Document#distributions > document_distributions: #{distributions}")
 
     # Apply Distributable Assets
     distributions = apply_assets(distributions)
@@ -145,17 +141,10 @@ class Document < Kithe::Work
   # Distributions JSON
   # - Indexes to Solr as dct_distributions_s
   def distributions_json
-    if ENV["GBL_ADMIN_REFERENCES_MIGRATED"] == "true"
-      logger.debug("Document#distributions_json > using document_distributions")
-      distributions = document_distributions.to_aardvark_distributions
-      distributions = apply_assets(distributions)
-      distributions.to_json
-    else
-      logger.debug("Document#distributions > #{distributions.inspect}")
-      logger.debug("Document#distributions_json > using distributions")
-      logger.warn("Deprecation warning: AttrJSON-based dct_references_s will not be supported soon.")
-      self.distributions.to_json
-    end
+    logger.debug("Document#distributions_json > using document_distributions")
+    distributions = document_distributions.to_aardvark_distributions
+    distributions = apply_assets(distributions)
+    distributions.to_json
   end
 
   def distributions_csv
