@@ -43,7 +43,6 @@ FormControl,,gbl_georeferenced_b,41
 FormGroup,Links,,42
 FormControl,,dct_references_s,43
 FormControl,,b1g_image_ss,44
-FormFeature,Multiple Download Links,,45
 FormHeader,Administrative,,46
 FormGroup,Codes,,47
 FormControl,,geomg_id_s,48
