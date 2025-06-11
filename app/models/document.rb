@@ -115,8 +115,6 @@ class Document < Kithe::Work
 
   # Distributions
   def distributions
-    distributions = {}
-
     # Add DocumentDistributions to distributions
     distributions = document_distributions.to_aardvark_distributions
     logger.debug("Document#distributions > document_distributions: #{distributions}")
