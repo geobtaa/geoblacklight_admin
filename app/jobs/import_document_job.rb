@@ -10,7 +10,11 @@ class ImportDocumentJob < ApplicationJob
     # Set the geom
     document.set_geometry
 
-    if document.update(import_document.to_hash)
+    # Update document with import data
+    document_data = import_document.to_hash
+    document_data[:publication_state] = document_data[:json_attributes]["b1g_publication_state_s"] if document_data[:json_attributes]["b1g_publication_state_s"].present?
+
+    if document.update!(document_data)
       import_document.state_machine.transition_to!(:success)
     else
       import_document.state_machine.transition_to!(:failed, "Failed - #{document.errors.inspect}")
