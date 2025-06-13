@@ -476,7 +476,7 @@ class Document < Kithe::Work
   def transition_publication_state
     logger.debug("Document#transition_publication_state > publication_state: #{publication_state}")
     logger.debug("Document#transition_publication_state > b1g_publication_state_s: #{b1g_publication_state_s}")
-    
+
     if publication_state_changed?
       state_machine.transition_to!(publication_state.downcase)
     elsif b1g_publication_state_s_changed?

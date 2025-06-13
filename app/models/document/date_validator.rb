@@ -22,7 +22,7 @@ class Document
 
         Rails.logger.debug("Date Validator")
         Rails.logger.debug("Dates: #{value.inspect}")
-        
+
         Array(value).each do |date|
           Rails.logger.debug("\nDate: #{date}")
           valid_date = proper_date(record, element, date, valid_date)
