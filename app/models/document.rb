@@ -90,7 +90,7 @@ class Document < Kithe::Work
 
   # Downloadable Resouce
   def a_downloadable_resource?
-    json_attributes["dct_references_s"]&.any? { |ref| ref["category"] == "download" }
+    json_attributes["dct_references_s"]&.any? { |ref| ref.category == "download" }
   end
 
   validates_with Document::DateValidator
