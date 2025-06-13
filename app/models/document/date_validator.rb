@@ -12,19 +12,21 @@ class Document
       # Assume true
       valid_date = true
 
-      date_elements = Element.where(field_type: "date")
+      # Cache date elements to avoid repeated queries
+      @date_elements ||= Element.where(field_type: "date").to_a
 
       # Sane date values?
-      date_elements.each do |element|
-        unless record.send(element.solr_field).nil?
-          Rails.logger.debug("Date Validator")
-          Rails.logger.debug("Dates: #{record.send(element.solr_field).inspect}")
-          record.send(element.solr_field).each do |date|
-            Rails.logger.debug("\nDate: #{date}")
-            valid_date = proper_date(record, element, date, valid_date)
+      @date_elements.each do |element|
+        value = record.send(element.solr_field)
+        next if value.nil?
 
-            break if !valid_date
-          end
+        Rails.logger.debug("Date Validator")
+        Rails.logger.debug("Dates: #{value.inspect}")
+        
+        Array(value).each do |date|
+          Rails.logger.debug("\nDate: #{date}")
+          valid_date = proper_date(record, element, date, valid_date)
+          break if !valid_date
         end
       end
 
@@ -36,7 +38,7 @@ class Document
         valid_date = true
       elsif date.class != Date
         valid_date = false
-        record.errors.add(GeoblacklightAdmin::Schema.instance.solr_fields[element.to_sym], "Bad date field type.")
+        record.errors.add(element.solr_field, "Bad date field type.")
       end
 
       Rails.logger.debug("#{date} - #{valid_date}")
