@@ -12,9 +12,16 @@ class ImportDocumentJob < ApplicationJob
 
     # Update document with import data
     document_data = import_document.to_hash
-    document_data[:publication_state] = document_data[:json_attributes]["b1g_publication_state_s"] if document_data[:json_attributes]["b1g_publication_state_s"].present?
+    publication_state = document_data[:json_attributes]["b1g_publication_state_s"]
+    document_data[:json_attributes].delete("b1g_publication_state_s")
+    document_data.delete(:publication_state)
 
     if document.update(document_data)
+      # Handle state transition separately
+      if publication_state.present?
+        document.publication_state = publication_state
+        document.save
+      end
       import_document.state_machine.transition_to!(:success)
     else
       import_document.state_machine.transition_to!(:failed, "Failed - #{document.errors.inspect}")
