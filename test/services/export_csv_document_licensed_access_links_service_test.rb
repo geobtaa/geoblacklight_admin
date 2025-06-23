@@ -42,25 +42,25 @@ class ExportCsvDocumentLicensedAccessLinksServiceTest < ActiveSupport::TestCase
     end
     puts "\nCSV Result: #{result}"
 
-    # Parse the CSV
-    csv_rows = CSV.parse(result)
+    # Result is now an array of arrays
+    csv_rows = result
 
     # Check headers
     assert_equal DocumentLicensedAccess.column_names, csv_rows[0]
 
     # Check data
-    assert_equal 5, csv_rows.length # header + 3 rows
-    assert_includes result, "http://b1g.com/"
-    assert_includes result, "https://btaa.org"
-    assert_includes result, "https://geo.btaa.org"
+    assert_equal 5, csv_rows.length # header + 4 rows (1 fixture + 3 created)
+    assert_includes result.flatten, "http://b1g.com/"
+    assert_includes result.flatten, "https://btaa.org"
+    assert_includes result.flatten, "https://geo.btaa.org"
   end
 
   test "call returns empty CSV with headers when no documents found" do
     document_ids = [-1] # Non-existent ID
     result = ExportCsvDocumentLicensedAccessLinksService.call(document_ids)
 
-    # Parse the CSV
-    csv_rows = CSV.parse(result)
+    # Result is now an array of arrays
+    csv_rows = result
 
     # Should have headers but no data
     assert_equal 1, csv_rows.length
