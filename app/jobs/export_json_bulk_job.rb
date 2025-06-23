@@ -89,6 +89,6 @@ class ExportJsonBulkJob < ApplicationJob
         doc_ids)
     end
 
-    doc_ids
+    doc_ids.flatten
   end
 end

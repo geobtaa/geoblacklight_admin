@@ -62,7 +62,7 @@ class ExportJsonBulkJobTest < ActiveJob::TestCase
       .with(@request, query_params)
       .returns(mock_api_results)
 
-    @export_service.expects(:call).with([[@document.id]]).returns(mock_documents)
+    @export_service.expects(:call).with([@document.id]).returns(mock_documents)
     Admin::DocumentsController.expects(:render)
       .with("_json_file.jbuilder", locals: {document: @document})
       .returns(mock_json_output)
@@ -111,7 +111,7 @@ class ExportJsonBulkJobTest < ActiveJob::TestCase
       .with(@request, query_params.merge(page: 2))
       .returns(mock_api_results2)
 
-    @export_service.expects(:call).with([[@document.id], [@document.id]]).returns(mock_documents)
+    @export_service.expects(:call).with([@document.id, @document.id]).returns(mock_documents)
     Admin::DocumentsController.expects(:render)
       .with("_json_file.jbuilder", locals: {document: @document})
       .returns(mock_json_output)
