@@ -95,8 +95,8 @@ class DocumentsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should render documents#index as csv_document_access_links" do
-    get admin_documents_url, params: {format: "csv_document_access_links"}
+  test "should render documents#index as csv_document_licensed_access_links" do
+    get admin_documents_url, params: {format: "csv_document_licensed_access_links"}
     assert_response :success
   end
 
@@ -172,8 +172,8 @@ class DocumentsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should fetch documents in csv_document_access_links format" do
-    get fetch_admin_documents_url, params: {ids: [@document.friendlier_id], format: :csv_document_access_links}
+  test "should fetch documents in csv_document_licensed_access_links format" do
+    get fetch_admin_documents_url, params: {ids: [@document.friendlier_id], format: :csv_document_licensed_access_links}
     assert_response :success
   end
 

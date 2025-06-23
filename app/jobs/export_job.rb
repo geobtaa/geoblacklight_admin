@@ -34,7 +34,7 @@ class ExportJob < ApplicationJob
     include_distributions = export_service&.include_distributions? || false
 
     # Write Documents into tempfile
-    @tempfile_documents = Tempfile.new(["primary-#{Time.zone.today}", ".csv"]).tap do |file|
+    @tempfile_documents = Tempfile.new(["#{filename}-#{Time.zone.now.strftime("%Y-%m-%d-%H%M%S")}", ".csv"]).tap do |file|
       CSV.open(file, "wb") do |csv|
         file_content_documents.each do |row|
           csv << row
@@ -46,7 +46,7 @@ class ExportJob < ApplicationJob
 
     if include_distributions
       # Write DocumentDistributions into tempfile
-      @tempfile_document_distributions = Tempfile.new(["distributions-#{Time.zone.today}", ".csv"]).tap do |file|
+      @tempfile_document_distributions = Tempfile.new(["distributions-#{Time.zone.now.strftime("%Y-%m-%d-%H%M%S")}", ".csv"]).tap do |file|
         CSV.open(file, "wb") do |csv|
           file_content_document_distributions.each do |row|
             csv << row
@@ -55,30 +55,32 @@ class ExportJob < ApplicationJob
         logger.debug("Tempfile Document Distributions Path: #{file.path}")
         logger.debug("Tempfile Document Distributions Size: #{File.size(file.path)} bytes")
       end
+
+      # Create a zip file containing both tempfiles
+      zipfile_name = "export-#{filename}-#{Time.zone.now.strftime("%Y-%m-%d-%H%M%S")}.zip"
+      tmp_dir = Rails.root.join("tmp")
+      @tempfile_zip = Tempfile.new([zipfile_name, ".zip"], tmp_dir)
+
+      Zip::File.open(@tempfile_zip.path, Zip::File::CREATE) do |zipfile|
+        zipfile.add("#{filename}.csv", @tempfile_documents.path)
+        zipfile.add("distributions.csv", @tempfile_document_distributions.path)
+      end
+      logger.debug("Zipfile Path: #{@tempfile_zip.path}")
+      logger.debug("Zipfile Size: #{File.size(@tempfile_zip.path)} bytes")
+
+      # Create notification
+      notification = ExportNotification.with(message: "#{export_service.short_name}|#{ActionController::Base.helpers.number_with_delimiter(file_content_documents.size - 1)} rows|ZIP")
+      notification.deliver(current_user)
+      notification.record.file.attach(io: File.open(@tempfile_zip), filename: zipfile_name,
+        content_type: "application/zip")
+    else
+      # Only primary CSV, attach directly
+      csvfile_name = "#{filename}-#{Time.zone.now.strftime("%Y-%m-%d-%H%M%S")}.csv"
+      notification = ExportNotification.with(message: "#{export_service.short_name}|#{ActionController::Base.helpers.number_with_delimiter(file_content_documents.size - 1)} rows|CSV")
+      notification.deliver(current_user)
+      notification.record.file.attach(io: File.open(@tempfile_documents), filename: csvfile_name,
+        content_type: "text/csv")
     end
-
-    # Create a zip file containing both tempfiles
-    zipfile_name = "export-#{filename}-#{Time.zone.today}.zip"
-    tmp_dir = Rails.root.join("tmp")
-    @tempfile_zip = Tempfile.new([zipfile_name, ".zip"], tmp_dir)
-
-    Zip::File.open(@tempfile_zip.path, Zip::File::CREATE) do |zipfile|
-      zipfile.add("#{filename}.csv", @tempfile_documents.path)
-      zipfile.add("distributions.csv", @tempfile_document_distributions.path) if include_distributions
-    end
-    logger.debug("Zipfile Path: #{@tempfile_zip.path}")
-    logger.debug("Zipfile Size: #{File.size(@tempfile_zip.path)} bytes")
-
-    # Create notification
-    # Message: "Download Type|Row Count|Button Label"
-    notification = ExportNotification.with(message: "#{export_service.short_name}|#{ActionController::Base.helpers.number_with_delimiter(file_content_documents.size - 1)} rows|ZIP")
-
-    # Deliver notification
-    notification.deliver(current_user)
-
-    # Attach ZIP file (can only attach after persisted)
-    notification.record.file.attach(io: File.open(@tempfile_zip), filename: zipfile_name,
-      content_type: "application/zip")
 
     # Update UI
     ActionCable.server.broadcast("export_channel", {
