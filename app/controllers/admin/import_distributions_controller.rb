@@ -37,8 +37,9 @@ module Admin
     # GET /import_distributions/1.json
     # Displays a specific import distribution and its associated documents, with pagination for success and failed states.
     def show
-      @pagy_failed, @import_failed_distributions = pagy(@import_distribution.import_document_distributions.not_in_state(:success), items: 50, page_param: :failed_page)
       @pagy_success, @import_success_distributions = pagy(@import_distribution.import_document_distributions.in_state(:success), items: 50, page_param: :success_page)
+      @pagy_queued, @import_queued_distributions = pagy(@import_distribution.import_document_distributions.in_state(:queued), items: 50, page_param: :queued_page)
+      @pagy_failed, @import_failed_distributions = pagy(@import_distribution.import_document_distributions.in_state(:failed), items: 50, page_param: :failed_page)
     end
 
     # GET /import_distributions/new
