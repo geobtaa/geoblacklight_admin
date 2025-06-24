@@ -50,7 +50,7 @@ class Asset < Kithe::Asset
     # Set the "file size" on the parent document
     file_size = 0
     if parent.present? && !parent.destroyed?
-      unless self.thumbnail?
+      unless thumbnail?
         parent.document_assets.each do |document_asset|
           file_size += document_asset.file_data["metadata"]["size"]
         end
