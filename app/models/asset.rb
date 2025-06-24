@@ -50,11 +50,13 @@ class Asset < Kithe::Asset
     # Set the "file size" on the parent document
     file_size = 0
     if parent.present? && !parent.destroyed?
-      parent.document_assets.each do |document_asset|
-        file_size += document_asset.file_data["metadata"]["size"]
+      unless self.thumbnail?
+        parent.document_assets.each do |document_asset|
+          file_size += document_asset.file_data["metadata"]["size"]
+        end
+        parent.gbl_fileSize_s = ApplicationController.helpers.number_to_human_size(file_size)
+        parent.save(validate: false)
       end
-      parent.gbl_fileSize_s = ApplicationController.helpers.number_to_human_size(file_size)
-      parent.save(validate: false)
     end
   end
 
