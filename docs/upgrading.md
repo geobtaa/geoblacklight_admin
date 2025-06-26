@@ -1,5 +1,16 @@
 # Upgrading
 
+## Steps for v0.9.0 upgrade
+
+DocumentDownloads is now removed from the codebase. Ensure you:
+
+* Have completed the "Steps for v0.6.0 upgrade"
+* Remove the ENV var `GBL_ADMIN_REFERENCES_MIGRATED` from your application
+* Delete the FormElement entry for FormFeature > Multiple Download Links
+* Update your config/initializers/mime_types.rb to use `Mime::Type.register "text/csv", :csv_document_licensed_access_links`
+
+With these above steps complete, you can upgrade to v0.9.0
+
 ## Steps for v0.7.0 upgrade
 
 This release moves document distribution imports to the background queue. It also adds support for `document_data_dictionaries`.

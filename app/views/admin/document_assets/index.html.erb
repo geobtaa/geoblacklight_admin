@@ -13,7 +13,9 @@
       <h2 class='h3'>
         <%= link_to(@document.title, admin_document_path(@document)) %>
         &middot;
-        <%= @document_assets.count %> assets
+        <%= @document_assets.count %> assets 
+        &middot;
+        <%= number_to_human_size(@document.gbl_fileSize_s) %>
       </h2>
     <% else %>
       <h2 class='h3'>Assets</h2>

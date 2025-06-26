@@ -1,9 +1,9 @@
 <p id="notice"><%= notice %></p>
 
 <h1 style="width:100%; border-bottom:dotted;" class="mb-4">
-  Document &middot; Destroy Download Links
+  Document &middot; Destroy Document Licensed Access
   <% if params[:document_id] %>
-    <%= link_to '+ New Download Link', new_document_document_download_path(@document), { class: 'btn btn-primary float-right' } %>
+    <%= link_to '+ New Licensed Access', new_admin_document_document_licensed_access_path(@document), { class: 'btn btn-primary float-right' } %>
   <% end %>
 </h1>
 
@@ -12,19 +12,19 @@
     <% if params[:document_id] %>
       <h2 class='h3'><%= @document.title %></h2>
     <% else %>
-      <h2 class='h3'>Destroy Multiple Download Links</h2>
+      <h2 class='h3'>Destroy Multiple Document Licensed Access</h2>
     <% end %>
 
     <p class="alert alert-danger" role="alert">
-      <strong>Warning:</strong> All matching Download Links will be destroyed. There is <strong>NO UNDO</strong> here.
+      <strong>Warning:</strong> All matching Document Licensed Access will be destroyed. There is <strong>NO UNDO</strong> here.
     </p>
     <h3 class='h4'>Upload a CSV File</h3>
 
-    <%= simple_form_for DocumentDownload.new, url: destroy_all_admin_document_downloads_path, method: :post, multipart: true do |f| %>
+    <%= simple_form_for DocumentLicensedAccess.new, url: destroy_all_admin_document_licensed_accesses_path, method: :post, multipart: true do |f| %>
       <div class="form-group">
         <div class="form-inputs">
-          <%= f.simple_fields_for :downloads do |download_fields| %>
-            <%= download_fields.input :file, as: :file, input_html: {} %>
+          <%= f.simple_fields_for :assets do |asset_fields| %>
+            <%= asset_fields.input :file, as: :file, input_html: {} %>
           <%- end %>
         </div>
 
@@ -64,7 +64,7 @@
       <dt>id</dt>
       <dd>The database table row identifier</dd>
       <dt>friendlier_id</dt>
-      <dd>The associated GBLADMIN document's friendlier id</dd>
+      <dd>The associated GBL ADMIN document's friendlier id</dd>
     </dl>
   </div>
 </div>

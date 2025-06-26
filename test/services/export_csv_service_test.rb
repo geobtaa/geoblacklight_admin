@@ -6,7 +6,7 @@ class ExportCsvServiceTest < ActiveSupport::TestCase
   end
 
   test "short_name returns 'Documents'" do
-    assert_equal "Documents", ExportCsvService.short_name
+    assert_equal "Primary", ExportCsvService.short_name
   end
 
   test "call generates CSV and broadcasts progress" do

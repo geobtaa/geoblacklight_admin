@@ -104,6 +104,7 @@
     <nav>
       <div class="nav nav-tabs" id="import-state-tabs" role="tablist">
         <a class="nav-item nav-link active" id="import-success-tab" data-toggle="tab" href="#import-state-success" role="tab" aria-controls="import-state-success" aria-selected="true">Success <span class="badge badge-success"><%= @pagy_success.count %></span></a>
+        <a class="nav-item nav-link" id="import-queued-tab" data-toggle="tab" href="#import-state-queued" role="tab" aria-controls="import-state-queued" aria-selected="false">Queued <span class="badge badge-warning"><%= @pagy_queued.count %></span></a>
         <a class="nav-item nav-link" id="import-failed-tab" data-toggle="tab" href="#import-state-failed" role="tab" aria-controls="import-state-failed" aria-selected="false">Failed <span class="badge badge-danger"><%= @pagy_failed.count %></span> </a>
       </div>
     </nav>
@@ -111,6 +112,10 @@
     <div class="tab-content" id="import-states">
       <div class="tab-pane fade show active" id="import-state-success" role="tabpanel" aria-labelledby="import-state-success-tab">
         <%= render partial: 'show_success_tab' %>
+      </div>
+
+      <div class="tab-pane fade show" id="import-state-queued" role="tabpanel" aria-labelledby="import-state-queued-tab">
+        <%= render partial: 'show_queued_tab' %>
       </div>
 
       <div class="tab-pane fade" id="import-state-failed" role="tabpanel" aria-labelledby="import-state-failed-tab">

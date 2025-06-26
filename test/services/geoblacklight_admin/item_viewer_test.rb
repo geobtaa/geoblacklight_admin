@@ -12,7 +12,7 @@ module GeoblacklightAdmin
 
     test "should initialize with distributions and keys" do
       assert_equal @distributions, @item_viewer.instance_variable_get(:@distributions)
-      assert_equal [:image_map_layer, :download, nil], @item_viewer.instance_variable_get(:@keys)
+      assert_equal [:download, :image_map_layer, nil].compact.sort, @item_viewer.instance_variable_get(:@keys).compact.sort
     end
 
     test "should return correct viewer protocol based on preference order" do

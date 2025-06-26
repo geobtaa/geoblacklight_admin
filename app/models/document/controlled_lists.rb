@@ -43,10 +43,11 @@ class Document
     ].freeze
 
     RESOURCE_CLASS = [
-      "Maps",
+      "Collections",
       "Datasets",
       "Imagery",
-      "Collections",
+      "Maps",
+      "Series",
       "Websites",
       "Web services",
       "Other"

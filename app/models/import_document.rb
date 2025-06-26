@@ -21,6 +21,11 @@ class ImportDocument < ApplicationRecord
       import_id: import_id
     }
 
+    # Set publication state if it exists in json_attributes
+    if json_attributes["b1g_publication_state_s"].present?
+      data_hash[:publication_state] = json_attributes["b1g_publication_state_s"]
+    end
+
     append_created_at(data_hash)
     append_updated_at(data_hash)
   end

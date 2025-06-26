@@ -37,8 +37,9 @@ module Admin
     # GET /imports/1.json
     # Displays a specific import and its associated documents, with pagination for success and failed states.
     def show
-      @pagy_failed, @import_failed_documents = pagy(@import.import_documents.not_in_state(:success), items: 50, page_param: :failed_page)
       @pagy_success, @import_success_documents = pagy(@import.import_documents.in_state(:success), items: 50, page_param: :success_page)
+      @pagy_queued, @import_queued_documents = pagy(@import.import_documents.in_state(:queued), items: 50, page_param: :queued_page)
+      @pagy_failed, @import_failed_documents = pagy(@import.import_documents.in_state(:failed), items: 50, page_param: :failed_page)
     end
 
     # GET /imports/new

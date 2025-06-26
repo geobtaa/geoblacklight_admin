@@ -12,6 +12,11 @@ class ImportRunJob < ApplicationJob
 
       converted_data = import.convert_data(extract_hash)
 
+      # Set default publication state if not present
+      unless converted_data["b1g_publication_state_s"].present?
+        converted_data["b1g_publication_state_s"] = "draft"
+      end
+
       kithe_document = {
         title: converted_data[GeoblacklightAdmin::Schema.instance.solr_fields[:title]],
         json_attributes: converted_data,

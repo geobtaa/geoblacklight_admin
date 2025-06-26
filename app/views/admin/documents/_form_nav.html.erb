@@ -15,19 +15,10 @@
     <% end %>
 
     <%- if @document.persisted? %>
-      <%= link_to admin_document_document_accesses_url(@document), class: "ml-2" do %>
-        Institutional Access Links
-        <span class="badge badge-light"><%= @document.document_accesses.count %></span>
+      <%= link_to admin_document_document_licensed_accesses_url(@document), class: "ml-2" do %>
+        Licensed Access
+        <span class="badge badge-light"><%= @document.document_licensed_accesses.count %></span>
       <% end %>
-      
-      <%- if ENV["GBL_ADMIN_REFERENCES_MIGRATED"] == "false" %>
-        <%- Rails.logger.warn("Deprecation warning: Multiple Download Links will not be supported soon.") %>
-        <%= link_to admin_document_document_downloads_url(@document), class: "ml-2" do %>
-          Multiple Download Links
-          <span class="badge badge-light"><%= @document.document_downloads.count %></span>
-        <% end %>
-      <% end %>
-      
       <%= link_to admin_document_document_assets_url(@document), class: "ml-2" do %>
         Additional Assets 
         <span class="badge badge-light"><%= @document.document_assets.count %></span>

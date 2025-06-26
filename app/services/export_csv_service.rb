@@ -5,7 +5,11 @@ require "csv"
 # ExportCsvService
 class ExportCsvService
   def self.short_name
-    "Documents"
+    "Primary"
+  end
+
+  def self.include_distributions?
+    false
   end
 
   def self.call(document_ids)

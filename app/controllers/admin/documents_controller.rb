@@ -54,12 +54,8 @@ module Admin
           ExportJob.perform_later(@request, current_user, query_params, ExportCsvService)
           head :no_content
         end
-        format.csv_document_downloads do
-          ExportJob.perform_later(@request, current_user, query_params, ExportCsvDocumentDownloadsService)
-          head :no_content
-        end
-        format.csv_document_access_links do
-          ExportJob.perform_later(@request, current_user, query_params, ExportCsvDocumentAccessLinksService)
+        format.csv_document_licensed_access_links do
+          ExportJob.perform_later(@request, current_user, query_params, ExportCsvDocumentLicensedAccessLinksService)
           head :no_content
         end
         format.csv_document_distributions do
@@ -94,12 +90,8 @@ module Admin
           ExportJob.perform_later(@request, current_user, {ids: @documents.pluck(:friendlier_id), format: "csv"}, ExportCsvService)
           head :no_content
         end
-        format.csv_document_downloads do
-          ExportJob.perform_later(@request, current_user, {ids: @documents.pluck(:friendlier_id), format: "csv_document_downloads"}, ExportCsvDocumentDownloadsService)
-          head :no_content
-        end
-        format.csv_document_access_links do
-          ExportJob.perform_later(@request, current_user, {ids: @documents.pluck(:friendlier_id), format: "csv_document_access_links"}, ExportCsvDocumentAccessLinksService)
+        format.csv_document_licensed_access_links do
+          ExportJob.perform_later(@request, current_user, {ids: @documents.pluck(:friendlier_id), format: "csv_document_licensed_access_links"}, ExportCsvDocumentLicensedAccessLinksService)
           head :no_content
         end
         format.csv_document_distributions do
@@ -186,6 +178,14 @@ module Admin
         format.json_btaa_aardvark
         format.json_gbl_v1
         format.csv { send_data collect_csv([@document]), filename: "documents-#{Time.zone.today}.csv" }
+      end
+    end
+
+    def export
+      case params[:format]
+      when "csv_document_licensed_access_links"
+        ExportJob.perform_later(@request, current_user, query_params, ExportCsvDocumentLicensedAccessLinksService)
+        redirect_to admin_documents_path, notice: "Export job started. You will receive a notification when it is complete."
       end
     end
 

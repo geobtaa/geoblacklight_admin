@@ -81,11 +81,10 @@ GeoblacklightAdmin::Engine.routes.draw do
       get "versions"
       get "admin"
 
-      resources :document_accesses, path: "access" do
+      resources :document_licensed_accesses, path: "licensed_access" do
         collection do
           get "import"
           post "import"
-
           get "destroy_all"
           post "destroy_all"
         end
@@ -125,32 +124,10 @@ GeoblacklightAdmin::Engine.routes.draw do
       end
     end
 
-    resources :document_accesses, path: "access" do
+    resources :document_licensed_accesses, path: "licensed_access" do
       collection do
         get "import"
         post "import"
-
-        get "destroy_all"
-        post "destroy_all"
-      end
-    end
-
-    resources :document_downloads, path: "downloads" do
-      collection do
-        get "import"
-        post "import"
-
-        get "destroy_all"
-        post "destroy_all"
-      end
-    end
-
-    # Document References
-    resources :document_references, path: "references" do
-      collection do
-        get "import"
-        post "import"
-
         get "destroy_all"
         post "destroy_all"
       end

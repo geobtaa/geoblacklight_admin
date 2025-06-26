@@ -27,12 +27,8 @@ class Document < Kithe::Work
     inverse_of: :document
 
   # Document Collections
-  # - DocumentAccesses
-  has_many :document_accesses, primary_key: "friendlier_id", foreign_key: "friendlier_id", autosave: false, dependent: :destroy,
-    inverse_of: :document
-
-  # - DocumentDownloads
-  has_many :document_downloads, primary_key: "friendlier_id", foreign_key: "friendlier_id", autosave: false, dependent: :destroy,
+  # - DocumentLicensedAccesses
+  has_many :document_licensed_accesses, primary_key: "friendlier_id", foreign_key: "friendlier_id", autosave: false, dependent: :destroy,
     inverse_of: :document
 
   # - DocumentDataDictionaries
@@ -94,7 +90,7 @@ class Document < Kithe::Work
 
   # Downloadable Resouce
   def a_downloadable_resource?
-    distributions_json.include?("downloadUrl")
+    json_attributes["dct_references_s"]&.any? { |ref| ref.category == "download" }
   end
 
   validates_with Document::DateValidator
@@ -118,53 +114,16 @@ class Document < Kithe::Work
   attr_json :dct_references_s, Document::Reference.to_type, array: true, default: -> { [] }
 
   # Distributions
-  # - BEFORE DocumentDistributions
-  #   - Use dct_references_s
-  #   - Use multiple downloads
-  #   - Use distributable assets
-  # - AFTER DocumentDistributions
-  #   - Use document_distributions
-  #   - Use distributable assets
-  # @TODO: Remove BEFORE path once we've migrated to DocumentDistributions
   def distributions
-    distributions = {}
+    # Add DocumentDistributions to distributions
+    distributions = document_distributions.to_aardvark_distributions
+    logger.debug("Document#distributions > document_distributions: #{distributions}")
 
-    logger.debug("Document#distributions > ENV['GBL_ADMIN_REFERENCES_MIGRATED']: #{ENV["GBL_ADMIN_REFERENCES_MIGRATED"]}")
-
-    # AFTER - Add DocumentDistributions to distributions
-    if ENV["GBL_ADMIN_REFERENCES_MIGRATED"] == "true"
-      distributions = document_distributions.to_aardvark_distributions
-
-      logger.debug("Document#distributions > document_distributions: #{distributions}")
-    else
-      # BEFORE - Prep value arrays
-      # @TODO: Remove this once we've migrated to DocumentDistributions
-      send(GeoblacklightAdmin::Schema.instance.solr_fields[:reference]).each do |ref|
-        if ref.category.present?
-          distributions[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] = []
-        end
-      end
-
-      # BEFORE - Seed value arrays
-      # @TODO: Remove this once we've migrated to DocumentDistributions
-      send(GeoblacklightAdmin::Schema.instance.solr_fields[:reference]).each do |ref|
-        if ref.category.present?
-          distributions[Document::Reference::REFERENCE_VALUES[ref.category.to_sym][:uri]] << ref.value
-        end
-      end
-      logger.debug("\n\nDocument#distributions > seeded: #{distributions}")
-
-      # BEFORE - Apply Multiple Downloads
-      # @TODO: Remove this once we've migrated to DocumentDistributions
-      distributions = apply_downloads(distributions)
-      logger.debug("Document#distributions > downloads: #{distributions}")
-    end
-
-    # BEFORE & AFTER - Apply Distributable Assets
+    # Apply Distributable Assets
     distributions = apply_assets(distributions)
     logger.debug("Document#distributions > assets: #{distributions}")
 
-    # Need to flatten the arrays here to avoid the following potential error:
+    # Flatten the arrays here to avoid the following potential error:
     # - ArgumentError: Please use symbols for polymorphic route arguments.
     # - Via: app/helpers/geoblacklight_helper.rb:224:in `render_references_url'
     distributions.each do |key, value|
@@ -180,17 +139,10 @@ class Document < Kithe::Work
   # Distributions JSON
   # - Indexes to Solr as dct_distributions_s
   def distributions_json
-    if ENV["GBL_ADMIN_REFERENCES_MIGRATED"] == "true"
-      logger.debug("Document#distributions_json > using document_distributions")
-      distributions = document_distributions.to_aardvark_distributions
-      distributions = apply_assets(distributions)
-      distributions.to_json
-    else
-      logger.debug("Document#distributions > #{distributions.inspect}")
-      logger.debug("Document#distributions_json > using distributions")
-      logger.warn("Deprecation warning: AttrJSON-based dct_references_s will not be supported soon.")
-      self.distributions.to_json
-    end
+    logger.debug("Document#distributions_json > using document_distributions")
+    distributions = document_distributions.to_aardvark_distributions
+    distributions = apply_assets(distributions)
+    distributions.to_json
   end
 
   def distributions_csv
@@ -246,51 +198,6 @@ class Document < Kithe::Work
     end
 
     distributions
-  end
-
-  # BEFORE - Apply Downloads
-  # @TODO: Remove this once we've migrated to DocumentDistributions
-  # 1. Native Aardvark Downloads
-  # 2. Multiple Document Download Links
-  # 3. Downloadable Document Assets
-  def apply_downloads(distributions)
-    multiple_downloads = []
-
-    dct_downloads = distributions["http://schema.org/downloadUrl"]
-
-    logger.debug("Document#dct_downloads > init: #{dct_downloads}\n\n")
-
-    # Native Aardvark Downloads
-    # - Via CSV Import or via the webform
-    if dct_downloads.present?
-      dct_downloads.each do |download|
-        multiple_downloads << {label: download_text(send(GeoblacklightAdmin::Schema.instance.solr_fields[:format])),
-                              url: download}
-      end
-    end
-
-    logger.debug("Document#multiple_downloads > aardvark: #{multiple_downloads.inspect}\n\n")
-
-    # Multiple Document Download Links
-    # - Via DocumentDownloads
-    if document_downloads.present?
-      multiple_downloads_array.each do |download|
-        multiple_downloads << download
-      end
-    end
-
-    logger.debug("Document#dct_downloads > document_downloads: #{multiple_downloads.inspect}\n\n")
-
-    multiple_downloads = multiple_downloads.uniq { |d| [d[:label], d[:url]] } unless multiple_downloads.empty?
-
-    distributions["http://schema.org/downloadUrl"] = multiple_downloads.flatten unless multiple_downloads.empty?
-    distributions
-  end
-
-  # BEFORE - Multiple Downloads Array
-  # @TODO: Remove this once we've migrated to DocumentDistributions
-  def multiple_downloads_array
-    document_downloads.collect { |d| {label: d.label, url: d.value} }
   end
 
   ### From GBL
@@ -497,7 +404,7 @@ class Document < Kithe::Work
 
   # Institutional Access URLs
   def access_urls
-    DocumentAccess.where(friendlier_id: friendlier_id).order(institution_code: :asc)
+    DocumentLicensedAccess.where(friendlier_id: friendlier_id).order(institution_code: :asc)
   end
 
   def derive_locn_geometry
@@ -567,6 +474,13 @@ class Document < Kithe::Work
   private
 
   def transition_publication_state
-    state_machine.transition_to!(publication_state.downcase) if publication_state_changed?
+    logger.debug("Document#transition_publication_state > publication_state: #{publication_state}")
+    logger.debug("Document#transition_publication_state > b1g_publication_state_s: #{b1g_publication_state_s}")
+
+    if publication_state_changed?
+      state_machine.transition_to!(publication_state.downcase)
+    elsif b1g_publication_state_s_changed?
+      state_machine.transition_to!(b1g_publication_state_s.downcase)
+    end
   end
 end

@@ -43,7 +43,6 @@ FormControl,,gbl_georeferenced_b,41
 FormGroup,Links,,42
 FormControl,,dct_references_s,43
 FormControl,,b1g_image_ss,44
-FormFeature,Multiple Download Links,,45
 FormHeader,Administrative,,46
 FormGroup,Codes,,47
 FormControl,,geomg_id_s,48
@@ -69,4 +68,4 @@ FormControl,,b1g_child_record_b,67
 FormControl,,b1g_dct_mediator_sm,68
 FormControl,,b1g_access_s,69
 FormHeader,Related Items,,70
-FormFeature,Institutional Access Links,,71
+FormFeature,Licensed Access,,71

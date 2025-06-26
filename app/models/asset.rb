@@ -43,11 +43,21 @@ class Asset < Kithe::Asset
     GeoblacklightAdmin::RemoveParentDctReferencesUriJob.perform_later(self) if parent_id.present?
   end
 
-  # After Save Callbacks
-  after_save :reindex_parent
+  # After Commit Callbacks
+  after_commit :reindex_parent
 
   def reindex_parent
-    parent.save if parent.present?
+    # Set the "file size" on the parent document
+    file_size = 0
+    if parent.present? && !parent.destroyed?
+      unless thumbnail?
+        parent.document_assets.each do |document_asset|
+          file_size += document_asset.file_data["metadata"]["size"]
+        end
+        parent.gbl_fileSize_s = ApplicationController.helpers.number_to_human_size(file_size)
+        parent.save(validate: false)
+      end
+    end
   end
 
   def to_aardvark_reference
