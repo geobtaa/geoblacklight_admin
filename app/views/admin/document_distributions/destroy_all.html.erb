@@ -18,6 +18,9 @@
     <p class="alert alert-danger" role="alert">
       <strong>Warning:</strong> All matching Distributions will be destroyed. There is <strong>NO UNDO</strong> here.
     </p>
+    <p class="alert alert-info" role="alert">
+      <strong>Note:</strong> Large CSV files will be processed in the background. You will receive a notification when the process completes.
+    </p>
     <h3 class='h4'>Upload a CSV File</h3>
 
     <%= simple_form_for DocumentDistribution.new, url: destroy_all_admin_document_distributions_path, method: :post, multipart: true do |f| %>
