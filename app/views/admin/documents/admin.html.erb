@@ -193,7 +193,7 @@
                 </tr>
               </thead>
               <tbody>
-                <% @document.document_accesses.each do |da| %>
+                <% @document.document_licensed_accesses.each do |da| %>
                   <tr>
                     <td><%= da.institution_code %></td>
                     <td><a href="<%= da.access_url %>"><%= da.access_url %></a></td>

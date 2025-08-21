@@ -91,24 +91,37 @@ module Admin
 
     # DELETE /admin/document_distributions/destroy_all
     #
-    # Destroys all document distributions provided in the file parameter. If successful, redirects
-    # with a success notice. Otherwise, redirects with an error notice.
+    # Queues a background job to destroy all document distributions provided in the file parameter.
+    # The job will process the CSV file and send a notification when complete.
     def destroy_all
       return if request.get?
 
-      logger.debug("Destroy Distributions")
+      logger.debug("Queue Destroy Distributions Job")
       unless params.dig(:document_distribution, :distributions, :file)
         raise ArgumentError, "File does not exist or is invalid."
       end
 
+      # Save the uploaded file to a temporary location
+      uploaded_file = params.dig(:document_distribution, :distributions, :file)
+      temp_file_path = Rails.root.join("tmp", "destroy_distributions_#{Time.current.to_i}_#{SecureRandom.hex(8)}.csv")
+
+      File.binwrite(temp_file_path, uploaded_file.read)
+
+      # Queue the background job
+      DestroyDocumentDistributionsJob.perform_later(temp_file_path.to_s, current_user)
+
       respond_to do |format|
-        if DocumentDistribution.destroy_all(params.dig(:document_distribution, :distributions, :file))
-          format.html { redirect_to admin_document_distributions_path, notice: "Distributions were destroyed." }
-        else
-          format.html { redirect_to admin_document_distributions_path, notice: "Distributions could not be destroyed." }
-        end
-      rescue => e
-        format.html { redirect_to admin_document_distributions_path, notice: "Distributions could not be destroyed. #{e}" }
+        format.html {
+          redirect_to admin_document_distributions_path,
+            notice: "Distribution destruction job has been queued. You will receive a notification when it completes."
+        }
+      end
+    rescue => e
+      respond_to do |format|
+        format.html {
+          redirect_to admin_document_distributions_path,
+            notice: "Failed to queue distribution destruction job: #{e.message}"
+        }
       end
     end
 
