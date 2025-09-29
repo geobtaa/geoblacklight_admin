@@ -5,6 +5,7 @@ require "httparty"
 # BlacklightApi
 class BlacklightApiIds
   include HTTParty
+
   default_timeout 300
 
   def initialize(request, args = {})

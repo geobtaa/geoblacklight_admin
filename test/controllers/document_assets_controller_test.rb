@@ -2,6 +2,7 @@ require "test_helper"
 
 class DocumentAssetsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
+
   setup do
     @document = documents(:ag)
     @document_asset = assets(:asset_1)
