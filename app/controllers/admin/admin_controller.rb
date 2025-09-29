@@ -9,6 +9,7 @@ module Admin
     include Devise::Controllers::Helpers
     # Includes Pagy for pagination.
     include ::Pagy::Backend
+
     # Sets the layout for the admin section.
     layout "admin/layouts/application"
 
