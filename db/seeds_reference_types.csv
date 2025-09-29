@@ -24,6 +24,6 @@ tile_map_service,Tile Mapping Service (TMS),https://wiki.osgeo.org/wiki/Tile_Map
 tile_json,TileJSON,https://github.com/mapbox/tilejson-spec,FALSE,-,23
 wcs,Web Coverage Service (WCS),http://www.opengis.net/def/serviceType/ogc/wcs,FALSE,-,24
 wfs,Web Feature Service (WFS),http://www.opengis.net/def/serviceType/ogc/wfs,FALSE,"Provides a to download generated vector datasets (GeoJSON, shapefile)",25
-wmts,Web Mapping Service (WMS),http://www.opengis.net/def/serviceType/ogc/wms,FALSE,Provides a service to visually preview a layer and inspect its features,26
-wms,WMTS,http://www.opengis.net/def/serviceType/ogc/wmts,FALSE,-,27
+wms,Web Mapping Service (WMS),http://www.opengis.net/def/serviceType/ogc/wms,FALSE,Provides a service to visually preview a layer and inspect its features,26
+wmts,WMTS,http://www.opengis.net/def/serviceType/ogc/wmts,FALSE,-,27
 xyz_tiles,XYZ tiles,https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames,FALSE,Link to an XYZ tile server,28
