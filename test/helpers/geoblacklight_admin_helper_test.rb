@@ -4,6 +4,7 @@ require "test_helper"
 
 class GeoblacklightAdminHelperTest < ActionView::TestCase
   include GeoblacklightAdminHelper
+
   attr_reader :current_user
 
   setup do

@@ -25,7 +25,7 @@ module GeoblacklightAdmin
 
         # Build a hash to store the extracted components
         parsed_data = {
-          base_url: "#{parsed_url.scheme}://#{parsed_url.host}#{parsed_url.port ? ":" + parsed_url.port.to_s : ""}",
+          base_url: "#{parsed_url.scheme}://#{parsed_url.host}#{":" + parsed_url.port.to_s if parsed_url.port}",
           path_pattern: parsed_url.path
         }
 
