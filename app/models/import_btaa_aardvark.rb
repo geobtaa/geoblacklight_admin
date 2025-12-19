@@ -53,9 +53,7 @@ class ImportBtaaAardvark < Import
   # Required Values
   # Key / Default Value
   def required_mappings
-    [
-      {b1g_status_s: "Active"}
-    ]
+    []
   end
 
   def solr_geom_mapping(args)

@@ -58,14 +58,21 @@ FormControl,,date_created_dtsi,57
 FormControl,,date_modified_dtsi,58
 FormControl,,b1g_dct_accrualMethod_s,59
 FormControl,,b1g_dct_accrualPeriodicity_s,60
-FormControl,,b1g_dateAccessioned_sm,61
-FormControl,,b1g_dateRetired_s,62
-FormControl,,b1g_status_s,63
+FormControl,,b1g_dateAccessioned_dt,61
+FormControl,,b1g_dateRetired_dt,62
 FormControl,,b1g_publication_state_s,64
-FormGroup,Accessibility,,65
-FormControl,,gbl_suppressed_b,66
-FormControl,,b1g_child_record_b,67
-FormControl,,b1g_dct_mediator_sm,68
-FormControl,,b1g_access_s,69
-FormHeader,Related Items,,70
-FormFeature,Licensed Access,,71
+FormGroup,Harvesting,,65
+FormControl,,b1g_lastHarvested_dt,66
+FormControl,,b1g_isHarvested_b,67
+FormControl,,b1g_harvestWorkflow_s,68
+FormGroup,Administrative Notes,,69
+FormControl,,b1g_adminNote_sm,70
+FormControl,,b1g_deprioritized_b,71
+FormControl,,b1g_dct_provenance_sm,72
+FormControl,,b1g_websitePlatform_s,73
+FormGroup,Accessibility,,74
+FormControl,,gbl_suppressed_b,75
+FormControl,,b1g_dct_mediator_sm,76
+FormControl,,b1g_access_s,77
+FormHeader,Related Items,,78
+FormFeature,Licensed Access,,79

@@ -40,13 +40,6 @@ class ImportBtaa < Import
           }
       },
       {
-        b1g_child_record_b:
-          {
-            field: "b1g_child_record_b",
-            method: "derive_boolean"
-          }
-      },
-      {
         gbl_georeferenced_b:
           {
             field: "gbl_georeferenced_b",
@@ -65,7 +58,7 @@ class ImportBtaa < Import
 
   # Required Values
   # Key / Default Value
-  # Example: { b1g_status_s: 'Active' }
+  # Example: { field_name: 'default_value' }
   def required_mappings
     []
   end

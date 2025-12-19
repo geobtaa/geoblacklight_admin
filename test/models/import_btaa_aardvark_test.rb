@@ -34,9 +34,8 @@ class ImportBtaaAardvarkTest < ActiveSupport::TestCase
     assert_equal expected_mappings, @import_btaa_aardvark.derived_mappings
   end
 
-  test "required_mappings returns correct required mappings" do
-    expected_mappings = [{b1g_status_s: "Active"}]
-    assert_equal expected_mappings, @import_btaa_aardvark.required_mappings
+  test "required_mappings returns an empty array" do
+    assert_empty @import_btaa_aardvark.required_mappings
   end
 
   test "solr_geom_mapping correctly formats the geometry string" do

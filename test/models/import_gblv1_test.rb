@@ -31,8 +31,7 @@ class ImportGblv1Test < ActiveSupport::TestCase
   end
 
   def test_required_mappings
-    expected = [{b1g_status_s: "Active"}]
-    assert_equal expected, @import.required_mappings
+    assert_empty @import.required_mappings
   end
 
   def test_solr_geom_mapping

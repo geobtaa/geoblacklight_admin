@@ -167,7 +167,7 @@ class Import < ApplicationRecord
 
   # Ensures required values are in the data hash
   #
-  # ex. b1g_status_s is required.
+  # ex. field_name is required.
   def append_required_mappings(data_hash)
     required_mappings.each do |mapping|
       mapping.each do |key, value|

@@ -29,7 +29,6 @@ class ImportBtaaTest < ActiveSupport::TestCase
   test "derived_mappings returns correct derived mappings" do
     expected_mappings = [
       {dcat_centroid: {field: "dcat_bbox", method: "derive_dcat_centroid"}},
-      {b1g_child_record_b: {field: "b1g_child_record_b", method: "derive_boolean"}},
       {gbl_georeferenced_b: {field: "gbl_georeferenced_b", method: "derive_boolean"}},
       {gbl_suppressed_b: {field: "gbl_suppressed_b", method: "derive_boolean"}}
     ]

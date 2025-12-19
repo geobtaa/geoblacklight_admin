@@ -152,11 +152,6 @@ module GeoblacklightAdmin
           delimited: true,
           transformation_method: nil
         },
-        b1g_status_s: {
-          destination: GeoblacklightAdmin::Schema.instance.solr_fields[:status],
-          delimited: false,
-          transformation_method: nil
-        },
         dct_accrualMethod_s: {
           destination: GeoblacklightAdmin::Schema.instance.solr_fields[:accrual_method],
           delimited: false,
@@ -167,12 +162,47 @@ module GeoblacklightAdmin
           delimited: false,
           transformation_method: nil
         },
-        b1g_dateAccessioned_s: {
+        b1g_lastHarvested_dt: {
+          destination: GeoblacklightAdmin::Schema.instance.solr_fields[:last_harvested],
+          delimited: false,
+          transformation_method: nil
+        },
+        b1g_isHarvested_b: {
+          destination: GeoblacklightAdmin::Schema.instance.solr_fields[:is_harvested],
+          delimited: false,
+          transformation_method: nil
+        },
+        b1g_adminNote_sm: {
+          destination: GeoblacklightAdmin::Schema.instance.solr_fields[:admin_note],
+          delimited: true,
+          transformation_method: nil
+        },
+        b1g_deprioritized_b: {
+          destination: GeoblacklightAdmin::Schema.instance.solr_fields[:deprioritized],
+          delimited: false,
+          transformation_method: nil
+        },
+        b1g_dct_provenance_sm: {
+          destination: GeoblacklightAdmin::Schema.instance.solr_fields[:provenance],
+          delimited: true,
+          transformation_method: nil
+        },
+        b1g_websitePlatform_s: {
+          destination: GeoblacklightAdmin::Schema.instance.solr_fields[:website_platform],
+          delimited: false,
+          transformation_method: nil
+        },
+        b1g_harvestWorkflow_s: {
+          destination: GeoblacklightAdmin::Schema.instance.solr_fields[:harvest_workflow],
+          delimited: false,
+          transformation_method: nil
+        },
+        b1g_dateAccessioned_dt: {
           destination: GeoblacklightAdmin::Schema.instance.solr_fields[:date_accessioned],
           delimited: false,
           transformation_method: nil
         },
-        b1g_dateRetired_s: {
+        b1g_dateRetired_dt: {
           destination: GeoblacklightAdmin::Schema.instance.solr_fields[:date_retired],
           delimited: false,
           transformation_method: nil
@@ -189,11 +219,6 @@ module GeoblacklightAdmin
         },
         suppressed_b: {
           destination: GeoblacklightAdmin::Schema.instance.solr_fields[:suppressed_record],
-          delimited: false,
-          transformation_method: nil
-        },
-        b1g_child_record_b: {
-          destination: GeoblacklightAdmin::Schema.instance.solr_fields[:child_record],
           delimited: false,
           transformation_method: nil
         },

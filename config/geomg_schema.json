@@ -90,10 +90,35 @@
     "suppressed_b": { "type": "boolean" },
     "b1g_centroid_ss": { "type": "string" },
     "b1g_code_s": { "type": "string" },
-    "b1g_dateAccessioned_s": { "type": "string" },
-    "b1g_dateRetired_s": { "type": "string" },
     "b1g_image_ss": { "type": "string" },
-    "b1g_status_s": { "type": "string" },
+    "b1g_lastHarvested_dt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "b1g_isHarvested_b": { "type": "boolean" },
+    "b1g_adminNote_sm": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "b1g_deprioritized_b": { "type": "boolean" },
+    "b1g_dct_provenance_sm": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "b1g_websitePlatform_s": { "type": "string" },
+    "b1g_harvestWorkflow_s": { "type": "string" },
+    "b1g_dateAccessioned_dt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "b1g_dateRetired_dt": {
+      "type": "string",
+      "format": "date-time"
+    },
     "b1g_genre_sm": {
       "type": "array",
       "items": {

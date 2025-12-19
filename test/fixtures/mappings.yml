@@ -418,27 +418,6 @@ Accrual Periodicity:
   transformation_method: null
   import_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
 
-Date Accessioned:
-  source_header: Date Accessioned
-  destination_field: b1g_dateAccessioned_sm
-  delimited: true
-  transformation_method: null
-  import_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
-
-Date Retired:
-  source_header: Date Retired
-  destination_field: b1g_dateRetired_s
-  delimited: false
-  transformation_method: null
-  import_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
-
-Status:
-  source_header: Status
-  destination_field: b1g_status_s
-  delimited: false
-  transformation_method: null
-  import_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
-
 Publication State:
   source_header: Publication State
   destination_field: b1g_publication_state_s
@@ -449,13 +428,6 @@ Publication State:
 Suppressed:
   source_header: Suppressed
   destination_field: gbl_suppressed_b
-  delimited: false
-  transformation_method: null
-  import_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
-
-Child Record:
-  source_header: Child Record
-  destination_field: b1g_child_record_b
   delimited: false
   transformation_method: null
   import_id: <%= ActiveRecord::FixtureSet.identify(:one) %>

@@ -34,12 +34,6 @@ en:
         b1g_dct_accrualPeriodicity_s:
           one: "Accrual Periodicity"
           other: "Accrual Periodicity"
-        b1g_dateRetired_s:
-          one: "Date Retired"
-          other: "Date Retired"
-        b1g_status_s:
-          one: "Status"
-          other: "Status"
         b1g_publication_state_s:
           one: Publication State
           other: Publication State
@@ -130,9 +124,6 @@ en:
         suppressed_b:
           one: "Suppressed"
           other: "Suppressed"
-        b1g_child_record_b:
-          one: "Child Record"
-          other: "Child Record"
         dct_identifier_sm:
           one: "Identifier"
           other: "Identifier"
@@ -145,15 +136,39 @@ en:
         dct_license_sm:
           one: "License"
           other: "License"
-        b1g_dateAccessioned_sm:
-          one: "Date Accessioned"
-          other: "Date Accessioned"
         b1g_dct_mediator_sm:
           one: "Mediator"
           other: "Mediator"
         b1g_access_s:
           one: "Access"
           other: "Access"
+        b1g_lastHarvested_dt:
+          one: "Last Harvested"
+          other: "Last Harvested"
+        b1g_isHarvested_b:
+          one: "Is Harvested"
+          other: "Is Harvested"
+        b1g_adminNote_sm:
+          one: "Admin Note"
+          other: "Admin Notes"
+        b1g_deprioritized_b:
+          one: "Deprioritized"
+          other: "Deprioritized"
+        b1g_dct_provenance_sm:
+          one: "Provenance"
+          other: "Provenance"
+        b1g_websitePlatform_s:
+          one: "Website Platform"
+          other: "Website Platform"
+        b1g_harvestWorkflow_s:
+          one: "Harvest Workflow"
+          other: "Harvest Workflow"
+        b1g_dateAccessioned_dt:
+          one: "Date Accessioned"
+          other: "Date Accessioned"
+        b1g_dateRetired_dt:
+          one: "Date Retired"
+          other: "Date Retired"
         gbl_displayNote_sm:
           one: "Display Note"
           other: "Display Note"
