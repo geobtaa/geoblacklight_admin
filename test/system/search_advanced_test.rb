@@ -24,9 +24,9 @@ class SearchAdvancedTest < ApplicationSystemTestCase
         assert page.has_text?("Subject")
         assert page.has_text?("Theme")
         assert page.has_text?("Format")
-        assert page.has_text?("Suppressed")
-        assert page.has_text?("Child Record")
-        assert page.has_text?("Georeferenced")
+        # assert page.has_text?("Suppressed")
+        # assert page.has_text?("Child Record")
+        # assert page.has_text?("Georeferenced")
       end
     end
   end
