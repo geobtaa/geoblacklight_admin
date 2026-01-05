@@ -208,7 +208,7 @@ module Admin
       return [] unless ActiveRecord::Base.connection.table_exists?("elements")
 
       Element.where("field_type IN (?) OR solr_field LIKE ?", ["date", "datetime"], "%_dt")
-             .pluck(:solr_field)
+        .pluck(:solr_field)
     end
 
     # Build date field parameter keys for date_select format
@@ -228,7 +228,7 @@ module Admin
     # Strong parameters for document creation and updates.
     def document_params
       base_params = Kithe::Parameters.new(params).require(:document).permit_attr_json(Document)
-      
+
       # Permit standard params and date field params together
       all_permitted = permittable_params + date_field_param_keys
       base_params.permit(*all_permitted)
