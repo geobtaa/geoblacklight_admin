@@ -3,6 +3,8 @@
 class Element < ApplicationRecord
   serialize :html_attributes, coder: JSON
 
+  has_many :form_elements, foreign_key: :element_solr_field, primary_key: :solr_field, dependent: :destroy
+
   # Scopes
   scope :formable, -> { where(formable: true) }
   scope :importable, -> { where(importable: true) }

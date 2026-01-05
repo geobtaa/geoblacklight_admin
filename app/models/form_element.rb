@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class FormElement < ApplicationRecord
-  belongs_to :element, optional: true
+  belongs_to :element, foreign_key: :element_solr_field, primary_key: :solr_field, optional: true
 
   before_create :set_last_position
 
