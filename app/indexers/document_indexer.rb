@@ -21,11 +21,26 @@
 # the Element model's configuration.
 class DocumentIndexer < Kithe::Indexer
   # Formats date/datetime values for Solr date fields (ISO8601 with time component)
-  # Handles Date, DateTime, Time, and String values
+  # Handles Date, DateTime, Time, String values, and arrays that look like Time#to_a results
   def self.format_date_for_solr(value, field_name = nil)
     return [] if value.blank?
 
     formatted_dates = []
+    
+    # Check if value is an array that looks like Time#to_a result [sec, min, hour, day, month, year, wday, yday, isdst, zone]
+    # Time#to_a returns an array with 8-10 elements, all numeric except possibly the last (zone)
+    if value.is_a?(Array) && value.length >= 8 && value.length <= 10 && value[0..6].all? { |v| v.is_a?(Numeric) }
+      begin
+        # Reconstruct Time from array: [sec, min, hour, day, month, year, wday, yday, isdst, zone]
+        time_obj = Time.new(value[5], value[4], value[3], value[2], value[1], value[0])
+        formatted_dates << time_obj.utc.iso8601
+        return formatted_dates
+      rescue ArgumentError => e
+        Rails.logger.warn("Could not reconstruct Time from array: #{value.inspect} for field #{field_name}: #{e.message}") if field_name
+        return []
+      end
+    end
+    
     Array(value).each do |date_value|
       next if date_value.blank?
 
@@ -43,7 +58,8 @@ class DocumentIndexer < Kithe::Indexer
           Rails.logger.warn("Could not parse date value: #{date_value} for field #{field_name}") if field_name
         end
       else
-        formatted_dates << date_value
+        # Skip non-date values instead of adding them
+        Rails.logger.warn("Unexpected date value type: #{date_value.class} (#{date_value.inspect}) for field #{field_name}") if field_name
       end
     end
     formatted_dates
