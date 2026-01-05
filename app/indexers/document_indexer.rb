@@ -26,7 +26,7 @@ class DocumentIndexer < Kithe::Indexer
     return [] if value.blank?
 
     formatted_dates = []
-    
+
     # Check if value is an array that looks like Time#to_a result [sec, min, hour, day, month, year, wday, yday, isdst, zone]
     # Time#to_a returns an array with 8-10 elements, all numeric except possibly the last (zone)
     if value.is_a?(Array) && value.length >= 8 && value.length <= 10 && value[0..6].all? { |v| v.is_a?(Numeric) }
@@ -40,7 +40,7 @@ class DocumentIndexer < Kithe::Indexer
         return []
       end
     end
-    
+
     Array(value).each do |date_value|
       next if date_value.blank?
 
@@ -57,9 +57,9 @@ class DocumentIndexer < Kithe::Indexer
           # If parsing fails, log warning and skip this value
           Rails.logger.warn("Could not parse date value: #{date_value} for field #{field_name}") if field_name
         end
-      else
+      elsif field_name
         # Skip non-date values instead of adding them
-        Rails.logger.warn("Unexpected date value type: #{date_value.class} (#{date_value.inspect}) for field #{field_name}") if field_name
+        Rails.logger.warn("Unexpected date value type: #{date_value.class} (#{date_value.inspect}) for field #{field_name}")
       end
     end
     formatted_dates
