@@ -18,8 +18,10 @@ class Element < ApplicationRecord
   # - fswatch?
   # - cap deploy:restart
 
+  before_destroy :store_solr_field_for_cleanup
   after_save :update_schema_timestamp
   after_destroy :update_schema_timestamp
+  after_commit :enqueue_attribute_removal_job, on: :destroy
 
   # Validations
   validates :label, :solr_field, :field_type, presence: true
@@ -95,6 +97,16 @@ class Element < ApplicationRecord
   end
 
   private
+
+  def store_solr_field_for_cleanup
+    @solr_field_for_cleanup = solr_field
+  end
+
+  def enqueue_attribute_removal_job
+    return unless @solr_field_for_cleanup.present?
+
+    GeoblacklightAdmin::RemoveElementAttributeJob.perform_later(@solr_field_for_cleanup)
+  end
 
   def update_schema_timestamp
     File.write(Rails.root.join("tmp/schema_timestamp.txt").to_s, Time.now.to_s)
