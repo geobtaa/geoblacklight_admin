@@ -18,9 +18,8 @@ class Element < ApplicationRecord
   # - fswatch?
   # - cap deploy:restart
 
-  after_save do
-    File.write(Rails.root.join("tmp/schema_timestamp.txt").to_s, Time.now.to_s)
-  end
+  after_save :update_schema_timestamp
+  after_destroy :update_schema_timestamp
 
   # Validations
   validates :label, :solr_field, :field_type, presence: true
@@ -93,5 +92,11 @@ class Element < ApplicationRecord
 
   def self.respond_to_missing?(method_name, include_private = false)
     label_nocase(method_name).present? || super
+  end
+
+  private
+
+  def update_schema_timestamp
+    File.write(Rails.root.join("tmp/schema_timestamp.txt").to_s, Time.now.to_s)
   end
 end
