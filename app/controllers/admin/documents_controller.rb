@@ -202,9 +202,36 @@ module Admin
       %i[title publication_state layer_geom_type_s dct_references_s q f page sort rows daterange]
     end
 
+    # Get all date/datetime fields that need special parameter handling
+    # Rails date_select/datetime_select generates parameters like field_name(1i), field_name(2i), etc.
+    def date_time_fields
+      return [] unless ActiveRecord::Base.connection.table_exists?("elements")
+
+      Element.where("field_type IN (?) OR solr_field LIKE ?", ["date", "datetime"], "%_dt")
+             .pluck(:solr_field)
+    end
+
+    # Build date field parameter keys for date_select format
+    # Rails date_select generates: field_name(1i)=year, (2i)=month, (3i)=day, (4i)=hour, (5i)=minute
+    def date_field_param_keys
+      keys = []
+      date_time_fields.each do |field|
+        # Permit date_select parameters: field_name(1i), field_name(2i), etc.
+        # Using strings since that's how they come from the form
+        (1..5).each do |i|
+          keys << "#{field}(#{i}i)"
+        end
+      end
+      keys
+    end
+
     # Strong parameters for document creation and updates.
     def document_params
-      Kithe::Parameters.new(params).require(:document).permit_attr_json(Document).permit(permittable_params)
+      base_params = Kithe::Parameters.new(params).require(:document).permit_attr_json(Document)
+      
+      # Permit standard params and date field params together
+      all_permitted = permittable_params + date_field_param_keys
+      base_params.permit(*all_permitted)
     end
 
     # Collects documents into a CSV format.

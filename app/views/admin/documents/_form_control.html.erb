@@ -2,6 +2,9 @@
 <%- options = Hash.new %>
 <%- options[:hint] = element.data_entry_hint if element.data_entry_hint.present? %>
 <%- options[:as] = "boolean" if element.field_type == "boolean" %>
+<%- options[:as] = "date" if element.field_type == "date" %>
+<%- options[:as] = "datetime" if element.field_type == "datetime" %>
+<%- options[:include_blank] = true if element.field_type.in?(["date", "datetime"]) %>
 <%- options[:required] = "true" if element.required? %>
 <%- options[:input_html] = { data: { js: element.js_behaviors }} if element.js_behaviors.present? %>
 <%- options[:label] = element.label %>
@@ -43,6 +46,10 @@
          <%= f.input_field element.solr_field.to_sym, name: input_name, value: value, as: :text, class: "form-control", rows: 4 %>
        </div>
      <% end %>
+
+  <% # Date/Datetime Fields %>
+  <% elsif element.field_type.in?(["date", "datetime"]) %>
+    <%= f.repeatable_attr_input element.solr_field.to_sym, build: :at_least_one, html_attributes: options[:html_attributes], simple_form_input_args: options %>
 
   <% # Autocomplete - Language  %>
   <% elsif element.solr_field == 'dct_language_sm' %>
