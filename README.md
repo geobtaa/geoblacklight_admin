@@ -2,6 +2,12 @@
 
 ![CI](https://github.com/geobtaa/geoblacklight_admin/actions/workflows/ci.yml/badge.svg)
 
+# ⚠️ LEGACY PROJECT — NO MAINTAINER
+
+__Warning__: The BTAA still uses this project in production, but we're planning to abandon this codebase and rebuild our internal OpenGeoMetadata Aardvark workflow tools using FastAPI and React. If you need an Aardvark workflow today, please review the [OGM Metadata Studio](https://github.com/ewlarson/ogm-metadata-studio)
+
+----
+
 GeoBlacklight Admin is a [GeoBlacklight](https://github.com/geoblacklight/geoblacklight) plugin, built on [Kithe](https://github.com/sciencehistory/kithe), that provides a complex web-form for editing documents and an CSV-based import/export workflow for OpenGeoMetadata's [Aardvark schema](https://opengeometadata.org/ogm-aardvark/). GBL Admin is based on the Big Ten Academic Alliance's production workflow tool [GEOMG](https://github.com/geobtaa/geomg).
 
 [![GeoBlackliht Admin](https://raw.githubusercontent.com/geobtaa/geoblacklight_admin/develop/docs/gbl_admin_screenshot.png)](https://youtu.be/lWjcr-Ow228 "GeoBlacklight Admin")
